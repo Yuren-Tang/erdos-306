@@ -1,3 +1,4 @@
+import RequestProject.GlobalControl.ControlEnergy
 import RequestProject.GlobalControl.Encoding.AssignmentData
 import RequestProject.GlobalControl.LevelSetParameters
 

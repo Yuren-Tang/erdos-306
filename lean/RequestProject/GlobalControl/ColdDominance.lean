@@ -165,7 +165,7 @@ lemma exists_cold_control_parameters :
           rw [Rw, Real.log_pow]
 
 /-
-**Label admissibility (`hadmL`).**  For `k0` past a uniform threshold, the
+**Label admissibility.**  For `k0` past a uniform threshold, the
     zero-extended cold labels of any sub-`R` assignment lie in `admLabels`.
     This routes `coldLabel_mem_labelFin` (using the dominant-label conclusion
     of `exists_cold_control_parameters`)

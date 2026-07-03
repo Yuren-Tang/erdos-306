@@ -21,7 +21,6 @@ namespace GlobalControl
     `k0` block are nonempty and `sigmaCtrl BS > 0`.
 -/
 lemma sigmaCtrl_pos_of_k0 (BS : BlockSystem) (hk0 : 2 ≤ BS.k0) : 0 < sigmaCtrl BS := by
-  refine' Real.sqrt_pos.mpr _;
   obtain ⟨p, q, hpq⟩ : ∃ p q : ℕ, p ∈ BS.P BS.k0 ∧ q ∈ BS.P BS.k0 ∧ p < q := by
     have h_card : 2 ≤ (BS.P BS.k0).card := by
       have := BS.hdensity BS.k0 ( by norm_num ) ( by linarith [ BS.hk ] );
@@ -33,9 +32,11 @@ lemma sigmaCtrl_pos_of_k0 (BS : BlockSystem) (hk0 : 2 ≤ BS.k0) : 0 < sigmaCtrl
         · exact Nat.recOn k ( by norm_num; have := Real.log_two_lt_d9; norm_num1 at *; linarith ) fun n ihn => by norm_num [ pow_succ' ] at * ; nlinarith [ Real.log_le_sub_one_of_pos zero_lt_two, Real.log_pos one_lt_two ] ;
       · positivity;
     obtain ⟨ p, hp, q, hq, hpq ⟩ := Finset.one_lt_card.mp h_card; cases lt_trichotomy p q <;> aesop;
-  refine' lt_of_lt_of_le _ ( Finset.single_le_sum ( fun x _ => by positivity ) ( show ( p, q ) ∈ ctrlPairs BS from _ ) ) <;> norm_num [ hpq ];
-  · exact sq_pos_of_pos ( mul_pos ( Nat.cast_pos.mpr ( Nat.Prime.pos ( by have := BS.hprime BS.k0; aesop ) ) ) ( Nat.cast_pos.mpr ( Nat.Prime.pos ( by have := BS.hprime BS.k0; aesop ) ) ) );
-  · exact Finset.mem_union_left _ ( Finset.mem_biUnion.mpr ⟨ BS.k0, Finset.mem_Icc.mpr ⟨ le_rfl, by linarith [ BS.hk ] ⟩, Finset.mem_filter.mpr ⟨ Finset.mem_product.mpr ⟨ hpq.1, hpq.2.1 ⟩, hpq.2.2 ⟩ ⟩ )
+  apply sigmaCtrl_pos_of_ctrlPairs_nonempty
+  exact ⟨(p, q), Finset.mem_union_left _ (Finset.mem_biUnion.mpr
+    ⟨BS.k0, Finset.mem_Icc.mpr ⟨le_rfl, by linarith [BS.hk]⟩,
+      Finset.mem_filter.mpr
+        ⟨Finset.mem_product.mpr ⟨hpq.1, hpq.2.1⟩, hpq.2.2⟩⟩)⟩
 
 /-
 **Boundary floor lower bound.**  Past a uniform threshold, the boundary

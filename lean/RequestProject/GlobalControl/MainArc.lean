@@ -1,4 +1,4 @@
-import RequestProject.GlobalControl.Basic
+import RequestProject.GlobalControl.ControlEnergy
 
 noncomputable section
 

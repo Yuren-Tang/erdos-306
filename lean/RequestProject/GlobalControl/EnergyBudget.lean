@@ -1,4 +1,5 @@
 import RequestProject.GlobalControl.Encoding.BlockData
+import RequestProject.GlobalControl.EnergyDecomposition
 
 /-!
 # Global control energy budgets

@@ -1,4 +1,4 @@
-import RequestProject.GlobalControl.Basic
+import RequestProject.GlobalControl.BlockRestriction
 
 /-!
 # Global block energy data
@@ -45,7 +45,7 @@ def Pifloor (BS : BlockSystem) (e0 : ℝ) (k : ℕ) : ℝ :=
   (((BS.P (k+1)).card : ℝ) - e0 - 1) * (((BS.P k).card : ℝ) - e0) ^ 3 /
     (2 ^ 13 * ((2:ℝ) ^ k) ^ 2)
 
-/-- Label range at a segment start (L3 + cold threshold; note 38 §3 L3c). -/
+/-- Label range at a segment start in the cold regime. -/
 def labelRange (c2 : ℝ) (k : ℕ) : ℤ := ⌈(168:ℝ) * Real.sqrt c2 *
     ((2:ℝ) ^ k) ^ (3/2 : ℝ) / Real.sqrt (Real.log (2 ^ k))⌉
 

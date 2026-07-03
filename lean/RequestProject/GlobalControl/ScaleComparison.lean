@@ -1,4 +1,4 @@
-import RequestProject.GlobalControl.Basic
+import RequestProject.GlobalControl.ControlVarianceBounds
 import RequestProject.LocalEnergy.DominantLabel
 
 open Finset BigOperators Classical

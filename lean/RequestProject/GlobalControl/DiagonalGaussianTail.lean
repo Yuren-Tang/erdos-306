@@ -1,4 +1,5 @@
 import RequestProject.FiniteSums
+import RequestProject.GlobalControl.ControlVarianceBounds
 import RequestProject.GlobalControl.GaussianIntegerSum
 import RequestProject.GlobalControl.DiagonalControlEnergy
 
@@ -181,11 +182,7 @@ lemma sigmaCtrl_pos (BS : BlockSystem) (hadm : admissibleGlobalRange BS) :
     refine ⟨BS.k0, Finset.mem_Ico.mpr ⟨le_rfl, by omega⟩, ?_⟩
     rw [bipartitePairs]
     exact Finset.mem_product.mpr ⟨hp, hq⟩
-  rw [sigmaCtrl, Real.sqrt_pos]
-  refine Finset.sum_pos' (fun pq _ => by positivity) ⟨(p, q), hpair, ?_⟩
-  have hpp : (0 : ℝ) < (p : ℝ) := by exact_mod_cast (BS.hprime BS.k0 p hp).pos
-  have hqp : (0 : ℝ) < (q : ℝ) := by exact_mod_cast (BS.hprime (BS.k0 + 1) q hq).pos
-  positivity
+  exact sigmaCtrl_pos_of_ctrlPairs_nonempty BS ⟨(p, q), hpair⟩
 
 end GlobalControl
 

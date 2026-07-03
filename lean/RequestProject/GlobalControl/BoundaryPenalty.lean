@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalControl
 
 set_option maxHeartbeats 2000000 in
-/-- **Note 40 §3d-iii/3d-iv master cold lemma.**  Produces the global cold
+/-- Produces the global cold
     constants and, besides the per-cold-block facts, the boundary penalty floor:
     every mismatch-boundary block contributes bipartite energy `≥ Pifloor`. -/
 lemma boundary_penalty_per_k :

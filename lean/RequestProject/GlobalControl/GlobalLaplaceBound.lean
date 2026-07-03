@@ -1,5 +1,5 @@
 import RequestProject.Core.LevelSetLaplace
-import RequestProject.GlobalControl.Basic
+import RequestProject.GlobalControl.ControlEnergy
 
 /-!
 # Global level-set Laplace bound

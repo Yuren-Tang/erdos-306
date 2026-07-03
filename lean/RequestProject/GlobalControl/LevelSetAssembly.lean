@@ -161,14 +161,14 @@ theorem global_levelset (eps : ℝ) (heps : 0 < eps) (heps1 : eps < 1) :
             Real.exp (8 * eps * R) * (1 + Real.sqrt R / sigmaCtrl BS) := by
   obtain ⟨c2, e0, X0, hc2, he0, hX0, hdom, hpen, hdomB⟩ :=
     exists_cold_control_parameters
-  obtain ⟨k0L, hadmL⟩ := cold_labels_admissible c2 X0 hc2 hdom
-  obtain ⟨k0R, A, hA, hrhs⟩ :=
+  obtain ⟨k0L, hlabels⟩ := cold_labels_admissible c2 X0 hc2 hdom
+  obtain ⟨k0R, A, hA, hsum⟩ :=
     global_encoded_fiber_sum_bound eps heps heps1 c2 e0 X0 hc2 he0 hX0 hdom hdomB
   obtain ⟨k0X, hX0pow⟩ : ∃ n : ℕ, X0 ≤ (2:ℝ) ^ n := by
     obtain ⟨n, hn⟩ := pow_unbounded_of_one_lt X0 (by norm_num : (1:ℝ) < 2)
     exact ⟨n, le_of_lt hn⟩
   refine ⟨max k0L (max k0R k0X), A, hA, ?_⟩
-  intro BS hk0 hadm R hR
+  intro BS hk0 hrange R hR
   have hk0L : k0L ≤ BS.k0 := le_trans (le_max_left _ _) hk0
   have hk0R : k0R ≤ BS.k0 := le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hk0
   have hk0X : k0X ≤ BS.k0 := le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hk0
@@ -184,11 +184,11 @@ theorem global_levelset (eps : ℝ) (heps : 0 < eps) (heps1 : eps < 1) :
     have hnh : ¬ isHot BS c2 a k := fun h =>
       hkc (Finset.mem_filter.mpr ⟨Finset.mem_Icc.mpr ⟨hk1, hk2⟩, h⟩)
     exact hdom BS a k hk1 hk2 hXk hnh
-  · -- hadmL
+  · -- Label admissibility
     intro a ha
-    exact hadmL BS hk0L hX0k0 a R (by linarith) ha
-  · -- hrhs
-    exact hrhs BS hk0R hadm hX0k0 R hR
+    exact hlabels BS hk0L hX0k0 a R (by linarith) ha
+  · -- Encoded fiber sum
+    exact hsum BS hk0R hrange hX0k0 R hR
 
 end GlobalControl
 

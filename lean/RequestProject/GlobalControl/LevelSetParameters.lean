@@ -14,7 +14,7 @@ noncomputable section
 
 namespace GlobalControl
 
-/-! ### G5 data spaces (note 40 §3) -/
+/-! ## Finite encoding spaces -/
 
 /-- Admissible hot sets: subsets of `[k₀,K]` whose forcing floors have total
     cost at most `R`. -/
@@ -44,7 +44,7 @@ def admShells (BS : BlockSystem) (c2 R : ℝ) (H : Finset ℕ) : Finset (ℕ →
       ∀ k, k ∈ Finset.Icc BS.k0 BS.K → k ∈ H → Rw c2 k ≤ (v k : ℝ) + 1)
 
 /-- The initial segment label window, carrying the sole global `sigmaCtrl`
-    factor in G5. -/
+factor not charged to a predecessor block. -/
 def L0 (BS : BlockSystem) (R : ℝ) : ℤ :=
   ⌈(7 : ℝ) * Real.sqrt R / sigmaP (BS.P BS.k0)⌉
 
