@@ -21,7 +21,8 @@ The four-fold fiber sum is bounded
     charge sums, all kept in unsimplified `exp` form for the final algebra.
     Combines `fixed_boundary_shell_label_sum_bound`,
     `fiber_card_exp_bound`, `admLabels_card`, `label_product_le` (with
-    `segment_label_charge_bound`), and `chargeH_le`/`chargeB_le`.
+    `segment_label_charge_bound`), together with the hot- and boundary-set
+    charge sum bounds.
 -/
 lemma encoded_fiber_sum_charge_bound
     (eps c2 e0 : ℝ) (heps : 0 < eps) (heps1 : eps < 1)
@@ -39,7 +40,7 @@ lemma encoded_fiber_sum_charge_bound
   obtain ⟨kf, hkf⟩ : ∃ kf : ℕ, Xf ≤ 2 ^ kf := by
     exact pow_unbounded_of_one_lt Xf one_lt_two |> fun ⟨ kf, hkf ⟩ => ⟨ kf, le_of_lt hkf ⟩
   obtain ⟨kh, hchg⟩ := segment_label_charge_bound eps c2 e0 heps hc2 he0
-  obtain ⟨kb, hchB⟩ := chargeB_le eps e0 heps he0
+  obtain ⟨kb, hchB⟩ := boundary_set_charge_sum_bound eps e0 heps he0
   obtain ⟨kPnn, hPnn⟩ := Pifloor_nonneg e0 he0
   use max kf (max kh (max kb kPnn));
   intro BS hBS R hR0
@@ -64,7 +65,9 @@ lemma encoded_fiber_sum_charge_bound
   · simp +decide only [mul_assoc, mul_comm, mul_left_comm];
     simp +decide only [← mul_assoc, ← sum_mul];
     simp +decide only [← mul_sum];
-    refine' le_trans ( mul_le_mul_of_nonneg_left ( chargeH_le eps c2 R heps hc2 BS ) ( by positivity ) ) _;
+    refine' le_trans
+      (mul_le_mul_of_nonneg_left
+        (hot_set_charge_sum_bound eps c2 R heps hc2 BS) (by positivity)) _;
     refine' le_trans ( mul_le_mul_of_nonneg_right ( mul_le_mul_of_nonneg_left ( hchB BS ( by linarith [ Nat.le_max_right kf ( Max.max kh ( Max.max kb kPnn ) ), Nat.le_max_left kh ( Max.max kb kPnn ), Nat.le_max_right kh ( Max.max kb kPnn ), Nat.le_max_left kb kPnn, Nat.le_max_right kb kPnn ] ) R ) ( by positivity ) ) ( by positivity ) ) _ ; ring_nf ; norm_num
 
 /-
@@ -106,7 +109,11 @@ lemma global_encoded_fiber_sum_bound
     have h_nb_ge_1 : 1 ≤ numBlocks BS := by
       exact Nat.one_le_iff_ne_zero.mpr ( by rw [ numBlocks ] ; exact Nat.sub_ne_zero_of_lt ( by linarith [ hk0.1 ] ) );
     refine' le_trans ( hc BS ( le_trans ( le_max_left _ _ ) hBS ) R ( by positivity ) ) _;
-    refine' le_trans ( mul_le_mul_of_nonneg_right ( mul_le_mul_of_nonneg_right ( mul_le_mul_of_nonneg_right ( labelFin_k0_card_le BS c2 R ( by positivity ) ) _ ) _ ) _ ) _;
+    refine' le_trans
+      (mul_le_mul_of_nonneg_right
+        (mul_le_mul_of_nonneg_right
+          (mul_le_mul_of_nonneg_right
+            (initial_label_window_card_bound BS c2 R (by positivity)) _) _) _) _;
     · positivity;
     · positivity;
     · positivity;
