@@ -1,5 +1,5 @@
 import RequestProject.GlobalControl.BoundaryPenalty
-import RequestProject.GlobalControl.LevelSetCover
+import RequestProject.GlobalControl.Encoding.AssignmentData
 
 /-!
 # Admissibility of encoded energy data
@@ -98,4 +98,3 @@ lemma cold_class_of_isDominant (BS : BlockSystem) (c2 : ℝ) (a : GlobalAssignme
 end GlobalControl
 
 end
-

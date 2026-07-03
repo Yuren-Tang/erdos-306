@@ -1,5 +1,6 @@
 import RequestProject.GlobalControl.EnergyDataAdmissibility
 import RequestProject.GlobalControl.LabelAdmissibility
+import RequestProject.GlobalControl.LevelSetCover
 
 /-!
 # Global level-set route

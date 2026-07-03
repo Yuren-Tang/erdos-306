@@ -1,5 +1,5 @@
 import RequestProject.GlobalControl.BoundaryPenalty
-import RequestProject.GlobalControl.LevelSetCover
+import RequestProject.GlobalControl.Encoding.AssignmentData
 
 /-!
 # Admissibility of dominant labels
