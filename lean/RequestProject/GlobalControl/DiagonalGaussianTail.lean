@@ -1,6 +1,6 @@
 import RequestProject.FiniteSums
 import RequestProject.GlobalControl.GaussianIntegerSum
-import RequestProject.GlobalControl.Localization
+import RequestProject.GlobalControl.DiagonalControlEnergy
 
 /-!
 # Diagonal Gaussian tail

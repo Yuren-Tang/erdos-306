@@ -1,6 +1,7 @@
 import RequestProject.GlobalControl.LaplaceAboveFloor
 import RequestProject.GlobalControl.LevelSetAssembly
 import RequestProject.GlobalControl.DiagonalGaussianTail
+import RequestProject.GlobalControl.Localization
 
 open Finset BigOperators Classical
 

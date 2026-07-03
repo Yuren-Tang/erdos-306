@@ -1,4 +1,5 @@
-import RequestProject.GlobalControl.Localization
+import RequestProject.Core.LevelSetLaplace
+import RequestProject.GlobalControl.Basic
 
 /-!
 # Global level-set Laplace bound
