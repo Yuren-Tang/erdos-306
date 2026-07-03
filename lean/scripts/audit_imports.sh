@@ -44,7 +44,7 @@ for file in "${files[@]}"; do
   trap 'rm -rf "$tmpdir"' EXIT
 
   cp "$file" "$tmp"
-  printf '\n#redundant_imports\n' >> "$tmp"
+  printf '\n#redundant_imports\n#min_imports\n' >> "$tmp"
   echo "Auditing imports: $file"
   if ! lake env lean "$tmp" >"$log" 2>&1; then
     cat "$log"
@@ -52,6 +52,9 @@ for file in "${files[@]}"; do
   elif grep -Eiq 'Found the following transitively redundant imports|unneeded import|missing imports' "$log"; then
     cat "$log"
     status=1
+  else
+    echo "Minimal import suggestion:"
+    grep -E '^(public )?import ' "$log" || true
   fi
 
   rm -rf "$tmpdir"

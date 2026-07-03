@@ -1,4 +1,5 @@
 import RequestProject.GlobalControl.BoundaryFloorGrowth
+import RequestProject.GlobalControl.LocalizationData
 
 /-!
 # Control-floor growth

@@ -1,4 +1,5 @@
-import RequestProject.GlobalControl.Localization
+import RequestProject.Core.Asymptotics
+import RequestProject.GlobalControl.Encoding.BlockData
 
 /-!
 # Boundary-floor growth
