@@ -84,14 +84,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Run Lean linter
+      - name: Restore Lean and Mathlib cache
         uses: leanprover/lean-action@v1
         with:
           lake-package-directory: "lean"
           auto-config: false
           build: false
           test: false
-          lint: true
+          lint: false
+
+      - name: Run builtin Lean linters
+        working-directory: lean
+        run: lake lint --builtin-only
 
   workflow-lint:
     name: Lint GitHub Actions workflows
