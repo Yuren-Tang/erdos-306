@@ -1,7 +1,7 @@
 import Mathlib.Analysis.MeanInequalitiesPow
 import RequestProject.Core.FiniteInterval
 import RequestProject.LocalEnergy.CrossLabelEnergy
-import RequestProject.LocalEnergy.DominantLabel.Basic
+import RequestProject.LocalEnergy.DominantLabel.Definition
 
 /-!
 # Energy forced by deviations from a dominant label
