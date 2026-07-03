@@ -1,4 +1,4 @@
-import RequestProject.GlobalControl.LevelSetAdmissibility
+import RequestProject.GlobalControl.LabelAdmissibility
 import RequestProject.GlobalControl.LabelAssignmentProduct
 
 /-!
