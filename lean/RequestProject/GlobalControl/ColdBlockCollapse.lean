@@ -1,4 +1,5 @@
 import RequestProject.GlobalControl.LocalizationData
+import RequestProject.GlobalControl.BoundaryPenalty
 
 /-!
 # Cold-block collapse

@@ -12,20 +12,6 @@ noncomputable section
 
 namespace GlobalControl
 
-/-! ## CRT centered-rep equals the label when the label is small -/
-
-/-
-If `ap ≡ m (mod p)`,
-`aq ≡ m (mod q)`, and `2·|m| < p·q`, then the centered CRT representative
-`crtRepr p q ap aq` equals `m`.
--/
-private lemma crtRepr_eq_label_of_small (p q : ℕ) (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
-    (m : ℤ) (ap : ZMod p) (aq : ZMod q)
-    (hap : ap = (m : ZMod p)) (haq : aq = (m : ZMod q))
-    (hsmall : 2 * |m| < (p : ℤ) * (q : ℤ)) :
-    crtRepr p q ap aq = m := by
-  grind +suggestions
-
 /-! ## Control-pair size facts -/
 
 /-
@@ -77,16 +63,15 @@ lemma diagonal_Qctrl (BS : BlockSystem) (a : GlobalAssignment BS) (m : ℤ)
   rw [Qctrl, sigmaCtrl, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => by positivity),
     Finset.mul_sum]
   refine Finset.sum_congr rfl fun pq hpq => ?_
-  rw [Hglob, crtRepr_eq_label_of_small pq.1 pq.2
+  rw [Hglob, LocalEnergy.crtRepr_eq_of_eq_intCast pq.1 pq.2
     (blockSupport_prime BS (ctrlPairs_mem_blockSupport BS hpq).1)
     (blockSupport_prime BS (ctrlPairs_mem_blockSupport BS hpq).2)
-    (ctrlPairs_ne BS hpq) m]
+    (ctrlPairs_ne BS hpq) m (hsmall pq hpq)]
   · ring
   · exact (if_pos (ctrlPairs_mem_blockSupport BS hpq).1).trans
       (hdiag ⟨pq.1, (ctrlPairs_mem_blockSupport BS hpq).1⟩)
   · simpa only [toPlain, dif_pos (ctrlPairs_mem_blockSupport BS hpq).2] using
       hdiag ⟨pq.2, (ctrlPairs_mem_blockSupport BS hpq).2⟩
-  · exact hsmall pq hpq
 
 end GlobalControl
 

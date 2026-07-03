@@ -1,4 +1,4 @@
-import RequestProject.GlobalControl.BoundaryPenalty
+import RequestProject.GlobalControl.EnergyBudget
 import RequestProject.GlobalControl.MainArc
 
 /-!
@@ -53,4 +53,3 @@ lemma Xen_le_Qctrl (BS : BlockSystem) (a : GlobalAssignment BS) (k : ℕ)
 end GlobalControl
 
 end
-

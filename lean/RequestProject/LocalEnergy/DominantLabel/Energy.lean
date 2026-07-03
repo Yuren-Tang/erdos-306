@@ -18,30 +18,6 @@ namespace LocalEnergy
 open scoped Classical
 
 /-
-**In-class CRT identity** (`29 §3` (A2)).  If `ap = m (mod p)` and `aq = m (mod q)`
-    for an integer `m` with `2|m| < pq`, then the centered CRT representative equals `m`.
--/
-private lemma crtRepr_eq_label (p q : ℕ) (hp : Nat.Prime p) (hq : Nat.Prime q) (hpq : p ≠ q)
-    (m : ℤ) (hm : 2 * |m| < (p:ℤ) * q)
-    (ap : ZMod p) (aq : ZMod q) (hap : ap = (m : ZMod p)) (haq : aq = (m : ZMod q)) :
-    crtRepr p q ap aq = m := by
-  obtain ⟨k, hk⟩ : ∃ k : ℤ, crtRepr p q ap aq - m = k * (p * q) := by
-    have h_crt : (crtRepr p q ap aq : ℤ) ≡ m [ZMOD p] ∧ (crtRepr p q ap aq : ℤ) ≡ m [ZMOD q] := by
-      have h_crt : (crtRepr p q ap aq : ZMod p) = ap ∧ (crtRepr p q ap aq : ZMod q) = aq := by
-        exact ⟨ by simpa using crtRepr_congr_left p q ap aq ( (Nat.coprime_primes hp hq).mpr hpq ), by simpa using crtRepr_congr_right p q ap aq ( (Nat.coprime_primes hp hq).mpr hpq ) ⟩;
-      simp_all +decide [ ← ZMod.intCast_eq_intCast_iff ];
-    have h_crt : (p * q : ℤ) ∣ (crtRepr p q ap aq - m) := by
-      convert Int.coe_lcm_dvd ( Int.modEq_iff_dvd.mp h_crt.1.symm ) ( Int.modEq_iff_dvd.mp h_crt.2.symm ) using 1 ; norm_cast ; rw [ Nat.Coprime.lcm_eq_mul <| hp.coprime_iff_not_dvd.mpr fun h => hpq <| Nat.prime_dvd_prime_iff_eq hp hq |>.1 h ];
-    exact dvd_iff_exists_eq_mul_left.mp h_crt;
-  -- By `ZMod.natAbs_valMinAbs_le`, |crtRepr| ≤ pq/2. Combine with 2|m| < pq.
-  have h_abs_crtRepr : |crtRepr p q ap aq| ≤ (p * q) / 2 := by
-    apply crtRepr_abs_le;
-    · simpa [ hpq ] using Nat.coprime_primes hp hq;
-    · exact hp.pos;
-    · exact hq.pos;
-  rcases lt_trichotomy k 0 with hk' | rfl | hk' <;> nlinarith [ Int.mul_ediv_add_emod ( p * q ) 2, Int.emod_nonneg ( p * q ) two_ne_zero, Int.emod_lt_of_pos ( p * q ) two_pos, abs_le.mp h_abs_crtRepr, abs_le.mp ( show |m| ≤ |m| by rfl ) ]
-
-/-
 **(A3a) Per-exception energy from a close-count bound.**  If at most half of
     the class `C` is `δ`-close to the exception vertex `q` (i.e. `|H_{pq}| ≤ δ·pq`),
     then the cross energy `∑_{p∈C}(H_{pq}/pq)²` is `≥ (|C|/2)·δ²`.  (Mirrors the
@@ -72,7 +48,8 @@ private lemma exception_energy_lower_bound_of_close_count
 /-
 **(A2) Label range.**  For an `m`-dominant assignment of energy `≤ R`, the
     label satisfies `|m| ≤ (5/(1-ρ))·√R/σ_P`.  In-class pairs have `H_{pq}=m`
-    (`crtRepr_eq_label`), so `R ≥ Q_P ≥ m²·S` with `S = ∑_{in-class}1/(pq)²`, and the
+    (`crtRepr_eq_of_eq_intCast`), so `R ≥ Q_P ≥ m²·S` with
+    `S = ∑_{in-class}1/(pq)²`, and the
     restricted-σ comparison `S ≥ ((1-ρ)²/25)σ_P²`.
 -/
 set_option maxHeartbeats 1600000 in
@@ -95,7 +72,7 @@ lemma dominant_label_bound (X : ℕ) (hX : 16 ≤ X)
     have hR_ge_m2S : ∀ pq ∈ (orderedPrimePairsA P).filter (fun pq => pq.1 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ))) ∧ pq.2 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ)))), ((crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2) : ℝ) / ((pq.1.1 : ℝ) * (pq.2.1 : ℝ))) ^ 2 = (m : ℝ) ^ 2 * (1 : ℝ) / ((pq.1.1 : ℝ) * (pq.2.1 : ℝ)) ^ 2 := by
       intros pq hpq
       have h_crt : crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2) = m := by
-        apply crtRepr_eq_label;
+        apply crtRepr_eq_of_eq_intCast;
         all_goals norm_num [ orderedPrimePairsA ] at hpq ⊢;
         any_goals tauto;
         · exact hP _ pq.1.2 |>.1;
@@ -350,4 +327,3 @@ lemma dominant_exception_count_bound (X : ℕ) (hX : 16 ≤ X) (P : Finset ℕ) 
     _ = 2^15*R*(X:ℝ)^2/((1-ρ)*(P.card:ℝ)^3) := by rw [div_div_eq_mul_div]; ring_nf
 
 end LocalEnergy
-
