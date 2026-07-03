@@ -3,7 +3,7 @@ import RequestProject.Core.FiniteInterval
 import RequestProject.Core.LevelSetLaplace
 import RequestProject.LocalEnergy.CRTModel
 import RequestProject.LocalEnergy.DominantLabel
-import RequestProject.LocalEnergy.FingerprintCounting
+import RequestProject.LocalEnergy.FingerprintLevelSet
 
 /-!
 # Single-block level-set and partition bounds

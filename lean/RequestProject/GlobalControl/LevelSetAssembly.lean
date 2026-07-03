@@ -19,10 +19,12 @@ namespace GlobalControl
 The four-fold fiber sum is bounded
     by the initial label window times the shell bound times the two Peierls
     charge sums, all kept in unsimplified `exp` form for the final algebra.
-    Combines `hrhs_inner`, `fiber_card_exp_bound`, `admLabels_card`,
-    `label_product_le` (with `hcharge_le`), and `chargeH_le`/`chargeB_le`.
+    Combines `fixed_boundary_shell_label_sum_bound`,
+    `fiber_card_exp_bound`, `admLabels_card`, `label_product_le` (with
+    `segment_label_charge_bound`), and `chargeH_le`/`chargeB_le`.
 -/
-lemma hrhs_charge_bound (eps c2 e0 : ℝ) (heps : 0 < eps) (heps1 : eps < 1)
+lemma encoded_fiber_sum_charge_bound
+    (eps c2 e0 : ℝ) (heps : 0 < eps) (heps1 : eps < 1)
     (hc2 : 0 < c2) (he0 : 0 < e0) (hdomB : ColdDominance c2) :
     ∃ k0min : ℕ, ∀ (BS : BlockSystem), k0min ≤ BS.k0 → ∀ R : ℝ, 0 ≤ R →
       (∑ H ∈ admH BS c2 R, ∑ B ∈ admB BS e0 R, ∑ v ∈ admShells BS c2 R H,
@@ -36,7 +38,7 @@ lemma hrhs_charge_bound (eps c2 e0 : ℝ) (heps : 0 < eps) (heps1 : eps < 1)
   obtain ⟨Xf, hXf0, hfib⟩ := fiber_card_exp_bound eps heps heps1 c2 hc2 hdomB;
   obtain ⟨kf, hkf⟩ : ∃ kf : ℕ, Xf ≤ 2 ^ kf := by
     exact pow_unbounded_of_one_lt Xf one_lt_two |> fun ⟨ kf, hkf ⟩ => ⟨ kf, le_of_lt hkf ⟩
-  obtain ⟨kh, hchg⟩ := hcharge_le eps c2 e0 heps hc2 he0
+  obtain ⟨kh, hchg⟩ := segment_label_charge_bound eps c2 e0 heps hc2 he0
   obtain ⟨kb, hchB⟩ := chargeB_le eps e0 heps he0
   obtain ⟨kPnn, hPnn⟩ := Pifloor_nonneg e0 he0
   use max kf (max kh (max kb kPnn));
@@ -45,7 +47,8 @@ lemma hrhs_charge_bound (eps c2 e0 : ℝ) (heps : 0 < eps) (heps1 : eps < 1)
   set SB := Real.exp ((2 * eps + eps) * R) * Real.exp ((numBlocks BS : ℝ) * (2 * eps + Real.log (1 / (1 - Real.exp (-eps)))) );
   refine' le_trans ( Finset.sum_le_sum fun H hH => Finset.sum_le_sum fun B hB => _ ) _;
   use fun H B => C * SB * (∏ j ∈ H, Real.exp (eps * Rw c2 j)) * (∏ j ∈ B, Real.exp (eps * Pifloor BS e0 j));
-  · refine' le_trans ( hrhs_inner BS c2 R eps H B heps hR0 _ ) _;
+  · refine' le_trans
+      (fixed_boundary_shell_label_sum_bound BS c2 R eps H B heps hR0 _) _;
     · intro v hv ℓ hℓ;
       apply hfib;
       · exact le_trans hkf ( pow_le_pow_right₀ ( by norm_num ) ( le_trans ( le_max_left _ _ ) hBS ) );
@@ -69,7 +72,8 @@ The uniform cold-fiber bound leaves only the admissible initial-label window.
 Its cardinality contributes `1 + √R / sigmaCtrl BS`; the shell count and the
 hot and boundary charges supply the remaining exponential factors.
 -/
-lemma hrhs_final (eps : ℝ) (heps : 0 < eps) (heps1 : eps < 1)
+lemma global_encoded_fiber_sum_bound
+    (eps : ℝ) (heps : 0 < eps) (heps1 : eps < 1)
     (c2 e0 X0 : ℝ) (hc2 : 0 < c2) (he0 : 0 < e0) (_hX0 : 0 < X0)
     (_hdom : ∀ (BS : BlockSystem) (a : GlobalAssignment BS) (k : ℕ),
         BS.k0 ≤ k → k ≤ BS.K → X0 ≤ (2:ℝ) ^ k → ¬ isHot BS c2 a k →
@@ -82,7 +86,8 @@ lemma hrhs_final (eps : ℝ) (heps : 0 < eps) (heps1 : eps < 1)
           ∑ ℓ ∈ admLabels BS c2 R H B, (fiber BS H B v ℓ).card : ℝ) ≤
           Real.exp (A * (numBlocks BS : ℝ)) *
             Real.exp (8 * eps * R) * (1 + Real.sqrt R / sigmaCtrl BS) := by
-  obtain ⟨kc, hc⟩ := hrhs_charge_bound eps c2 e0 heps heps1 hc2 he0 hdomB
+  obtain ⟨kc, hc⟩ :=
+    encoded_fiber_sum_charge_bound eps c2 e0 heps heps1 hc2 he0 hdomB
   obtain ⟨csig, hcsig0, hsig⟩ := sigmaCtrl_le_sigmaP_k0
   set A0 := 2 * eps + Real.log (1 / (1 - Real.exp (-eps))) + 2
   set A := A0 + |Real.log (3 + 14 * csig)| + 2
@@ -146,9 +151,11 @@ theorem global_levelset (eps : ℝ) (heps : 0 < eps) (heps1 : eps < 1) :
         (Set.ncard {a : GlobalAssignment BS | Qctrl BS a ≤ R} : ℝ) ≤
           Real.exp (A * (numBlocks BS : ℝ)) *
             Real.exp (8 * eps * R) * (1 + Real.sqrt R / sigmaCtrl BS) := by
-  obtain ⟨c2, e0, X0, hc2, he0, hX0, hdom, hpen, hdomB⟩ := cold_master
-  obtain ⟨k0L, hadmL⟩ := hadmL_final c2 X0 hc2 hdom
-  obtain ⟨k0R, A, hA, hrhs⟩ := hrhs_final eps heps heps1 c2 e0 X0 hc2 he0 hX0 hdom hdomB
+  obtain ⟨c2, e0, X0, hc2, he0, hX0, hdom, hpen, hdomB⟩ :=
+    exists_cold_control_parameters
+  obtain ⟨k0L, hadmL⟩ := cold_labels_admissible c2 X0 hc2 hdom
+  obtain ⟨k0R, A, hA, hrhs⟩ :=
+    global_encoded_fiber_sum_bound eps heps heps1 c2 e0 X0 hc2 he0 hX0 hdom hdomB
   obtain ⟨k0X, hX0pow⟩ : ∃ n : ℕ, X0 ≤ (2:ℝ) ^ n := by
     obtain ⟨n, hn⟩ := pow_unbounded_of_one_lt X0 (by norm_num : (1:ℝ) < 2)
     exact ⟨n, le_of_lt hn⟩

@@ -86,7 +86,7 @@ lemma two_prime_label_eq (X : ℕ) (P : Finset ℕ)
     facts already expose, for the same `c2`, the residue agreement that yields
     dominance for `X0` large).
 -/
-private lemma cold_master_struct :
+private lemma exists_cold_control_parameters_aux :
     ∃ (c2 e0 X0 : ℝ), 0 < c2 ∧ 0 < e0 ∧ 0 < X0 ∧
       (∀ (BS : BlockSystem) (a : GlobalAssignment BS) (k : ℕ),
         BS.k0 ≤ k → k ≤ BS.K → X0 ≤ (2:ℝ) ^ k → ¬ isHot BS c2 a k →
@@ -128,11 +128,11 @@ private lemma cold_master_struct :
 
 /-
 **Master cold constants** (with arbitrary-block-assignment cold dominance).
-    Strengthens `cold_master_struct` by shrinking `c2` to also lie below
+    Strengthens `exists_cold_control_parameters_aux` by shrinking `c2` to also lie below
     Theorem-B's intrinsic constant, exposing `ColdDominance c2` in addition to
     the block dominance for restrictions and the boundary penalty floor.
 -/
-lemma cold_master :
+lemma exists_cold_control_parameters :
     ∃ (c2 e0 X0 : ℝ), 0 < c2 ∧ 0 < e0 ∧ 0 < X0 ∧
       (∀ (BS : BlockSystem) (a : GlobalAssignment BS) (k : ℕ),
         BS.k0 ≤ k → k ≤ BS.K → X0 ≤ (2:ℝ) ^ k → ¬ isHot BS c2 a k →
@@ -141,7 +141,8 @@ lemma cold_master :
         BS.k0 ≤ k → k < BS.K → X0 ≤ (2:ℝ) ^ k → k ∈ boundarySet BS c2 a →
         Pifloor BS e0 k ≤ Xen BS a k) ∧
       ColdDominance c2 := by
-  obtain ⟨c2P, e0, X0P, hc2P, he0, hX0P, hdomR, hpen⟩ := GlobalControl.cold_master_struct
+  obtain ⟨c2P, e0, X0P, hc2P, he0, hX0P, hdomR, hpen⟩ :=
+    GlobalControl.exists_cold_control_parameters_aux
   obtain ⟨c2B, X0B, hc2B, hX0B, HB⟩ := LocalEnergy.nondominant_energy_lower_bound (1/4) (by norm_num) (by norm_num);
   refine' ⟨ Min.min c2P c2B, e0, Max.max X0P ( Max.max X0B 1 ), _, _, _, _, _, _ ⟩ <;> norm_num [ hc2P, he0, hX0P, hc2B, hX0B ];
   · intro BS a k hk1 hk2 hX0P hX0B h1 hnh;
@@ -166,10 +167,11 @@ lemma cold_master :
 /-
 **Label admissibility (`hadmL`).**  For `k0` past a uniform threshold, the
     zero-extended cold labels of any sub-`R` assignment lie in `admLabels`.
-    This routes `coldLabel_mem_labelFin` (needing `HasDominantLabel` from `cold_master`)
+    This routes `coldLabel_mem_labelFin` (using the dominant-label conclusion
+    of `exists_cold_control_parameters`)
     through every segment start.
 -/
-lemma hadmL_final (c2 X0 : ℝ) (hc2 : 0 < c2)
+lemma cold_labels_admissible (c2 X0 : ℝ) (hc2 : 0 < c2)
     (hdom : ∀ (BS : BlockSystem) (a : GlobalAssignment BS) (k : ℕ),
         BS.k0 ≤ k → k ≤ BS.K → X0 ≤ (2:ℝ) ^ k → ¬ isHot BS c2 a k →
         LocalEnergy.HasDominantLabel (2 ^ k) (BS.P k) (restrict BS a k) (1/4)) :

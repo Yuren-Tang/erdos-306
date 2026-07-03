@@ -250,11 +250,12 @@ lemma labelFin_k0_card_le (BS : BlockSystem) (c2 R : ℝ) (_hR0 : 0 ≤ R) :
   ring!
 
 /-
-The per-segment-start label charge (`hcharge` for `label_product_le`):
+The per-segment-start label charge used by `label_product_le`:
     every non-initial window `|labelFin s|` is bounded by the predecessor's
     Peierls charge, via `labelBound_charge_hot` / `labelBound_charge_boundary`.
 -/
-lemma hcharge_le (eps c2 e0 : ℝ) (heps : 0 < eps) (hc2 : 0 < c2) (he0 : 0 < e0) :
+lemma segment_label_charge_bound
+    (eps c2 e0 : ℝ) (heps : 0 < eps) (hc2 : 0 < c2) (he0 : 0 < e0) :
     ∃ k0min : ℕ, ∀ (BS : BlockSystem), k0min ≤ BS.k0 → ∀ (R : ℝ) (H B : Finset ℕ),
       ∀ s ∈ RequestProject.segmentStarts BS.k0 BS.K H B, s ≠ BS.k0 →
         ((labelFin BS c2 R s).card : ℝ) ≤

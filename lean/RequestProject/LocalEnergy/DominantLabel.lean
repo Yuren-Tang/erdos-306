@@ -1,8 +1,7 @@
-import RequestProject.LocalEnergy.CrossLabelEnergy
-import RequestProject.LocalEnergy.DominantLabel.Basic
-import RequestProject.LocalEnergy.DominantLabel.Counting
-import RequestProject.LocalEnergy.DominantLabel.Forcing
-import RequestProject.LocalEnergy.DominantLabel.ColdBounds
+import RequestProject.LocalEnergy.DominantLabel.Encoding
+import RequestProject.LocalEnergy.DominantLabel.Threshold
+import RequestProject.LocalEnergy.DominantLabel.FixedLabel
+import RequestProject.LocalEnergy.DominantLabel.ColdRange
 
 /-!
 # Dominant labels for local CRT energy

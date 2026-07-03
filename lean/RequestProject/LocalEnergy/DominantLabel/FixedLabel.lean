@@ -1,4 +1,4 @@
-import RequestProject.LocalEnergy.DominantLabel.Counting
+import RequestProject.LocalEnergy.DominantLabel.Encoding
 
 /-!
 # Fixed dominant labels
@@ -110,4 +110,3 @@ lemma fixed_label_level_set_bound (eps ρ : ℝ) (hε : 0 < eps) (hρ : 0 < ρ) 
   · linarith
 
 end LocalEnergy
-

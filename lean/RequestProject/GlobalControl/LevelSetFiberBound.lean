@@ -111,7 +111,8 @@ lemma shell_sum_le (BS : BlockSystem) (c2 R eps : ℝ)
 
 /-- Inner `(v, ℓ)` double sum: given the per-fiber product bound, the sum over
     admissible shells and labels is `≤ |admLabels|·shellBound`. -/
-lemma hrhs_inner (BS : BlockSystem) (c2 R eps : ℝ) (H B : Finset ℕ)
+lemma fixed_boundary_shell_label_sum_bound
+    (BS : BlockSystem) (c2 R eps : ℝ) (H B : Finset ℕ)
     (heps : 0 < eps) (hR0 : 0 ≤ R)
     (hbound : ∀ v ∈ admShells BS c2 R H, ∀ ℓ ∈ admLabels BS c2 R H B,
         ((fiber BS H B v ℓ).card : ℝ) ≤

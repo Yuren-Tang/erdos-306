@@ -1,5 +1,5 @@
-import RequestProject.LocalEnergy.DominantLabel.Counting
-import RequestProject.LocalEnergy.DominantLabel.Forcing
+import RequestProject.LocalEnergy.DominantLabel.Encoding
+import RequestProject.LocalEnergy.DominantLabel.Threshold
 
 /-!
 # Dominant labels in the cold energy range
@@ -175,4 +175,3 @@ lemma cold_label_bound (ρ : ℝ) (hρ : 0 < ρ) (hρ4 : ρ ≤ 1 / 4) (c2 : ℝ
   simpa using cold_label_bound_with_divisor ρ hρ hρ4 16 (by norm_num) c2 hc2
 
 end LocalEnergy
-
