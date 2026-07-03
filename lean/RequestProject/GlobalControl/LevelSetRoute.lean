@@ -1,5 +1,4 @@
 import RequestProject.GlobalControl.LevelSetAdmissibility
-import RequestProject.GlobalControl.LevelSetFiberBound
 
 /-!
 # Global level-set route

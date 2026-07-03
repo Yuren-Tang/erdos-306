@@ -1,6 +1,6 @@
 import RequestProject.GlobalControl.BoundaryCharge
 import RequestProject.GlobalControl.LabelAssignmentProduct
-import RequestProject.GlobalControl.LevelSetFiberBound
+import RequestProject.GlobalControl.LevelSetParameters
 import RequestProject.GlobalControl.SubsetCharge
 
 /-!

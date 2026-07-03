@@ -1,6 +1,6 @@
 import RequestProject.GlobalControl.ColdLabelReduction
 import RequestProject.GlobalControl.Encoding.FixedLabelCount
-import RequestProject.GlobalControl.LevelSetFiberBound
+import RequestProject.GlobalControl.FiberProductBound
 
 /-!
 # Uniform cold-fiber counting

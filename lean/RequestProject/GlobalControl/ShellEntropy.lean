@@ -3,10 +3,10 @@ import RequestProject.GlobalControl.LevelSetParameters
 import RequestProject.GlobalPeierlsBookkeeping
 
 /-!
-# Level-set fiber bounds
+# Entropy of admissible energy shells
 
-Product bounds for individual fibers and the shell partition-function
-estimate.
+The shell partition function is controlled by weighted composition entropy;
+summing a uniform fiber bound over labels contributes only their cardinality.
 -/
 
 open Finset BigOperators Classical
@@ -14,41 +14,6 @@ open Finset BigOperators Classical
 noncomputable section
 
 namespace GlobalControl
-
-/-! ### RHS ε-budget assembly (note 40 §5) -/
-
-/-- Per-fiber product bound: given the per-block count bound (from
-    `hot_block_count`/`fixed_label_block_count`), a fiber's cardinality is at most the product of
-    `exp(2ε(v k+1))` over the blocks. -/
-lemma fiber_prod_bound (BS : BlockSystem) (H B : Finset ℕ) (v : ℕ → ℕ) (ℓ : ℕ → ℤ)
-    (eps : ℝ)
-    (hcnt : ∀ k ∈ Finset.Icc BS.k0 BS.K,
-        ((Finset.univ.filter (fun b : BlockAssignment (BS.P k) =>
-            QP (BS.P k) b ≤ (v k : ℝ) + 1 ∧
-            (k ∉ H → (1 - (1/4 : ℝ)) * ((BS.P k).card : ℝ) ≤
-              (((BS.P k).attach.filter
-                (fun p => b p = ((ℓ (RequestProject.segmentStart BS.k0 H B k) : ℤ) : ZMod (p : ℕ)))).card : ℝ)))).card : ℝ)
-          ≤ Real.exp (2 * eps * ((v k : ℝ) + 1))) :
-    ((fiber BS H B v ℓ).card : ℝ) ≤
-      ∏ k ∈ Finset.Icc BS.k0 BS.K, Real.exp (2 * eps * ((v k : ℝ) + 1)) := by
-  have h1 := fiber_card_le BS H B v ℓ
-  calc ((fiber BS H B v ℓ).card : ℝ)
-      ≤ ((∏ k ∈ Finset.Icc BS.k0 BS.K,
-          (Finset.univ.filter (fun b : BlockAssignment (BS.P k) =>
-            QP (BS.P k) b ≤ (v k : ℝ) + 1 ∧
-            (k ∉ H → (1 - (1/4 : ℝ)) * ((BS.P k).card : ℝ) ≤
-              (((BS.P k).attach.filter
-                (fun p => b p = ((ℓ (RequestProject.segmentStart BS.k0 H B k) : ℤ) : ZMod (p : ℕ)))).card : ℝ)))).card : ℕ) : ℝ) := by
-        exact_mod_cast h1
-    _ = ∏ k ∈ Finset.Icc BS.k0 BS.K,
-          ((Finset.univ.filter (fun b : BlockAssignment (BS.P k) =>
-            QP (BS.P k) b ≤ (v k : ℝ) + 1 ∧
-            (k ∉ H → (1 - (1/4 : ℝ)) * ((BS.P k).card : ℝ) ≤
-              (((BS.P k).attach.filter
-                (fun p => b p = ((ℓ (RequestProject.segmentStart BS.k0 H B k) : ℤ) : ZMod (p : ℕ)))).card : ℝ)))).card : ℝ) := by
-        push_cast; rfl
-    _ ≤ ∏ k ∈ Finset.Icc BS.k0 BS.K, Real.exp (2 * eps * ((v k : ℝ) + 1)) :=
-        Finset.prod_le_prod (fun k _ => by positivity) hcnt
 
 /-- Shell-sum bound for `admShells`: the sum over admissible shells of the
     per-block `exp(2ε(v k+1))` product is controlled by the verified
@@ -141,7 +106,6 @@ lemma fixed_boundary_shell_label_sum_bound
             Real.exp ((numBlocks BS : ℝ) *
               (2 * eps + Real.log (1 / (1 - Real.exp (-eps)))))) :=
         mul_le_mul_of_nonneg_left (shell_sum_le BS c2 R eps H heps hR0) (by positivity)
-
 end GlobalControl
 
 end

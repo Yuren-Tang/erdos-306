@@ -1,6 +1,7 @@
 import RequestProject.GlobalControl.LevelSetCharge
 import RequestProject.GlobalControl.LevelSetColdFiber
 import RequestProject.GlobalControl.LevelSetRoute
+import RequestProject.GlobalControl.ShellEntropy
 
 /-!
 # Global level-set theorem
