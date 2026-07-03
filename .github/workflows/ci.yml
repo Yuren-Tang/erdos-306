@@ -95,7 +95,14 @@ jobs:
 
       - name: Run builtin Lean linters
         working-directory: lean
-        run: lake lint --builtin-only
+        shell: bash
+        run: |
+          mapfile -t modules < <(
+            find RequestProject -name '*.lean' -type f -print |
+              sort |
+              sed -e 's/\.lean$//' -e 's|/|.|g'
+          )
+          lake lint --builtin-only "${modules[@]}"
 
   workflow-lint:
     name: Lint GitHub Actions workflows
