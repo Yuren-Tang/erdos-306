@@ -1,5 +1,5 @@
 import RequestProject.GlobalControl.BoundaryPenalty
-import RequestProject.GlobalControl.LevelSetLabelCharge
+import RequestProject.GlobalControl.LabelWindowCharge
 import RequestProject.GlobalControl.ScaleComparison
 
 /-!
@@ -190,4 +190,3 @@ lemma Pifloor_nonneg (e0 : ℝ) (_he0 : 0 < e0) :
 end GlobalControl
 
 end
-

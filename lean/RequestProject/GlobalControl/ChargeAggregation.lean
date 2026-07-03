@@ -1,6 +1,7 @@
 import RequestProject.GlobalControl.BoundaryCharge
+import RequestProject.GlobalControl.LabelAssignmentProduct
 import RequestProject.GlobalControl.LevelSetFiberBound
-import RequestProject.GlobalControl.LevelSetLabelCharge
+import RequestProject.GlobalControl.SubsetCharge
 
 /-!
 # Aggregation of level-set charges

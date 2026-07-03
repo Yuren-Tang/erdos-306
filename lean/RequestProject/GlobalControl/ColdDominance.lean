@@ -1,5 +1,5 @@
 import RequestProject.GlobalControl.LevelSetAdmissibility
-import RequestProject.GlobalControl.LevelSetLabelCharge
+import RequestProject.GlobalControl.LabelAssignmentProduct
 
 /-!
 # Cold dominance and admissible labels
