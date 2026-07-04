@@ -1,7 +1,7 @@
 import Mathlib.Topology.Algebra.InfiniteSum.Real
 
 /-!
-# Finite subtype sums
+# Finite sums over subtypes and covers
 
 Elementary bridges between finite sums and `tsum`s over subtypes, together
 with subadditivity under a finite disjunctive cover.

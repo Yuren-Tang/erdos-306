@@ -1,6 +1,7 @@
 import RequestProject.R2AssemblyFields
 import RequestProject.R2MinorCover
 import RequestProject.R2NumericFields
+import RequestProject.GlobalControl.ControlVariancePositivity
 
 open Finset BigOperators GlobalControl
 
@@ -290,7 +291,7 @@ theorem exists_arcConstruction_of_componentData_light
   exact exists_arcConstruction_of_componentData hb D W N Bblock Bextra
     hNnonneg hNL hQsemi hRprime hSprime hlt hctrlAvoid hQavoid hgadgetAvoid
     hQne hQdvd hRdvd hSblock hloadUpper hN htw hsmall hminor
-    (sigmaCtrl_pos D.BS hadm)
+    (sigmaCtrl_pos_of_admissible_range D.BS hadm)
     (D.sigma_le_sigmaCtrl_of_light W.theta hextraLight)
     hminorCtrl
 

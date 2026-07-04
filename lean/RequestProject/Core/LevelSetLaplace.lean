@@ -1,12 +1,39 @@
 import Mathlib.Analysis.SpecificLimits.Normed
 import Mathlib.Analysis.SpecialFunctions.Exp
 import Mathlib.Analysis.SpecialFunctions.Sqrt
+import RequestProject.Core.FiniteSums
 
 /-! Converting finite sublevel-set growth into a Laplace-sum bound. -/
 
 open Finset
 
 namespace RequestProject
+
+/-- Exponential tilting bounds the part of a finite Laplace sum above an
+energy floor by the full sum at a smaller exponent. -/
+lemma laplace_sum_above_le {ι : Type*} [Fintype ι] (q : ι → ℝ) (c c' T : ℝ)
+    (hcc' : 0 ≤ c - c') :
+    ∑' i : {i : ι // T ≤ q i}, Real.exp (-c * q i.1) ≤
+      Real.exp (-(c - c') * T) * ∑ i : ι, Real.exp (-c' * q i) := by
+  rw [fintype_subtype_tsum_eq (fun i => T ≤ q i)
+    (fun i => Real.exp (-c * q i))]
+  calc
+    ∑ i ∈ Finset.univ.filter (fun i : ι => T ≤ q i), Real.exp (-c * q i)
+        ≤ ∑ i ∈ Finset.univ.filter (fun i : ι => T ≤ q i),
+            Real.exp (-(c - c') * T) * Real.exp (-c' * q i) := by
+          refine Finset.sum_le_sum fun i hi => ?_
+          rw [← Real.exp_add]
+          apply Real.exp_le_exp.mpr
+          have hTi := (Finset.mem_filter.mp hi).2
+          nlinarith [mul_le_mul_of_nonneg_left hTi hcc']
+    _ = Real.exp (-(c - c') * T) *
+          ∑ i ∈ Finset.univ.filter (fun i : ι => T ≤ q i),
+            Real.exp (-c' * q i) := by rw [Finset.mul_sum]
+    _ ≤ Real.exp (-(c - c') * T) *
+          ∑ i : ι, Real.exp (-c' * q i) := by
+      apply mul_le_mul_of_nonneg_left _ (Real.exp_pos _).le
+      exact Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _)
+        (fun i _ _ => (Real.exp_pos _).le)
 
 /-
 **Partition function from a level-set bound (Laplace / dyadic series).**

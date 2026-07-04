@@ -1,4 +1,5 @@
 import RequestProject.R2TopAssembly
+import RequestProject.GlobalControl.ControlVariancePositivity
 
 /-!
 # R2 construction certificates
@@ -202,7 +203,7 @@ lemma exists_r2_numeric_ledger (b : ℕ) (hb : 3 ≤ b) (hbsf : Squarefree b) :
   set η : ℝ := c3 / (2004 * (b : ℝ)) with hηdef
   have hηpos : 0 < η := by rw [hηdef]; positivity
   obtain ⟨k0minM, Ctail, hCtail, hSB⟩ :=
-    exists_r2_minorSupportBudget_from_multiGadget_lanes (1 : ℝ) one_pos η hηpos
+    exists_r2_minorSupportBudget_from_multiGadget_lanes η hηpos
   obtain ⟨C0, hC0one, hC0bd⟩ := r2_exists_C Ctail (c3 / 501) b hCtail (by positivity) hbpos
   set C : ℝ := max C0 3 with hCdef
   have hCge3 : (3 : ℝ) ≤ C := le_max_right _ _
@@ -452,7 +453,9 @@ lemma r2_main_arc_sigmaE_compare {T : Finset ℕ} {b : ℕ}
   have hadmD : admissibleGlobalRange D.BS := by rw [hBS]; exact F.hadm
   have hsumE : ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2 ≤ 1000001 * (sigmaCtrl D.BS) ^ 2 := M.hsumE
   set σ : ℝ := sigmaCtrl D.BS with hσdef
-  have hσpos : 0 < σ := by rw [hσdef]; exact sigmaCtrl_pos D.BS hadmD
+  have hσpos : 0 < σ := by
+    rw [hσdef]
+    exact sigmaCtrl_pos_of_admissible_range D.BS hadmD
   have hsigmaE2_le : sigmaE2 D.E W.theta ≤ 250001 * σ ^ 2 := by
     have h := sigmaE2_le_quarter_sum_inv_sq D.E W.theta
     have h2 : (1 / 4 : ℝ) * ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2
@@ -526,7 +529,9 @@ lemma r2_main_arc_window_scale_period {T : Finset ℕ} {b : ℕ}
   have hk0big6 : 1000000 ≤ D.BS.k0 := by
     have h1 : 1 ≤ (Nat.ceil C + 1) ^ 4 := Nat.one_le_pow _ _ (by omega)
     nlinarith only [hk0dom, h1]
-  have hσpos : 0 < σ := by rw [hσdef]; exact sigmaCtrl_pos D.BS hadmD
+  have hσpos : 0 < σ := by
+    rw [hσdef]
+    exact sigmaCtrl_pos_of_admissible_range D.BS hadmD
   have hσstrong : (1 : ℝ) / (100 * (D.BS.k0 : ℝ) * (2 : ℝ) ^ D.BS.k0) ≤ σ := by
     rw [hσdef]; exact sigmaCtrl_ge_strong D.BS (by omega)
   have hN2nat : 200 * D.BS.k0 ^ 2 * 2 ^ D.BS.k0 + 2 < 2 ^ (2 * D.BS.k0) := by
@@ -625,7 +630,9 @@ lemma exists_r2_main_arc_window {T : Finset ℕ} {b : ℕ}
   have hSgeD : ∀ s ∈ D.S, 2 ^ (2 * D.BS.k0) ≤ s := by rw [hS, hBS]; exact Cc.hSge
   have hRpos'D : ∀ r ∈ D.R, 2 ≤ r := by rw [hR]; exact Cc.hRpos'
   set σ : ℝ := sigmaCtrl D.BS with hσdef
-  have hσpos : 0 < σ := by rw [hσdef]; exact sigmaCtrl_pos D.BS hadmD
+  have hσpos : 0 < σ := by
+    rw [hσdef]
+    exact sigmaCtrl_pos_of_admissible_range D.BS hadmD
   have hσle1 : σ ≤ 1 := by rw [hσdef]; exact sigmaCtrl_le_one D.BS (by omega)
   set N : ℤ := ⌈C / σ⌉ with hNdef
   have hNlo : C / σ ≤ (N : ℝ) := Int.le_ceil _

@@ -32,7 +32,7 @@ lemma mem_blockMinorPart {Sm Sblock : Finset α} {x : α} :
 lemma mem_extraMinorPart {Sm Sblock Sextra : Finset α} {x : α} :
     x ∈ extraMinorPart Sm Sblock Sextra ↔
       x ∈ Sm ∧ x ∉ Sblock ∧ x ∈ Sextra := by
-  simp [extraMinorPart, and_assoc]
+  simp [extraMinorPart]
 
 lemma blockMinorPart_disjoint_extraMinorPart
     (Sm Sblock Sextra : Finset α) :

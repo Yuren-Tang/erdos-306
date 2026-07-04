@@ -1,4 +1,3 @@
-import RequestProject.FiniteSums
 import RequestProject.GlobalControl.ControlVarianceBounds
 import RequestProject.GlobalControl.ControlFloorGrowth
 import RequestProject.GlobalControl.GlobalLaplaceBound
@@ -74,33 +73,9 @@ theorem laplace_above_control_floor
           Real.exp (-c * Qctrl BS a.1)
         ≤ Real.exp (-(c - cbar) * globalControlFloor BS c2 e0) *
           ∑ a : GlobalAssignment BS, Real.exp (-cbar * Qctrl BS a) := by
-    rw [RequestProject.fintype_subtype_tsum_eq
-      (fun a : GlobalAssignment BS => globalControlFloor BS c2 e0 ≤ Qctrl BS a)
-      (fun a => Real.exp (-c * Qctrl BS a))]
-    calc
-      ∑ a ∈ Finset.univ.filter
-          (fun a : GlobalAssignment BS => globalControlFloor BS c2 e0 ≤ Qctrl BS a),
-          Real.exp (-c * Qctrl BS a)
-          ≤ ∑ a ∈ Finset.univ.filter
-              (fun a : GlobalAssignment BS => globalControlFloor BS c2 e0 ≤ Qctrl BS a),
-              Real.exp (-(c - cbar) * globalControlFloor BS c2 e0) *
-                Real.exp (-cbar * Qctrl BS a) := by
-            refine Finset.sum_le_sum (fun a ha => ?_)
-            have hfloor : globalControlFloor BS c2 e0 ≤ Qctrl BS a :=
-              (Finset.mem_filter.mp ha).2
-            rw [← Real.exp_add]
-            refine Real.exp_le_exp.mpr ?_
-            nlinarith [mul_le_mul_of_nonneg_left hfloor hdpos.le]
-        _ = Real.exp (-(c - cbar) * globalControlFloor BS c2 e0) *
-              ∑ a ∈ Finset.univ.filter
-                (fun a : GlobalAssignment BS => globalControlFloor BS c2 e0 ≤ Qctrl BS a),
-                Real.exp (-cbar * Qctrl BS a) := by
-            rw [Finset.mul_sum]
-        _ ≤ Real.exp (-(c - cbar) * globalControlFloor BS c2 e0) *
-              ∑ a : GlobalAssignment BS, Real.exp (-cbar * Qctrl BS a) := by
-            refine mul_le_mul_of_nonneg_left ?_ (Real.exp_pos _).le
-            exact Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _)
-              (fun a _ _ => (Real.exp_pos _).le)
+    exact RequestProject.laplace_sum_above_le
+      (fun a : GlobalAssignment BS => Qctrl BS a) c cbar
+      (globalControlFloor BS c2 e0) hdpos.le
   have hsum_bound :
       ∑' a : {a : GlobalAssignment BS // globalControlFloor BS c2 e0 ≤ Qctrl BS a},
           Real.exp (-c * Qctrl BS a.1)

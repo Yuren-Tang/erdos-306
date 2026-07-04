@@ -1,4 +1,5 @@
 import RequestProject.R2MinorSupportBudget
+import RequestProject.GlobalControl.ControlVariancePositivity
 
 open Finset BigOperators GlobalControl
 
@@ -63,7 +64,7 @@ lemma r2_minor_ctrl_from_scaled_budgets_admissible
     Bblock + Bextra <
       (0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2)) / sigmaCtrl D.BS :=
   r2_minor_ctrl_from_scaled_budgets D Bblock Bextra Ablock Aextra
-    (sigmaCtrl_pos D.BS hadm) hblock hextra hscaled
+    (sigmaCtrl_pos_of_admissible_range D.BS hadm) hblock hextra hscaled
 
 /-- A convenient form for the G7 block budget plus an extra-minor budget. -/
 lemma r2_minor_ctrl_from_g7_block_and_extra
@@ -103,7 +104,7 @@ lemma r2_minor_ctrl_from_g7_block_and_extra_admissible
     Bblock + Bextra <
       (0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2)) / sigmaCtrl D.BS :=
   r2_minor_ctrl_from_g7_block_and_extra D Bblock Bextra K η Ctail C Aextra
-    (sigmaCtrl_pos D.BS hadm) hblock hextra hscaled
+    (sigmaCtrl_pos_of_admissible_range D.BS hadm) hblock hextra hscaled
 
 /-- **K=501 budget gate (pure scalar, no `D` — avoids `isDefEq` blow-up).**
 With each of the three component budgets below `c3/2004` (the `A1` term exactly,

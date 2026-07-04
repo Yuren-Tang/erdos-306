@@ -1,6 +1,6 @@
-import RequestProject.FiniteSums
+import RequestProject.Core.FiniteSums
 import RequestProject.GlobalControl.ControlVarianceBounds
-import RequestProject.GlobalControl.GaussianIntegerSum
+import RequestProject.Core.GaussianIntegerSum
 import RequestProject.GlobalControl.DiagonalControlEnergy
 import RequestProject.GlobalControl.LocalizationDefinitions
 
@@ -19,7 +19,7 @@ noncomputable section
 
 namespace GlobalControl
 
-/-! ## Sector II — diagonal Gaussian tail -/
+/-! ## Diagonal Gaussian tail -/
 
 
 /-- The diagonal sector is bounded by a Gaussian
@@ -31,7 +31,7 @@ The proof uses label injectivity (a diagonal `a` is determined by its label mod
 every prime), the substitution `Qctrl = m² σ²`, and the elementary Gaussian
 tail split using the verified `gaussian_int_sum_le` (requiring
 `c σ² / 2 ≤ 1`, ensured for `k0` large via `sigmaCtrl_le_geom`). -/
-theorem sectorII_gaussian (c : ℝ) (hc : 0 < c) :
+theorem diagonal_sector_gaussian_bound (c : ℝ) (hc : 0 < c) :
     ∃ (Ctail : ℝ) (k0II : ℕ), 0 < Ctail ∧
       ∀ (BS : BlockSystem), k0II ≤ BS.k0 → 0 < sigmaCtrl BS →
       ∀ (C : ℝ), 1 ≤ C →
@@ -122,11 +122,11 @@ theorem sectorII_gaussian (c : ℝ) (hc : 0 < c) :
     _ ≤ Real.exp (-C ^ 2 * c / 2) *
           ∑' m : ℤ, Real.exp (-(c * σ ^ 2 / 2) * (m : ℝ) ^ 2) := by
         refine mul_le_mul_of_nonneg_left ?_ (Real.exp_pos _).le
-        exact (summable_int_gaussian _ hApos).sum_le_tsum _
+        exact (RequestProject.summable_int_gaussian _ hApos).sum_le_tsum _
           (fun i _ => (Real.exp_pos _).le)
     _ ≤ Real.exp (-C ^ 2 * c / 2) * (1 + 6 / Real.sqrt (c * σ ^ 2 / 2)) := by
         refine mul_le_mul_of_nonneg_left ?_ (Real.exp_pos _).le
-        exact gaussian_int_sum_le _ hApos hAle1
+        exact RequestProject.gaussian_int_sum_le _ hApos hAle1
     _ ≤ (1 + 6 * Real.sqrt 2 / Real.sqrt c) * Real.exp (-C ^ 2 * c / 2) / σ := by
         have hfin : 1 + 6 / Real.sqrt (c * σ ^ 2 / 2) ≤
             (1 + 6 * Real.sqrt 2 / Real.sqrt c) / σ := by
@@ -148,42 +148,6 @@ theorem sectorII_gaussian (c : ℝ) (hc : 0 < c) :
             ≤ Real.exp (-C ^ 2 * c / 2) * ((1 + 6 * Real.sqrt 2 / Real.sqrt c) / σ) :=
               mul_le_mul_of_nonneg_left hfin hexp.le
           _ = (1 + 6 * Real.sqrt 2 / Real.sqrt c) * Real.exp (-C ^ 2 * c / 2) / σ := by ring
-
-/-! ## sigmaCtrl positivity -/
-
-private lemma two_le_two_pow {k : ℕ} (hk : 1 ≤ k) : (2 : ℝ) ≤ (2 : ℝ) ^ k := by
-  calc (2 : ℝ) = (2 : ℝ) ^ 1 := (pow_one 2).symm
-    _ ≤ (2 : ℝ) ^ k := pow_le_pow_right₀ (by norm_num) hk
-
-/-- A block whose density bound applies is nonempty (the density lower bound is
-strictly positive, so the cardinality is positive). -/
-private lemma block_nonempty (BS : BlockSystem) {k : ℕ} (hk1 : BS.k0 ≤ k)
-    (hk2 : k ≤ BS.K) : (BS.P k).Nonempty := by
-  rw [← Finset.card_pos]
-  have hk : 1 ≤ k := le_trans BS.hk0 hk1
-  have hlog : 0 < Real.log ((2 : ℝ) ^ k) :=
-    Real.log_pos (lt_of_lt_of_le (by norm_num) (two_le_two_pow hk))
-  have hpos : (0 : ℝ) < (2 : ℝ) ^ k / (2 * Real.log ((2 : ℝ) ^ k)) := by positivity
-  have hd := BS.hdensity k hk1 hk2
-  have : (0 : ℝ) < ((BS.P k).card : ℝ) := lt_of_lt_of_le hpos hd
-  exact_mod_cast this
-
-/-- `sigmaCtrl BS > 0`: there is at least one (bipartite) control pair, whose
-reciprocal-square weight is positive. -/
-lemma sigmaCtrl_pos (BS : BlockSystem) (hadm : admissibleGlobalRange BS) :
-    0 < sigmaCtrl BS := by
-  have hk0 : 1 ≤ BS.k0 := BS.hk0
-  have hKge : BS.k0 + 1 ≤ BS.K := le_trans (by omega) hadm.1
-  obtain ⟨p, hp⟩ := block_nonempty BS le_rfl (by omega)
-  obtain ⟨q, hq⟩ := block_nonempty BS (by omega) hKge
-  have hpair : (p, q) ∈ ctrlPairs BS := by
-    rw [ctrlPairs]
-    refine Finset.mem_union_right _ ?_
-    rw [Finset.mem_biUnion]
-    refine ⟨BS.k0, Finset.mem_Ico.mpr ⟨le_rfl, by omega⟩, ?_⟩
-    rw [bipartitePairs]
-    exact Finset.mem_product.mpr ⟨hp, hq⟩
-  exact sigmaCtrl_pos_of_ctrlPairs_nonempty BS ⟨(p, q), hpair⟩
 
 end GlobalControl
 

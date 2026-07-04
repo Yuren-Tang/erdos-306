@@ -1,6 +1,7 @@
 import RequestProject.GlobalControl.LaplaceAboveFloor
 import RequestProject.GlobalControl.LevelSetAssembly
 import RequestProject.GlobalControl.DiagonalGaussianTail
+import RequestProject.GlobalControl.ControlVariancePositivity
 import RequestProject.GlobalControl.Localization
 
 open Finset BigOperators Classical
@@ -22,7 +23,7 @@ headline off-main-arc bound `global_control_partition` from
   energy above the floor or global diagonality with a large label and exact
   quadratic energy);
 * the high-energy Laplace absorption (`laplace_above_control_floor`);
-* the diagonal Gaussian tail (`sectorII_gaussian`).
+* the diagonal Gaussian tail (`diagonal_sector_gaussian_bound`).
 
 The earlier free-`Cglob` route form was *unsound* (a `k0min` independent of an
 arbitrary later `Cglob` cannot absorb it): here the level-set hypothesis carries
@@ -38,8 +39,7 @@ This is the route-closed form of `GlobalControl.global_control_partition`,
 assembled from `global_levelset`, `localization_dichotomy`, and the two sector
 estimates.  The `Cglob` factor is the *fixed* `exp(A · numBlocks BS)`, so the
 quantifier order is sound. -/
-theorem global_control_partition (c : ℝ) (hc : 0 < c)
-    (eps : ℝ) (_heps : 0 < eps) :
+theorem global_control_partition (c : ℝ) (hc : 0 < c) :
     ∀ η : ℝ, 0 < η →
     ∃ (k0min : ℕ) (Ctail : ℝ), 0 < Ctail ∧
       ∀ (BS : BlockSystem), k0min ≤ BS.k0 → admissibleGlobalRange BS →
@@ -60,10 +60,10 @@ theorem global_control_partition (c : ℝ) (hc : 0 < c)
   obtain ⟨levelScale, A, hA, hlevel⟩ := global_levelset eps0 heps0_pos heps0_lt1
   -- The localization dichotomy supplies fixed floor constants.
   obtain ⟨k0loc, c2, e0, hc2, he0, hloc⟩ := localization_dichotomy
-  -- Sector I: η-absorption above the floor, depending on A, c2, e0.
+  -- Absorption above the energy floor, depending on A, c2, e0.
   obtain ⟨k0minI, hI⟩ := laplace_above_control_floor c hc eps0 A c2 e0 heps0_pos heps0_c hA hc2 he0 η hη
-  -- Sector II: the Gaussian tail constant.
-  obtain ⟨Ctail, k0II, hCtail, hII⟩ := sectorII_gaussian c hc
+  -- The Gaussian tail constant for the diagonal sector.
+  obtain ⟨Ctail, k0II, hCtail, hII⟩ := diagonal_sector_gaussian_bound c hc
   refine ⟨max levelScale (max k0loc (max k0minI k0II)), Ctail, hCtail, ?_⟩
   intro BS hk0 hadm C hC
   -- Unpack the scale thresholds.
@@ -74,7 +74,7 @@ theorem global_control_partition (c : ℝ) (hc : 0 < c)
   have hk0II : k0II ≤ BS.k0 :=
     le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_right _ _)) hk0
   -- sigmaCtrl positivity (there is at least one control pair).
-  have hσpos : 0 < sigmaCtrl BS := sigmaCtrl_pos BS hadm
+  have hσpos : 0 < sigmaCtrl BS := sigmaCtrl_pos_of_admissible_range BS hadm
   -- The explicit level-set bound for this BS.
   have hlevelBS := hlevel BS hlevelScale hadm
   -- Localization dichotomy for this BS, C.

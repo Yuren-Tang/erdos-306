@@ -1,17 +1,18 @@
-/-
+import Mathlib.Tactic
+
+/-!
 # Gaussian integer sums
 
 An elementary one-dimensional Gaussian lattice-sum estimate used by the global
 control argument. This module is independent of block systems and arithmetic
 bookkeeping.
 -/
-import Mathlib.Tactic
 
 open Finset BigOperators Classical
 
 noncomputable section
 
-namespace GlobalControl
+namespace RequestProject
 
 /-! ## Gaussian integer sums -/
 
@@ -114,6 +115,6 @@ lemma gaussian_int_sum_le (A : ℝ) (hA0 : 0 < A) (hA1 : A ≤ 1) :
   ring_nf at *;
   norm_num [ sub_eq_add_neg, add_comm, add_left_comm, add_assoc ] at * ; nlinarith [ Nat.floor_le ( inv_nonneg.mpr hs_pos.le ), mul_inv_cancel₀ hs_pos.ne' ]
 
-end GlobalControl
+end RequestProject
 
 end
