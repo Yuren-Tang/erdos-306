@@ -1,6 +1,7 @@
-import RequestProject.GlobalControl.LevelSetCharge
-import RequestProject.GlobalControl.LevelSetColdFiber
-import RequestProject.GlobalControl.LevelSetRoute
+import RequestProject.GlobalControl.BoundaryCharge
+import RequestProject.GlobalControl.ChargeAggregation
+import RequestProject.GlobalControl.ColdFiberCounting
+import RequestProject.GlobalControl.LevelSetCardinality
 import RequestProject.GlobalControl.ShellEntropy
 
 /-!
@@ -174,7 +175,8 @@ theorem global_levelset (eps : ℝ) (heps : 0 < eps) (heps1 : eps < 1) :
   have hk0X : k0X ≤ BS.k0 := le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hk0
   have hX0k0 : X0 ≤ (2:ℝ) ^ BS.k0 :=
     le_trans hX0pow (pow_le_pow_right₀ (by norm_num) hk0X)
-  refine global_levelset_route BS eps c2 e0 X0 R A (by linarith) hX0k0 ?_ ?_ ?_ ?_
+  refine global_levelset_card_le_of_encoded_fiber_sum
+    BS eps c2 e0 X0 R A (by linarith) hX0k0 ?_ ?_ ?_ ?_
   · -- hpen
     intro a _ha k hk1 hk2 hkX hkb
     exact hpen BS a k hk1 hk2 hkX hkb
