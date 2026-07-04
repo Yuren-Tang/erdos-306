@@ -301,7 +301,7 @@ control partition (`global_control_partition`), the off-main-arc
 Fourier sum is `≤ (η + Ctail·e^{-C²·(8/9)})/σ`.  The remaining inputs
 (`hQE`, `hnotmain`, `hinj`) are exactly what the C1 construction must supply
 (edges ⊇ control pairs; frequency injectivity). -/
-theorem minor_arc_bound (eps : ℝ) (heps : 0 < eps) :
+theorem minor_arc_bound :
     ∀ η : ℝ, 0 < η →
     ∃ (k0min : ℕ) (Ctail : ℝ), 0 < Ctail ∧
       ∀ (BS : BlockSystem), k0min ≤ BS.k0 → admissibleGlobalRange BS →
@@ -322,7 +322,7 @@ theorem minor_arc_bound (eps : ℝ) (heps : 0 < eps) :
         ≤ (η + Ctail * Real.exp (-C ^ 2 * (16 / 9) / 2)) / sigmaCtrl BS := by
   intro η hη
   obtain ⟨k0min, Ctail, hCtail, hgcp⟩ :=
-    global_control_partition (16 / 9) (by norm_num) eps heps η hη
+    global_control_partition (16 / 9) (by norm_num) η hη
   refine ⟨k0min, Ctail, hCtail, ?_⟩
   intro BS hk0 hadm C hC E theta b L Sm hlb hub heL he0 hL hQE hnotmain hinj
   have hconst : (8 * (1 / 3 : ℝ) * (1 - 1 / 3)) = 16 / 9 := by norm_num

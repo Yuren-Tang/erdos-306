@@ -47,7 +47,7 @@ def r2_minorEndgameLanes_of_gadgetLanes
 /-- G7 plus block lanes and concrete gadget extra lanes produce the final minor
 support-budget record. -/
 theorem exists_r2_minorSupportBudget_from_gadget_lanes
-    (eps : ℝ) (heps : 0 < eps) (η : ℝ) (hη : 0 < η) :
+    (η : ℝ) (hη : 0 < η) :
     ∃ (k0min : ℕ) (Ctail : ℝ), 0 < Ctail ∧
       ∀ {T : Finset ℕ} {b : ℕ}
       (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
@@ -57,7 +57,7 @@ theorem exists_r2_minorSupportBudget_from_gadget_lanes
       R2MinorEndgameGadgetLanes D W N Bblock Bextra η Ctail Cls →
       Nonempty (R2MinorSupportBudgetData D W N Bblock Bextra) := by
   obtain ⟨k0min, Ctail, hCtail, hready⟩ :=
-    exists_r2_minorSupportBudget_from_endgame_lanes eps heps η hη
+    exists_r2_minorSupportBudget_from_endgame_lanes η hη
   refine ⟨k0min, Ctail, hCtail, ?_⟩
   intro T b D W N Bblock Bextra Cls hk0 hadm Lanes
   exact hready D W N Bblock Bextra Cls hk0 hadm
@@ -66,7 +66,7 @@ theorem exists_r2_minorSupportBudget_from_gadget_lanes
 /-- Concrete gadget lanes with scaled block/extra constants produce
 minor-ready data. -/
 theorem exists_r2_minorReady_from_gadget_lanes
-    (eps : ℝ) (heps : 0 < eps) (η : ℝ) (hη : 0 < η) :
+    (η : ℝ) (hη : 0 < η) :
     ∃ (k0min : ℕ) (Ctail : ℝ), 0 < Ctail ∧
       ∀ {T : Finset ℕ} {b : ℕ}
       (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
@@ -78,7 +78,7 @@ theorem exists_r2_minorReady_from_gadget_lanes
       Ablock + Aextra < r2MinorMainCtrlConstant →
       Nonempty (R2MinorReadyData D W N) := by
   obtain ⟨k0min, Ctail, hCtail, hready⟩ :=
-    exists_r2_minorReady_from_endgame_lanes eps heps η hη
+    exists_r2_minorReady_from_endgame_lanes η hη
   refine ⟨k0min, Ctail, hCtail, ?_⟩
   intro T b D W N Ablock Aextra Cls hk0 hadm Lanes hscaled
   exact hready D W N Ablock Aextra Cls hk0 hadm

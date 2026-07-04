@@ -122,12 +122,12 @@ theorem r2_block_minor_budget_from_fiber_tail
 /-- G7-packaged block-minor budget.
 
 This is the block lane in the same quantifier order as the global-control
-partition: after `eps` and the desired loss `η` are fixed, a base scale and a
+partition: after the desired loss `η` is fixed, a base scale and a
 Gaussian-tail constant are produced.  The caller only has to verify the
 block-specific support facts (`hQE`, `hnotmain`, `hfiber`) and choose `Bblock`
 large enough for the resulting G7 budget. -/
 theorem exists_r2_block_minor_budget_from_fiber_tail_g7
-    (eps : ℝ) (heps : 0 < eps) (η : ℝ) (hη : 0 < η) :
+    (η : ℝ) (hη : 0 < η) :
     ∃ (k0min : ℕ) (Ctail : ℝ), 0 < Ctail ∧
       ∀ {T : Finset ℕ} {b : ℕ}
       (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
@@ -150,7 +150,7 @@ theorem exists_r2_block_minor_budget_from_fiber_tail_g7
       ∑ h ∈ blockMinorPart MA.Sm Sblock,
         fourierNormWeight D.E W.theta b D.L h ≤ Bblock := by
   obtain ⟨k0min, Ctail, hCtail, hgcp⟩ :=
-    global_control_partition (16 / 9) (by norm_num) eps heps η hη
+    global_control_partition (16 / 9) (by norm_num) η hη
   refine ⟨k0min, Ctail, hCtail, ?_⟩
   intro T b D W N MA Sblock Bblock C K Qextra hk0 hadm hC hK
     heL he0 hL hQE hnotmain hfiber hBblock

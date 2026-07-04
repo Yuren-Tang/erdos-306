@@ -32,7 +32,7 @@ structure R2MinorEndgameMultiGadgetLanes
 /-- G7 plus block lanes and multi-gadget extra lanes produce the final minor
 support-budget record. -/
 theorem exists_r2_minorSupportBudget_from_multiGadget_lanes
-    (eps : ℝ) (heps : 0 < eps) (η : ℝ) (hη : 0 < η) :
+    (η : ℝ) (hη : 0 < η) :
     ∃ (k0min : ℕ) (Ctail : ℝ), 0 < Ctail ∧
       ∀ {T : Finset ℕ} {b : ℕ}
       (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
@@ -42,7 +42,7 @@ theorem exists_r2_minorSupportBudget_from_multiGadget_lanes
       R2MinorEndgameMultiGadgetLanes D W N Bblock Bextra η Ctail ρ Cls →
       Nonempty (R2MinorSupportBudgetData D W N Bblock Bextra) := by
   obtain ⟨k0min, Ctail, hCtail, hblockG7⟩ :=
-    exists_r2_block_minor_budget_from_fiber_tail_g7 eps heps η hη
+    exists_r2_block_minor_budget_from_fiber_tail_g7 η hη
   refine ⟨k0min, Ctail, hCtail, ?_⟩
   intro T b D W N Bblock Bextra ρ Cls hk0 hadm Lanes
   refine ⟨r2_minorSupportBudget_of_classification_and_budgetLanes D W N
@@ -76,7 +76,7 @@ theorem exists_r2_minorSupportBudget_from_multiGadget_lanes
 /-- Multi-gadget lanes with scaled block/extra constants produce minor-ready
 data. -/
 theorem exists_r2_minorReady_from_multiGadget_lanes
-    (eps : ℝ) (heps : 0 < eps) (η : ℝ) (hη : 0 < η) :
+    (η : ℝ) (hη : 0 < η) :
     ∃ (k0min : ℕ) (Ctail : ℝ), 0 < Ctail ∧
       ∀ {T : Finset ℕ} {b : ℕ}
       (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
@@ -88,7 +88,7 @@ theorem exists_r2_minorReady_from_multiGadget_lanes
       Ablock + Aextra < r2MinorMainCtrlConstant →
       Nonempty (R2MinorReadyData D W N) := by
   obtain ⟨k0min, Ctail, hCtail, hminor⟩ :=
-    exists_r2_minorSupportBudget_from_multiGadget_lanes eps heps η hη
+    exists_r2_minorSupportBudget_from_multiGadget_lanes η hη
   refine ⟨k0min, Ctail, hCtail, ?_⟩
   intro T b D W N Ablock Aextra ρ Cls hk0 hadm Lanes hscaled
   obtain ⟨MB⟩ := hminor D W N

@@ -29,7 +29,7 @@ structure R2MinorReadyData
 /-- Endgame lanes with scaled constants below the main-term constant produce
 minor-ready data. -/
 theorem exists_r2_minorReady_from_endgame_lanes
-    (eps : ℝ) (heps : 0 < eps) (η : ℝ) (hη : 0 < η) :
+    (η : ℝ) (hη : 0 < η) :
     ∃ (k0min : ℕ) (Ctail : ℝ), 0 < Ctail ∧
       ∀ {T : Finset ℕ} {b : ℕ}
       (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
@@ -41,7 +41,7 @@ theorem exists_r2_minorReady_from_endgame_lanes
       Ablock + Aextra < r2MinorMainCtrlConstant →
       Nonempty (R2MinorReadyData D W N) := by
   obtain ⟨k0min, Ctail, hCtail, hminor⟩ :=
-    exists_r2_minorSupportBudget_from_endgame_lanes eps heps η hη
+    exists_r2_minorSupportBudget_from_endgame_lanes η hη
   refine ⟨k0min, Ctail, hCtail, ?_⟩
   intro T b D W N Ablock Aextra Cls hk0 hadm Lanes hscaled
   obtain ⟨MB⟩ := hminor D W N

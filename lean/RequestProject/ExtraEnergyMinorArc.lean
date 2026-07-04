@@ -73,7 +73,7 @@ lemma minor_energy_sum_le_fiber_tail
 set_option maxHeartbeats 4000000 in
 /-- **Fiber-tail minor-arc bound.**  The Fourier wrapper of
 `minor_energy_sum_le_fiber_tail`. -/
-theorem minor_arc_bound_fiber_tail (eps : ℝ) (heps : 0 < eps) :
+theorem minor_arc_bound_fiber_tail :
     ∀ η : ℝ, 0 < η →
     ∃ (k0min : ℕ) (Ctail : ℝ), 0 < Ctail ∧
       ∀ (BS : BlockSystem), k0min ≤ BS.k0 → admissibleGlobalRange BS →
@@ -96,7 +96,7 @@ theorem minor_arc_bound_fiber_tail (eps : ℝ) (heps : 0 < eps) :
         ≤ K * (η + Ctail * Real.exp (-C ^ 2 * (16 / 9) / 2)) / sigmaCtrl BS := by
   intro η hη
   obtain ⟨k0min, Ctail, hCtail, hgcp⟩ :=
-    global_control_partition (16 / 9) (by norm_num) eps heps η hη
+    global_control_partition (16 / 9) (by norm_num) η hη
   refine ⟨k0min, Ctail, hCtail, ?_⟩
   intro BS hk0 hadm C hC E theta b L Sm K Qextra hK hlb hub heL he0 hL hQE hnotmain hfiber
   have hconst : (8 * (1 / 3 : ℝ) * (1 - 1 / 3)) = 16 / 9 := by norm_num

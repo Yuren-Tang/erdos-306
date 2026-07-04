@@ -67,7 +67,7 @@ theorem exists_arcConstruction_of_selectedQ_coreSupply_autoWeights_minorReady
 
 /-- Selected-`Q` endpoint whose minor arc is supplied by concrete gadget lanes. -/
 theorem exists_arcConstruction_of_selectedQ_coreSupply_autoWeights_gadgetMinor
-    (eps : ℝ) (heps : 0 < eps) (η : ℝ) (hη : 0 < η) :
+    (η : ℝ) (hη : 0 < η) :
     ∃ (k0min : ℕ) (Ctail : ℝ), 0 < Ctail ∧
       ∀ {T : Finset ℕ} {b : ℕ}
       (_hb : 3 ≤ b) (hbpos : 0 < b)
@@ -92,7 +92,7 @@ theorem exists_arcConstruction_of_selectedQ_coreSupply_autoWeights_gadgetMinor
         ≤ 3 * (sigmaCtrl (D.withQ Q).BS) ^ 2) →
       Nonempty (ArcConstruction T b) := by
   obtain ⟨k0min, Ctail, hCtail, hminor⟩ :=
-    exists_r2_minorReady_from_gadget_lanes eps heps η hη
+    exists_r2_minorReady_from_gadget_lanes η hη
   refine ⟨k0min, Ctail, hCtail, ?_⟩
   intro T b hb hbpos D Q N Ablock Aextra ρ K QB Cls hk0 hadm hρle hK hNL
     S hcomponentCard hNscale Lanes hscaled hextraLight
@@ -104,7 +104,7 @@ theorem exists_arcConstruction_of_selectedQ_coreSupply_autoWeights_gadgetMinor
 /-- Selected-`Q` endpoint whose minor arc is supplied by multi-gadget reservoir
 lanes. -/
 theorem exists_arcConstruction_of_selectedQ_coreSupply_autoWeights_multiGadgetMinor
-    (eps : ℝ) (heps : 0 < eps) (η : ℝ) (hη : 0 < η) :
+    (η : ℝ) (hη : 0 < η) :
     ∃ (k0min : ℕ) (Ctail : ℝ), 0 < Ctail ∧
       ∀ {T : Finset ℕ} {b : ℕ}
       (_hb : 3 ≤ b) (hbpos : 0 < b)
@@ -129,7 +129,7 @@ theorem exists_arcConstruction_of_selectedQ_coreSupply_autoWeights_multiGadgetMi
         ≤ 3 * (sigmaCtrl (D.withQ Q).BS) ^ 2) →
       Nonempty (ArcConstruction T b) := by
   obtain ⟨k0min, Ctail, hCtail, hminor⟩ :=
-    exists_r2_minorReady_from_multiGadget_lanes eps heps η hη
+    exists_r2_minorReady_from_multiGadget_lanes η hη
   refine ⟨k0min, Ctail, hCtail, ?_⟩
   intro T b hb hbpos D Q N Ablock Aextra ρ K QB Cls hk0 hadm hρle hK hNL
     S hcomponentCard hNscale Lanes hscaled hextraLight
@@ -141,7 +141,7 @@ theorem exists_arcConstruction_of_selectedQ_coreSupply_autoWeights_multiGadgetMi
 /-- Selected-`Q` endpoint whose minor arc is supplied by frequency-label lanes:
 block-lane data plus extra-frequency labels and gadget reservoirs. -/
 theorem exists_arcConstruction_of_selectedQ_coreSupply_autoWeights_frequencyMinor
-    (eps : ℝ) (heps : 0 < eps) (η : ℝ) (hη : 0 < η) :
+    (η : ℝ) (hη : 0 < η) :
     ∃ (k0min : ℕ) (Ctail : ℝ), 0 < Ctail ∧
       ∀ {T : Finset ℕ} {b : ℕ}
       (_hb : 3 ≤ b) (hbpos : 0 < b)
@@ -166,7 +166,7 @@ theorem exists_arcConstruction_of_selectedQ_coreSupply_autoWeights_frequencyMino
         ≤ 3 * (sigmaCtrl (D.withQ Q).BS) ^ 2) →
       Nonempty (ArcConstruction T b) := by
   obtain ⟨k0min, Ctail, hCtail, hminor⟩ :=
-    exists_r2_minorReady_from_frequency_lanes eps heps η hη
+    exists_r2_minorReady_from_frequency_lanes η hη
   refine ⟨k0min, Ctail, hCtail, ?_⟩
   intro T b hb hbpos D Q N Ablock Aextra ρ K Cextra QB Cls hk0 hadm hρle hK
     hNL S hcomponentCard hNscale Lanes hscaled hextraLight

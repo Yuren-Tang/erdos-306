@@ -61,7 +61,7 @@ structure R2MinorEndgameLanes
 /-- G7 plus the packaged block/extra lanes produce the final minor support
 budget record. -/
 theorem exists_r2_minorSupportBudget_from_endgame_lanes
-    (eps : ℝ) (heps : 0 < eps) (η : ℝ) (hη : 0 < η) :
+    (η : ℝ) (hη : 0 < η) :
     ∃ (k0min : ℕ) (Ctail : ℝ), 0 < Ctail ∧
       ∀ {T : Finset ℕ} {b : ℕ}
       (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
@@ -71,7 +71,7 @@ theorem exists_r2_minorSupportBudget_from_endgame_lanes
       R2MinorEndgameLanes D W N Bblock Bextra η Ctail Cls →
       Nonempty (R2MinorSupportBudgetData D W N Bblock Bextra) := by
   obtain ⟨k0min, Ctail, hCtail, hblockG7⟩ :=
-    exists_r2_block_minor_budget_from_fiber_tail_g7 eps heps η hη
+    exists_r2_block_minor_budget_from_fiber_tail_g7 η hη
   refine ⟨k0min, Ctail, hCtail, ?_⟩
   intro T b D W N Bblock Bextra Cls hk0 hadm Lanes
   refine ⟨r2_minorSupportBudget_of_classification_and_budgetLanes D W N

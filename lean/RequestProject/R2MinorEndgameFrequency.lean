@@ -70,7 +70,7 @@ def R2MinorEndgameFrequencyLanes.toMultiGadget
 /-- G7 plus block lanes and extra-frequency label lanes produce minor-ready
 data. -/
 theorem exists_r2_minorReady_from_frequency_lanes
-    (eps : ℝ) (heps : 0 < eps) (η : ℝ) (hη : 0 < η) :
+    (η : ℝ) (hη : 0 < η) :
     ∃ (k0min : ℕ) (Ctail : ℝ), 0 < Ctail ∧
       ∀ {T : Finset ℕ} {b : ℕ}
       (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
@@ -83,7 +83,7 @@ theorem exists_r2_minorReady_from_frequency_lanes
       Ablock + Aextra < r2MinorMainCtrlConstant →
       Nonempty (R2MinorReadyData D W N) := by
   obtain ⟨k0min, Ctail, hCtail, hminor⟩ :=
-    exists_r2_minorReady_from_multiGadget_lanes eps heps η hη
+    exists_r2_minorReady_from_multiGadget_lanes η hη
   refine ⟨k0min, Ctail, hCtail, ?_⟩
   intro T b D W N Ablock Aextra ρ Cextra Cls hk0 hadm L hscaled
   exact hminor D W N Ablock Aextra ρ Cls hk0 hadm L.toMultiGadget hscaled
