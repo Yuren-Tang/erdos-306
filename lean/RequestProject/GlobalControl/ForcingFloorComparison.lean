@@ -1,4 +1,4 @@
-import RequestProject.GlobalControl.LocalizationData
+import RequestProject.GlobalControl.Encoding.BlockData
 
 /-!
 # Forcing-floor comparison

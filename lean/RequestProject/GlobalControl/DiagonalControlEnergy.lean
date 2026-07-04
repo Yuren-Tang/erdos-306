@@ -1,4 +1,5 @@
-import RequestProject.GlobalControl.LocalizationData
+import RequestProject.GlobalControl.BlockRestriction
+import RequestProject.GlobalControl.ControlEnergy
 
 /-!
 # Diagonal control energy
@@ -76,4 +77,3 @@ lemma diagonal_Qctrl (BS : BlockSystem) (a : GlobalAssignment BS) (m : ℤ)
 end GlobalControl
 
 end
-

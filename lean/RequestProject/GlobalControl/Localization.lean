@@ -1,6 +1,9 @@
 import RequestProject.GlobalControl.ColdBlockCollapse
 import RequestProject.GlobalControl.DiagonalControlEnergy
+import RequestProject.GlobalControl.EnergyComponentBounds
 import RequestProject.GlobalControl.ForcingFloorComparison
+import RequestProject.GlobalControl.LocalizationDefinitions
+import RequestProject.GlobalControl.MainArc
 
 /-!
 # Global localization dichotomy

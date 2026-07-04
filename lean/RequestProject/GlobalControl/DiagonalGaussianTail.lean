@@ -2,6 +2,7 @@ import RequestProject.FiniteSums
 import RequestProject.GlobalControl.ControlVarianceBounds
 import RequestProject.GlobalControl.GaussianIntegerSum
 import RequestProject.GlobalControl.DiagonalControlEnergy
+import RequestProject.GlobalControl.LocalizationDefinitions
 
 /-!
 # Diagonal Gaussian tail
