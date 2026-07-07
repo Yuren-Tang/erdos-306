@@ -102,6 +102,19 @@ in the file layout):
   (`R2Certificates.lean` missing an import). Whole project now builds
   end-to-end (`Erdos306FormalConjectures`, 8718 jobs) with the expected axiom
   set.
+- `.github/workflows/ci.yml`: fixed a genuine, independent CI-workflow bug —
+  the "Build" step only built `RequestProject.Erdos306FormalConjectures`,
+  but the next step (`lake env lean RequestProject/Audit.lean`) needs
+  `RequestProject.Public.Erdos306` (an outward-facing facade that imports
+  the FormalConjectures chain, so it sits outside that chain's own
+  dependency closure). `lake env lean` doesn't auto-build missing
+  dependencies, so that `.olean` genuinely never existed going into the
+  step — reproduced identically on every run/rerun. (Initially misdiagnosed
+  as a cache-key race between this workflow's 5 parallel jobs sharing one
+  cache-save key, since a "Failed to save... another job may be creating
+  this cache" warning appears right before the real error every time —
+  that warning is real but unrelated.) Fix: build `RequestProject.Audit`
+  instead, which covers everything downstream needs.
 - `R2MinorEndgameGadget.lean`: another confirmed-dead abandoned strategy
   (single-gadget damping, superseded by frequency-lanes/multi-gadget),
   deleted after both a zero-importers and zero-content-references check.
