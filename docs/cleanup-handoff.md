@@ -9,6 +9,18 @@ suggested order of attack. Ground truth is the code, not this document —
 verify anything build-related before acting on it (see "Known gotchas"
 below for why that caveat is not boilerplate).
 
+## Readiness for handoff: NOT YET
+
+As of 2026-07-07, this is **not** ready to hand to Fable 5 — there's still
+real "read and understand" territory left that a prep pass, not the
+judgment-heavy pass, should cover first: the `R2*` minor-arc/extra-frequency
+group (2 of ~25 files read), most of the root-level circle-method spine
+(`CircleMethodMainArc`/`CircleMethodMainTerm`/`GlobalPeierlsBookkeeping`/`BernoulliFourier`
+unread), and the actual mass-batch-group collapse (diagnosed, not executed).
+Handing off now would spend Fable 5's tokens rediscovering structure this
+pass should surface first. See "Suggested order of attack" for what's left,
+roughly in priority order.
+
 ## Standard this pass is aiming for
 
 Optimize the result on three axes, in this priority order: mathematics,
@@ -42,8 +54,28 @@ roundabout path over patching it in place.
   RequestProject.Erdos306FormalConjectures` succeeds (8718 jobs, 0 errors),
   `#print axioms erdos_306_unconditional` shows only
   `propext, Classical.choice, Quot.sound` plus the two named structural
-  axioms. CI on this exact commit not yet confirmed at time of writing —
-  check `gh run list --branch codex/pushlinter` before assuming it's green.
+  axioms.
+- **CI's core `verify` job (the actual sorry-free + axiom-gate check) is
+  confirmed green** as of commit 28896321615 (run on 7766e73) — 13m12s, no
+  cache/race ambiguity, nothing pushed after it to muddy the signal. Getting
+  here took three rounds of finding independent, pre-existing bugs (see the
+  "already fixed" list below: the ring/convert break, `ci.yml`'s build-target
+  mismatch, `Audit.lean`'s `open GlobalControl` prefix issue) — each one only
+  visible by reading the *literal* CI failure output, not by local
+  `lake build` success (see "Known gotchas" below, first bullet).
+- The secondary `Audit all imports (1-4/4)` and `Lint Lean sources` jobs are
+  still failing as of this writing, but every failure seen so far shows the
+  actual build/lint completing in full first (`8724/8724` built), then the
+  job dying with "the runner has received a shutdown signal" — this is
+  because `ci.yml` had no `concurrency` group, so every push spawned its own
+  independent full 6-job run with nothing to cancel a stale one once a newer
+  commit landed; pushing several commits in quick succession (which happened
+  repeatedly this pass) piled up simultaneous runs competing for the runner
+  pool. Fixed (commit a265b58, not yet confirmed green) by adding a standard
+  `group: workflow-ref` / `cancel-in-progress` block. If this still recurs
+  after that fix with commits pushed one at a time, treat it as a genuine
+  runner/quota issue, not something to wave away — check `gh run list`
+  before assuming either way.
 
 ## Map: what's already in reasonable shape vs. what needs work
 
@@ -129,6 +161,8 @@ in the file layout):
 - `R2MinorEndgameGadget.lean`: another confirmed-dead abandoned strategy
   (single-gadget damping, superseded by frequency-lanes/multi-gadget),
   deleted after both a zero-importers and zero-content-references check.
+- `.github/workflows/ci.yml`: added a `concurrency` group (see "Current
+  state" above) so overlapping pushes stop racing each other's CI runs.
 - Two dependent-rewrite/defeq breaks fixed (`R2ExtraFrequencyChoice.lean`'s
   `hm_r` field, `R2MassBatchPoolSupply.lean`'s `withQ` unfolding) plus one
   regression this pass introduced and then fixed (`R2MinorEstimateInterface.lean`).
@@ -202,11 +236,34 @@ scaffolding" judgment call this handoff is for.
   claimed the aggregate "only re-exports Partition" — that roadmap claim is
   stale, corrected in this pass, see the refactor-roadmap.md diff).
 
+### A positive exemplar: the circle-method spine is already close to the target standard
+
+`SpectralCannon.lean`'s `spectral_existence` is a genuinely clean, maximally
+general finite-spectral existence principle — fully decoupled from
+primes/semiprimes/anything project-specific (abstract types `J`, `Ω`, `X`;
+a spectral representation hypothesis; a low-frequency-mass-beats-high-frequency-tail
+conclusion). `CannonBridge.lean` is exactly the right shape of bridge:
+define the concrete spectral data (`cannonChar`, `cannonB`, `cannonF`), prove
+the correspondence with the project's own notions (`cannonF_eq_fourierTerm`),
+then instantiate the general theorem (`exists_subset_of_fourier_arcs`) and
+convert to the domain conclusion (`repr_of_subset`). `CircleMethod.lean` is
+a small, independent, self-contained bridge lemma (`fourier_indicator`).
+**This is the target Bourbaki shape** (general principle → concrete bridge →
+domain instantiation) already realized somewhere in this codebase — worth
+pointing Fable 5 at directly as the model to hold the rest of `R2*` to,
+rather than only describing the target in the abstract.
+`CircleMethodMainArc.lean`/`CircleMethodMainTerm.lean`/`GlobalPeierlsBookkeeping.lean`/
+`BernoulliFourier.lean` not yet read — worth checking whether they hold to
+the same standard or look more like the `R2*` shape.
+
 ### Not yet surveyed
 
-- The ~26-file R2 minor-arc/extra-frequency group (see map above).
-- Root-level circle-method files (`CircleMethod*.lean`, `CannonBridge.lean`,
-  `SpectralCannon.lean`, `GlobalPeierlsBookkeeping.lean`, `BernoulliFourier.lean`).
+- The ~23 unread files of the R2 minor-arc/extra-frequency group (2 of ~25
+  sampled so far — see map above).
+- `CircleMethodMainArc.lean`, `CircleMethodMainTerm.lean`,
+  `GlobalPeierlsBookkeeping.lean`, `BernoulliFourier.lean` (read
+  `SpectralCannon.lean`/`CannonBridge.lean`/`CircleMethod.lean` this round,
+  see exemplar note above — the rest of the circle-method spine is still open).
 - The two axioms in `AnalyticInputs.lean`: `pnt_dyadic_prime_density` is
   Chebyshev-strength and *might* be provable outright from Mathlib's existing
   `NumberTheory/Chebyshev.lean` + `NumberTheory/Bertrand.lean` (which has the
