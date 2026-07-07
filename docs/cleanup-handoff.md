@@ -1,0 +1,240 @@
+# Post-proof cleanup: handoff brief
+
+This is a status + findings brief for whoever picks up the next pass on
+`RequestProject/` — in particular a higher-judgment pass (recognizing shared
+abstractions, deciding what a confused construction should really look like,
+renaming for publication) rather than mechanical execution. It is written to
+be read top-down: map first, then anchored findings, then gotchas, then a
+suggested order of attack. Ground truth is the code, not this document —
+verify anything build-related before acting on it (see "Known gotchas"
+below for why that caveat is not boilerplate).
+
+## Standard this pass is aiming for
+
+Optimize the result on three axes, in this priority order: mathematics,
+engineering, publication/presentation (the last is half-weight — final
+external-interface polish will get a dedicated human review pass later).
+Secondarily, optimize engineering time and token spend. Respect for past
+decisions/docs in this repo is purely instrumental (avoid redoing work) —
+none of `docs/architecture.md`, `docs/refactor-roadmap.md`, or this file
+should be treated as binding if the actual code and a clear-eyed re-read
+disagree with them. Where a whole stretch of code is just a roundabout path
+to something that already exists cleanly elsewhere, prefer discarding the
+roundabout path over patching it in place.
+
+## Current state (2026-07-07)
+
+- The theorem itself is done: `erdos_306` / `erdos_306_unconditional` is
+  sorry-free, published on `main` (`github.com/Yuren-Tang/Erdos-306`,
+  release v0.0.3, CI green there). This cleanup pass is entirely post-proof.
+- Working branch `codex/pushlinter` is mid-refactor (see
+  `docs/refactor-roadmap.md`'s 5-stage plan — Stage A done, B/C/D in
+  progress, D is where most of the still-open work concentrates).
+- CI on `codex/pushlinter` is currently red for one confirmed, real,
+  pre-existing reason unrelated to any recent cleanup: `R2TopAssembly.lean:255`
+  (unsolved goals) and `:325` (`ring_nf` made no progress) inside
+  `sigmaE2_ge_ctrl` and `r2_numericFields`. This was reproduced on a from-scratch
+  remote CI checkout, so it is not local build-cache noise. Both are the
+  fragile `refine' ...; convert ... using 1; ring` style of machine-generated
+  proof described below — worth a clean rewrite rather than a patch, but
+  out of scope for whoever wrote this brief to just fix inline.
+
+## Map: what's already in reasonable shape vs. what needs work
+
+| Region | Size | Status |
+|---|---|---|
+| `GlobalControl/*` | 44 files / 4623 lines | Already reorganized by module; imports form a sensible DAG; no orphans found. |
+| `LocalEnergy/*` (incl. `DominantLabel/`) | 17 files / ~2400 lines | Same — already reorganized, wiring checked clean (`Definition → Energy → Encoding → {FixedLabel, Threshold → Covering} → ColdRange`). |
+| `Core/*` | 14 files / 921 lines | Structurally fine (small, focused files), but see finding 3b below — at least one clear over-specialization pattern. |
+| `Spectral/*` | 2 files / 22 lines | Not surveyed beyond size; likely fine given size. |
+| `R2*` (flat, root of `RequestProject/`) | 58 files / ~8500 lines | **The concentrated problem area.** Never went through the per-folder reorganization the other regions got. Roughly a third of the whole `RequestProject/` codebase by line count. |
+
+`R2*`'s 58 files break down mathematically into four groups (not yet reflected
+in the file layout):
+1. Foundation (`R2AssemblySkeleton`, `R2ConcreteData`) — fine as-is.
+2. Residual reciprocal-mass-batch selection (~19 files: `R2MassBatch*`,
+   `R2Component*`, `R2Forbidden*`, `R2BaseLoadUpper`/`R2BaseBudgetAssembly`) —
+   see finding 3c, this is the highest-value target.
+3. Minor-arc / extra-frequency damping estimate (~26 files: `R2Minor*`,
+   `R2Extra*`, `R2BlockMinorLane`, `R2FourierFactor`) — **not yet read**,
+   likely has the same shape of problem as group 2 by analogy, needs the same
+   treatment.
+4. Final numeric closure and assembly (~8 files: `R2NumericFields`,
+   `R2AssemblyFields`, `R2LargeK0`, `R2FinalAssembly*`, `R2TopAssembly`,
+   `R2Certificates`).
+
+## Anchored findings
+
+### Already fixed (mechanical, done this pass, no judgment needed from here)
+
+- Dead pre-R2 placeholder chain deleted: `FourierPositivity.lean` +
+  `CrossLabelEnergy.lean` (root copy, not the live `LocalEnergy.CrossLabelEnergy`)
+  + `LatticeSpan.lean` + `SemiprimeInfinity.lean` — superseded when the R2 arc
+  construction closed and `Erdos306Final.lean` re-derived the chain against it
+  (suffix `_R2`) instead of patching the old placeholder-based theorems in place.
+- `R2ConcreteData.lean`: deleted 8 `r2Concrete_*` free-function duplicates of
+  the `namespace R2ConcreteData` dot-notation methods directly above them,
+  plus an unused `R2ConcreteWeights` alias — pure copy-paste, zero callers anywhere.
+- `R2MinorReadyArc.lean`: one confirmed-dead parallel `exists_arcConstruction`
+  endpoint (an abandoned alternative to the one actually wired into
+  `R2Certificates.lean`), deleted after empirical build verification (not just
+  static analysis — see gotcha below).
+- Two dependent-rewrite/defeq breaks fixed (`R2ExtraFrequencyChoice.lean`'s
+  `hm_r` field, `R2MassBatchPoolSupply.lean`'s `withQ` unfolding) plus one
+  regression this pass introduced and then fixed (`R2MinorEstimateInterface.lean`).
+
+### 3b. Over-specialization instead of composing the general lemma (Core)
+
+`RequestProject/Core/Asymptotics.lean` has two genuinely general, clean
+lemmas — `geom_div_pow_tendsto` (rⁿ/nᵐ → ∞ for any `r > 1`) and
+`beats_affine_of_tendsto` (a generic "eventually beats any affine function"
+wrapper from a `Tendsto` fact) — followed by three fully-reproved specific
+instances (`exp1_model_div_succ_pow_tendsto`, `exp2_model_div_linear_tendsto`,
+`exp2_affine_lower`) that just plug in concrete constants (`r=2`, `r=4`,
+an index shift by 1, `2^(2k) = 4^k`) with a full second copy of the
+`.comp`/`.congr'`/`field_simp`/`ring_nf` proof machinery, instead of a
+one-line composition at each call site. Likely collapsible to nothing (call
+the two general lemmas directly wherever the specific ones are currently
+used — probably inside the R2* large-`k0` parameter chase; call sites not
+yet traced).
+
+### 3c. Clean abstraction already exists elsewhere; shell around it should go (R2 mass-batch)
+
+`RequestProject/BlockMassPool.lean` (NOT part of the `R2*` file family) is a
+clean, Bourbaki-shaped development: a fully general greedy-subset-selection
+lemma (`exists_subset_recip_window_strict_upper` / `exists_subset_recip_window`,
+pure finite-combinatorics, no primes/blocks involved) → one natural
+specialization with a fixed base already spent
+(`exists_subset_recip_residual_window`) → the one domain-specific
+instantiation (`exists_blockAligned_mass_batch`, using the Mertens axiom).
+`R2ConcreteData.lean`'s own `exists_residual_subset_recip_window` is a clean
+second-level instantiation of the same general lemma (fixing the R2 window
+bounds) — this part is fine.
+
+Downstream of that, however, ~19 `R2*` files (`R2MassBatchReady`,
+`R2MassBatchBaseLoadBudget`, `R2ComponentMassReady`, `R2ComponentSupplyReady`,
+`R2ComponentCoreSupply`, `R2SelectedQReady`, `R2MassBatchWeights`,
+`R2ForbiddenBaseBudget`, `R2ForbiddenPoolBudget`, etc.) build a long chain of
+small "socket"/"ready"/"budget" adapter structures on top of this, most of
+which just repackage one struct's fields into the next struct's fields plus
+one or two derived facts (see `R2MassBatchReady.lean`,
+`R2ComponentMassReady.lean`, `R2SelectedQReady.lean`,
+`R2MassBatchBaseLoadBudget.lean` for representative examples of the pattern:
+each is `theorem foo := by obtain ...; exact bar ...args`).
+
+**This is the single highest-value remaining target**, but a first attempt
+at collapsing it this pass (see gotcha below) found the chain more tangled
+than it looks: some of these files hold genuine numeric/structural content
+mixed in with pure wiring, and the live call graph doesn't cleanly separate
+along file boundaries — e.g. `R2TopAssembly.lean`'s own `r2_getQ` /
+`exists_r2_data_of_numerics_set` (lines ~336, ~56) reach into
+`R2BaseLoadUpper`/`R2ComponentDisjoint`/`R2ForbiddenBaseBudget` directly, and
+several of the small "Ready"/"Socket" files turned out to still be
+load-bearing for reasons the static analysis missed. Collapsing this
+properly needs someone to actually read the ~19 files' mathematical content
+(not just their shape) and decide the right smaller set of nodes — this is
+exactly the "recognize the real mechanism, discard the accumulated
+scaffolding" judgment call this handoff is for.
+
+### Flagged, unresolved, needs judgment (not attempted)
+
+- `GlobalControl.BlockVarianceComparison` (`sigmaP_block_le`,
+  `sigmaP_sq_eq_internal`) vs `GlobalControl.ControlVarianceBounds` — two
+  routes to what looks like the same kind of "block deviation vs global
+  deviation" fact; `BlockVarianceComparison`'s version is unused and more
+  tactic-heavy (`grind +qlia`-style). Possibly redundant, possibly genuinely
+  different — not verified either way.
+- `GlobalControl.Encoding.TotalEntropy` — `docs/architecture.md` documents
+  it as load-bearing target architecture, but nothing currently imports it.
+  Looks more like an unfinished migration wire-up than dead code (the
+  aggregate `GlobalControl.lean`'s own docstring still lists
+  `BlockVarianceComparison` too, contradicting an earlier roadmap note that
+  claimed the aggregate "only re-exports Partition" — that roadmap claim is
+  stale, corrected in this pass, see the refactor-roadmap.md diff).
+
+### Not yet surveyed
+
+- The ~26-file R2 minor-arc/extra-frequency group (see map above).
+- Root-level circle-method files (`CircleMethod*.lean`, `CannonBridge.lean`,
+  `SpectralCannon.lean`, `GlobalPeierlsBookkeeping.lean`, `BernoulliFourier.lean`).
+- The two axioms in `AnalyticInputs.lean`: `pnt_dyadic_prime_density` is
+  Chebyshev-strength and *might* be provable outright from Mathlib's existing
+  `NumberTheory/Chebyshev.lean` + `NumberTheory/Bertrand.lean` (which has the
+  central-binomial-coefficient machinery, but only proves prime *existence*
+  in a doubling range, not a *count* — turning it into a count bound is a
+  real, self-contained, classical formalization project). `mertens_dyadic_window_mass`
+  has no Mathlib support at all (confirmed by search) and must stay a cited
+  external axiom, but currently bakes project-specific numerology (`21/20`,
+  the `[k0,3k0]` window) into the axiom statement itself rather than citing
+  the primitive Mertens asymptotic and proving the numerology as a Lean
+  corollary — matches `docs/refactor-roadmap.md` Stage A's already-planned
+  but not-yet-done "bridge layer." Per explicit user direction, neither is a
+  current priority — noted here only so it isn't rediscovered from scratch.
+
+## Known gotchas (read before touching more of R2*)
+
+- **Static reachability/dead-code heuristics have real false positives on
+  this codebase.** A declaration-level "is this reachable from `erdos_306`"
+  script (regex-based, checking which declared names' bodies textually
+  reference which other declared names) looked convincing but had several
+  false positives when checked against an actual build — genuinely
+  load-bearing declarations it flagged as dead. Root causes seen: references
+  living in a *different* declaration in the same file than the one the
+  script attributed the reference to; multi-line signatures it didn't parse
+  correctly. **Treat any such script's output as a lead to verify by
+  building the actual downstream closure, never as grounds for deletion on
+  its own.** `lean/scripts/dep_graph.py` (added this pass) does the same
+  kind of file-level static analysis and inherits the same limitation —
+  it's useful for orientation (import hubs, coarse reachability) but not a
+  deletion oracle.
+- The `R2TopAssembly.lean:255`/`:325` `ring`/`convert` failures mentioned
+  above are real and reproduced on a clean CI checkout — not a caching
+  artifact, despite looking exactly like one at first (this pass burned
+  real time confirming that before concluding it's genuine).
+- Local machine is memory/compute constrained. A single `lake build` of one
+  file's dependency closure can take several minutes; prefer
+  `lake env lean <file>` for fast single-file iteration once dependencies
+  are already built, and lean on remote CI (a clean checkout every time,
+  no local-cache ambiguity) for full-closure verification rather than
+  repeated local full rebuilds.
+- A dependent-type rewrite that fails with "motive is not type correct"
+  (typically: rewriting a `let`-bound term that appears inside a `ZMod`
+  modulus or similar dependent position) has a standard robust fix:
+  `clear_value` the `let`-bound name first (turning it into an opaque local
+  constant) so the subsequent `rw` no longer fights the unfolding. Plain
+  `rw [dif_pos h]`, `show ... ` (defeq), and `simp only [defn, dif_pos h]`
+  all failed on one such case in `R2ExtraFrequencyChoice.lean` before
+  `clear_value` + `rw` worked cleanly and robustly.
+
+## Tools available
+
+- `lean/scripts/dep_graph.py` — reads `import RequestProject.*` lines as
+  plain text (no build needed), reports reachability from a root module,
+  import hubs, and per-module sorry/axiom/line counts. Run from `lean/`:
+  `python3 scripts/dep_graph.py [root_module]`. See gotcha above on its limits.
+- `lean/scripts/audit_imports.sh` — build-time redundant-import /
+  `#min_imports` audit per file (needs a green build to be useful).
+- `.github/workflows/lean-graph.yml` — manual (`workflow_dispatch`)
+  declaration-level dependency graph extraction via CI; requires
+  `RequestProject.Erdos306FormalConjectures` to build first, so currently
+  blocked on the `R2TopAssembly.lean` break above.
+
+## Suggested order of attack
+
+Following the "repair the earliest non-clean confluence, don't skip ahead to
+polish a downstream bridge" discipline already in `docs/refactor-roadmap.md`:
+
+1. Fix (or cleanly rewrite) the real `R2TopAssembly.lean:255`/`:325` break —
+   it's blocking CI and the declaration-level dependency-graph tool.
+2. Read the ~26-file minor-arc/extra-frequency group the same way this pass
+   read the mass-batch group, to get the matching map before touching either.
+3. Collapse the mass-batch (~19 files) and minor-arc (~26 files) groups by
+   mathematical role rather than pipeline-stage, per finding 3c — this is
+   where the real Bourbaki-style win is: identify the true minimal
+   mechanism(s) each group is really computing, state them at their natural
+   generality once, and discard the accumulated per-stage adapter files.
+4. Apply the naming policy already written in `docs/architecture.md`
+   (`R2`/`gadget`/`lane`/`supply`/`certificate` → mathematical names) as part
+   of the same pass, not as a separate renaming sweep — renaming without
+   also fixing the structure just moves the mess.
+5. Survey and apply the same treatment to the root-level circle-method files.

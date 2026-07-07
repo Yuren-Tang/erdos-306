@@ -200,7 +200,11 @@ Current progress:
 8. **An aggregate is never an internal dependency.** `GlobalControl.lean`
    previously contained `mainArc`, forcing lower and downstream modules to
    import the aggregate. Foundational data now lives in `BlockSystem`, the arc
-   definition in `MainArc`, and the aggregate only re-exports `Partition`.
+   definition in `MainArc`. (Stale as of 2026-07-07: the aggregate currently
+   also imports `BlockVarianceComparison`, not only `Partition` — see
+   `docs/cleanup-handoff.md` for the live audit. The invariant this lesson is
+   really about — no internal/downstream module imports the aggregate itself —
+   still held when last checked.)
 9. **A cached olean is not a source check.** After changing a declaration
    interface, validate the changed source or invalidate its target; otherwise a
    stale downstream artifact can conceal a broken body.
