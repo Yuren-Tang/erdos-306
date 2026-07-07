@@ -83,8 +83,8 @@ theorem exists_massBatchSupply_of_pool
   · intro e he
     exact havoid e (hQsub he)
   · simpa [R2ConcreteData.withQ] using hdisj.mono_left hQsub
-  · simpa [R2ConcreteData.withQ] using hQlower
-  · simpa [R2ConcreteData.withQ] using hQupper
+  · simpa [R2ConcreteData.withQ_baseLoad] using hQlower
+  · simpa [R2ConcreteData.withQ_baseLoad] using hQupper
 
 end CircleMethod
 

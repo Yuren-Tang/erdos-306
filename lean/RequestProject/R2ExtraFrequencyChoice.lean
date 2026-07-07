@@ -120,9 +120,7 @@ def r2ExtraSiblingChoice_of_labelData
     simpa [rfun, extra, hh] using hchoose.2.2.1
   · intro h hh
     have hchoose := Classical.choose_spec (hex h hh)
-    dsimp [rfun]
-    rw [dif_pos (show h ∈ extra from hh)]
-    exact hchoose.2.2.2
+    simpa [rfun, extra, hh] using hchoose.2.2.2
 
 /-- Final bridge: block-label data plus gadget sets and a uniform damping budget
 produce the prepared reservoir choice. -/

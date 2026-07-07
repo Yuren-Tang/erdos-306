@@ -88,7 +88,6 @@ lemma QE_ge_Qctrl (BS : BlockSystem) (E : Finset ℕ) (hsub : ctrlEdges BS ⊆ E
         unfold QE
         exact Finset.sum_le_sum_of_subset_of_nonneg hsub (fun e _ _ => by positivity)
 
-set_option maxHeartbeats 4000000 in
 /-- **Bounded-multiplicity minor energy reindex.**  Generalizes
 `minor_energy_sum_le`: if the frequency-to-assignment map `h ↦ (h mod p)_p` is at
 most `M`-to-1 on `Sm` (instead of injective), the energy sum is bounded by `M` times
@@ -114,23 +113,12 @@ lemma minor_energy_sum_le_mult (BS : BlockSystem) (E : Finset ℕ) (c C : ℝ) (
       ≤ ∑ h ∈ Sm, Real.exp (-c * Qctrl BS (af h)) :=
     Finset.sum_le_sum (fun h hh => Real.exp_le_exp.mpr (by nlinarith [hQE h hh, hc]))
   refine le_trans step1 ?_
-  have hmaps : ∀ h ∈ Sm, af h ∈ Sm.image af := fun h hh => Finset.mem_image_of_mem af hh
-  rw [← Finset.sum_fiberwise_of_maps_to' hmaps (fun a => Real.exp (-c * Qctrl BS a))]
-  calc ∑ j ∈ Sm.image af, ∑ _h ∈ Sm.filter (fun h => af h = j),
-          Real.exp (-c * Qctrl BS j)
-      ≤ ∑ j ∈ Sm.image af, (M : ℝ) * Real.exp (-c * Qctrl BS j) := by
-        refine Finset.sum_le_sum (fun j _ => ?_)
-        rw [Finset.sum_const, nsmul_eq_mul]
-        exact mul_le_mul_of_nonneg_right (hmult j) (Real.exp_nonneg _)
-    _ = (M : ℝ) * ∑ j ∈ Sm.image af, Real.exp (-c * Qctrl BS j) := by rw [Finset.mul_sum]
-    _ ≤ (M : ℝ) * ∑ j ∈ Finset.univ.filter (fun a => a ∉ mainArc BS C),
-          Real.exp (-c * Qctrl BS j) := by
-        refine mul_le_mul_of_nonneg_left ?_ (by positivity)
-        refine Finset.sum_le_sum_of_subset_of_nonneg ?_ (fun a _ _ => Real.exp_nonneg _)
-        intro a ha
-        rw [Finset.mem_image] at ha
-        obtain ⟨h, hh, rfl⟩ := ha
-        exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hnotmain h hh⟩
+  simpa using RequestProject.sum_comp_mul_le_of_fiber_sum_le Sm
+    (Finset.univ.filter (fun a : GlobalAssignment BS => a ∉ mainArc BS C)) af
+    (fun a => Real.exp (-c * Qctrl BS a)) (fun _ => (1 : ℝ)) (M : ℝ)
+    (fun a _ => Real.exp_nonneg _)
+    (fun h hh => Finset.mem_filter.mpr ⟨Finset.mem_univ _, hnotmain h hh⟩)
+    (fun a _ => by simpa using hmult a)
 
 set_option maxHeartbeats 4000000 in
 /-- **Bounded-multiplicity minor-arc bound.**  Like `minor_arc_bound`, but the

@@ -53,6 +53,29 @@ lemma fintype_subtype_tsum_le_of_or {α : Type*} [Fintype α]
         Finset.sum_nonneg (fun a _ => hf a)
       linarith
 
+/-- A map whose weighted fibers have mass at most `K` pushes a weighted sum
+to at most `K` times the corresponding sum on the target. -/
+lemma sum_comp_mul_le_of_fiber_sum_le
+    {α β : Type*} [DecidableEq α] [DecidableEq β]
+    (s : Finset α) (t : Finset β) (f : α → β)
+    (g : β → ℝ) (w : α → ℝ) (K : ℝ)
+    (hg : ∀ y ∈ t, 0 ≤ g y)
+    (hmaps : ∀ x ∈ s, f x ∈ t)
+    (hfiber : ∀ y ∈ t, ∑ x ∈ s.filter (fun x => f x = y), w x ≤ K) :
+    ∑ x ∈ s, g (f x) * w x ≤ K * ∑ y ∈ t, g y := by
+  rw [← Finset.sum_fiberwise_of_maps_to hmaps (fun x => g (f x) * w x)]
+  calc
+    ∑ y ∈ t, ∑ x ∈ s.filter (fun x => f x = y), g (f x) * w x
+        ≤ ∑ y ∈ t, K * g y := by
+          refine Finset.sum_le_sum fun y hy => ?_
+          have heq : ∀ x ∈ s.filter (fun x => f x = y),
+              g (f x) * w x = g y * w x := by
+            intro x hx
+            rw [(Finset.mem_filter.mp hx).2]
+          rw [Finset.sum_congr rfl heq, ← Finset.mul_sum, mul_comm]
+          exact mul_le_mul_of_nonneg_right (hfiber y hy) (hg y hy)
+    _ = K * ∑ y ∈ t, g y := by rw [Finset.mul_sum]
+
 end RequestProject
 
 end
