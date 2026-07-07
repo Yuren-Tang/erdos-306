@@ -252,7 +252,13 @@ lemma sigmaE2_ge_ctrl {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
     exact Finset.sum_le_sum_of_subset_of_nonneg ( D.ctrlEdges_subset_E ) fun _ _ _ => by positivity;
   refine' le_trans _ ( Finset.sum_le_sum fun e he => show ( 1 : ℝ ) / e ^ 2 * ( 2 / 9 ) ≤ W.theta e * ( 1 - W.theta e ) / e ^ 2 from _ );
   · rw [ ← Finset.sum_mul _ _ _ ] ; nlinarith;
-  · convert mul_le_mul_of_nonneg_right ( show ( 2 / 9 : ℝ ) ≤ W.theta e * ( 1 - W.theta e ) by nlinarith only [ sq_nonneg ( W.theta e - 1 / 2 ), W.hlb e he, W.hub e he ] ) ( inv_nonneg.mpr ( sq_nonneg ( e : ℝ ) ) ) using 1 ; ring
+  · have hkey : (2 / 9 : ℝ) ≤ W.theta e * (1 - W.theta e) := by
+      nlinarith only [ sq_nonneg ( W.theta e - 1 / 2 ), W.hlb e he, W.hub e he ]
+    have he2 : (0 : ℝ) ≤ ((e : ℝ) ^ 2)⁻¹ := inv_nonneg.mpr (sq_nonneg _)
+    calc (1 : ℝ) / e ^ 2 * (2 / 9) = (2 / 9) * ((e : ℝ) ^ 2)⁻¹ := by ring
+      _ ≤ (W.theta e * (1 - W.theta e)) * ((e : ℝ) ^ 2)⁻¹ :=
+        mul_le_mul_of_nonneg_right hkey he2
+      _ = W.theta e * (1 - W.theta e) / e ^ 2 := by ring
 
 /-
 Strong lower bound for `sigmaCtrl` (true order `~2^{-k0}/k0`), keeping the full
@@ -322,8 +328,12 @@ lemma r2_numericFields {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
         gcongr <;> norm_cast;
         · exact abs_le.mpr ⟨ by linarith [ Finset.mem_Icc.mp hm ], by linarith [ Finset.mem_Icc.mp hm ] ⟩;
         · exact hEmin e he;
-      convert mul_le_mul_of_nonneg_right h_abs ( show 0 ≤ ( m : ℝ ) ^ 2 * ( 1 / e ^ 2 : ℝ ) by positivity ) using 1 ; ring;
-      cases abs_cases ( ( m : ℝ ) * ( e : ℝ ) ⁻¹ ) <;> simp +decide [ * ] <;> ring;
+      have hnonneg : (0 : ℝ) ≤ (m : ℝ) ^ 2 * (1 / e ^ 2 : ℝ) := by positivity
+      calc |(m : ℝ) / e| ^ 3 = |(m : ℝ) / e| * |(m : ℝ) / e| ^ 2 := by ring
+        _ = |(m : ℝ) / e| * ((m : ℝ) / e) ^ 2 := by rw [sq_abs]
+        _ = |(m : ℝ) / e| * ((m : ℝ) ^ 2 * (1 / e ^ 2 : ℝ)) := by rw [div_pow]; ring
+        _ ≤ (N / Emin) * ((m : ℝ) ^ 2 * (1 / e ^ 2 : ℝ)) :=
+          mul_le_mul_of_nonneg_right h_abs hnonneg
     refine' le_trans ( Finset.sum_le_sum fun e he => mul_le_mul_of_nonneg_left ( h_edge_bound e he ) ( by norm_num ) ) _ ; norm_num [ ← Finset.mul_sum _ _ _, ← Finset.sum_mul ] at *;
     refine' le_trans ( mul_le_mul_of_nonneg_left ( mul_le_mul_of_nonneg_left ( mul_le_mul_of_nonneg_right ( show ( m : ℝ ) ^ 2 ≤ N ^ 2 by norm_cast; nlinarith ) <| Finset.sum_nonneg fun _ _ => inv_nonneg.2 <| sq_nonneg _ ) <| by positivity ) <| by positivity ) _;
     nlinarith [ mul_inv_cancel₀ ( ne_of_gt hB ), show ( 0 : ℝ ) ≤ N / Emin by positivity ]
