@@ -12,6 +12,17 @@ on:
   pull_request:
   workflow_dispatch:
 
+# Without this, every push to a branch/PR spawns its own full 6-job run, and
+# nothing cancels a stale run once a newer commit lands — they pile up and
+# compete for the runner pool, which surfaces as an unexplained "runner
+# received a shutdown signal" cancellation partway through a job rather than
+# a clean, attributable "canceled by newer run" status. One run per
+# ref at a time; a fresh push cancels whatever's still in flight for the
+# same branch/PR instead of racing it.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   verify:
     runs-on: ubuntu-latest
