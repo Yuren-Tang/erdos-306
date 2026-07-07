@@ -30,14 +30,20 @@ roundabout path over patching it in place.
 - Working branch `codex/pushlinter` is mid-refactor (see
   `docs/refactor-roadmap.md`'s 5-stage plan — Stage A done, B/C/D in
   progress, D is where most of the still-open work concentrates).
-- CI on `codex/pushlinter` is currently red for one confirmed, real,
-  pre-existing reason unrelated to any recent cleanup: `R2TopAssembly.lean:255`
-  (unsolved goals) and `:325` (`ring_nf` made no progress) inside
-  `sigmaE2_ge_ctrl` and `r2_numericFields`. This was reproduced on a from-scratch
-  remote CI checkout, so it is not local build-cache noise. Both are the
-  fragile `refine' ...; convert ... using 1; ring` style of machine-generated
-  proof described below — worth a clean rewrite rather than a patch, but
-  out of scope for whoever wrote this brief to just fix inline.
+- **RESOLVED (commit 9e56025):** the `R2TopAssembly.lean:255`/`:325`
+  `ring`/`convert` break was real and pre-existing (reproduced on a
+  from-scratch remote CI checkout, not local cache noise), and turned out to
+  be exactly the fragile-`convert`-pattern described below — both spots
+  rewritten as explicit `calc` chains, no `convert` needed. Fixing it
+  unmasked one more small pre-existing bug (`R2Certificates.lean` never
+  imported `R2MassBatchWeights.lean`, so `QB.weights` didn't resolve — always
+  broken, just never reached because `R2TopAssembly` failed first). Both
+  fixed. **Verified end-to-end locally**: `lake build
+  RequestProject.Erdos306FormalConjectures` succeeds (8718 jobs, 0 errors),
+  `#print axioms erdos_306_unconditional` shows only
+  `propext, Classical.choice, Quot.sound` plus the two named structural
+  axioms. CI on this exact commit not yet confirmed at time of writing —
+  check `gh run list --branch codex/pushlinter` before assuming it's green.
 
 ## Map: what's already in reasonable shape vs. what needs work
 
@@ -187,10 +193,16 @@ scaffolding" judgment call this handoff is for.
   kind of file-level static analysis and inherits the same limitation —
   it's useful for orientation (import hubs, coarse reachability) but not a
   deletion oracle.
-- The `R2TopAssembly.lean:255`/`:325` `ring`/`convert` failures mentioned
-  above are real and reproduced on a clean CI checkout — not a caching
+- The `R2TopAssembly.lean:255`/`:325` `ring`/`convert` failures (now fixed,
+  see above) were real and reproduced on a clean CI checkout — not a caching
   artifact, despite looking exactly like one at first (this pass burned
-  real time confirming that before concluding it's genuine).
+  real time confirming that before concluding it was genuine). The general
+  shape worth remembering: `convert foo using 1; ring` (single semicolon,
+  not `<;>`) is fragile whenever `convert` produces more than one goal —
+  only the first goal gets `ring`, the rest are silently left unsolved or
+  `ring` is run against the wrong goal. Prefer an explicit `calc` chain over
+  `convert ...; ring` in general; it's not meaningfully longer and doesn't
+  silently break when Mathlib's exact lemma shape shifts.
 - Local machine is memory/compute constrained. A single `lake build` of one
   file's dependency closure can take several minutes; prefer
   `lake env lean <file>` for fast single-file iteration once dependencies
@@ -224,8 +236,9 @@ scaffolding" judgment call this handoff is for.
 Following the "repair the earliest non-clean confluence, don't skip ahead to
 polish a downstream bridge" discipline already in `docs/refactor-roadmap.md`:
 
-1. Fix (or cleanly rewrite) the real `R2TopAssembly.lean:255`/`:325` break —
-   it's blocking CI and the declaration-level dependency-graph tool.
+1. ~~Fix the real `R2TopAssembly.lean:255`/`:325` break~~ — done (commit
+   9e56025). The `.github/workflows/lean-graph.yml` declaration-level
+   dependency-graph tool should now be unblockable if useful.
 2. Read the ~26-file minor-arc/extra-frequency group the same way this pass
    read the mass-batch group, to get the matching map before touching either.
 3. Collapse the mass-batch (~19 files) and minor-arc (~26 files) groups by
