@@ -61,10 +61,22 @@ in the file layout):
 2. Residual reciprocal-mass-batch selection (~19 files: `R2MassBatch*`,
    `R2Component*`, `R2Forbidden*`, `R2BaseLoadUpper`/`R2BaseBudgetAssembly`) —
    see finding 3c, this is the highest-value target.
-3. Minor-arc / extra-frequency damping estimate (~26 files: `R2Minor*`,
-   `R2Extra*`, `R2BlockMinorLane`, `R2FourierFactor`) — **not yet read**,
-   likely has the same shape of problem as group 2 by analogy, needs the same
-   treatment.
+3. Minor-arc / extra-frequency damping estimate (~25 files: `R2Minor*`,
+   `R2Extra*`, `R2BlockMinorLane`, `R2FourierFactor`) — partially read.
+   **Unlike group 2, this group is NOT mostly adapter shell** — sampled files
+   (`R2ExtraCRTSibling.lean`'s squarefree-CRT mismatch argument,
+   `R2FourierFactor.lean`'s Bernoulli-factor norm bound) hold genuine,
+   reasonably well-organized mathematical content, with only a legitimate
+   two-generation API bridge (`R2ExtraMinorWitnessData` →
+   `R2ExtraMinorGadgetMemData`) rather than pure waste. It does still have
+   the *abandoned-alternative-strategy* problem though: `R2MinorEndgameGadget.lean`
+   (a "single gadget" damping strategy, superseded by the frequency-lanes /
+   multi-gadget approach) was confirmed dead by the same check and deleted.
+   The remaining `R2MinorEndgame*` family (`Frequency`, `Lanes`,
+   `MultiGadget`) looks like it might still hold more than one live strategy
+   variant side by side — worth the same "which one is actually called from
+   `R2Certificates.lean`" check before assuming any of it is dead or
+   collapsible. Not fully read past the two sampled files.
 4. Final numeric closure and assembly (~8 files: `R2NumericFields`,
    `R2AssemblyFields`, `R2LargeK0`, `R2FinalAssembly*`, `R2TopAssembly`,
    `R2Certificates`).
@@ -85,6 +97,14 @@ in the file layout):
   endpoint (an abandoned alternative to the one actually wired into
   `R2Certificates.lean`), deleted after empirical build verification (not just
   static analysis — see gotcha below).
+- `R2TopAssembly.lean`: fixed the real CI-blocking `ring`/`convert` break
+  (see "Current state" above); unmasked and fixed a second pre-existing bug
+  (`R2Certificates.lean` missing an import). Whole project now builds
+  end-to-end (`Erdos306FormalConjectures`, 8718 jobs) with the expected axiom
+  set.
+- `R2MinorEndgameGadget.lean`: another confirmed-dead abandoned strategy
+  (single-gadget damping, superseded by frequency-lanes/multi-gadget),
+  deleted after both a zero-importers and zero-content-references check.
 - Two dependent-rewrite/defeq breaks fixed (`R2ExtraFrequencyChoice.lean`'s
   `hm_r` field, `R2MassBatchPoolSupply.lean`'s `withQ` unfolding) plus one
   regression this pass introduced and then fixed (`R2MinorEstimateInterface.lean`).
