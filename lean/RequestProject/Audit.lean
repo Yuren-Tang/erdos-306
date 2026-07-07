@@ -16,14 +16,15 @@ needs in order to verify the result, without reading the proof:
 CI runs this file and gates on the axiom audit.
 -/
 
-open Erdos306 GlobalControl
+open Erdos306
 
 -- The theorem that is proved:
 #check @erdos_306
 
--- Sorry-free, and depends only on the axioms listed here:
+-- Sorry-free, and depends only on the axioms listed here (fully qualified,
+-- so the printed names can be matched exactly against AnalyticInputs.lean):
 #print axioms erdos_306
 
 -- The two non-standard axioms (structural analytic-number-theory inputs):
-#print pnt_dyadic_prime_density
-#print mertens_dyadic_window_mass
+#print GlobalControl.pnt_dyadic_prime_density
+#print GlobalControl.mertens_dyadic_window_mass
