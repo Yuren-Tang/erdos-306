@@ -115,6 +115,17 @@ in the file layout):
   this cache" warning appears right before the real error every time —
   that warning is real but unrelated.) Fix: build `RequestProject.Audit`
   instead, which covers everything downstream needs.
+- `RequestProject/Audit.lean`: a third independent, pre-existing CI bug,
+  found only after the previous two fixes let CI get this far: the file had
+  `open Erdos306 GlobalControl`, which makes Lean's pretty-printer drop the
+  `GlobalControl.` prefix from `#print axioms erdos_306`'s output (in-scope
+  names print unqualified). `ci.yml`'s gate script greps for the
+  fully-qualified axiom names exactly, so it reported both as "missing"
+  even though they were right there, just unprefixed — and this reproduced
+  locally too (same `open`), it just wasn't being checked against the gate
+  script's literal string match when verifying locally. Fixed by dropping
+  `GlobalControl` from the `open` and printing the two axioms via their
+  fully-qualified names directly.
 - `R2MinorEndgameGadget.lean`: another confirmed-dead abandoned strategy
   (single-gadget damping, superseded by frequency-lanes/multi-gadget),
   deleted after both a zero-importers and zero-content-references check.
@@ -212,6 +223,18 @@ scaffolding" judgment call this handoff is for.
 
 ## Known gotchas (read before touching more of R2*)
 
+- **"Builds with zero errors" is not the same as "passes CI's actual
+  checks."** All three of the CI-blocking bugs found and fixed this pass
+  (the `ring`/`convert` break, the `ci.yml` build-target mismatch, and
+  `Audit.lean`'s missing-prefix printing) were only found by reading CI's
+  literal failure output, not by local `lake build` success — the last one
+  in particular printed identically both locally and in CI, and only failed
+  because `ci.yml`'s gate script does an exact string match against output
+  that a local run never checked that precisely. When "it builds clean
+  locally" and "CI is still red" disagree, don't assume the CI failure is
+  infrastructure noise (cache races, flakiness) until you've actually read
+  what the failing CI step's script is checking for and compared it
+  character-for-character against local output.
 - **Static reachability/dead-code heuristics have real false positives on
   this codebase.** A declaration-level "is this reachable from `erdos_306`"
   script (regex-based, checking which declared names' bodies textually
