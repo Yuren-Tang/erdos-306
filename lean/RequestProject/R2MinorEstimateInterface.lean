@@ -71,7 +71,7 @@ theorem block_part_bound
       ≤ K * ∑' a : {a : GlobalAssignment BS // a ∉ mainArc BS C},
           Real.exp (-c * Qctrl BS a.1) :=
   minor_energy_sum_le_fiber_tail BS E c C K (blockMinorPart Sm Sblock) Qextra
-    hc hK hQE hnotmain hfiber
+    hc hQE hnotmain hfiber
 
 /-- **Extra-part bound.**  Sum the per-gadget sibling damping factor
 `gadget_charFun_damp` over the disjointized extra-minor part
