@@ -23,7 +23,7 @@ jobs:
         uses: leanprover/lean-action@v1
         with:
           lake-package-directory: "lean"
-          build-args: "RequestProject.Erdos306FormalConjectures"
+          build-args: "RequestProject.Audit"
 
       - name: Emit audit (theorem, axioms, axiom statements)
         working-directory: lean
