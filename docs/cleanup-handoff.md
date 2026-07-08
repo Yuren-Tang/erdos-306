@@ -363,6 +363,59 @@ the same standard or look more like the `R2*` shape.
 
 ## Known gotchas (read before touching more of R2*)
 
+- **Applying a whole `#min_imports` audit's findings in one batch is how you
+  get a multi-hour debugging session.** A full CI import-audit run (4-way
+  sharded, `lean/scripts/audit_imports.sh`) found ~31 real redundant/missing
+  import findings across the whole repo. Applying all ~31 fixes at once,
+  then doing a single full rebuild at the end, triggered a cascade: 12 of
+  those files turned out to be relied upon by *other* files to relay an
+  import transitively, and `#min_imports` only ever verifies a file *in
+  isolation* — it has no way to know "does anything else count on me to
+  pass this through." The failures did not surface locally in any
+  predictable order; each fix uncovered the next only once its specific
+  downstream consumer was rebuilt, requiring several rounds of bisection
+  (including one case — `R2ConcreteData.lean` — where the manual import
+  trace looked intact on paper, `ArcConstructionSigma.lean` genuinely does
+  import `ArcConstruction.lean`, and only a direct `lake env lean` test
+  file with `#check @ArcConstruction` proved the transitive path was
+  actually broken; the first two attempts at that test gave false
+  negatives because they forgot to open the `CircleMethod` namespace
+  `ArcConstruction` lives in — a namespaced identifier failing to resolve
+  in a bare test file does not by itself prove an import chain is broken).
+  **The fix the user proposed mid-session, confirmed by this experience:
+  process files in dependency order (upstream/foundational files first),
+  and after each fix do a small, targeted `lake build <that file or its
+  direct dependents>` — not a full audit rebuild — before moving to the
+  next file.** This is cheaper in aggregate, not more expensive: a targeted
+  build only recompiles the changed target's closure (seconds to low
+  minutes), and any relay break surfaces immediately, locally, at the exact
+  step that caused it — instead of accumulating into a tangle that takes
+  several rounds of full-project bisection to untangle after the fact. Use
+  the full audit for *discovery* (the one-time map of what needs fixing),
+  never for *batch application*.
+  Net result of this pass: 14 files' import trims survived independent
+  verification and are kept (`ArcConstruction`, `CannonBridge`,
+  `CircleMethodArcs`, `Construction/{BaseLoadBudget,ExtraSiblingChoice,
+  MassPool,MinorEndgame}`, `Core/{LevelSetLaplace,SquarefreeNecessity}`,
+  `GlobalControl/Encoding/BlockData` — a genuine missing-import fix, not a
+  trim — `GlobalPeierlsBookkeeping`, `R2Certificates`,
+  `R2DyadicBlockSupport`, `R2EventualScale`); 12 files/groups were reverted
+  to their original (still redundant-per-CI, but load-bearing-as-is)
+  imports rather than risk further hidden breakage: the
+  `R2MinorAssembly`/`R2MinorEstimateInterface`/`R2MinorCover` trio, the
+  `GlobalControl`/`LocalEnergy` family (`Encoding/Fibers`,
+  `LevelSetAssembly`, `ChargeAggregation`, `DominantLabel`, `LevelSet`,
+  `CrossBlockEnergy`, `Encoding/HotBlockCount`, `LevelSetCover`),
+  `Core/ShortIntervalCongruence`, `LocalEnergy/ReciprocalDispersion`,
+  `BlockCRTEnergy`, `R2FinalAssembly`, `R2ConcreteData`, `R2MinorReady`,
+  `R2MinorBudgetNumerics`. CI's `verify` job (the actual proof-correctness
+  gate) is green; the `import-audit`/`Lint Lean sources` jobs still flag
+  these 12 as before — that is the direct, accepted cost of choosing
+  safety over cosmetic minimality for them in this pass. Revisiting them
+  properly needs fixing *both* sides at once (trim the producer's import
+  *and* add the now-necessary direct import to every consumer that was
+  relying on the relay) in the dependency-ordered, incrementally-verified
+  way described above — not another batch attempt.
 - **"Consolidate this node into one file" is not a license to concatenate.**
   Batch 4's first attempt merged 12 files into one 1100-line
   `Construction/MassWindow.lean` because they all fed the same downstream
