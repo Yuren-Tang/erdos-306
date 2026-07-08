@@ -1,4 +1,3 @@
-import RequestProject.R2AssemblySkeleton
 import RequestProject.ExtraEnergyMinorArc
 import RequestProject.ExtraMinorDamping
 
