@@ -62,28 +62,6 @@ theorem exists_massBatchSupply_of_blockPrimes_forbiddenBudget
   exact exists_massBatchSupply_of_half_fullPool_forbiddenBudget D hb hbase hlarge
     B hfull hbudget
 
-/-- Existential version using `blockPrimes_product_load_ge`: after choosing a
-sufficiently low starting block, the only remaining hypotheses are support
-containment, the bottom-scale inequality, and the three-piece forbidden budget. -/
-theorem exists_massBatchSupply_of_eventual_blockPrimes_forbiddenBudget
-    {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b)
-    (hb : 0 < b)
-    (hbase : D.baseLoad < 3 / (2 * (b : ℝ)))
-    (hlarge : 2 * b < 3 * (2 ^ D.BS.k0 * 2 ^ D.BS.k0))
-    (B : R2ForbiddenBudget D)
-    (hsub : blockPrimes D.BS.k0 ⊆ blockSupport D.BS)
-    (hbudget :
-      (3 / (2 * (b : ℝ)) - D.baseLoad) + (B.FT + B.Fctrl + B.Fgadget)
-        ≤ (1 : ℝ) / 2) :
-    ∃ k1 : ℕ, 5 ≤ k1 ∧ (k1 ≤ D.BS.k0 →
-      ∃ Q : Finset ℕ, R2MassBatchSupply (D.withQ Q)) := by
-  obtain ⟨k1, hk15, hload⟩ := blockPrimes_product_load_ge
-  refine ⟨k1, hk15, ?_⟩
-  intro hklarge
-  exact exists_massBatchSupply_of_blockPrimes_forbiddenBudget D hb hbase hlarge
-    B k1 hklarge hsub hload hbudget
-
 end CircleMethod
 
 end

@@ -1,4 +1,4 @@
-import RequestProject.R2ComponentSupply
+import RequestProject.R2MassBatchSupply
 
 open Finset BigOperators GlobalControl
 

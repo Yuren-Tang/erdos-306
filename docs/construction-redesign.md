@@ -115,20 +115,34 @@ today spread over `BernoulliFourier`, `CircleMethodArcs`,
   `primeSupportPeriod`, semiprimality/avoidance/divisibility bookkeeping
   (`R2AssemblySkeleton` + `R2ConcreteData`). Right content, two files, fine
   as one node `Construction/Edges.lean`.
-- **C2 ▽ Mass window.** P4 → residual window with a spent base load
+- **C2 ✓ Mass window.** P4 → residual window with a spent base load
   (`exists_subset_recip_residual_window`, `BlockMassPool`;
   `exists_residual_subset_recip_window`, `R2ConcreteData`) → block-aligned
   batch from the Mertens axiom (`exists_blockAligned_mass_batch`,
   `BlockMassPool`) → base-load accounting (ctrl-load bound from
-  `R2BaseLoadUpper`, gadget-load bound) → `R2MassBatchSupply` construction.
-  *Today this handoff is smeared over ~12 adapter files*
-  (`R2MassBatch{Ready,Scale,Supply,CandidatePool,PoolSupply,FinalBudget,BaseLoadBudget}`,
-  `R2Forbidden{Base,Pool}Budget`, `R2BaseBudgetAssembly`,
-  `R2Component{Supply,SupplyReady,MassReady,CoreSupply}`…), whose live
-  content compresses to: the pool definition, the window selection, the
-  load accounting, and the record constructor — one file
-  `Construction/MassWindow.lean`, with `r2_getQ` (`R2TopAssembly`) as the
-  single downstream entry point.
+  `R2BaseLoadUpper`, gadget-load bound) → `R2MassBatchSupply` construction,
+  consumed directly by `R2TopAssembly`'s `exists_r2_massBatch` /
+  `exists_r2_data_of_numerics_set` / `r2_getQ` (the single downstream entry
+  point, called from `R2Certificates`). Read to completion this pass: a
+  whole second abandoned-strategy cluster found and deleted (see
+  "Merged/eliminated outright" below) — **7 whole files deleted**
+  (`R2MassBatch{Ready,Scale,BaseLoadBudget}`,
+  `R2Component{Supply,SupplyReady,MassReady}`, `R2SelectedQReady`) plus
+  5 files trimmed to their live core (`R2ForbiddenBaseBudget`,
+  `R2MassBatchFinalBudget`, `R2ComponentScaleCard`, `R2ComponentCoreSupply`,
+  `R2MassBatchWeights`). What remains genuinely live — `R2MassBatchSupply`,
+  `R2MassBatchCandidatePool`, `R2MassBatchPoolSupply`,
+  `R2MassBatchFinalBudget` (trimmed), `R2ForbiddenPoolBudget`,
+  `R2ForbiddenBaseBudget` (trimmed), `R2BaseLoadUpper`,
+  `R2BaseBudgetAssembly`, `R2ComponentDisjoint`,
+  `R2ComponentScaleCard` (trimmed), `R2MassBatchWeights` (trimmed to just
+  `weights`) — is now a manageable ~11-file group, still worth collapsing
+  into one `Construction/MassWindow.lean` (batch 4), but far smaller than
+  the ~19 files this doc originally estimated. `R2ComponentCoreSupply`'s
+  `R2ComponentScaleCoreSupply` struct is NOT part of this node at all —
+  it's shared C5/C6 minor-arc content (see C6) that had been mis-filed
+  next to the mass-batch family; keep it where it is or move it with C6,
+  not with C2.
 - **C3 ▽ Weights.** Uniform-window weights from the load window
   (`weights_of_recipLoad_window`, `R2Weights`;
   `R2MassBatchSupply.weights`, `R2MassBatchWeights`). One short node.
@@ -206,6 +220,44 @@ structs (`R2BlockFiberTailData`, `R2MinorReadyData`). This closes the
 minor-arc region read: every file in it is now either confirmed live (C4–C7
 above) or deleted.
 
+**Fourth dead cluster found and deleted this pass** (the mass-batch group's
+own abandoned wrapper-escalation strategy, same shape as the other three:
+an "eventual ∃k0min" / "ScaleCard/MassReady/SelectedQ ready" packaging
+layer built for a more complex assembly strategy, superseded by
+`R2TopAssembly`'s simpler direct construction and never deleted).
+**7 whole files deleted**: `R2MassBatchReady.lean`,
+`R2MassBatchBaseLoadBudget.lean` (the "eventual" existential wrapper pair —
+`R2TopAssembly`'s `exists_r2_massBatch` takes the scale/disjointness facts
+directly instead of deriving them via an internal gate);
+`R2ComponentSupply.lean`, `R2ComponentSupplyReady.lean`,
+`R2ComponentMassReady.lean`, `R2SelectedQReady.lean` (a four-file
+"ScaleCard → SupplyReady → MassReady → SelectedQ" escalation for an
+`exists_arcConstruction_of_...` variant nothing calls — the live path
+builds `R2ComponentScaleCoreSupply` directly and feeds it to
+`R2MinorEndgameMultiGadget`/`R2MinorEndgameFrequency` instead, an entirely
+different downstream shape); `R2MassBatchScale.lean` (only consumer was
+the dead `R2ComponentMassReady.lean`). Plus **5 files trimmed** to their
+live core: `R2ForbiddenBaseBudget.lean` and `R2MassBatchFinalBudget.lean`
+(one dead theorem each, the tail end of the eventual-wrapper chain);
+`R2ComponentScaleCard.lean` (7 of 10 declarations dead — the file mixes
+genuinely shared scale lemmas used directly by `R2TopAssembly`/
+`R2Certificates` with dead `R2ControlSupply`/`R2GadgetSupply` constructors
+for the now-dead `R2ComponentSupply.lean`); `R2ComponentCoreSupply.lean`
+(3 of 4 declarations dead — `.toScaleCardSupply`/`.withQ`/
+`.toScaleCardSupply_withQ` were only ever called from the now-dead
+`R2SelectedQReady.lean`; the base `R2ComponentScaleCoreSupply` struct
+itself is live C5/C6 content, kept); `R2MassBatchWeights.lean` (2 of 3
+declarations dead — only `R2MassBatchSupply.weights` survives, used
+directly by `R2Certificates.lean`). Caught one resulting orphaned import
+(`R2TopAssembly.lean` importing the now-deleted
+`R2MassBatchBaseLoadBudget.lean` for a transitively-needed `R2BaseLoadUpper`
+it already gets via `R2BaseBudgetAssembly`) and three files that needed a
+new direct import for what they used to reach transitively through a
+deleted file (`R2ComponentScaleCard`, `R2ComponentCoreSupply`,
+`R2MassBatchPoolSupply`, `R2MassBatchWeights`) — all fixed and verified by
+one `lake build RequestProject.Audit`, same discipline as the third
+cluster.
+
 ## Execution order (few-build batches)
 
 Each batch ends in exactly one `lake build RequestProject.Audit` (locally
@@ -216,14 +268,20 @@ or via CI), per the build-cycle economy this repo needs:
    collapse, `BernoulliFourier` leftovers, alias chain, plus (found in the
    full minor-arc read) the `R2FourierFactor`/`R2ExtraMinorLane`
    single-gadget-witness dead cluster and the two dead endgame-lanes
-   theorems — see "Merged/eliminated outright" above.
+   theorems, plus (found in the mass-batch read) the seven-file
+   `R2MassBatch{Ready,BaseLoadBudget,Scale}`/
+   `R2Component{Supply,SupplyReady,MassReady}`/`R2SelectedQReady`
+   eventual-wrapper cluster and five partial trims — see "Merged/eliminated
+   outright" above.
 2. **P2 + B2 unification**: add `Core/FiniteProducts.lean` and
    `fourierNormWeight_eq_prod_norm`; re-derive the three product bounds as
    corollaries; move `bernoulliCharFun_norm_le_one` to `BernoulliFourier`.
 3. **A1(i) foundation dedup** in `R2Certificates`.
 4. **C2 mass-window consolidation**: write `Construction/MassWindow.lean`
    fresh (move the live theorems, re-prove nothing), repoint `r2_getQ`,
-   delete the ~12 adapter files.
+   delete the remaining ~11 adapter files (down from ~19 — the dead
+   eventual-wrapper cluster that made up the difference is already gone,
+   see batch 1).
 5. **C6 extra-minor consolidation**: same method, ~6 files.
 6. **Physical tree + renaming**: create `Construction/`, move the C/A
    nodes, apply `docs/architecture.md`'s naming table (`R2` → resonant

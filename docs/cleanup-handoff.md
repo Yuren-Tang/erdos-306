@@ -90,9 +90,11 @@ roundabout path over patching it in place.
 `R2*`'s 58 files break down mathematically into four groups (not yet reflected
 in the file layout):
 1. Foundation (`R2AssemblySkeleton`, `R2ConcreteData`) — fine as-is.
-2. Residual reciprocal-mass-batch selection (~19 files: `R2MassBatch*`,
-   `R2Component*`, `R2Forbidden*`, `R2BaseLoadUpper`/`R2BaseBudgetAssembly`) —
-   see finding 3c, this is the highest-value target.
+2. Residual reciprocal-mass-batch selection (~11 files now, down from ~19:
+   `R2MassBatch*`, `R2Forbidden*`, `R2BaseLoadUpper`/`R2BaseBudgetAssembly`,
+   `R2ComponentDisjoint`/`R2ComponentScaleCard` (trimmed)) — **now fully
+   read and the dead half already deleted this pass**, see finding 3c.
+   Still the next consolidation target (batch 4), just a much smaller one.
 3. Minor-arc / extra-frequency damping estimate (~25 files: `R2Minor*`,
    `R2Extra*`, `R2BlockMinorLane`) — **now fully read** (see
    `docs/construction-redesign.md` C4–C7). Unlike group 2, this group is NOT
@@ -213,30 +215,36 @@ instantiation (`exists_blockAligned_mass_batch`, using the Mertens axiom).
 second-level instantiation of the same general lemma (fixing the R2 window
 bounds) — this part is fine.
 
-Downstream of that, however, ~19 `R2*` files (`R2MassBatchReady`,
-`R2MassBatchBaseLoadBudget`, `R2ComponentMassReady`, `R2ComponentSupplyReady`,
-`R2ComponentCoreSupply`, `R2SelectedQReady`, `R2MassBatchWeights`,
-`R2ForbiddenBaseBudget`, `R2ForbiddenPoolBudget`, etc.) build a long chain of
-small "socket"/"ready"/"budget" adapter structures on top of this, most of
-which just repackage one struct's fields into the next struct's fields plus
-one or two derived facts (see `R2MassBatchReady.lean`,
-`R2ComponentMassReady.lean`, `R2SelectedQReady.lean`,
-`R2MassBatchBaseLoadBudget.lean` for representative examples of the pattern:
-each is `theorem foo := by obtain ...; exact bar ...args`).
-
-**This is the single highest-value remaining target**, but a first attempt
-at collapsing it this pass (see gotcha below) found the chain more tangled
-than it looks: some of these files hold genuine numeric/structural content
-mixed in with pure wiring, and the live call graph doesn't cleanly separate
-along file boundaries — e.g. `R2TopAssembly.lean`'s own `r2_getQ` /
-`exists_r2_data_of_numerics_set` (lines ~336, ~56) reach into
-`R2BaseLoadUpper`/`R2ComponentDisjoint`/`R2ForbiddenBaseBudget` directly, and
-several of the small "Ready"/"Socket" files turned out to still be
-load-bearing for reasons the static analysis missed. Collapsing this
-properly needs someone to actually read the ~19 files' mathematical content
-(not just their shape) and decide the right smaller set of nodes — this is
-exactly the "recognize the real mechanism, discard the accumulated
-scaffolding" judgment call this handoff is for.
+Downstream of that, ~19 `R2*` files built a long chain of small
+"socket"/"ready"/"budget" adapter structures on top of this. **Now fully
+read and resolved this pass** (was previously a "first attempt found it
+more tangled than it looks, needs full read" open item — that full read
+has now happened): the chain splits cleanly into two parts once you trace
+actual callers instead of just import shape. `R2TopAssembly.lean`'s
+`r2_getQ`/`exists_r2_data_of_numerics_set`/`exists_r2_massBatch` reach
+directly into `R2BaseLoadUpper`, `R2BaseBudgetAssembly`,
+`R2ComponentDisjoint`, the live parts of `R2ForbiddenBaseBudget` and
+`R2MassBatchFinalBudget`, and (via `R2MassBatchCandidatePool`/
+`R2MassBatchPoolSupply`) the pool-selection theorems above — this part is
+genuinely live and needed. But a second, entirely separate escalation
+chain built for a *different, more complex* assembly strategy
+(`R2MassBatchReady`/`R2MassBatchBaseLoadBudget`'s "eventual ∃k0min"
+existential wrapper, and `R2ComponentSupply`/`R2ComponentSupplyReady`/
+`R2ComponentMassReady`/`R2SelectedQReady`'s "ScaleCard → SupplyReady →
+MassReady → SelectedQ" packaging escalation) turned out to have **zero
+live callers anywhere** — confirmed by tracing every declaration's callers
+by hand, the same discipline used for the minor-arc dead clusters. Deleted
+outright: 7 whole files. Trimmed to their live core: `R2ForbiddenBaseBudget`,
+`R2MassBatchFinalBudget`, `R2ComponentScaleCard`, `R2ComponentCoreSupply`,
+`R2MassBatchWeights` (each had one or more dead declarations mixed in with
+genuinely live ones — see `docs/construction-redesign.md`'s C2 node for
+the exact split). One real bug this surfaced: `R2ComponentCoreSupply.lean`'s
+base struct `R2ComponentScaleCoreSupply` is actually live *C5/C6 minor-arc*
+content (consumed by `R2MinorEndgameMultiGadget`/`R2MinorEndgameFrequency`),
+mis-filed next to the mass-batch family — its own `.toScaleCardSupply`/
+`.withQ` methods were the dead part. The remaining mass-batch group is
+now ~11 files, ready for the batch-4 `Construction/MassWindow.lean`
+consolidation with no further judgment calls needed first.
 
 ### Flagged, unresolved, needs judgment (not attempted)
 
@@ -372,11 +380,16 @@ polish a downstream bridge" discipline already in `docs/refactor-roadmap.md`:
    pass read the mass-batch group~~ — done, see `docs/construction-redesign.md`
    C4–C7 and the "Already fixed" entry above for the resulting map and the
    third dead cluster it turned up.
-3. Collapse the mass-batch (~19 files) and minor-arc (~26 files) groups by
-   mathematical role rather than pipeline-stage, per finding 3c — this is
-   where the real Bourbaki-style win is: identify the true minimal
-   mechanism(s) each group is really computing, state them at their natural
-   generality once, and discard the accumulated per-stage adapter files.
+3. Collapse the mass-batch (~11 files, down from ~19 — see finding 3c: the
+   dead half of the group is already deleted this pass) and minor-arc
+   (~9 files feeding `Construction/ExtraMinor.lean`, per
+   `docs/construction-redesign.md` C6) groups by mathematical role rather
+   than pipeline-stage — this is where the real Bourbaki-style win is:
+   identify the true minimal mechanism(s) each group is really computing,
+   state them at their natural generality once, and discard the remaining
+   per-stage adapter files. No further judgment calls needed first — both
+   groups are now fully read and mapped; this is mechanical execution
+   given `docs/construction-redesign.md`.
 4. Apply the naming policy already written in `docs/architecture.md`
    (`R2`/`gadget`/`lane`/`supply`/`certificate` → mathematical names) as part
    of the same pass, not as a separate renaming sweep — renaming without

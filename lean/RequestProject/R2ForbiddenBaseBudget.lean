@@ -85,28 +85,6 @@ theorem basePieces_forbiddenBudget_final_ineq
   rw [hbase]
   linarith
 
-/-- Mass-batch existence with the forbidden budget discharged by base-load
-absorption. -/
-theorem exists_massBatchSupply_of_basePieces_forbiddenBudget
-    {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b)
-    (hb : 3 ≤ b)
-    (hbase : D.baseLoad < 3 / (2 * (b : ℝ)))
-    (hlarge : 2 * b < 3 * (2 ^ D.BS.k0 * 2 ^ D.BS.k0))
-    (hTsmall : ∀ e ∈ T, e < 2 ^ D.BS.k0 * 2 ^ D.BS.k0)
-    (hdisj : Disjoint (ctrlEdges D.BS) (gadgetEdges D.R D.S))
-    (hsub : blockPrimes D.BS.k0 ⊆ blockSupport D.BS) :
-    ∃ k1 : ℕ, 5 ≤ k1 ∧ (k1 ≤ D.BS.k0 →
-      ∃ Q : Finset ℕ, R2MassBatchSupply (D.withQ Q)) := by
-  let B := R2ForbiddenBudget.of_basePieces D hTsmall
-  have hbpos : 0 < b := lt_of_lt_of_le (by norm_num) hb
-  have hbudget :
-      (3 / (2 * (b : ℝ)) - D.baseLoad) + (B.FT + B.Fctrl + B.Fgadget)
-        ≤ (1 : ℝ) / 2 := by
-    simpa [B] using basePieces_forbiddenBudget_final_ineq D hb hTsmall hdisj
-  exact exists_massBatchSupply_of_eventual_blockPrimes_forbiddenBudget D hbpos
-    hbase hlarge B hsub hbudget
-
 end CircleMethod
 
 end
