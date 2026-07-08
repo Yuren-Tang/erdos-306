@@ -1,5 +1,4 @@
 import RequestProject.Construction.MassPool
-import RequestProject.GlobalControl.BlockRestriction
 import RequestProject.DyadicBlockUpper
 
 open Finset BigOperators GlobalControl

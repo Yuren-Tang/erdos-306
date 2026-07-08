@@ -1,6 +1,5 @@
 import RequestProject.R2TopAssembly
 import RequestProject.Construction.MassBatchSupply
-import RequestProject.GlobalControl.ControlVariancePositivity
 
 /-!
 # R2 construction certificates

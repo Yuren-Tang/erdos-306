@@ -1,6 +1,6 @@
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Tactic
+import Mathlib.Data.Finset.Insert
+import Mathlib.Tactic.NormNum.Ineq
+import Mathlib.Tactic.Positivity.Core
 
 open Finset BigOperators
 

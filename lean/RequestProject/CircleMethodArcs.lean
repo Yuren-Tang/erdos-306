@@ -1,5 +1,4 @@
 import RequestProject.BernoulliFourier
-import Mathlib.Analysis.Normed.Group.AddCircle
 import RequestProject.GlobalControl.Partition
 
 open Finset BigOperators Classical Real GlobalControl

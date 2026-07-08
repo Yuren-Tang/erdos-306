@@ -1,5 +1,4 @@
 import RequestProject.Construction.ExtraReservoir
-import RequestProject.FiberCount
 
 open Finset BigOperators GlobalControl
 

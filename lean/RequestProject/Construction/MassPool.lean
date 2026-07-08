@@ -1,6 +1,4 @@
 import RequestProject.R2ConcreteData
-import RequestProject.BlockSystemConstruction
-import RequestProject.GlobalControl.ControlEnergy
 
 open Finset BigOperators GlobalControl
 

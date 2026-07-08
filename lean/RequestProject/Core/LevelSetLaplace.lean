@@ -1,6 +1,5 @@
+import Mathlib.Analysis.Complex.Exponential
 import Mathlib.Analysis.SpecificLimits.Normed
-import Mathlib.Analysis.SpecialFunctions.Exp
-import Mathlib.Analysis.SpecialFunctions.Sqrt
 import RequestProject.Core.FiniteSums
 
 /-! Converting finite sublevel-set growth into a Laplace-sum bound. -/

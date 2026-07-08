@@ -1,4 +1,5 @@
 import RequestProject.GlobalControl.BlockRestriction
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 /-!
 # Global block energy data

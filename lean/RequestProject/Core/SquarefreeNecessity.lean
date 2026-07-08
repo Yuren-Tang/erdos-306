@@ -1,7 +1,9 @@
-import RequestProject.Core.EgyptianRepresentation
-import Mathlib.Algebra.GCDMonoid.FinsetLemmas
-import Mathlib.Data.Rat.Lemmas
-import Mathlib.Tactic
+import Mathlib.Algebra.GCDMonoid.Finset
+import Mathlib.Algebra.Order.Star.Basic
+import Mathlib.Data.Nat.GCD.BigOperators
+import Mathlib.Data.Nat.Squarefree
+import Mathlib.Tactic.NormNum.BigOperators
+import Mathlib.Tactic.NormNum.GCD
 
 open scoped BigOperators Classical Finset
 

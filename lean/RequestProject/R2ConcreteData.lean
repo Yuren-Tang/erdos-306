@@ -1,7 +1,4 @@
 import RequestProject.R2AssemblySkeleton
-import RequestProject.BlockMassPool
-import RequestProject.ArcConstructionSigma
-import RequestProject.CircleMethodAssembly
 
 open Finset BigOperators GlobalControl
 

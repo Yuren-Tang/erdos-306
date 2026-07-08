@@ -1,7 +1,6 @@
-import RequestProject.Spectral.Selection
 import RequestProject.CircleMethodMainTerm
 import RequestProject.Core.EgyptianRepresentation
-import RequestProject.Core.Semiprime
+import RequestProject.SpectralCannon
 
 /-!
 # Cannon bridge — deriving the circle-method existence step from `spectral_existence`

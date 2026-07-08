@@ -12,7 +12,6 @@ G5 (for the hot set with weights `Rw_k`, and for the mismatch boundary set with
 weights `Π_k`): the number of admissible subsets, weighted by a per-element
 cost, is dominated by `exp(εR/2) · exp(∑ exp(-ε w/4))`.
 -/
-import Mathlib.Analysis.Complex.Exponential
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 open Finset BigOperators
