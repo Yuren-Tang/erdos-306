@@ -1,4 +1,4 @@
-import RequestProject.R2MinorEndgameFrequency
+import RequestProject.Construction.MinorEndgame
 
 open Finset BigOperators GlobalControl
 open scoped Classical

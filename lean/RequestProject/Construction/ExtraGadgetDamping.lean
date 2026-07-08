@@ -7,11 +7,21 @@ noncomputable section
 namespace CircleMethod
 
 /-!
-# R2 extra-minor multi-gadget interface
+# Multi-gadget Fourier damping (node C6, mechanism 1)
 
-The earlier one-gadget extra lane is useful locally, but the terminal R2
-argument needs several gadget factors for each extra frequency.  This file
-records the correct budget interface without yet choosing the gadgets.
+Single motivating question: **given a fixed denominator prime `r` and a
+chosen set of block-side gadget primes `G`, how much does multiplying in
+their Fourier factors damp the Bernoulli summand?**  Two answers of
+increasing strength: a plain product bound (`fourierNormWeight_le_prod_norm_of_subset`
+instantiated at the gadget edges) and, when the gadget primes also witness a
+label mismatch, a genuine `< 1` per-factor decay
+(`gadget_charFun_damp`) raised to the gadget count.
+
+This node does not choose the gadgets or the denominator prime — that is
+`Construction.ExtraSiblingChoice`, a separate mechanism (choosing witnesses
+vs. bounding the damping once witnesses are fixed).
+
+See `docs/construction-redesign.md` node C6.
 -/
 
 /-- The selected gadget edge set for a fixed denominator prime `r` and a set of
