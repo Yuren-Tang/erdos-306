@@ -171,11 +171,23 @@ today spread over `BernoulliFourier`, `CircleMethodArcs`,
 - **C3 ▽ Weights.** Uniform-window weights from the load window
   (`weights_of_recipLoad_window`, `R2Weights`;
   `R2MassBatchSupply.weights`, `R2MassBatchWeights`). One short node.
-- **C4 ▽ Frequency classification.** `MainArcFields`, `blockMinorPart` /
-  `extraMinorPart` cover, the fiber count `≤ b`
-  (`mainArc_fiber_card_le`, `FiberCount`), and the concrete classification
-  (`R2MainArcClassification`, `R2MinorSupportPipeline`'s
-  `R2MinorClassificationData`). One node.
+- **C4 ✗ Frequency classification — re-examined, merge declined.** Read all
+  three files in full before touching anything (per the standing
+  discipline). They do not actually share a motivating question:
+  `FiberCount`'s CRT fiber-cardinality bound (`mainArc_fiber_card_le`) has a
+  single, distinct consumer (`ArcConstructionExtra`) and no code overlap
+  with the other two beyond the shared theme of "frequency"; `MainArcFields`
+  lives in `R2AssemblyFields` (already distributed into C7/A1) and doesn't
+  belong here at all. More importantly, `R2MainArcClassification`
+  (`mainArcClassificationData`) is the concrete global-control-main-arc
+  instantiation of `R2MinorSupportPipeline`'s abstract
+  `R2MinorClassificationData` interface — the same abstract-principle /
+  concrete-instantiation shape as `SpectralCannon`/`CannonBridge`. Merging
+  it into the file that defines the abstract interface would collapse that
+  deliberate split. Declined as a merge candidate; each file already sits at
+  the right granularity. (Original grouping was by loose theme, not real
+  coupling — the kind of premature-merge risk worth naming explicitly
+  rather than executing mechanically.)
 - **C5 ✓ Block-minor estimate.** Fiber-tail reindex (P3 instantiation in
   `ArcConstruction`/`ExtraEnergyMinorArc`) + global-control partition ⇒
   `block_part_bound` (`R2MinorEstimateInterface`) ⇒ the `Bblock` budget
@@ -226,23 +238,47 @@ today spread over `BernoulliFourier`, `CircleMethodArcs`,
   Built green on the first attempt — no import-gap fix cycle needed, unlike
   batch 4, evidence the "map mechanisms before writing files" discipline
   works when applied from the start rather than as a correction.
-- **C7 ▽ Main-arc numerics and σ-comparison.** `r2_numericFields`,
-  `sigmaE2_ge_ctrl`, `r2_main_arc_sigmaE_compare`, the `k0`-largeness facts
-  (`R2LargeK0`, parts of `R2TopAssembly`), `σ_E ≤ σ_ctrl` from the
-  extra-light bound (`ArcConstructionSigma`). One node.
+- **C7 ✗ Main-arc numerics and σ-comparison — re-examined, merge declined.**
+  Same re-examination as C4, same outcome. `R2NumericFields`
+  (`MainArcNumericFields`, single consumer `R2FinalAssembly`),
+  `ArcConstructionSigma` (`σ_E ≤ σ_ctrl` from the extra-light bound, single
+  consumer `Construction/Edges`), and `R2LargeK0` (pure-`ℕ` exponential-vs-
+  polynomial lemmas, single consumer `R2TopAssembly`) are three genuinely
+  separate motivating questions — a numeric-fields packaging record, a
+  σ-comparison analytic fact, and general-purpose scale arithmetic —
+  grouped only by the loose theme "numerics feeding the final assembly."
+  `R2LargeK0` additionally states its own reason to stay isolated (its
+  docstring: pure `Mathlib` import, "fast to recompile," deliberately no
+  project dependencies) — merging it into a heavy project file would
+  actively work against that. `ArcConstructionSigma`'s single consumer is
+  `Construction/Edges` (C1), but its motivating question — a quantitative
+  Gaussian-scale comparison — is not C1's (structural edge-set facts:
+  semiprimality/avoidance/divisibility), so single-consumer alone doesn't
+  justify folding it in either. Declined as a merge candidate. The
+  "k0-largeness facts...parts of `R2TopAssembly`" this node named were
+  never isolated to begin with; extracting a coherent chunk from that
+  793-line assembly file is real line-level surgery with its own risk
+  profile, not a same-pass batch-6 task — left for a dedicated future pass
+  if it turns out to matter, not forced here.
 
 ### Level 3 — assembly
 
 - **A1 ▽ The certificate chain.** `R2Certificates`' five-stage chain
   (foundation → concrete → mass → main-arc window → minor) is the right
-  *shape*; two fixes: (i) the foundation stage is stated twice — the
-  scaffolding pair `R2NumericLedger`/`R2BlockSystemCertificate` (which is
-  the mathematically correct split: scale parameters are chosen before and
-  independently of the block system) versus the flat
-  `R2FoundationCertificate` that duplicates all their fields; keep the
-  split pair as primary and make the flat record their join without field
-  duplication. (ii) the stage records should consume the C-nodes'
-  single entry points rather than reaching into adapter files.
+  *shape*. Re-checked both named fixes against the current file:
+  (i) **already resolved** — `R2FoundationCertificate` is currently exactly
+  the clean two-field join `{ ledger : R2NumericLedger b, bsCert :
+  R2BlockSystemCertificate T b ledger }` (`R2Certificates.lean:120-124`),
+  not a flat duplicate of both stages' fields. Whatever earlier draft this
+  entry described no longer matches the file; no action needed.
+  (ii) **still open, not yet re-verified** — "stage records should consume
+  the C-nodes' single entry points rather than reaching into adapter
+  files." `R2Certificates.lean` imports only `R2TopAssembly` and (already
+  the consolidated node) `Construction.MassBatchSupply`, which is
+  consistent with this, but confirming it properly requires tracing every
+  declaration the five certificate stages actually reference (766 lines) —
+  not done this pass. Left open rather than claimed done on the strength of
+  the import list alone.
 - **A2 ✓ The interface.** `ArcConstruction` (`CircleMethodAssembly`) —
   already the single consumed record; `Erdos306Final` wires it through
   P6/`CannonBridge` (`exists_subset_of_fourier_arcs`, `repr_of_subset`).
