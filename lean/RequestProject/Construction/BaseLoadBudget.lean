@@ -1,4 +1,5 @@
-import RequestProject.R2ComponentDisjoint
+import RequestProject.Construction.MassPool
+import RequestProject.GlobalControl.BlockRestriction
 import RequestProject.DyadicBlockUpper
 
 open Finset BigOperators GlobalControl
@@ -8,14 +9,120 @@ noncomputable section
 namespace CircleMethod
 
 /-!
-# R2 base-load upper socket
+# The base-load budget on the control and gadget edges (node C2, mechanism 2)
 
-This leaf isolates the remaining base-load upper condition into separate
-control and gadget reciprocal-load budgets.
+Single motivating question: **before the residual mass batch `D.Q` is even
+chosen, how much of the total load window does the *fixed* base load (the
+control edges plus the gadget edges) already spend?**  This is independent of
+how `Q` is chosen (`Construction.MassPool`): it is about the other two edge
+sets.  Three ingredients: control/gadget disjointness (so the base load
+splits additively), a dyadic analytic estimate that the control load is
+eventually negligible, and a finite cardinality bound on the gadget load.
+
+The forbidden-budget bridge (`R2ForbiddenBudget.of_basePieces`) discharges
+`Construction.MassPool`'s `R2ForbiddenBudget` using exactly this base-load
+split, which is why this file imports that one rather than the reverse.
+
+See `docs/construction-redesign.md` node C2.
 -/
 
-/-- If every gadget denominator prime lies outside the block support, the fixed
-base load splits exactly into control and gadget reciprocal loads. -/
+/-- The support factors of a control edge both lie in `blockSupport BS`. -/
+lemma mem_ctrlEdges_support_pair
+    {BS : BlockSystem} {e : ℕ} (he : e ∈ ctrlEdges BS) :
+    ∃ p ∈ blockSupport BS, ∃ q ∈ blockSupport BS, e = p * q := by
+  rw [ctrlEdges, Finset.mem_image] at he
+  obtain ⟨pq, hpq, rfl⟩ := he
+  obtain ⟨hp, hq⟩ := ctrlPairs_mem_blockSupport BS hpq
+  exact ⟨pq.1, hp, pq.2, hq, rfl⟩
+
+/-- **Control/gadget disjointness.** If every gadget prime `r ∈ R` is prime and
+outside the block support, then no control edge equals a gadget edge. -/
+theorem ctrlEdges_disjoint_gadgetEdges_of_R_outside_blockSupport
+    {BS : BlockSystem} {R S : Finset ℕ}
+    (hRprime : ∀ r ∈ R, Nat.Prime r)
+    (hRout : ∀ r ∈ R, r ∉ blockSupport BS) :
+    Disjoint (ctrlEdges BS) (gadgetEdges R S) := by
+  rw [Finset.disjoint_left]
+  intro e hectrl hegadget
+  obtain ⟨p, hp, q, hq, rfl⟩ := mem_ctrlEdges_support_pair hectrl
+  rw [mem_gadgetEdges] at hegadget
+  obtain ⟨r, hr, s, hs, hrs⟩ := hegadget
+  have hrp : Nat.Prime r := hRprime r hr
+  have hpp : Nat.Prime p := blockSupport_prime BS hp
+  have hqp : Nat.Prime q := blockSupport_prime BS hq
+  have hdvd : r ∣ p * q := by
+    rw [hrs]
+    exact dvd_mul_right r s
+  rcases (Nat.Prime.dvd_mul hrp).mp hdvd with hrp' | hrq'
+  · have : r = p := (Nat.prime_dvd_prime_iff_eq hrp hpp).mp hrp'
+    exact hRout r hr (this ▸ hp)
+  · have : r = q := (Nat.prime_dvd_prime_iff_eq hrp hqp).mp hrq'
+    exact hRout r hr (this ▸ hq)
+
+/-- Record-facing wrapper: the control/gadget components of an `R2ConcreteData`
+record are disjoint as soon as its denominator primes are kept outside the block
+support. -/
+theorem r2Concrete_ctrl_gadget_disjoint_of_R_outside_blockSupport
+    {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
+    (hRprime : ∀ r ∈ D.R, Nat.Prime r)
+    (hRout : ∀ r ∈ D.R, r ∉ blockSupport D.BS) :
+    Disjoint (ctrlEdges D.BS) (gadgetEdges D.R D.S) :=
+  ctrlEdges_disjoint_gadgetEdges_of_R_outside_blockSupport hRprime hRout
+
+/-- The fixed base load splits over disjoint control and gadget components. -/
+lemma baseLoad_eq_ctrl_add_gadget_of_disjoint
+    {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
+    (hdisj : Disjoint (ctrlEdges D.BS) (gadgetEdges D.R D.S)) :
+    D.baseLoad =
+      R2ConcreteData.recipLoad (ctrlEdges D.BS) +
+        R2ConcreteData.recipLoad (gadgetEdges D.R D.S) := by
+  unfold R2ConcreteData.baseLoad R2ConcreteData.recipLoad
+  rw [Finset.sum_union hdisj]
+
+/-- Concrete forbidden budget using zero obstruction overlap and the full
+control/gadget reciprocal loads as component budgets. -/
+def R2ForbiddenBudget.of_basePieces
+    {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
+    (hTsmall : ∀ e ∈ T, e < 2 ^ D.BS.k0 * 2 ^ D.BS.k0) :
+    R2ForbiddenBudget D where
+  FT := 0
+  Fctrl := R2ConcreteData.recipLoad (ctrlEdges D.BS)
+  Fgadget := R2ConcreteData.recipLoad (gadgetEdges D.R D.S)
+  hT := by
+    rw [blockSupportPairPool_inter_T_eq_empty_of_lt_k0_square hTsmall]
+    simp [R2ConcreteData.recipLoad]
+  hctrl := by
+    exact recipLoad_mono (Finset.inter_subset_right)
+  hgadget := by
+    exact recipLoad_mono (Finset.inter_subset_right)
+
+/-- For `b ≥ 3`, the common R2 target obeys `3/(2b) ≤ 1/2`. -/
+lemma three_div_two_mul_le_half_of_three_le {b : ℕ} (hb : 3 ≤ b) :
+    3 / (2 * (b : ℝ)) ≤ (1 : ℝ) / 2 := by
+  have hbR : (3 : ℝ) ≤ (b : ℝ) := by exact_mod_cast hb
+  have hbne : (b : ℝ) ≠ 0 := by positivity
+  field_simp [hbne]
+  nlinarith
+
+/-- With zero obstruction overlap and disjoint fixed components, the final
+forbidden-budget inequality follows from `b ≥ 3`. -/
+theorem basePieces_forbiddenBudget_final_ineq
+    {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
+    (hb : 3 ≤ b)
+    (hTsmall : ∀ e ∈ T, e < 2 ^ D.BS.k0 * 2 ^ D.BS.k0)
+    (hdisj : Disjoint (ctrlEdges D.BS) (gadgetEdges D.R D.S)) :
+    let B := R2ForbiddenBudget.of_basePieces D hTsmall
+    (3 / (2 * (b : ℝ)) - D.baseLoad) + (B.FT + B.Fctrl + B.Fgadget)
+      ≤ (1 : ℝ) / 2 := by
+  intro B
+  have hbase := baseLoad_eq_ctrl_add_gadget_of_disjoint D hdisj
+  have htarget := three_div_two_mul_le_half_of_three_le hb
+  dsimp [B, R2ForbiddenBudget.of_basePieces]
+  rw [hbase]
+  linarith
+
+/-- The fixed base load splits exactly into control and gadget reciprocal
+loads, if every gadget denominator prime lies outside the block support. -/
 theorem baseLoad_eq_ctrl_add_gadget_of_R_outside
     {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
     (hRprime : ∀ r ∈ D.R, Nat.Prime r)
@@ -269,4 +376,141 @@ theorem exists_k0_controlLoad_lt
       R2ConcreteData.recipLoad (ctrlEdges BS) ≤ ε :=
   dyadic_control_recipLoad_eventually_small ε hε
 
+lemma gadgetEdges_ge_mul
+    {R S : Finset ℕ} {r0 s0 e : ℕ}
+    (hRlow : ∀ r ∈ R, r0 ≤ r)
+    (hSlow : ∀ s ∈ S, s0 ≤ s)
+    (he : e ∈ gadgetEdges R S) :
+    r0 * s0 ≤ e := by
+  rw [mem_gadgetEdges] at he
+  obtain ⟨r, hr, s, hs, rfl⟩ := he
+  exact Nat.mul_le_mul (hRlow r hr) (hSlow s hs)
+
+lemma gadgetEdges_card_le_product (R S : Finset ℕ) :
+    (gadgetEdges R S).card ≤ R.card * S.card := by
+  rw [gadgetEdges]
+  refine le_trans Finset.card_image_le ?_
+  rw [Finset.card_product]
+
+lemma gadget_recip_le_of_lower_bounds
+    {R S : Finset ℕ} {r0 s0 e : ℕ}
+    (hr0 : 0 < r0) (hs0 : 0 < s0)
+    (hRlow : ∀ r ∈ R, r0 ≤ r)
+    (hSlow : ∀ s ∈ S, s0 ≤ s)
+    (he : e ∈ gadgetEdges R S) :
+    (1 : ℝ) / (e : ℝ) ≤ 1 / ((r0 * s0 : ℕ) : ℝ) := by
+  have hle : ((r0 * s0 : ℕ) : ℝ) ≤ (e : ℝ) := by
+    exact_mod_cast gadgetEdges_ge_mul hRlow hSlow he
+  have hpos : (0 : ℝ) < ((r0 * s0 : ℕ) : ℝ) := by
+    exact_mod_cast Nat.mul_pos hr0 hs0
+  exact one_div_le_one_div_of_le hpos hle
+
+theorem gadget_recipLoad_le_card_div
+    {R S : Finset ℕ} (r0 s0 : ℕ)
+    (hr0 : 0 < r0) (hs0 : 0 < s0)
+    (hRlow : ∀ r ∈ R, r0 ≤ r)
+    (hSlow : ∀ s ∈ S, s0 ≤ s) :
+    R2ConcreteData.recipLoad (gadgetEdges R S)
+      ≤ ((R.card * S.card : ℕ) : ℝ) / ((r0 * s0 : ℕ) : ℝ) := by
+  have hpos : (0 : ℝ) < ((r0 * s0 : ℕ) : ℝ) := by
+    exact_mod_cast Nat.mul_pos hr0 hs0
+  have hcard :
+      ((gadgetEdges R S).card : ℝ) ≤ ((R.card * S.card : ℕ) : ℝ) := by
+    exact_mod_cast gadgetEdges_card_le_product R S
+  calc
+    R2ConcreteData.recipLoad (gadgetEdges R S)
+        ≤ ∑ _e ∈ gadgetEdges R S, (1 : ℝ) / ((r0 * s0 : ℕ) : ℝ) := by
+          refine Finset.sum_le_sum (fun e he => ?_)
+          exact gadget_recip_le_of_lower_bounds hr0 hs0 hRlow hSlow he
+    _ = ((gadgetEdges R S).card : ℝ) * (1 / ((r0 * s0 : ℕ) : ℝ)) := by
+          rw [Finset.sum_const, nsmul_eq_mul]
+    _ ≤ ((R.card * S.card : ℕ) : ℝ) * (1 / ((r0 * s0 : ℕ) : ℝ)) := by
+          exact mul_le_mul_of_nonneg_right hcard (le_of_lt (one_div_pos.mpr hpos))
+    _ = ((R.card * S.card : ℕ) : ℝ) / ((r0 * s0 : ℕ) : ℝ) := by
+          ring
+
+def r2BaseLoadBudget_of_component_bounds
+    {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
+    (Cctrl Cgadget : ℝ)
+    (hctrl : R2ConcreteData.recipLoad (ctrlEdges D.BS) ≤ Cctrl)
+    (hgadget : R2ConcreteData.recipLoad (gadgetEdges D.R D.S) ≤ Cgadget)
+    (hsum : Cctrl + Cgadget < 3 / (2 * (b : ℝ))) :
+    R2BaseLoadBudget D where
+  Cctrl := Cctrl
+  Cgadget := Cgadget
+  hctrl := hctrl
+  hgadget := hgadget
+  hsum := hsum
+
+def baseLoadBudget_of_control_and_gadget
+    {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
+    (Cctrl Cgadget : ℝ)
+    (hctrl : R2ConcreteData.recipLoad (ctrlEdges D.BS) ≤ Cctrl)
+    (hgadget : R2ConcreteData.recipLoad (gadgetEdges D.R D.S) ≤ Cgadget)
+    (hsum : Cctrl + Cgadget < 3 / (2 * (b : ℝ))) :
+    R2BaseLoadBudget D :=
+  r2BaseLoadBudget_of_component_bounds D Cctrl Cgadget hctrl hgadget hsum
+
+theorem exists_k0_baseLoadBudget_of_gadget_bound
+    {T : Finset ℕ} {b : ℕ}
+    (D0 : R2ConcreteData T b)
+    (r0 s0 : ℕ)
+    (hr0 : 0 < r0) (hs0 : 0 < s0)
+    (Cgadget : ℝ)
+    (hgap : Cgadget < 3 / (2 * (b : ℝ)))
+    (hgadget_bound : ∀ D : R2ConcreteData T b,
+      D.R = D0.R → D.S = D0.S →
+      R2ConcreteData.recipLoad (gadgetEdges D.R D.S) ≤ Cgadget) :
+    ∃ k0min : ℕ, ∀ D : R2ConcreteData T b, k0min ≤ D.BS.k0 →
+      D.R = D0.R → D.S = D0.S →
+      Nonempty (R2BaseLoadBudget D) := by
+  let target : ℝ := 3 / (2 * (b : ℝ))
+  let ε : ℝ := (target - Cgadget) / 2
+  have hε : 0 < ε := by
+    dsimp [ε, target]
+    nlinarith
+  obtain ⟨k0min, hctrl⟩ := exists_k0_controlLoad_lt ε hε
+  refine ⟨k0min, ?_⟩
+  intro D hk0 hR hS
+  refine ⟨r2BaseLoadBudget_of_component_bounds D ε Cgadget (hctrl D.BS hk0)
+    (hgadget_bound D hR hS) ?_⟩
+  · dsimp [ε, target]
+    nlinarith
+
+def baseLoadBudget_of_control_epsilon_and_gadget_scale
+    {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
+    (ε : ℝ) (r0 s0 : ℕ)
+    (hr0 : 0 < r0) (hs0 : 0 < s0)
+    (hctrl : R2ConcreteData.recipLoad (ctrlEdges D.BS) ≤ ε)
+    (hRlow : ∀ r ∈ D.R, r0 ≤ r)
+    (hSlow : ∀ s ∈ D.S, s0 ≤ s)
+    (hsum :
+      ε + ((D.R.card * D.S.card : ℕ) : ℝ) / ((r0 * s0 : ℕ) : ℝ)
+        < 3 / (2 * (b : ℝ))) :
+    R2BaseLoadBudget D :=
+  r2BaseLoadBudget_of_component_bounds D ε
+    (((D.R.card * D.S.card : ℕ) : ℝ) / ((r0 * s0 : ℕ) : ℝ))
+    hctrl
+    (gadget_recipLoad_le_card_div r0 s0 hr0 hs0 hRlow hSlow)
+    hsum
+
+lemma blockSupport_ge_pow_k0 (BS : BlockSystem) {p : ℕ}
+    (hp : p ∈ blockSupport BS) :
+    2 ^ BS.k0 ≤ p := by
+  rw [blockSupport, Finset.mem_biUnion] at hp
+  obtain ⟨k, hk, hpk⟩ := hp
+  rw [Finset.mem_Icc] at hk
+  calc 2 ^ BS.k0 ≤ 2 ^ k := Nat.pow_le_pow_right (by norm_num) hk.1
+    _ ≤ p := (BS.hwindow k p hpk).1
+
+lemma ctrlEdges_ge_k0_square
+    (BS : BlockSystem) {e : ℕ} (he : e ∈ ctrlEdges BS) :
+    2 ^ BS.k0 * 2 ^ BS.k0 ≤ e := by
+  rw [ctrlEdges, Finset.mem_image] at he
+  obtain ⟨pq, hpq, rfl⟩ := he
+  obtain ⟨h1, h2⟩ := ctrlPairs_mem_blockSupport BS hpq
+  exact Nat.mul_le_mul (blockSupport_ge_pow_k0 BS h1) (blockSupport_ge_pow_k0 BS h2)
+
 end CircleMethod
+
+end

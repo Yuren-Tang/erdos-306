@@ -1,5 +1,5 @@
 import RequestProject.R2TopAssembly
-import RequestProject.R2MassBatchWeights
+import RequestProject.Construction.MassBatchSupply
 import RequestProject.GlobalControl.ControlVariancePositivity
 
 /-!

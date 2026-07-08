@@ -1,4 +1,4 @@
-import RequestProject.R2MassBatchPoolSupply
+import RequestProject.Construction.MassPool
 
 open Finset BigOperators GlobalControl
 
