@@ -182,24 +182,50 @@ today spread over `BernoulliFourier`, `CircleMethodArcs`,
   (`R2BlockMinorLane`, 3 escalating theorems) ⇒ shared per-main-arc packaging
   `R2BlockFiberTailData` (`R2MinorEndgameLanes`). Read in full this pass;
   content is already a clean short chain, no smearing found. One node.
-- **C6 ▽ Extra-minor estimate.** Sibling existence
-  (`exists_R_mismatch_of_block_eq_not_global`, `R2ExtraCRTSibling`) +
-  gadget selection (`ExtraFrequencyChoice(Int)`,
-  `ExtraMultiGadget`, `ExtraMultiGadgetReservoir`,
-  `ExtraReservoir{Selection,UniformBudget}`) + B5/B2/P2 ⇒
-  `R2ExtraMinorMultiGadgetBoundData` (`R2ExtraMultiGadget`) ⇒ the `Bextra`
-  budget, consumed by two convergent endgame strategies
-  (`R2MinorEndgameMultiGadget` direct, `R2MinorEndgameFrequency` reducing to
-  it via `.toMultiGadget` — a legitimate two-step refinement, not
-  duplication) ⇒ `R2MinorReadyData` (`R2MinorReady`). *The choice packaging
-  is a ~9-file chain of record conversions*; its live content is: choose a
-  sibling prime per frequency (`Classical.choose`), choose gadget sets,
-  verify the pointwise damping bound, multiply out, package per-frequency
-  budgets into the two endgame shapes. One node `Construction/ExtraMinor.lean`.
-  Open question found this pass, not yet resolved: `ExtraFrequencyChoiceInt`
-  mirrors `ExtraFrequencyChoice` (`Int`- vs `Nat`-labelled) closely enough to
-  look collapsible, but the hypothesis transport needs care — medium risk,
-  left for whoever executes this batch to verify before merging.
+- **C6 ✓ Extra-minor estimate — done, split into 4 files by mechanism**
+  (applying batch 4's lesson from the start this time — read all 9 files
+  fully before writing anything, mapped to distinct motivating questions,
+  wrote that many files):
+  - `Construction/ExtraGadgetDamping.lean` — given a fixed denominator prime
+    and chosen gadget primes, how much do their Fourier factors damp the
+    Bernoulli summand? (B5/B2/P2 instantiated: `gadget_charFun_damp` raised
+    to the gadget count.)
+  - `Construction/ExtraReservoir.lean` — how are per-frequency gadget
+    choices packaged into one object and their damping budgets summed,
+    independent of how the choices are produced? Depends on
+    `ExtraGadgetDamping`.
+  - `Construction/ExtraSiblingChoice.lean` — why does a CRT sibling prime
+    exist for each extra-minor frequency (`exists_R_mismatch_of_block_eq_not_global`,
+    squarefree-CRT mismatch), and how is that choice packaged
+    (`Classical.choose`)? Depends on `ExtraReservoir` — it *instantiates*
+    the generic prepared-choice constructor with concrete CRT witnesses, a
+    real Bourbaki general-to-concrete direction (not the "B feeds D" order
+    first guessed before reading the files fully).
+  - `Construction/MinorEndgame.lean` — how do the block-minor and
+    extra-minor lanes combine into the final minor-support-budget /
+    minor-ready record? Two lane shapes
+    (`R2MinorEndgameMultiGadgetLanes` direct, `R2MinorEndgameFrequencyLanes`
+    reducing to it via `.toMultiGadget`) are a genuine two-step refinement,
+    not duplication — confirmed by tracing `R2Certificates.lean`'s actual
+    call path (it consumes the frequency-label shape).
+
+  **The flagged `ExtraFrequencyChoiceInt` vs `ExtraFrequencyChoice` risk is
+  now resolved, not just noted.** They are not true duplicates:
+  `ExtraFrequencyChoiceInt` delegates sibling existence/choice to the
+  `Nat`-labelled version via a bridge (`intLabelDataToNat`, converting an
+  integer label to its nonnegative residue mod `D.L`), but reproves the
+  downstream "prepared choice" step directly on `Int` data instead of
+  delegating. This left two `Nat`-specific downstream declarations dead
+  (`preparedChoice_of_extraFrequencyLabelData`,
+  `r2MultiGadgetReservoir_of_extraFrequencyLabelData` — nothing calls them,
+  since only the `Int` path is consumed downstream) — deleted, along with a
+  third unrelated dead declaration found by the same trace-every-caller
+  sweep (`r2MultiGadgetReservoir_of_pointwise_budget`, a full-pipeline
+  convenience wrapper nothing uses).
+
+  Built green on the first attempt — no import-gap fix cycle needed, unlike
+  batch 4, evidence the "map mechanisms before writing files" discipline
+  works when applied from the start rather than as a correction.
 - **C7 ▽ Main-arc numerics and σ-comparison.** `r2_numericFields`,
   `sigmaE2_ge_ctrl`, `r2_main_arc_sigmaE_compare`, the `k0`-largeness facts
   (`R2LargeK0`, parts of `R2TopAssembly`), `σ_E ≤ σ_ctrl` from the
@@ -312,25 +338,30 @@ or via CI), per the build-cycle economy this repo needs:
    how many files a node becomes still needs the same few-armed-tree
    judgment applied at consolidation time, not assumed to be "1" by
    default.
-5. **C6 extra-minor consolidation**: same content-level method as C2, but
-   apply its lesson — read for distinct mechanism first, *then* decide how
-   many files, don't default to one. ~9 files as scoped in C6 above.
+5. **(done)** ~~C6 extra-minor consolidation~~ — done as *four* files
+   (`Construction/{ExtraGadgetDamping,ExtraReservoir,ExtraSiblingChoice,
+   MinorEndgame}.lean`), applying batch 4's lesson from the start: mapped
+   to 5 distinct mechanisms before writing anything, built green on the
+   first attempt. The `ExtraFrequencyChoiceInt`/`ExtraFrequencyChoice` risk
+   item is resolved (not a true duplicate; see C6 above) plus three more
+   dead declarations found and removed.
 6. **Physical tree + renaming**: create `Construction/`, move the C/A
    nodes, apply `docs/architecture.md`'s naming table (`R2` → resonant
    construction vocabulary), leave `abbrev` shims for one migration
-   interval, update `docs/architecture.md`'s module list.
+   interval, update `docs/architecture.md`'s module list. `Construction/`
+   already exists and holds C2 and C6's nodes; this batch is what remains
+   of C1/C4/C5/C7/A1's physical moves plus the naming sweep.
 7. **Reverse-mathematics pass**: `#min_imports` every consolidated module;
    strip hypotheses nothing uses (the `Squarefree b` already flagged
    unused in `exists_blockAligned_mass_batch` is the model case); resolve
    the `blockSupport_ge_k0`/`blockSupport_ge_pow_k0` near-duplicate flagged
    in C2.
 
-**(done)** Batches 1–4, plus the full minor-arc and mass-batch discovery
+**(done)** Batches 1–5, plus the full minor-arc and mass-batch discovery
 reads (C2, C4–C7 above are all confirmed-clean or
 confirmed-dead-and-deleted, no remaining unread files in either region).
-Batches 5–6 are mechanical *at the content level* given this document —
-see batch 4's caution above before assuming that means "one file" — and
-are the next work; batch 5's one open risk item (`ExtraFrequencyChoiceInt`
-vs `ExtraFrequencyChoice` duplication) should be resolved by whoever
-executes it, not assumed collapsible without checking hypothesis
-transport.
+Batch 6 (physical tree + renaming) and batch 7 (reverse-math pass) are
+next; both are mechanical *at the content level* given this document —
+apply batch 4/5's lesson (map before writing) to batch 6's file moves too,
+since "which physical folder" is exactly the same kind of judgment as
+"how many files."

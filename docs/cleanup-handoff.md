@@ -420,18 +420,20 @@ polish a downstream bridge" discipline already in `docs/refactor-roadmap.md`:
    pass read the mass-batch group~~ — done, see `docs/construction-redesign.md`
    C4–C7 and the "Already fixed" entry above for the resulting map and the
    third dead cluster it turned up.
-3. Collapse the mass-batch (~11 files, down from ~19 — see finding 3c: the
-   dead half of the group is already deleted this pass) and minor-arc
-   (~9 files feeding `Construction/ExtraMinor.lean`, per
-   `docs/construction-redesign.md` C6) groups by mathematical role rather
-   than pipeline-stage — this is where the real Bourbaki-style win is:
-   identify the true minimal mechanism(s) each group is really computing,
-   state them at their natural generality once, and discard the remaining
-   per-stage adapter files. No further judgment calls needed first — both
-   groups are now fully read and mapped; this is mechanical execution
-   given `docs/construction-redesign.md`.
+3. ~~Collapse the mass-batch (~19 files) and minor-arc (~9 files) groups by
+   mathematical role~~ — both done. Mass-batch became 3 files
+   (`Construction/{MassPool,BaseLoadBudget,MassBatchSupply}.lean`) after a
+   false start (one 1100-line file, corrected — see the gotcha above);
+   extra-minor became 4 files
+   (`Construction/{ExtraGadgetDamping,ExtraReservoir,ExtraSiblingChoice,
+   MinorEndgame}.lean`), done right the first time by applying the
+   mass-batch correction's lesson before writing anything. Both verified
+   green; see `docs/construction-redesign.md` C2/C6 for the per-file
+   motivating questions.
 4. Apply the naming policy already written in `docs/architecture.md`
    (`R2`/`gadget`/`lane`/`supply`/`certificate` → mathematical names) as part
    of the same pass, not as a separate renaming sweep — renaming without
-   also fixing the structure just moves the mess.
+   also fixing the structure just moves the mess. `Construction/` already
+   holds the C2/C6 nodes under working names; this step still needs C1/C4/
+   C5/C7/A1 moved in and the vocabulary table actually applied everywhere.
 5. Survey and apply the same treatment to the root-level circle-method files.
