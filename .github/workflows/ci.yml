@@ -24,7 +24,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  verify:
+  build:
+    # The one and only full compile of RequestProject. Every other job
+    # restores this instead of recompiling from scratch — previously each of
+    # verify/lint/import-audit(x4) independently rebuilt the ~8700-job
+    # RequestProject tree from a clean checkout, i.e. the same source built
+    # ~6 times per run. Mathlib itself was already shared via lean-action's
+    # own cache; RequestProject's own .olean output was not.
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -35,6 +41,35 @@ jobs:
         with:
           lake-package-directory: "lean"
           build-args: "RequestProject.Audit"
+
+      - name: Upload RequestProject build output
+        uses: actions/upload-artifact@v4
+        with:
+          name: requestproject-build
+          path: lean/.lake/build
+          retention-days: 1
+
+  verify:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Restore Lean toolchain and Mathlib cache
+        uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: "lean"
+          auto-config: false
+          build: false
+          test: false
+          lint: false
+
+      - name: Restore RequestProject build output
+        uses: actions/download-artifact@v4
+        with:
+          name: requestproject-build
+          path: lean/.lake/build
 
       - name: Emit audit (theorem, axioms, axiom statements)
         working-directory: lean
@@ -90,6 +125,7 @@ jobs:
           cat "$GITHUB_STEP_SUMMARY"
   lint:
     name: Lint Lean sources
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -103,6 +139,12 @@ jobs:
           build: false
           test: false
           lint: false
+
+      - name: Restore RequestProject build output
+        uses: actions/download-artifact@v4
+        with:
+          name: requestproject-build
+          path: lean/.lake/build
 
       - name: Run builtin Lean linters
         working-directory: lean
@@ -127,6 +169,7 @@ jobs:
 
   import-audit:
     name: Audit all imports (${{ matrix.shard }}/4)
+    needs: build
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -146,6 +189,12 @@ jobs:
           build: false
           test: false
           lint: false
+
+      - name: Restore RequestProject build output
+        uses: actions/download-artifact@v4
+        with:
+          name: requestproject-build
+          path: lean/.lake/build
 
       - name: Check source imports (full-library shard)
         working-directory: lean
