@@ -242,9 +242,32 @@ the exact split). One real bug this surfaced: `R2ComponentCoreSupply.lean`'s
 base struct `R2ComponentScaleCoreSupply` is actually live *C5/C6 minor-arc*
 content (consumed by `R2MinorEndgameMultiGadget`/`R2MinorEndgameFrequency`),
 mis-filed next to the mass-batch family — its own `.toScaleCardSupply`/
-`.withQ` methods were the dead part. The remaining mass-batch group is
-now ~11 files, ready for the batch-4 `Construction/MassWindow.lean`
-consolidation with no further judgment calls needed first.
+`.withQ` methods were the dead part.
+
+**Batch 4 done, but not on the first attempt.** The remaining ~11-file
+mass-batch group got merged into one 1100-line `Construction/MassWindow.lean`
+first, organized by "these all feed the same downstream call" rather than
+by mathematical mechanism — the user caught this immediately as a "一鍋粥"
+(porridge) and it was: two near-identical lemmas
+(`blockSupport_ge_k0`/`blockSupport_ge_pow_k0`) ended up 700 lines apart in
+the merged file, unmerged and unnoticed, which is the concrete tell that
+concatenation happened instead of reading for content. **Lesson for the
+remaining batches**: "mechanical given the redesign doc" describes the
+*mathematical content* (nothing left to re-derive), not the file count —
+how many files a node splits into still needs the same "ask what single
+question this content answers" judgment applied at write time, every time,
+not defaulted to one file per doc-node. Re-split into three files by
+mechanism (`Construction/MassPool.lean` — how `Q` is chosen;
+`Construction/BaseLoadBudget.lean` — how much load the *other* two edge
+sets spend first; `Construction/MassBatchSupply.lean` — what follows once
+`R2MassBatchSupply` exists) — see `docs/construction-redesign.md`'s C2 for
+the full rationale. Doing the split properly also surfaced a fifth dead
+fragment the mechanical merge had hidden:
+`exists_arcConstruction_of_massBatchSupply`, `R2MassBatchSupply.q_pos`, and
+`R2MinorSupportBudget.lean`'s
+`exists_arcConstruction_of_component_rho_numeric_minor_budget` were all
+dead — orphaned when `R2ComponentSupply.lean` was deleted in the batch-3
+sweep but not traced far enough at the time. Now removed.
 
 ### Flagged, unresolved, needs judgment (not attempted)
 
@@ -304,6 +327,23 @@ the same standard or look more like the `R2*` shape.
 
 ## Known gotchas (read before touching more of R2*)
 
+- **"Consolidate this node into one file" is not a license to concatenate.**
+  Batch 4's first attempt merged 12 files into one 1100-line
+  `Construction/MassWindow.lean` because they all fed the same downstream
+  caller — a "which files feed the same consumer" grouping, not a
+  "what mathematical question does this content answer" grouping. That is
+  the exact "mechanism stew" anti-pattern `docs/construction-redesign.md`
+  warns against, just re-committed one level up (whole-node instead of
+  single-adapter-file). The tell that this had happened, in hindsight: two
+  near-duplicate lemmas from different source files ended up 700 lines
+  apart in the merged file, unnoticed. **Before writing a consolidated
+  file, ask "how many distinct motivating questions does this content
+  answer" and write that many files** — a doc node like C2 is a unit of
+  *mathematical content*, not a mandate for exactly one physical file.
+  Splitting properly (by mechanism, not by history) also tends to surface
+  additional dead code that a mechanical merge papers over, because
+  reading for the actual motivating question forces tracing what each
+  piece is really for.
 - **"Builds with zero errors" is not the same as "passes CI's actual
   checks."** All three of the CI-blocking bugs found and fixed this pass
   (the `ring`/`convert` break, the `ci.yml` build-target mismatch, and

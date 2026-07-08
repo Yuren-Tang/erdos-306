@@ -115,34 +115,59 @@ today spread over `BernoulliFourier`, `CircleMethodArcs`,
   `primeSupportPeriod`, semiprimality/avoidance/divisibility bookkeeping
   (`R2AssemblySkeleton` + `R2ConcreteData`). Right content, two files, fine
   as one node `Construction/Edges.lean`.
-- **C2 ✓ Mass window.** P4 → residual window with a spent base load
-  (`exists_subset_recip_residual_window`, `BlockMassPool`;
-  `exists_residual_subset_recip_window`, `R2ConcreteData`) → block-aligned
-  batch from the Mertens axiom (`exists_blockAligned_mass_batch`,
-  `BlockMassPool`) → base-load accounting (ctrl-load bound from
-  `R2BaseLoadUpper`, gadget-load bound) → `R2MassBatchSupply` construction,
-  consumed directly by `R2TopAssembly`'s `exists_r2_massBatch` /
+- **C2 ✓ Mass window — done, split into 3 nodes, not 1.** Residual mass
+  batch `D.Q` selection now lives in three files, each with one motivating
+  question, replacing the ~19 original adapter files (a fourth
+  abandoned-strategy cluster was found and deleted along the way — see
+  "Merged/eliminated outright" below):
+  - `Construction/MassPool.lean` — *how is `Q` chosen?* Candidate pool,
+    `blockPrimes` density bridge, greedy-selection reduction
+    (`R2ConcreteData.exists_residual_subset_recip_window`), forbidden-budget
+    bookkeeping. This is the actual C2 mechanism.
+  - `Construction/BaseLoadBudget.lean` — *how much load do the other two
+    edge sets (control, gadget) spend before `Q` is chosen?*
+    Control/gadget disjointness, the dyadic control-load analytic estimate
+    (a genuinely separate asymptotic fact from pool selection), the gadget
+    cardinality bound. Depends on `MassPool` (for `R2ForbiddenBudget`), not
+    the reverse.
+  - `Construction/MassBatchSupply.lean` — *once `R2MassBatchSupply` exists,
+    what follows for free?* Semiprimality/period-divisibility, the
+    `Weights` package consumed directly by `R2Certificates`.
+  Consumed by `R2TopAssembly`'s `exists_r2_massBatch` /
   `exists_r2_data_of_numerics_set` / `r2_getQ` (the single downstream entry
-  point, called from `R2Certificates`). Read to completion this pass: a
-  whole second abandoned-strategy cluster found and deleted (see
-  "Merged/eliminated outright" below) — **7 whole files deleted**
-  (`R2MassBatch{Ready,Scale,BaseLoadBudget}`,
-  `R2Component{Supply,SupplyReady,MassReady}`, `R2SelectedQReady`) plus
-  5 files trimmed to their live core (`R2ForbiddenBaseBudget`,
-  `R2MassBatchFinalBudget`, `R2ComponentScaleCard`, `R2ComponentCoreSupply`,
-  `R2MassBatchWeights`). What remains genuinely live — `R2MassBatchSupply`,
-  `R2MassBatchCandidatePool`, `R2MassBatchPoolSupply`,
-  `R2MassBatchFinalBudget` (trimmed), `R2ForbiddenPoolBudget`,
-  `R2ForbiddenBaseBudget` (trimmed), `R2BaseLoadUpper`,
-  `R2BaseBudgetAssembly`, `R2ComponentDisjoint`,
-  `R2ComponentScaleCard` (trimmed), `R2MassBatchWeights` (trimmed to just
-  `weights`) — is now a manageable ~11-file group, still worth collapsing
-  into one `Construction/MassWindow.lean` (batch 4), but far smaller than
-  the ~19 files this doc originally estimated. `R2ComponentCoreSupply`'s
-  `R2ComponentScaleCoreSupply` struct is NOT part of this node at all —
-  it's shared C5/C6 minor-arc content (see C6) that had been mis-filed
-  next to the mass-batch family; keep it where it is or move it with C6,
-  not with C2.
+  point, called from `R2Certificates`).
+
+  **First attempt at this batch got it wrong**: merged all 12 remaining
+  live files into one 1100-line `Construction/MassWindow.lean`, organized by
+  "which files feed the same downstream consumer" rather than by
+  mathematical mechanism — the exact "mechanism stew" anti-pattern this
+  document warns against, repeated one level up instead of avoided. Caught
+  by the user, not self-caught; concrete tell in hindsight: two
+  near-identical lemmas (`blockSupport_ge_k0`/`blockSupport_ge_pow_k0`,
+  from different source files) sat 700 lines apart in the merged file,
+  unmerged and unnoticed — proof it was assembled by concatenation, not by
+  reading for mathematical content. Re-deriving the 3-way split (by asking
+  "what is the one question this content answers") also surfaced dead code
+  the mechanical merge had papered over:
+  `exists_arcConstruction_of_massBatchSupply` and
+  `R2MassBatchSupply.q_pos` had zero live callers (their only caller,
+  `R2ComponentSupply.lean`'s `exists_arcConstruction_of_componentSupplies`,
+  was deleted in the fourth-cluster sweep but not traced far enough at the
+  time), which in turn orphaned `R2MinorSupportBudget.lean`'s
+  `exists_arcConstruction_of_component_rho_numeric_minor_budget` — all
+  three now removed, `R2MinorSupportBudgetData` (still genuinely live)
+  kept.
+
+  One known, deliberately deferred residual redundancy: `blockSupport_ge_k0`
+  (`MassPool`) and `blockSupport_ge_pow_k0` (`BaseLoadBudget`) are still
+  near-duplicate proofs of the same fact, now in different files for a
+  principled reason (different consumers) rather than by accident — a
+  genuine micro-cleanup candidate for the reverse-math pass (batch 7).
+
+  `R2ComponentCoreSupply`'s `R2ComponentScaleCoreSupply` struct is NOT
+  part of this node at all — it's shared C5/C6 minor-arc content (see C6)
+  that had been mis-filed next to the mass-batch family; left where it is,
+  to move with C6 if that batch is ever executed.
 - **C3 ▽ Weights.** Uniform-window weights from the load window
   (`weights_of_recipLoad_window`, `R2Weights`;
   `R2MassBatchSupply.weights`, `R2MassBatchWeights`). One short node.
@@ -277,24 +302,35 @@ or via CI), per the build-cycle economy this repo needs:
    `fourierNormWeight_eq_prod_norm`; re-derive the three product bounds as
    corollaries; move `bernoulliCharFun_norm_le_one` to `BernoulliFourier`.
 3. **A1(i) foundation dedup** in `R2Certificates`.
-4. **C2 mass-window consolidation**: write `Construction/MassWindow.lean`
-   fresh (move the live theorems, re-prove nothing), repoint `r2_getQ`,
-   delete the remaining ~11 adapter files (down from ~19 — the dead
-   eventual-wrapper cluster that made up the difference is already gone,
-   see batch 1).
-5. **C6 extra-minor consolidation**: same method, ~6 files.
+4. **(done)** ~~C2 mass-window consolidation~~ — done as *three* files, not
+   one (`Construction/{MassPool,BaseLoadBudget,MassBatchSupply}.lean`), by
+   mathematical mechanism rather than by shared downstream consumer; see
+   the C2 entry above for why one file was rejected mid-execution and what
+   it cost to get this "mechanical" batch right anyway. A caution for
+   batch 5: "mechanical given this document" describes the *content*
+   (nothing left to re-derive mathematically), not the *file count* —
+   how many files a node becomes still needs the same few-armed-tree
+   judgment applied at consolidation time, not assumed to be "1" by
+   default.
+5. **C6 extra-minor consolidation**: same content-level method as C2, but
+   apply its lesson — read for distinct mechanism first, *then* decide how
+   many files, don't default to one. ~9 files as scoped in C6 above.
 6. **Physical tree + renaming**: create `Construction/`, move the C/A
    nodes, apply `docs/architecture.md`'s naming table (`R2` → resonant
    construction vocabulary), leave `abbrev` shims for one migration
    interval, update `docs/architecture.md`'s module list.
 7. **Reverse-mathematics pass**: `#min_imports` every consolidated module;
    strip hypotheses nothing uses (the `Squarefree b` already flagged
-   unused in `exists_blockAligned_mass_batch` is the model case).
+   unused in `exists_blockAligned_mass_batch` is the model case); resolve
+   the `blockSupport_ge_k0`/`blockSupport_ge_pow_k0` near-duplicate flagged
+   in C2.
 
-**(done)** Batches 1–3, plus the full minor-arc discovery read (C4–C7
-above are now all confirmed-clean or confirmed-dead-and-deleted, no
-remaining unread files in that region). Batches 4–6 are mechanical *given
-this document* and are the next work; batch 5's one open risk item
-(`ExtraFrequencyChoiceInt` vs `ExtraFrequencyChoice` duplication) should be
-resolved by whoever executes it, not assumed collapsible without checking
-hypothesis transport.
+**(done)** Batches 1–4, plus the full minor-arc and mass-batch discovery
+reads (C2, C4–C7 above are all confirmed-clean or
+confirmed-dead-and-deleted, no remaining unread files in either region).
+Batches 5–6 are mechanical *at the content level* given this document —
+see batch 4's caution above before assuming that means "one file" — and
+are the next work; batch 5's one open risk item (`ExtraFrequencyChoiceInt`
+vs `ExtraFrequencyChoice` duplication) should be resolved by whoever
+executes it, not assumed collapsible without checking hypothesis
+transport.
