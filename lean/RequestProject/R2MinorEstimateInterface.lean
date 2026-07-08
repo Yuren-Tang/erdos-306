@@ -14,9 +14,9 @@ open GlobalControl
 # R2 minor estimate interface (note 53 → final `exists_arcConstruction`)
 
 `R2MinorAssembly.lean` proved the *pure finite-sum splitter*
-`r2_minor_bound_split`: if `Sm ⊆ Sblock ∪ Sextra` and the two disjointized
-parts (`blockMinorPart`, `extraMinorPart`) are bounded by `A` and `B`, then the
-full minor sum over `Sm` is bounded by `A + B`.
+`sum_le_of_minor_split_bounds`: if `Sm ⊆ Sblock ∪ Sextra` and the two
+disjointized parts (`blockMinorPart`, `extraMinorPart`) are bounded by `A` and
+`B`, then the full minor sum over `Sm` is bounded by `A + B`.
 
 This leaf connects the two *real analytic estimates* to that splitter:
 
@@ -25,31 +25,8 @@ This leaf connects the two *real analytic estimates* to that splitter:
   `∑_{blockMinorPart} exp(-c · QE)`;
 * `extra_part_bound` sums the per-gadget sibling damping factor
   `gadget_charFun_damp` over the extra part, producing a bound for
-  `∑_{extraMinorPart} ‖bernoulliCharFun θ (h/(r·s))‖`;
-* `r2_hminor_bound_from_block_and_extra` is the generic glue: it takes the two
-  part bounds (for a common per-frequency weight `F`) and the cover, and returns
-  the full `Sm` bound via `r2_minor_bound_split`.
-
-The combined theorem deliberately keeps `F`, `A`, `B` abstract: this is exactly
-the data that the final `exists_arcConstruction` must supply, namely a single
-per-frequency weight `F`, a cover of `Sm` by the block/extra supports, and the
-two part bounds (which the two wrappers above show how to obtain from the
-analytic estimates).
+  `∑_{extraMinorPart} ‖bernoulliCharFun θ (h/(r·s))‖`.
 -/
-
-variable {α : Type*} [DecidableEq α]
-
-/-- **Generic minor glue.**  Combine a block-part bound and an extra-part bound
-(for a common per-frequency real weight `F`) into a full minor-arc bound over
-`Sm`.  This is the direct consumer of `r2_minor_bound_split`; its hypotheses are
-exactly what `exists_arcConstruction` has to produce. -/
-theorem r2_hminor_bound_from_block_and_extra
-    (Sm Sblock Sextra : Finset α) (F : α → ℝ) {A B : ℝ}
-    (hcover : Sm ⊆ Sblock ∪ Sextra)
-    (hblock : ∑ x ∈ blockMinorPart Sm Sblock, F x ≤ A)
-    (hextra : ∑ x ∈ extraMinorPart Sm Sblock Sextra, F x ≤ B) :
-    ∑ x ∈ Sm, F x ≤ A + B :=
-  r2_minor_bound_split Sm Sblock Sextra F hcover hblock hextra
 
 /-- **Block-part bound.**  The fiber-tail minor-energy estimate
 `minor_energy_sum_le_fiber_tail`, specialized so its summing index set is the

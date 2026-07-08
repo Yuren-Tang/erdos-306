@@ -87,14 +87,4 @@ lemma sum_le_of_minor_split_bounds
   rw [hsum]
   exact add_le_add hblock hextra
 
-/-- Alias with the intended paper-side name: combine block-minor and extra-minor
-estimates into one `hminor`-shaped estimate. -/
-theorem r2_minor_bound_split
-    (Sm Sblock Sextra : Finset α) (F : α → ℝ) {A B : ℝ}
-    (hcover : Sm ⊆ Sblock ∪ Sextra)
-    (hblock : ∑ x ∈ blockMinorPart Sm Sblock, F x ≤ A)
-    (hextra : ∑ x ∈ extraMinorPart Sm Sblock Sextra, F x ≤ B) :
-    ∑ x ∈ Sm, F x ≤ A + B :=
-  sum_le_of_minor_split_bounds Sm Sblock Sextra F hcover hblock hextra
-
 end CircleMethod

@@ -48,20 +48,22 @@ theorem bernoulliCharFun_normSq_le (θ₀ θ t : ℝ)
   rw [ bernoulliCharFun_normSq ];
   exact sub_le_sub_left ( mul_le_mul_of_nonneg_right ( by nlinarith ) ( sq_nonneg _ ) ) _
 
+/-- The Bernoulli characteristic function is a contraction: `‖φ_θ(t)‖ ≤ 1` for
+`θ ∈ [0,1]`.  This is what lets product estimates discard factors at will
+(`RequestProject.norm_prod_le_prod_of_subset`). -/
+lemma bernoulliCharFun_norm_le_one (θ t : ℝ) (hθ0 : 0 ≤ θ) (hθ1 : θ ≤ 1) :
+    ‖bernoulliCharFun θ t‖ ≤ 1 := by
+  have hsq : ‖bernoulliCharFun θ t‖ ^ 2 ≤ 1 := by
+    rw [← Complex.normSq_eq_norm_sq, bernoulliCharFun_normSq]
+    have h1θ : 0 ≤ 1 - θ := by linarith
+    have hnonneg :
+        0 ≤ 4 * θ * (1 - θ) * Real.sin (Real.pi * t) ^ 2 := by positivity
+    nlinarith
+  nlinarith [sq_nonneg (‖bernoulliCharFun θ t‖ - 1)]
+
 /-! ## 2. Product bound for independent Bernoulli variables -/
 
-/-- The quadratic CRT energy of a character h with respect to edge set E
-    and modulus parameters: Q_E(h) = ∑_{e ∈ E} ‖h/e‖², where
-    ‖·‖ denotes the distance to the nearest integer.
-
-    We formalize this abstractly: the energy is a sum of squared
-    distances to nearest integers. -/
-def quadraticCRTEnergy (phases : Finset ℝ) : ℝ :=
-  ∑ t ∈ phases, Int.fract (t + 1/2) ^ 2
-
 /-
-approximation; exact ‖·‖² needs care
-
 For independent Bernoulli(θ_e) variables with θ_e ∈ [θ₀, 1-θ₀],
     the product of characteristic functions satisfies
     |∏_e φ_{θ_e}(h/e)| ≤ exp(-c · Q_E(h))
@@ -114,25 +116,13 @@ Full formalization requires a Bernoulli probability space. The identity
 itself is a standard consequence of character orthogonality on ℤ/Lℤ
 and independence of the Bernoulli variables. -/
 
-/-! ## 4. Main-arc Taylor expansion -/
+/-! ## 4. Main-arc Taylor expansion
 
-/-
-**Main-arc estimate.** For |m| ≤ C/σ_E and all edges e with |m|/(e) → 0,
-    the Bernoulli characteristic function admits a Taylor expansion:
-      log φ_θ(m/e) = 2πi · m · θ/e - 2π² · m² · θ(1-θ)/e² + O(m³/e³).
-    Summing over edges and using ∑ θ_e/e = 1/b:
-      log μ̂(m) = 2πim/b - 2π²m²σ² + o(1)
-    where σ² = ∑ θ_e(1-θ_e)/e².
-    After cancellation with e(-m/b):
-      μ̂(m)e(-m/b) = exp(-2π²σ²m²)(1 + o(1)).
-
-    The main-arc contribution is therefore
-      ∑_{|m| ≤ C/σ} μ̂(m)e(-m/b) ≈ ∑ exp(-2π²σ²m²) ≈ 1/σ > 0.
-
-    This is the content of CP 01 §5.
--/
-theorem main_arc_positive (σ : ℝ) (_hσ : 0 < σ) :
-    0 < ∑ m ∈ Finset.Icc (-1 : ℤ) 1, Real.exp (- 2 * Real.pi ^ 2 * σ ^ 2 * (m : ℝ) ^ 2) := by
-  exact Finset.sum_pos ( fun m hm => Real.exp_pos _ ) ( by decide )
+The main-arc Gaussian lower bound sketched here (log φ_θ(m/e) Taylor-expanded,
+summed via the mass identity ∑θ_e/e = 1/b) is realized in full generality by
+`main_re_lower`/`main_sum_re_lower` in `CircleMethodMainTerm.lean`; this
+file's own `main_arc_positive` was an early toy version (positivity of a
+3-term sum over `m ∈ {-1,0,1}` only) and has been removed as dead code
+(zero references anywhere in the project). -/
 
 end

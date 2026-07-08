@@ -42,84 +42,6 @@ namespace CircleMethod
 
 /-! ## Foundation / scale layer -/
 
-/-- **Foundation certificate.**  Bundles the numeric ledger of constants, the
-block system `BS` at a large bottom scale, and all the prime-supply and
-large-`k0` facts the later layers consume.  The three `Pi`-valued fields
-(`hSB`, `hk0density`, `hk0ctrl`, `hload`) are the abstract supply principles
-(minor-support budget, dyadic prime density, control-load smallness, and the
-block-product Mertens bound) instantiated for these constants. -/
-structure R2FoundationCertificate (T : Finset ℕ) (b : ℕ) where
-  /-- minor main-control constant `c3 = 0.8·exp(-π²/2)/2`. -/
-  c3 : ℝ
-  /-- main-arc tail budget per unit `b`. -/
-  η : ℝ
-  /-- Gaussian-tail constant from the global-control partition. -/
-  Ctail : ℝ
-  /-- main-arc window constant. -/
-  C : ℝ
-  /-- per-gadget worst-case sibling damping base. -/
-  base_b : ℝ
-  /-- target per-frequency damping budget. -/
-  Dmp : ℝ
-  /-- number of gadget primes. -/
-  G : ℕ
-  /-- bottom-scale threshold from the minor-support budget. -/
-  k0minM : ℕ
-  /-- bottom-scale threshold from the dyadic density bound. -/
-  k0density : ℕ
-  /-- bottom-scale threshold from the control-load bound. -/
-  k0ctrl : ℕ
-  /-- bottom-scale threshold from the block-product load bound. -/
-  k1 : ℕ
-  /-- the block system. -/
-  BS : BlockSystem
-  hbpos : 0 < b
-  hb3 : 3 ≤ b
-  hbsf : Squarefree b
-  hc3eq : c3 = r2MinorMainCtrlConstant
-  hc3pos : 0 < c3
-  hηdef : η = c3 / (2004 * (b : ℝ))
-  hηpos : 0 < η
-  hCtail : 0 < Ctail
-  /-- the minor-support budget supply principle for these `η, Ctail`. -/
-  hSB : ∀ {T' : Finset ℕ} {b' : ℕ}
-      (D : R2ConcreteData T' b') (W : R2ConcreteData.Weights D) (N : ℤ)
-      (Bblock Bextra ρ : ℝ) (Cls : R2MinorClassificationData D W N),
-      k0minM ≤ D.BS.k0 → admissibleGlobalRange D.BS →
-      R2MinorEndgameMultiGadgetLanes D W N Bblock Bextra η Ctail ρ Cls →
-      Nonempty (R2MinorSupportBudgetData D W N Bblock Bextra)
-  hCge3 : (3 : ℝ) ≤ C
-  hCge1 : (1 : ℝ) ≤ C
-  hCbound : (b : ℝ) * (Ctail * Real.exp (-C ^ 2 * (16 / 9) / 2)) < c3 / 2004
-  hbbdef : base_b = Real.sqrt (1 - (8 / 9) / (b : ℝ) ^ 2)
-  hG : base_b ^ G ≤ Dmp
-  hDmpdef : Dmp = c3 / (2004 * (b : ℝ) * (2 * C + 3))
-  hDmppos : 0 < Dmp
-  hk05 : 5 ≤ BS.k0
-  hadm : admissibleGlobalRange BS
-  hsub : blockPrimes BS.k0 ⊆ blockSupport BS
-  hcopB : BlockSupportCoprimeWith BS b
-  hRp : ∀ r ∈ b.primeFactors, Nat.Prime r
-  hRdvd : ∀ r ∈ b.primeFactors, r ∣ b
-  hcovR : CoversPrimeDivisors b.primeFactors b
-  hRout : ∀ r ∈ b.primeFactors, r ∉ blockSupport BS
-  hdyadic2k : dyadicBlock (2 * BS.k0) ⊆ blockSupport BS
-  hk0minM : k0minM ≤ BS.k0
-  hk0dens : k0density ≤ BS.k0
-  hk0density : ∀ k : ℕ, k0density ≤ k →
-      (G : ℝ) ≤ (2 : ℝ) ^ k / (2 * Real.log ((2 : ℝ) ^ k))
-  hk0ctrlle : k0ctrl ≤ BS.k0
-  hk0ctrl : ∀ BS' : BlockSystem, k0ctrl ≤ BS'.k0 →
-      R2ConcreteData.recipLoad (ctrlEdges BS') ≤ 3 / (4 * (b : ℝ))
-  hk1le : k1 ≤ BS.k0
-  hk15 : 5 ≤ k1
-  hload : ∀ k0 : ℕ, k1 ≤ k0 →
-      (1 : ℝ) / 2 ≤ ∑ pq ∈ (blockPrimes k0).offDiag.filter (fun pq : ℕ × ℕ => pq.1 < pq.2),
-        (1 : ℝ) / ((pq.1 : ℝ) * (pq.2 : ℝ))
-  hk0big : 1000 * G + 1000 * b + 100000 ≤ BS.k0
-  hk0T : T.sup id + 1 ≤ BS.k0
-  hk0dom : 1000000 * (Nat.ceil C + 1) ^ 4 ≤ BS.k0
-
 /-- **Numeric ledger.**  The scale-parameter / constant slice of the foundation:
 the constants (`c3, η, Ctail, C, base_b, Dmp, G`), the bottom-scale thresholds
 (`k0minM, k0density, k0ctrl, k1`), and all the facts that are *independent of the
@@ -191,6 +113,16 @@ structure R2BlockSystemCertificate (T : Finset ℕ) (b : ℕ) (L : R2NumericLedg
   hk0big : 1000 * L.G + 1000 * b + 100000 ≤ BS.k0
   hk0T : T.sup id + 1 ≤ BS.k0
   hk0dom : 1000000 * (Nat.ceil L.C + 1) ^ 4 ≤ BS.k0
+
+/-- **Foundation certificate.**  The join of the two foundation stages: the
+numeric ledger of constants and thresholds (chosen first, independently of any
+block system) and the block-system / prime-factor certificate at a bottom
+scale dominating every ledger threshold. -/
+structure R2FoundationCertificate (T : Finset ℕ) (b : ℕ) where
+  /-- the scale-parameter / constant stage. -/
+  ledger : R2NumericLedger b
+  /-- the block-system stage, at a scale dominating the ledger thresholds. -/
+  bsCert : R2BlockSystemCertificate T b ledger
 
 /-- Choose the numeric ledger of constants and bottom-scale thresholds.  This is
 the scale-parameter slice of the foundation; no block system is constructed. -/
@@ -272,28 +204,13 @@ lemma exists_r2_block_system_certificate (T : Finset ℕ) (b : ℕ) (hb : 3 ≤ 
     hk0minM := hk0minM, hk0dens := hk0dens, hk0ctrlle := hk0ctrlle, hk1le := hk1le,
     hk0big := hk0big, hk0T := hk0T, hk0dom := hk0dom }⟩
 
-/-- Produce the foundation certificate by assembling the two named components:
-the numeric ledger (`exists_r2_numeric_ledger`) and the block-system /
-prime-factor certificate (`exists_r2_block_system_certificate`).  This layer only
-threads the ledger constants and block-system facts into the flat certificate. -/
+/-- Produce the foundation certificate from its two stages. -/
 lemma exists_r2_foundation_certificate (T : Finset ℕ) (b : ℕ) (hb : 3 ≤ b)
     (hbsf : Squarefree b) :
     Nonempty (R2FoundationCertificate T b) := by
   obtain ⟨L⟩ := exists_r2_numeric_ledger b hb hbsf
   obtain ⟨BSc⟩ := exists_r2_block_system_certificate T b hb L
-  exact ⟨{
-    c3 := L.c3, η := L.η, Ctail := L.Ctail, C := L.C, base_b := L.base_b, Dmp := L.Dmp,
-    G := L.G, k0minM := L.k0minM, k0density := L.k0density, k0ctrl := L.k0ctrl, k1 := L.k1,
-    BS := BSc.BS,
-    hbpos := L.hbpos, hb3 := L.hb3, hbsf := L.hbsf, hc3eq := L.hc3eq, hc3pos := L.hc3pos,
-    hηdef := L.hηdef, hηpos := L.hηpos, hCtail := L.hCtail, hSB := L.hSB,
-    hCge3 := L.hCge3, hCge1 := L.hCge1, hCbound := L.hCbound, hbbdef := L.hbbdef, hG := L.hG,
-    hDmpdef := L.hDmpdef, hDmppos := L.hDmppos,
-    hk05 := BSc.hk05, hadm := BSc.hadm, hsub := BSc.hsub, hcopB := BSc.hcopB, hRp := BSc.hRp,
-    hRdvd := BSc.hRdvd, hcovR := BSc.hcovR, hRout := BSc.hRout, hdyadic2k := BSc.hdyadic2k,
-    hk0minM := BSc.hk0minM, hk0dens := BSc.hk0dens, hk0density := L.hk0density,
-    hk0ctrlle := BSc.hk0ctrlle, hk0ctrl := L.hk0ctrl, hk1le := BSc.hk1le, hk15 := L.hk15,
-    hload := L.hload, hk0big := BSc.hk0big, hk0T := BSc.hk0T, hk0dom := BSc.hk0dom }⟩
+  exact ⟨⟨L, BSc⟩⟩
 
 
 /-! ## Concrete semiprime data layer (gadget prime reservoir) -/
@@ -306,11 +223,11 @@ structure R2ConcreteCertificate {T : Finset ℕ} {b : ℕ}
     (F : R2FoundationCertificate T b) where
   /-- the gadget primes. -/
   S : Finset ℕ
-  hScard : S.card = F.G
+  hScard : S.card = F.ledger.G
   hSprime : ∀ s ∈ S, Nat.Prime s
-  hSge : ∀ s ∈ S, 2 ^ (2 * F.BS.k0) ≤ s
-  hSblock : S ⊆ blockSupport F.BS
-  hb2k0 : b < 2 ^ F.BS.k0
+  hSge : ∀ s ∈ S, 2 ^ (2 * F.bsCert.BS.k0) ≤ s
+  hSblock : S ⊆ blockSupport F.bsCert.BS
+  hb2k0 : b < 2 ^ F.bsCert.BS.k0
   hRpos' : ∀ r ∈ b.primeFactors, 2 ≤ r
   hlt' : ∀ r ∈ b.primeFactors, ∀ s ∈ S, r < s
 
@@ -319,21 +236,21 @@ lemma exists_r2_concrete_certificate {T : Finset ℕ} {b : ℕ}
     (F : R2FoundationCertificate T b) :
     Nonempty (R2ConcreteCertificate F) := by
   classical
-  have hbpos := F.hbpos
-  have hk05 := F.hk05
-  have hk0dens := F.hk0dens
-  have hk0big := F.hk0big
+  have hbpos := F.ledger.hbpos
+  have hk05 := F.bsCert.hk05
+  have hk0dens := F.bsCert.hk0dens
+  have hk0big := F.bsCert.hk0big
   obtain ⟨S, hSsub, hScard, hSprime, hSge⟩ :=
-    exists_block_primes (2 * F.BS.k0) (by omega) F.G
-      (F.hk0density (2 * F.BS.k0) (by omega))
-  have hSblock : S ⊆ blockSupport F.BS := fun s hs => F.hdyadic2k (hSsub hs)
-  have hb2k0 : b < 2 ^ F.BS.k0 := lt_of_le_of_lt (by omega) (Nat.lt_two_pow_self)
-  have hRpos' : ∀ r ∈ b.primeFactors, 2 ≤ r := fun r hr => (F.hRp r hr).two_le
+    exists_block_primes (2 * F.bsCert.BS.k0) (by omega) F.ledger.G
+      (F.ledger.hk0density (2 * F.bsCert.BS.k0) (by omega))
+  have hSblock : S ⊆ blockSupport F.bsCert.BS := fun s hs => F.bsCert.hdyadic2k (hSsub hs)
+  have hb2k0 : b < 2 ^ F.bsCert.BS.k0 := lt_of_le_of_lt (by omega) (Nat.lt_two_pow_self)
+  have hRpos' : ∀ r ∈ b.primeFactors, 2 ≤ r := fun r hr => (F.bsCert.hRp r hr).two_le
   have hlt' : ∀ r ∈ b.primeFactors, ∀ s ∈ S, r < s := by
     intro r hr s hs
-    have hrle : r ≤ b := Nat.le_of_dvd hbpos (F.hRdvd r hr)
-    have hsge : 2 ^ (2 * F.BS.k0) ≤ s := hSge s hs
-    have : 2 ^ F.BS.k0 ≤ 2 ^ (2 * F.BS.k0) := Nat.pow_le_pow_right (by norm_num) (by omega)
+    have hrle : r ≤ b := Nat.le_of_dvd hbpos (F.bsCert.hRdvd r hr)
+    have hsge : 2 ^ (2 * F.bsCert.BS.k0) ≤ s := hSge s hs
+    have : 2 ^ F.bsCert.BS.k0 ≤ 2 ^ (2 * F.bsCert.BS.k0) := Nat.pow_le_pow_right (by norm_num) (by omega)
     omega
   exact ⟨⟨S, hScard, hSprime, hSge, hSblock, hb2k0, hRpos', hlt'⟩⟩
 
@@ -356,7 +273,7 @@ structure R2MassCertificate {T : Finset ℕ} {b : ℕ}
   W : R2ConcreteData.Weights D
   /-- the mass-batch supply (encodes the load window). -/
   QB : R2MassBatchSupply D
-  hDdef : D = (⟨F.BS, ∅, b.primeFactors, Cc.S⟩ : R2ConcreteData T b).withQ Q
+  hDdef : D = (⟨F.bsCert.BS, ∅, b.primeFactors, Cc.S⟩ : R2ConcreteData T b).withQ Q
   hLeq : D.L = b * ∏ p ∈ blockSupport D.BS, p
   hL : 0 < D.L
   hsemi : ∀ e ∈ D.E, IsSemiprime e
@@ -375,21 +292,21 @@ lemma exists_r2_mass_certificate {T : Finset ℕ} {b : ℕ}
     (F : R2FoundationCertificate T b) (Cc : R2ConcreteCertificate F) :
     Nonempty (R2MassCertificate F Cc) := by
   classical
-  have hbpos := F.hbpos
-  obtain ⟨Q, QB⟩ := r2_getQ F.hb3 F.BS Cc.S F.hsub Cc.hSge F.hRout
-    (F.hk0ctrl F.BS F.hk0ctrlle) F.k1 F.hk15 F.hk1le F.hload
-    (by rw [Cc.hScard]; exact F.hk0big) F.hk0T
-  set D : R2ConcreteData T b := (⟨F.BS, ∅, b.primeFactors, Cc.S⟩ : R2ConcreteData T b).withQ Q
+  have hbpos := F.ledger.hbpos
+  obtain ⟨Q, QB⟩ := r2_getQ F.ledger.hb3 F.bsCert.BS Cc.S F.bsCert.hsub Cc.hSge F.bsCert.hRout
+    (F.ledger.hk0ctrl F.bsCert.BS F.bsCert.hk0ctrlle) F.ledger.k1 F.ledger.hk15 F.bsCert.hk1le F.ledger.hload
+    (by rw [Cc.hScard]; exact F.bsCert.hk0big) F.bsCert.hk0T
+  set D : R2ConcreteData T b := (⟨F.bsCert.BS, ∅, b.primeFactors, Cc.S⟩ : R2ConcreteData T b).withQ Q
     with hDdef
   set W : R2ConcreteData.Weights D := QB.weights hbpos with hWdef
-  have hk0bigD : 1000 * F.G + 1000 * b + 100000 ≤ D.BS.k0 := F.hk0big
-  have hScardD : D.S.card = F.G := Cc.hScard
-  have hk0TD : T.sup id + 1 ≤ D.BS.k0 := F.hk0T
+  have hk0bigD : 1000 * F.ledger.G + 1000 * b + 100000 ≤ D.BS.k0 := F.bsCert.hk0big
+  have hScardD : D.S.card = F.ledger.G := Cc.hScard
+  have hk0TD : T.sup id + 1 ≤ D.BS.k0 := F.bsCert.hk0T
   have hLeq : D.L = b * ∏ p ∈ blockSupport D.BS, p := rfl
   have hL : 0 < D.L := D.period_pos hbpos
-  have hsemi : ∀ e ∈ D.E, IsSemiprime e := D.semiprime QB.q_semiprime F.hRp Cc.hSprime Cc.hlt'
+  have hsemi : ∀ e ∈ D.E, IsSemiprime e := D.semiprime QB.q_semiprime F.bsCert.hRp Cc.hSprime Cc.hlt'
   have he0 : ∀ e ∈ D.E, 0 < e := D.edges_pos hsemi
-  have heL : ∀ e ∈ D.E, e ∣ D.L := D.dvd_period QB.q_dvd_period F.hRdvd Cc.hSblock
+  have heL : ∀ e ∈ D.E, e ∣ D.L := D.dvd_period QB.q_dvd_period F.bsCert.hRdvd Cc.hSblock
   have hne : D.E.Nonempty := D.nonempty_of_massBatch_nonempty QB.hQne
   have hTlt : ∀ e ∈ T, e < 2 ^ (2 * D.BS.k0) := by
     intro e he
@@ -450,8 +367,8 @@ lemma r2_main_arc_sigmaE_compare {T : Finset ℕ} {b : ℕ}
   classical
   set D : R2ConcreteData T b := M.D with hDeq
   set W : R2ConcreteData.Weights D := M.W with hWeq
-  have hBS : D.BS = F.BS := by simp only [hDeq, M.hDdef, R2ConcreteData.withQ_BS]
-  have hadmD : admissibleGlobalRange D.BS := by rw [hBS]; exact F.hadm
+  have hBS : D.BS = F.bsCert.BS := by simp only [hDeq, M.hDdef, R2ConcreteData.withQ_BS]
+  have hadmD : admissibleGlobalRange D.BS := by rw [hBS]; exact F.bsCert.hadm
   have hsumE : ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2 ≤ 1000001 * (sigmaCtrl D.BS) ^ 2 := M.hsumE
   set σ : ℝ := sigmaCtrl D.BS with hσdef
   have hσpos : 0 < σ := by
@@ -491,11 +408,11 @@ structure R2MainArcWindow {T : Finset ℕ} {b : ℕ}
   /-- the main-arc window parameter. -/
   N : ℤ
   hNnonneg : 0 ≤ N
-  hNlo : F.C / sigmaCtrl M.D.BS ≤ (N : ℝ)
+  hNlo : F.ledger.C / sigmaCtrl M.D.BS ≤ (N : ℝ)
   hN2 : 2 * N < (2 : ℤ) ^ (2 * M.D.BS.k0)
   hNL : 2 * N + 1 ≤ (M.D.L : ℤ)
   hsigmapos : 0 < sigmaCtrl M.D.BS
-  h2N1sigma : (2 * (N : ℝ) + 1) * sigmaCtrl M.D.BS ≤ 2 * F.C + 3
+  h2N1sigma : (2 * (N : ℝ) + 1) * sigmaCtrl M.D.BS ≤ 2 * F.ledger.C + 3
   hsigmaE_ub : Real.sqrt (sigmaE2 M.D.E M.W.theta) ≤ 501 * sigmaCtrl M.D.BS
   hsigmaEpos : 0 < Real.sqrt (sigmaE2 M.D.E M.W.theta)
   hNF : MainArcNumericFields M.D.E M.W.theta N
@@ -508,24 +425,24 @@ constant-chasing "N-window" ledger out of the main-arc assembly. -/
 lemma r2_main_arc_window_scale_period {T : Finset ℕ} {b : ℕ}
     (F : R2FoundationCertificate T b) (Cc : R2ConcreteCertificate F)
     (M : R2MassCertificate F Cc) (N : ℤ)
-    (hNhi : (N : ℝ) ≤ F.C / sigmaCtrl M.D.BS + 1) :
+    (hNhi : (N : ℝ) ≤ F.ledger.C / sigmaCtrl M.D.BS + 1) :
     2 * N < (2 : ℤ) ^ (2 * M.D.BS.k0)
       ∧ 2 * N + 1 ≤ (M.D.L : ℤ)
       ∧ (N : ℝ) ≤ 100 * (M.D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ M.D.BS.k0 + 1 := by
   classical
-  have hbpos := F.hbpos
+  have hbpos := F.ledger.hbpos
   set D : R2ConcreteData T b := M.D with hDeq
-  set C : ℝ := F.C with hCeq
-  have hBS : D.BS = F.BS := by simp only [hDeq, M.hDdef, R2ConcreteData.withQ_BS]
+  set C : ℝ := F.ledger.C with hCeq
+  have hBS : D.BS = F.bsCert.BS := by simp only [hDeq, M.hDdef, R2ConcreteData.withQ_BS]
   have hS : D.S = Cc.S := by simp only [hDeq, M.hDdef, R2ConcreteData.withQ_S]
   have hLeq : D.L = b * ∏ p ∈ blockSupport D.BS, p := M.hLeq
-  have hadmD : admissibleGlobalRange D.BS := by rw [hBS]; exact F.hadm
-  have hCge3 : (3 : ℝ) ≤ C := F.hCge3
-  have hbr : (3 : ℝ) ≤ (b : ℝ) := by exact_mod_cast F.hb3
-  have hk0dom : 1000000 * (Nat.ceil C + 1) ^ 4 ≤ D.BS.k0 := by rw [hBS]; exact F.hk0dom
+  have hadmD : admissibleGlobalRange D.BS := by rw [hBS]; exact F.bsCert.hadm
+  have hCge3 : (3 : ℝ) ≤ C := F.ledger.hCge3
+  have hbr : (3 : ℝ) ≤ (b : ℝ) := by exact_mod_cast F.ledger.hb3
+  have hk0dom : 1000000 * (Nat.ceil C + 1) ^ 4 ≤ D.BS.k0 := by rw [hBS]; exact F.bsCert.hk0dom
   have hSgeD : ∀ s ∈ D.S, 2 ^ (2 * D.BS.k0) ≤ s := by rw [hS, hBS]; exact Cc.hSge
   have hSblockD : D.S ⊆ blockSupport D.BS := by rw [hS, hBS]; exact Cc.hSblock
-  have hScardD : D.S.card = F.G := by rw [hS]; exact Cc.hScard
+  have hScardD : D.S.card = F.ledger.G := by rw [hS]; exact Cc.hScard
   set σ : ℝ := sigmaCtrl D.BS with hσdef
   have hk0big6 : 1000000 ≤ D.BS.k0 := by
     have h1 : 1 ≤ (Nat.ceil C + 1) ^ 4 := Nat.one_le_pow _ _ (by omega)
@@ -578,17 +495,17 @@ lemma r2_main_arc_window_scale_period {T : Finset ℕ} {b : ℕ}
       _ < ((2 ^ (2 * D.BS.k0) : ℕ) : ℤ) := by exact_mod_cast hN2nat
       _ = (2 : ℤ) ^ (2 * D.BS.k0) := by push_cast; ring
   have hNL : 2 * N + 1 ≤ (D.L : ℤ) := by
-    have hc3lt1 : F.c3 < 1 := by
-      rw [F.hc3eq, r2MinorMainCtrlConstant]
+    have hc3lt1 : F.ledger.c3 < 1 := by
+      rw [F.ledger.hc3eq, r2MinorMainCtrlConstant]
       have he : Real.exp (-(Real.pi ^ 2 / 2)) < 1 :=
         Real.exp_lt_one_iff.mpr (neg_lt_zero.mpr (by positivity))
       nlinarith only [he, Real.exp_pos (-(Real.pi ^ 2 / 2))]
-    have hDmplt1 : F.Dmp < 1 := by
-      rw [F.hDmpdef, div_lt_one (by positivity)]
+    have hDmplt1 : F.ledger.Dmp < 1 := by
+      rw [F.ledger.hDmpdef, div_lt_one (by positivity)]
       nlinarith only [hc3lt1, hbr, hCge3]
-    have hG1 : 1 ≤ F.G := by
-      rcases Nat.eq_zero_or_pos F.G with hG0 | hGpos
-      · have hh := F.hG; rw [hG0, pow_zero] at hh; linarith [hDmplt1]
+    have hG1 : 1 ≤ F.ledger.G := by
+      rcases Nat.eq_zero_or_pos F.ledger.G with hG0 | hGpos
+      · have hh := F.ledger.hG; rw [hG0, pow_zero] at hh; linarith [hDmplt1]
       · exact hGpos
     have hSne : D.S.Nonempty := by rw [← Finset.card_pos, hScardD]; omega
     obtain ⟨s, hs⟩ := hSne
@@ -612,22 +529,22 @@ lemma exists_r2_main_arc_window {T : Finset ℕ} {b : ℕ}
     (M : R2MassCertificate F Cc) :
     Nonempty (R2MainArcWindow F Cc M) := by
   classical
-  have hbpos := F.hbpos
+  have hbpos := F.ledger.hbpos
   set D : R2ConcreteData T b := M.D with hDeq
   set W : R2ConcreteData.Weights D := M.W with hWeq
   set QB : R2MassBatchSupply D := M.QB with hQBeq
-  set C : ℝ := F.C with hCeq
+  set C : ℝ := F.ledger.C with hCeq
   -- bridge the opaque mass-batch data back to the foundation/concrete witnesses
-  have hBS : D.BS = F.BS := by simp only [hDeq, M.hDdef, R2ConcreteData.withQ_BS]
+  have hBS : D.BS = F.bsCert.BS := by simp only [hDeq, M.hDdef, R2ConcreteData.withQ_BS]
   have hS : D.S = Cc.S := by simp only [hDeq, M.hDdef, R2ConcreteData.withQ_S]
   have hR : D.R = b.primeFactors := by simp only [hDeq, M.hDdef, R2ConcreteData.withQ_R]
   have he0 : ∀ e ∈ D.E, 0 < e := M.he0
   have hLeq : D.L = b * ∏ p ∈ blockSupport D.BS, p := M.hLeq
   have hsumE : ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2 ≤ 1000001 * (sigmaCtrl D.BS) ^ 2 := M.hsumE
-  have hk05 : 5 ≤ D.BS.k0 := by rw [hBS]; exact F.hk05
-  have hCge3 : (3 : ℝ) ≤ C := F.hCge3
-  have hk0dom : 1000000 * (Nat.ceil C + 1) ^ 4 ≤ D.BS.k0 := by rw [hBS]; exact F.hk0dom
-  have hadmD : admissibleGlobalRange D.BS := by rw [hBS]; exact F.hadm
+  have hk05 : 5 ≤ D.BS.k0 := by rw [hBS]; exact F.bsCert.hk05
+  have hCge3 : (3 : ℝ) ≤ C := F.ledger.hCge3
+  have hk0dom : 1000000 * (Nat.ceil C + 1) ^ 4 ≤ D.BS.k0 := by rw [hBS]; exact F.bsCert.hk0dom
+  have hadmD : admissibleGlobalRange D.BS := by rw [hBS]; exact F.bsCert.hadm
   have hSgeD : ∀ s ∈ D.S, 2 ^ (2 * D.BS.k0) ≤ s := by rw [hS, hBS]; exact Cc.hSge
   have hRpos'D : ∀ r ∈ D.R, 2 ≤ r := by rw [hR]; exact Cc.hRpos'
   set σ : ℝ := sigmaCtrl D.BS with hσdef
@@ -673,7 +590,7 @@ The minor-arc budget factors through explicitly named certificate steps:
   frequency count bound (`r2_extra_count_le`, `≤ b(2N+1)`), and the per-frequency
   gadget damping (`r2ExtraSiblingChoice_of_intLabelData`, the `G`-fold damping).
 * **support budget** — `r2_minor_support_budget` feeds those lanes through the
-  abstract minor-support supply principle `F.hSB` to produce the
+  abstract minor-support supply principle `F.ledger.hSB` to produce the
   `R2MinorSupportBudgetData` (the block/extra cover with its two budget fields).
 * **lane bound** — `r2_minor_lane_bound` combines the block and extra budgets via
   `hminorSum_of_block_extra_norm_bounds` into the per-`MainArcFields` minor sum
@@ -689,52 +606,52 @@ The minor-arc budget factors through explicitly named certificate steps:
 def r2MinorBudget {T : Finset ℕ} {b : ℕ}
     (F : R2FoundationCertificate T b) {Cc : R2ConcreteCertificate F}
     (M : R2MassCertificate F Cc) (A : R2MainArcWindow F Cc M) : ℝ :=
-  ((b : ℝ) * F.η + (b : ℝ) * (F.Ctail * Real.exp (-F.C ^ 2 * (16 / 9) / 2)))
+  ((b : ℝ) * F.ledger.η + (b : ℝ) * (F.ledger.Ctail * Real.exp (-F.ledger.C ^ 2 * (16 / 9) / 2)))
       / sigmaCtrl M.D.BS
-    + (b : ℝ) * (2 * (A.N : ℝ) + 1) * F.Dmp
+    + (b : ℝ) * (2 * (A.N : ℝ) + 1) * F.ledger.Dmp
 
 /-- **Minor classification + support-budget certificate.**  Build the block,
 extra-count, and gadget-damping frequency lanes (`r2_buildFreqLanes`) and feed
-them through the abstract minor-support supply principle `F.hSB` to obtain the
+them through the abstract minor-support supply principle `F.ledger.hSB` to obtain the
 `R2MinorSupportBudgetData`: the block/extra cover of the minor frequencies with
 its block budget `(b·(η + Ctail·e^{…}))/σ_ctrl` and extra budget `b·(2N+1)·Dmp`. -/
 lemma r2_minor_support_budget {T : Finset ℕ} {b : ℕ}
     (F : R2FoundationCertificate T b) (Cc : R2ConcreteCertificate F)
     (M : R2MassCertificate F Cc) (A : R2MainArcWindow F Cc M) :
     Nonempty (R2MinorSupportBudgetData M.D M.W A.N
-      ((b : ℝ) * (F.η + F.Ctail * Real.exp (-F.C ^ 2 * (16 / 9) / 2)) / sigmaCtrl M.D.BS)
-      ((b : ℝ) * (2 * (A.N : ℝ) + 1) * F.Dmp)) := by
+      ((b : ℝ) * (F.ledger.η + F.ledger.Ctail * Real.exp (-F.ledger.C ^ 2 * (16 / 9) / 2)) / sigmaCtrl M.D.BS)
+      ((b : ℝ) * (2 * (A.N : ℝ) + 1) * F.ledger.Dmp)) := by
   classical
-  have hbpos := F.hbpos
+  have hbpos := F.ledger.hbpos
   set D : R2ConcreteData T b := M.D with hDeq
   set W : R2ConcreteData.Weights D := M.W with hWeq
   set N : ℤ := A.N with hNeq
   -- bridge the opaque mass-batch data back to the foundation/concrete witnesses
-  have hBS : D.BS = F.BS := by simp only [hDeq, M.hDdef, R2ConcreteData.withQ_BS]
+  have hBS : D.BS = F.bsCert.BS := by simp only [hDeq, M.hDdef, R2ConcreteData.withQ_BS]
   have hS : D.S = Cc.S := by simp only [hDeq, M.hDdef, R2ConcreteData.withQ_S]
   have hR : D.R = b.primeFactors := by simp only [hDeq, M.hDdef, R2ConcreteData.withQ_R]
-  have hcovRD : CoversPrimeDivisors D.R b := by rw [hR]; exact F.hcovR
-  have hcopBD : BlockSupportCoprimeWith D.BS b := by rw [hBS]; exact F.hcopB
-  have hRpD : ∀ r ∈ D.R, Nat.Prime r := by rw [hR]; exact F.hRp
+  have hcovRD : CoversPrimeDivisors D.R b := by rw [hR]; exact F.bsCert.hcovR
+  have hcopBD : BlockSupportCoprimeWith D.BS b := by rw [hBS]; exact F.bsCert.hcopB
+  have hRpD : ∀ r ∈ D.R, Nat.Prime r := by rw [hR]; exact F.bsCert.hRp
   have hSprimeD : ∀ s ∈ D.S, Nat.Prime s := by rw [hS]; exact Cc.hSprime
-  have hRdvdD : ∀ r ∈ D.R, r ∣ b := by rw [hR]; exact F.hRdvd
+  have hRdvdD : ∀ r ∈ D.R, r ∣ b := by rw [hR]; exact F.bsCert.hRdvd
   have hSblockD : D.S ⊆ blockSupport D.BS := by rw [hS, hBS]; exact Cc.hSblock
   have hlt'D : ∀ r ∈ D.R, ∀ s ∈ D.S, r < s := by rw [hR, hS]; exact Cc.hlt'
   have hSgeD : ∀ s ∈ D.S, 2 ^ (2 * D.BS.k0) ≤ s := by rw [hS, hBS]; exact Cc.hSge
-  have hScardD : D.S.card = F.G := by rw [hS]; exact Cc.hScard
-  have hk0minMD : F.k0minM ≤ D.BS.k0 := by rw [hBS]; exact F.hk0minM
-  have hadmD : admissibleGlobalRange D.BS := by rw [hBS]; exact F.hadm
-  have hCge1 : (1 : ℝ) ≤ F.C := F.hCge1
+  have hScardD : D.S.card = F.ledger.G := by rw [hS]; exact Cc.hScard
+  have hk0minMD : F.ledger.k0minM ≤ D.BS.k0 := by rw [hBS]; exact F.bsCert.hk0minM
+  have hadmD : admissibleGlobalRange D.BS := by rw [hBS]; exact F.bsCert.hadm
+  have hCge1 : (1 : ℝ) ≤ F.ledger.C := F.ledger.hCge1
   -- classification + block/extra/gadget lanes
-  obtain ⟨Ln⟩ := r2_buildFreqLanes D W N F.C F.η F.Ctail F.Dmp F.G hbpos F.hbsf
+  obtain ⟨Ln⟩ := r2_buildFreqLanes D W N F.ledger.C F.ledger.η F.ledger.Ctail F.ledger.Dmp F.ledger.G hbpos F.ledger.hbsf
     hcovRD hcopBD hRpD hSprimeD hRdvdD hSblockD hlt'D M.hctrlAvoid M.hgadgetAvoid
     M.heL M.he0 M.hL M.hLeq hCge1 A.hNnonneg hSgeD hScardD A.hNlo A.hN2
-    (le_of_lt F.hDmppos) (F.hbbdef ▸ F.hG)
+    (le_of_lt F.ledger.hDmppos) (F.ledger.hbbdef ▸ F.ledger.hG)
   -- abstract minor-support supply principle applied to the lanes
-  exact F.hSB D W N
-    ((b : ℝ) * (F.η + F.Ctail * Real.exp (-F.C ^ 2 * (16 / 9) / 2)) / sigmaCtrl D.BS)
-    ((b : ℝ) * (2 * (N : ℝ) + 1) * F.Dmp) (N : ℝ)
-    (mainArcClassificationData D W N F.C) hk0minMD hadmD Ln.toMultiGadget
+  exact F.ledger.hSB D W N
+    ((b : ℝ) * (F.ledger.η + F.ledger.Ctail * Real.exp (-F.ledger.C ^ 2 * (16 / 9) / 2)) / sigmaCtrl D.BS)
+    ((b : ℝ) * (2 * (N : ℝ) + 1) * F.ledger.Dmp) (N : ℝ)
+    (mainArcClassificationData D W N F.ledger.C) hk0minMD hadmD Ln.toMultiGadget
 
 /-- **Minor lane bound.**  Combine the block and extra budgets of the
 `R2MinorSupportBudgetData` (via `hminorSum_of_block_extra_norm_bounds`) into the
@@ -761,35 +678,35 @@ lemma r2_minor_budget_closure {T : Finset ℕ} {b : ℕ}
     (M : R2MassCertificate F Cc) (A : R2MainArcWindow F Cc M) :
     r2MinorBudget F M A < 0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2) /
       Real.sqrt (sigmaE2 M.D.E M.W.theta) := by
-  have hbpos := F.hbpos
+  have hbpos := F.ledger.hbpos
   have hσpos : 0 < sigmaCtrl M.D.BS := A.hsigmapos
-  have hb1 : (b : ℝ) * F.η = F.c3 / 2004 := by rw [F.hηdef]; field_simp
-  have hb2 : (b : ℝ) * (F.Ctail * Real.exp (-F.C ^ 2 * (16 / 9) / 2)) < F.c3 / 2004 :=
-    F.hCbound
-  have hb3 : (b : ℝ) * (2 * (A.N : ℝ) + 1) * F.Dmp * sigmaCtrl M.D.BS ≤ F.c3 / 2004 := by
-    have hstep : (b : ℝ) * (2 * (A.N : ℝ) + 1) * F.Dmp * sigmaCtrl M.D.BS
-        = (b : ℝ) * F.Dmp * ((2 * (A.N : ℝ) + 1) * sigmaCtrl M.D.BS) := by ring
+  have hb1 : (b : ℝ) * F.ledger.η = F.ledger.c3 / 2004 := by rw [F.ledger.hηdef]; field_simp
+  have hb2 : (b : ℝ) * (F.ledger.Ctail * Real.exp (-F.ledger.C ^ 2 * (16 / 9) / 2)) < F.ledger.c3 / 2004 :=
+    F.ledger.hCbound
+  have hb3 : (b : ℝ) * (2 * (A.N : ℝ) + 1) * F.ledger.Dmp * sigmaCtrl M.D.BS ≤ F.ledger.c3 / 2004 := by
+    have hstep : (b : ℝ) * (2 * (A.N : ℝ) + 1) * F.ledger.Dmp * sigmaCtrl M.D.BS
+        = (b : ℝ) * F.ledger.Dmp * ((2 * (A.N : ℝ) + 1) * sigmaCtrl M.D.BS) := by ring
     rw [hstep]
-    have hle : (b : ℝ) * F.Dmp * ((2 * (A.N : ℝ) + 1) * sigmaCtrl M.D.BS)
-        ≤ (b : ℝ) * F.Dmp * (2 * F.C + 3) :=
-      mul_le_mul_of_nonneg_left A.h2N1sigma (mul_nonneg (by positivity) F.hDmppos.le)
+    have hle : (b : ℝ) * F.ledger.Dmp * ((2 * (A.N : ℝ) + 1) * sigmaCtrl M.D.BS)
+        ≤ (b : ℝ) * F.ledger.Dmp * (2 * F.ledger.C + 3) :=
+      mul_le_mul_of_nonneg_left A.h2N1sigma (mul_nonneg (by positivity) F.ledger.hDmppos.le)
     refine le_trans hle (le_of_eq ?_)
     have hbne : (b : ℝ) ≠ 0 := by exact_mod_cast hbpos.ne'
-    have hCne : (2 * F.C + 3 : ℝ) ≠ 0 :=
-      ne_of_gt (show (0 : ℝ) < 2 * F.C + 3 by have := F.hCge3; linarith)
-    rw [F.hDmpdef]; field_simp
-  have hBm501 : r2MinorBudget F M A < F.c3 / (501 * sigmaCtrl M.D.BS) := by
-    have h := r2_close_budget_501 (sigmaCtrl M.D.BS) ((b : ℝ) * F.η)
-      ((b : ℝ) * (F.Ctail * Real.exp (-F.C ^ 2 * (16 / 9) / 2)))
-      ((b : ℝ) * (2 * (A.N : ℝ) + 1) * F.Dmp) F.c3 hσpos F.hc3pos hb1 hb2 hb3
+    have hCne : (2 * F.ledger.C + 3 : ℝ) ≠ 0 :=
+      ne_of_gt (show (0 : ℝ) < 2 * F.ledger.C + 3 by have := F.ledger.hCge3; linarith)
+    rw [F.ledger.hDmpdef]; field_simp
+  have hBm501 : r2MinorBudget F M A < F.ledger.c3 / (501 * sigmaCtrl M.D.BS) := by
+    have h := r2_close_budget_501 (sigmaCtrl M.D.BS) ((b : ℝ) * F.ledger.η)
+      ((b : ℝ) * (F.ledger.Ctail * Real.exp (-F.ledger.C ^ 2 * (16 / 9) / 2)))
+      ((b : ℝ) * (2 * (A.N : ℝ) + 1) * F.ledger.Dmp) F.ledger.c3 hσpos F.ledger.hc3pos hb1 hb2 hb3
     unfold r2MinorBudget
     exact h
-  have hc3eq : F.c3 = 0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2) := by
-    rw [F.hc3eq, r2MinorMainCtrlConstant]
+  have hc3eq : F.ledger.c3 = 0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2) := by
+    rw [F.ledger.hc3eq, r2MinorMainCtrlConstant]
   rw [← hc3eq]
-  exact hbeat_of_sigma_le_sigmaCtrl F.c3 (Real.sqrt (sigmaE2 M.D.E M.W.theta))
+  exact hbeat_of_sigma_le_sigmaCtrl F.ledger.c3 (Real.sqrt (sigmaE2 M.D.E M.W.theta))
     (501 * sigmaCtrl M.D.BS) (r2MinorBudget F M A)
-    F.hc3pos A.hsigmaEpos (by positivity) A.hsigmaE_ub hBm501
+    F.ledger.hc3pos A.hsigmaEpos (by positivity) A.hsigmaE_ub hBm501
 
 /-- **Minor certificate.**  The minor-arc budget `Bm`, the per-`MainArcFields`
 minor-sum bound (assembled from the block lane and the gadget/extra lane via the
@@ -828,7 +745,7 @@ lemma assemble_arcConstruction {T : Finset ℕ} {b : ℕ}
     (M : R2MassCertificate F Cc) (A : R2MainArcWindow F Cc M)
     (R : R2MinorCertificate F Cc M A) :
     Nonempty (ArcConstruction T b) :=
-  exists_arcConstruction_of_mainArcParams F.hb3 M.D M.W A.N R.Bm A.hNnonneg A.hNL
+  exists_arcConstruction_of_mainArcParams F.ledger.hb3 M.D M.W A.N R.Bm A.hNnonneg A.hNL
     M.hsemi M.havoid M.hne M.heL M.he0 M.hloadUpper A.hNF.hN A.hNF.htw A.hNF.hsmall
     R.hminor R.hbeat
 

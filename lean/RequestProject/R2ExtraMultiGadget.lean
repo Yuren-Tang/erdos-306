@@ -14,43 +14,6 @@ argument needs several gadget factors for each extra frequency.  This file
 records the correct budget interface without yet choosing the gadgets.
 -/
 
-/-- If `A ⊆ E`, all factors have norm at most one, and factors on `A` are
-bounded by `D`, then the full product over `E` is bounded by `D ^ |A|`.
-
-This is the finite-product core of the multi-gadget damping argument. -/
-lemma norm_prod_le_pow_of_subset_bound {α : Type*} [DecidableEq α]
-    (E A : Finset α) (F : α → ℂ) (D : ℝ)
-    (hsub : A ⊆ E)
-    (hF1 : ∀ e ∈ E, ‖F e‖ ≤ 1)
-    (hD0 : 0 ≤ D)
-    (hFD : ∀ e ∈ A, ‖F e‖ ≤ D) :
-    ‖∏ e ∈ E, F e‖ ≤ D ^ A.card := by
-  classical
-  rw [norm_prod]
-  have hsplit :
-      ∏ e ∈ E, ‖F e‖ =
-        (∏ e ∈ A, ‖F e‖) * ∏ e ∈ E \ A, ‖F e‖ := by
-    rw [← Finset.prod_union]
-    · congr
-      exact (Finset.union_sdiff_of_subset hsub).symm
-    · exact disjoint_sdiff
-  rw [hsplit]
-  have hA : ∏ e ∈ A, ‖F e‖ ≤ ∏ _e ∈ A, D := by
-    exact Finset.prod_le_prod (fun e _ => norm_nonneg (F e)) hFD
-  have hrest : ∏ e ∈ E \ A, ‖F e‖ ≤ 1 := by
-    refine Finset.prod_le_one ?_ ?_
-    · intro e _
-      exact norm_nonneg (F e)
-    · intro e he
-      exact hF1 e (Finset.mem_sdiff.mp he).1
-  calc
-    (∏ e ∈ A, ‖F e‖) * ∏ e ∈ E \ A, ‖F e‖
-        ≤ (∏ _e ∈ A, D) * 1 := by
-          exact mul_le_mul hA hrest
-            (Finset.prod_nonneg fun e _ => norm_nonneg (F e))
-            (Finset.prod_nonneg fun _ _ => hD0)
-    _ = D ^ A.card := by simp
-
 /-- The selected gadget edge set for a fixed denominator prime `r` and a set of
 block-side primes `G`. -/
 def multiGadgetEdges (r : ℕ) (G : Finset ℕ) : Finset ℕ :=
@@ -69,8 +32,8 @@ lemma card_multiGadgetEdges (r : ℕ) (G : Finset ℕ) (hr : 0 < r) :
   exact Finset.card_image_of_injective G (mul_left_injective_nat hr)
 
 /-- The full Fourier summand is bounded by the product of the selected gadget
-factors.  This is the multi-factor version of
-`fourierNormWeight_le_factor_of_mem`. -/
+factors: the multi-factor instance of
+`fourierNormWeight_le_prod_norm_of_subset` with `S = multiGadgetEdges r G`. -/
 lemma fourierNormWeight_le_multi_gadget_product
     (E : Finset ℕ) (theta : ℕ → ℝ) (b L h r : ℕ) (G : Finset ℕ)
     (hrpos : 0 < r)
@@ -85,54 +48,9 @@ lemma fourierNormWeight_le_multi_gadget_product
           ‖bernoulliCharFun (theta (r * s))
             ((h : ℝ) / ((r : ℝ) * (s : ℝ)))‖ := by
   classical
-  unfold fourierNormWeight fourierTerm
-  rw [norm_mul]
-  have hphase :
-      ‖Complex.exp
-        (-(2 * Real.pi * Complex.I * (h : ℂ) * ((L / b : ℕ) : ℂ) / (L : ℂ)))‖ = 1 := by
-    rw [Complex.norm_exp]
-    have hre :
-        (-(2 * Real.pi * Complex.I * (h : ℂ) * ((L / b : ℕ) : ℂ) / (L : ℂ))).re = 0 := by
-      simp [Complex.div_re, Complex.mul_re, Complex.mul_im, Complex.I_re, Complex.I_im]
-    rw [hre, Real.exp_zero]
-  rw [hphase, mul_one]
-  have hprod :
-      (∏ e ∈ E, ((theta e : ℂ) *
-          Complex.exp
-            (2 * Real.pi * Complex.I * (h : ℂ) * ((L / e : ℕ) : ℂ) / (L : ℂ))
-          + (1 - theta e)))
-        = ∏ e ∈ E, bernoulliCharFun (theta e) ((h : ℝ) / (e : ℝ)) := by
-    refine Finset.prod_congr rfl (fun e he => ?_)
-    exact charfactor_eq (theta e) h e L (hepos e he) (heL e he) hL
-  rw [hprod]
-  have hfull :
-      ‖∏ e ∈ E, bernoulliCharFun (theta e) ((h : ℝ) / (e : ℝ))‖
-        ≤ ∏ e ∈ multiGadgetEdges r G,
-            ‖bernoulliCharFun (theta e) ((h : ℝ) / (e : ℝ))‖ := by
-    rw [norm_prod]
-    have hsplit :
-        ∏ e ∈ E, ‖bernoulliCharFun (theta e) ((h : ℝ) / (e : ℝ))‖ =
-          (∏ e ∈ multiGadgetEdges r G,
-              ‖bernoulliCharFun (theta e) ((h : ℝ) / (e : ℝ))‖) *
-            ∏ e ∈ E \ multiGadgetEdges r G,
-              ‖bernoulliCharFun (theta e) ((h : ℝ) / (e : ℝ))‖ := by
-      rw [← Finset.prod_union]
-      · congr
-        exact (Finset.union_sdiff_of_subset hGmem).symm
-      · exact disjoint_sdiff
-    rw [hsplit]
-    have hrest :
-        ∏ e ∈ E \ multiGadgetEdges r G,
-          ‖bernoulliCharFun (theta e) ((h : ℝ) / (e : ℝ))‖ ≤ 1 := by
-      refine Finset.prod_le_one ?_ ?_
-      · intro e _
-        exact norm_nonneg _
-      · intro e he
-        exact bernoulliCharFun_norm_le_one (theta e) ((h : ℝ) / (e : ℝ))
-          (hθ0 e (Finset.mem_sdiff.mp he).1) (hθ1 e (Finset.mem_sdiff.mp he).1)
-    exact mul_le_of_le_one_right
-      (Finset.prod_nonneg fun _ _ => norm_nonneg _) hrest
-  refine le_trans hfull ?_
+  refine le_trans
+    (fourierNormWeight_le_prod_norm_of_subset E theta b L h
+      (multiGadgetEdges r G) hGmem hθ0 hθ1 heL hepos hL) ?_
   unfold multiGadgetEdges
   rw [Finset.prod_image]
   · simp [Nat.cast_mul]
