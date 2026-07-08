@@ -94,21 +94,24 @@ in the file layout):
    `R2Component*`, `R2Forbidden*`, `R2BaseLoadUpper`/`R2BaseBudgetAssembly`) —
    see finding 3c, this is the highest-value target.
 3. Minor-arc / extra-frequency damping estimate (~25 files: `R2Minor*`,
-   `R2Extra*`, `R2BlockMinorLane`, `R2FourierFactor`) — partially read.
-   **Unlike group 2, this group is NOT mostly adapter shell** — sampled files
-   (`R2ExtraCRTSibling.lean`'s squarefree-CRT mismatch argument,
-   `R2FourierFactor.lean`'s Bernoulli-factor norm bound) hold genuine,
-   reasonably well-organized mathematical content, with only a legitimate
-   two-generation API bridge (`R2ExtraMinorWitnessData` →
-   `R2ExtraMinorGadgetMemData`) rather than pure waste. It does still have
-   the *abandoned-alternative-strategy* problem though: `R2MinorEndgameGadget.lean`
-   (a "single gadget" damping strategy, superseded by the frequency-lanes /
-   multi-gadget approach) was confirmed dead by the same check and deleted.
-   The remaining `R2MinorEndgame*` family (`Frequency`, `Lanes`,
-   `MultiGadget`) looks like it might still hold more than one live strategy
-   variant side by side — worth the same "which one is actually called from
-   `R2Certificates.lean`" check before assuming any of it is dead or
-   collapsible. Not fully read past the two sampled files.
+   `R2Extra*`, `R2BlockMinorLane`) — **now fully read** (see
+   `docs/construction-redesign.md` C4–C7). Unlike group 2, this group is NOT
+   mostly adapter shell — the live content (`R2ExtraCRTSibling.lean`'s
+   squarefree-CRT mismatch argument, `R2ExtraMultiGadget.lean`'s product
+   damping) is genuine, reasonably well-organized math. It did have the
+   *abandoned-alternative-strategy* problem in three separate places, all
+   confirmed dead by the zero-reference check and deleted:
+   `R2MinorEndgameGadget.lean` (single-gadget damping), `R2MinorReadyArc.lean`
+   (an abandoned `exists_arcConstruction` endpoint), and — what first looked
+   like a "legitimate two-generation API bridge" but on full read turned out
+   to be entirely dead — `R2FourierFactor.lean` + `R2ExtraMinorLane.lean`
+   (the single-gadget-witness budget path, `R2ExtraMinorWitnessData` →
+   `R2ExtraMinorGadgetMemData`; superseded by the multi-gadget chain in
+   `R2ExtraMultiGadget.lean`). The remaining `R2MinorEndgame*` family
+   (`Frequency`, `MultiGadget`) is NOT a dead-strategy duplicate despite the
+   similar naming — `R2MinorEndgameFrequency` genuinely reduces to
+   `R2MinorEndgameMultiGadget` via `.toMultiGadget` (a real two-step
+   refinement), both are live and consumed by `R2Certificates.lean`.
 4. Final numeric closure and assembly (~8 files: `R2NumericFields`,
    `R2AssemblyFields`, `R2LargeK0`, `R2FinalAssembly*`, `R2TopAssembly`,
    `R2Certificates`).
@@ -166,6 +169,21 @@ in the file layout):
 - Two dependent-rewrite/defeq breaks fixed (`R2ExtraFrequencyChoice.lean`'s
   `hm_r` field, `R2MassBatchPoolSupply.lean`'s `withQ` unfolding) plus one
   regression this pass introduced and then fixed (`R2MinorEstimateInterface.lean`).
+- **Full minor-arc/extra-frequency group now read to completion** (all ~25
+  files; see `docs/construction-redesign.md` C4–C7 for the confirmed map).
+  Found and deleted a third dead parallel strategy from an earlier
+  proof-discovery stage, same pattern as `R2MinorReadyArc.lean` and
+  `R2MinorEndgameGadget.lean` above: `R2FourierFactor.lean` and
+  `R2ExtraMinorLane.lean` (both whole files — an abandoned
+  single-gadget-witness extra-minor budget path, confirmed zero references
+  anywhere outside their own mutually-dead cluster) deleted outright;
+  `R2MinorEndgameLanes.lean` and `R2MinorReady.lean` each had one dead
+  theorem trimmed while keeping their live shared structs
+  (`R2BlockFiberTailData`, `R2MinorReadyData`). Verified via
+  `lake build RequestProject.Audit` before committing, per the gotcha below.
+  Everything else in the group (C4 classification, C5 block-minor, C6
+  extra-minor's live multi-gadget/frequency chain, C7 numerics) read clean —
+  no more smearing found beyond what's already flagged in 3c/batch 4-5 below.
 
 ### 3b. Over-specialization instead of composing the general lemma (Core)
 
@@ -258,8 +276,6 @@ the same standard or look more like the `R2*` shape.
 
 ### Not yet surveyed
 
-- The ~23 unread files of the R2 minor-arc/extra-frequency group (2 of ~25
-  sampled so far — see map above).
 - `CircleMethodMainArc.lean`, `CircleMethodMainTerm.lean`,
   `GlobalPeierlsBookkeeping.lean`, `BernoulliFourier.lean` (read
   `SpectralCannon.lean`/`CannonBridge.lean`/`CircleMethod.lean` this round,
@@ -352,8 +368,10 @@ polish a downstream bridge" discipline already in `docs/refactor-roadmap.md`:
 1. ~~Fix the real `R2TopAssembly.lean:255`/`:325` break~~ — done (commit
    9e56025). The `.github/workflows/lean-graph.yml` declaration-level
    dependency-graph tool should now be unblockable if useful.
-2. Read the ~26-file minor-arc/extra-frequency group the same way this pass
-   read the mass-batch group, to get the matching map before touching either.
+2. ~~Read the ~26-file minor-arc/extra-frequency group the same way this
+   pass read the mass-batch group~~ — done, see `docs/construction-redesign.md`
+   C4–C7 and the "Already fixed" entry above for the resulting map and the
+   third dead cluster it turned up.
 3. Collapse the mass-batch (~19 files) and minor-arc (~26 files) groups by
    mathematical role rather than pipeline-stage, per finding 3c — this is
    where the real Bourbaki-style win is: identify the true minimal

@@ -137,19 +137,30 @@ today spread over `BernoulliFourier`, `CircleMethodArcs`,
   (`mainArc_fiber_card_le`, `FiberCount`), and the concrete classification
   (`R2MainArcClassification`, `R2MinorSupportPipeline`'s
   `R2MinorClassificationData`). One node.
-- **C5 ▽ Block-minor estimate.** Fiber-tail reindex (P3 instantiation in
+- **C5 ✓ Block-minor estimate.** Fiber-tail reindex (P3 instantiation in
   `ArcConstruction`/`ExtraEnergyMinorArc`) + global-control partition ⇒
   `block_part_bound` (`R2MinorEstimateInterface`) ⇒ the `Bblock` budget
-  (`R2BlockMinorLane`). One node.
+  (`R2BlockMinorLane`, 3 escalating theorems) ⇒ shared per-main-arc packaging
+  `R2BlockFiberTailData` (`R2MinorEndgameLanes`). Read in full this pass;
+  content is already a clean short chain, no smearing found. One node.
 - **C6 ▽ Extra-minor estimate.** Sibling existence
   (`exists_R_mismatch_of_block_eq_not_global`, `R2ExtraCRTSibling`) +
   gadget selection (`ExtraFrequencyChoice(Int)`,
-  `ExtraMultiGadget(Reservoir)`, `ExtraReservoir{Selection,UniformBudget}`)
-  + B5/B2/P2 ⇒ `extra_part_bound` ⇒ the `Bextra` budget. *The choice
-  packaging is currently a 6-file chain of record conversions*; its live
-  content is: choose a sibling prime per frequency (`Classical.choose`),
-  choose gadget sets, verify the pointwise damping bound, multiply out.
-  One node `Construction/ExtraMinor.lean`.
+  `ExtraMultiGadget`, `ExtraMultiGadgetReservoir`,
+  `ExtraReservoir{Selection,UniformBudget}`) + B5/B2/P2 ⇒
+  `R2ExtraMinorMultiGadgetBoundData` (`R2ExtraMultiGadget`) ⇒ the `Bextra`
+  budget, consumed by two convergent endgame strategies
+  (`R2MinorEndgameMultiGadget` direct, `R2MinorEndgameFrequency` reducing to
+  it via `.toMultiGadget` — a legitimate two-step refinement, not
+  duplication) ⇒ `R2MinorReadyData` (`R2MinorReady`). *The choice packaging
+  is a ~9-file chain of record conversions*; its live content is: choose a
+  sibling prime per frequency (`Classical.choose`), choose gadget sets,
+  verify the pointwise damping bound, multiply out, package per-frequency
+  budgets into the two endgame shapes. One node `Construction/ExtraMinor.lean`.
+  Open question found this pass, not yet resolved: `ExtraFrequencyChoiceInt`
+  mirrors `ExtraFrequencyChoice` (`Int`- vs `Nat`-labelled) closely enough to
+  look collapsible, but the hypothesis transport needs care — medium risk,
+  left for whoever executes this batch to verify before merging.
 - **C7 ▽ Main-arc numerics and σ-comparison.** `r2_numericFields`,
   `sigmaE2_ge_ctrl`, `r2_main_arc_sigmaE_compare`, the `k0`-largeness facts
   (`R2LargeK0`, parts of `R2TopAssembly`), `σ_E ≤ σ_ctrl` from the
@@ -180,6 +191,21 @@ natural join and stays); `R2Minor{Ready,BudgetNumerics}` and
 `R2{Assembly,Numeric}Fields` distribute into C7/A1;
 `R2Component{ScaleCard,Disjoint,Numeric*,Bounds}` distribute into C1/C7.
 
+**Third dead cluster found and deleted this pass** (a full parallel
+extra-minor strategy from an earlier proof-discovery stage that never got
+wired into the live chain, confirmed via exhaustive zero-reference grep
+before deletion): `R2FourierFactor.lean` (whole file —
+`fourierNormWeight_le_factor_of_mem`, `r2_extra_hfactor_of_gadget_mem`,
+`R2ExtraMinorGadgetMemData`, and their consumers) and
+`R2ExtraMinorLane.lean` (whole file — the single-gadget-witness budget
+path, `R2ExtraMinorWitnessData`). `R2MinorEndgameLanes.lean` and
+`R2MinorReady.lean` each had one dead theorem trimmed
+(`exists_r2_minorSupportBudget_from_endgame_lanes`,
+`exists_r2_minorReady_from_endgame_lanes`) while keeping their live shared
+structs (`R2BlockFiberTailData`, `R2MinorReadyData`). This closes the
+minor-arc region read: every file in it is now either confirmed live (C4–C7
+above) or deleted.
+
 ## Execution order (few-build batches)
 
 Each batch ends in exactly one `lake build RequestProject.Audit` (locally
@@ -187,7 +213,10 @@ or via CI), per the build-cycle economy this repo needs:
 
 1. **(done, this branch)** Dead alternatives/aliases: `FourierPositivity`
    cluster, `R2MinorReadyArc`, `R2MinorEndgameGadget`, cover-layer
-   collapse, `BernoulliFourier` leftovers, alias chain.
+   collapse, `BernoulliFourier` leftovers, alias chain, plus (found in the
+   full minor-arc read) the `R2FourierFactor`/`R2ExtraMinorLane`
+   single-gadget-witness dead cluster and the two dead endgame-lanes
+   theorems — see "Merged/eliminated outright" above.
 2. **P2 + B2 unification**: add `Core/FiniteProducts.lean` and
    `fourierNormWeight_eq_prod_norm`; re-derive the three product bounds as
    corollaries; move `bernoulliCharFun_norm_le_one` to `BernoulliFourier`.
@@ -204,5 +233,10 @@ or via CI), per the build-cycle economy this repo needs:
    strip hypotheses nothing uses (the `Squarefree b` already flagged
    unused in `exists_blockAligned_mass_batch` is the model case).
 
-Batches 4–6 are mechanical *given this document* and can be delegated;
-batch 2–3 are done next in this pass.
+**(done)** Batches 1–3, plus the full minor-arc discovery read (C4–C7
+above are now all confirmed-clean or confirmed-dead-and-deleted, no
+remaining unread files in that region). Batches 4–6 are mechanical *given
+this document* and are the next work; batch 5's one open risk item
+(`ExtraFrequencyChoiceInt` vs `ExtraFrequencyChoice` duplication) should be
+resolved by whoever executes it, not assumed collapsible without checking
+hypothesis transport.
