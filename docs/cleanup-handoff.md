@@ -526,3 +526,22 @@ polish a downstream bridge" discipline already in `docs/refactor-roadmap.md`:
    holds the C2/C6 nodes under working names; this step still needs C1/C4/
    C5/C7/A1 moved in and the vocabulary table actually applied everywhere.
 5. Survey and apply the same treatment to the root-level circle-method files.
+
+## R2 numeric chase: parametric witness elimination (2026-07-09)
+
+The main-arc numeric chase no longer contains any proof-witness constant in its
+API or spine. Design record and constant-by-constant classification:
+`docs/r2-numeric-abstraction.md`. Summary: the ledger now carries abstract
+`cSigma, Sload, K` (with `1 ≤ ·` and `Sload ≤ 4K²`), eventual thresholds
+`k0sigma/k0window/k0cubic/k0load` with their ∀-facts, and one budget inequality
+`hbudget` replacing the definitional pinning of `η`/`Dmp`. All decimal witnesses
+(`100, 14, 1000001, 501, 2004, 250001, 1000000·(⌈C⌉+1)⁴, 256000000,
+500000000000000`) either vanished as cascade artifacts or moved into two supply
+leaves in `R2TopAssembly.lean` (`exists_sigmaCtrl_lower_supply`,
+`exists_edge_square_load_supply`). `R2LargeK0.lean`'s five hand-rolled
+`n^d < 2^n` inductions collapsed to one lemma from Mathlib's polynomial ≪
+exponential asymptotics. `R2NumericConstants.lean` (a short-lived intermediate
+that named the witnesses as `def`s) was deleted: naming a witness is still a
+witness. Deferred, recorded in the design doc: the mass-layer `hk0big` bundle,
+and parametrizing the circle-method core's Taylor interface constants
+(`100000`, `1/10`), which appear only at the `r2_numericFields` junction.

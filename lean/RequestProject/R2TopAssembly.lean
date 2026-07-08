@@ -296,6 +296,16 @@ lemma sigmaCtrl_ge_strong (BS : BlockSystem) (hk0 : 14 ≤ BS.k0) :
       · norm_cast ; exact Nat.le_trans ( Nat.mul_le_mul ( Nat.pow_le_pow_left ( BS.hwindow BS.k0 x.1 ( Finset.mem_filter.mp hx |>.1 |> Finset.mem_product.mp |>.1 ) |>.2.le ) 2 ) ( Nat.pow_le_pow_left ( BS.hwindow BS.k0 x.2 ( Finset.mem_filter.mp hx |>.1 |> Finset.mem_product.mp |>.2 ) |>.2.le ) 2 ) ) ( by ring_nf; norm_num ) ;
   · exact Finset.subset_iff.mpr fun x hx => Finset.mem_union_left _ <| Finset.mem_biUnion.mpr ⟨ BS.k0, Finset.mem_Icc.mpr ⟨ le_rfl, by linarith [ BS.hk ] ⟩, hx ⟩
 
+/-- **Abstract `σ_ctrl` lower-bound supply.**  Some coefficient `c ≥ 1` and threshold `K₀`
+make `1/(c·k₀·2^k₀) ≤ σ_ctrl` for every block system with `K₀ ≤ k₀`.  This existential form
+is what the numeric ledger consumes; the decimal witnesses (`c = 100` from the crude
+prime-density/pair-count constants, threshold `14`) live only in this proof and are invisible
+to every downstream statement. -/
+lemma exists_sigmaCtrl_lower_supply :
+    ∃ c : ℝ, 1 ≤ c ∧ ∃ K0 : ℕ, ∀ BS : BlockSystem, K0 ≤ BS.k0 →
+      (1 : ℝ) / (c * (BS.k0 : ℝ) * (2 : ℝ) ^ BS.k0) ≤ sigmaCtrl BS :=
+  ⟨100, by norm_num, 14, fun BS h => sigmaCtrl_ge_strong BS h⟩
+
 /-
 Fine main-arc numeric fields for the concrete edge set: with all edges
 `≥ Emin`, the label window `N` small relative to `Emin`, and the quadratic
@@ -489,6 +499,34 @@ lemma r2_extra_inv_sq_le {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
     exact mul_le_mul_of_nonneg_left ( by norm_num ) ( by positivity )
   · linarith
 
+/-- **Abstract edge square-load supply.**  Some slack `S ≥ 1` bounds the whole edge set's
+inverse-square mass by `S·σ_ctrl²`, for every concrete datum whose bottom scale clears a
+threshold depending only on `(G, b)`.  This existential form is what the numeric ledger
+consumes; the decimal witnesses (`S = 1000001`, assembled from the crude support-mass and
+`σ_ctrl` lower-bound constants, and the threshold `1000·G + 1000·b + 100000 + 14`) live only
+in this proof and are invisible to every downstream statement.
+
+The slack is genuinely a constant `> 1` (not `1 + o(1)`): the mass-batch edges are pairs of
+block-support primes, the same order of inverse-square mass as the control pairs themselves,
+so the ratio is bounded but does not vanish. -/
+lemma exists_edge_square_load_supply :
+    ∃ S : ℝ, 1 ≤ S ∧ ∀ G b : ℕ, ∃ K0 : ℕ, ∀ {T : Finset ℕ}
+      (D : R2ConcreteData T b) (QB : R2MassBatchSupply D),
+      K0 ≤ D.BS.k0 → D.S.card = G →
+      (∀ s ∈ D.S, 2 ^ (2 * D.BS.k0) ≤ s) → (∀ r ∈ D.R, 2 ≤ r) → D.R.card ≤ b →
+      ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2 ≤ S * (sigmaCtrl D.BS) ^ 2 := by
+  refine ⟨1000001, by norm_num, fun G b => ⟨1000 * G + 1000 * b + 100000 + 14, ?_⟩⟩
+  intro T D QB hthr hcard hSge hRpos hRcard
+  have h14 : 14 ≤ D.BS.k0 := by omega
+  have hbig : 1000 * D.S.card + 1000 * b + 100000 ≤ D.BS.k0 := by rw [hcard]; omega
+  have hextra := r2_extra_inv_sq_le D h14 hbig QB hSge hRpos hRcard
+  have hsplit : ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2
+      = (∑ e ∈ ctrlEdges D.BS, (1 : ℝ) / (e : ℝ) ^ 2)
+        + ∑ e ∈ D.E \ ctrlEdges D.BS, (1 : ℝ) / (e : ℝ) ^ 2 := by
+    rw [← Finset.sum_sdiff D.ctrlEdges_subset_E]; ring
+  rw [hsplit, sum_inv_sq_ctrlEdges_eq_sigmaCtrl_sq]
+  linarith [hextra]
+
 /-- **Main-arc CRT label lane.** Every extra-minor frequency `h` lies on the main
 arc, hence carries an integer block-label `m = mainArcWitnessLabel D C h` with
 `|m| ≤ C/σ ≤ N`. This packages that label data as
@@ -664,24 +702,36 @@ lemma r2_buildFreqLanes {T : Finset ℕ} {b : ℕ}
 
 /-- Numeric main-arc fields for the R2 construction, extracted as its own
 declaration so `D` stays opaque (no `Classical.choose` unfolding / `isDefEq`
-blow-up) and it gets its own elaboration budget. -/
+blow-up) and it gets its own elaboration budget.
+
+Parametric in the abstract analytic constants: `cS` (the `σ_ctrl` lower-bound
+coefficient) and `S` (the edge square-load slack).  The two domination
+hypotheses `hwindow`/`hcubic` are instances at `k₀ = D.BS.k0` of the ledger's
+eventual polynomial≪exponential facts; no witness value of any constant or
+threshold is visible here.  The literals that do appear are structural:
+`100000`/`10`/`1000000 = 100000·10` are the circle-method core's current
+Taylor interface constants surfacing at the junction `r2_numericFields`, and
+the `4` is `(k₀+1)² ≤ (2k₀)²`. -/
 lemma r2_close_numericFields {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ) (σ C : ℝ)
+    (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ) (σ C cS S : ℝ)
     (hσpos : 0 < σ)
     (he0 : ∀ e ∈ D.E, 0 < e)
     (QB : R2MassBatchSupply D)
     (hSge : ∀ s ∈ D.S, 2 ^ (2 * D.BS.k0) ≤ s)
     (hRpos' : ∀ r ∈ D.R, 2 ≤ r)
-    (hsumE : ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2 ≤ 1000001 * σ ^ 2)
+    (hcS1 : 1 ≤ cS) (hS1 : 1 ≤ S)
+    (hsumE : ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2 ≤ S * σ ^ 2)
     (hsigmaE_lb : Real.sqrt (2 / 9) * σ ≤ Real.sqrt (sigmaE2 D.E W.theta))
     (hNnonneg : 0 ≤ N) (hCge3 : (3 : ℝ) ≤ C)
     (hNlo : C / σ ≤ (N : ℝ)) (hNsigma : (N : ℝ) * σ ≤ C + 1)
-    (hk0dom : 1000000 * (Nat.ceil C + 1) ^ 4 ≤ D.BS.k0)
-    (hNreal : (N : ℝ) ≤ 100 * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0 + 1) :
+    (hk0pos : 1 ≤ D.BS.k0) (hCk0 : C ≤ (D.BS.k0 : ℝ))
+    (hwindow : 10 * (cS * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0 + 1)
+        ≤ (2 : ℝ) ^ (2 * D.BS.k0))
+    (hcubic : (4 * 1000000 * S * (cS + 1)) * (D.BS.k0 : ℝ) ^ 4 ≤ (2 : ℝ) ^ D.BS.k0)
+    (hNreal : (N : ℝ) ≤ cS * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0 + 1) :
     MainArcNumericFields D.E W.theta N := by
-  have hk0big6 : 1000000 ≤ D.BS.k0 := by
-    have h1 : 1 ≤ (Nat.ceil C + 1) ^ 4 := Nat.one_le_pow _ _ (by omega)
-    nlinarith only [hk0dom, h1]
+  have hS0 : (0 : ℝ) < S := lt_of_lt_of_le one_pos hS1
+  have hcS0 : (0 : ℝ) < cS := lt_of_lt_of_le one_pos hcS1
   have hNpos : (0 : ℝ) < (N : ℝ) := lt_of_lt_of_le (by positivity) hNlo
   have hEminN : ∀ e ∈ D.E, 2 ^ (2 * D.BS.k0) ≤ e := by
     intro e he
@@ -698,27 +748,8 @@ lemma r2_close_numericFields {T : Finset ℕ} {b : ℕ}
       exact le_trans (hSge s hs) (Nat.le_mul_of_pos_left _ (by have := hRpos' r hr; omega))
   have hEmin : ∀ e ∈ D.E, (2 : ℝ) ^ (2 * D.BS.k0) ≤ (e : ℝ) := by
     intro e he; exact_mod_cast hEminN e he
-  have hN10nat : 10 * (100 * D.BS.k0 ^ 2 * 2 ^ D.BS.k0 + 1) ≤ 2 ^ (2 * D.BS.k0) := by
-    have hc := cube_lt_two_pow D.BS.k0 (by omega)
-    have hpoweq : (2 : ℕ) ^ (2 * D.BS.k0) = 2 ^ D.BS.k0 * 2 ^ D.BS.k0 := by rw [two_mul, pow_add]
-    have h2le : 2 ≤ 2 ^ D.BS.k0 := by
-      calc 2 = 2 ^ 1 := by norm_num
-        _ ≤ 2 ^ D.BS.k0 := Nat.pow_le_pow_right (by norm_num) (by omega)
-    have hkey : 1000 * D.BS.k0 ^ 2 + 10 ≤ 2 ^ D.BS.k0 := by
-      nlinarith only [hc, hk0big6, mul_le_mul_left hk0big6 (D.BS.k0 ^ 2)]
-    calc 10 * (100 * D.BS.k0 ^ 2 * 2 ^ D.BS.k0 + 1)
-        = (1000 * D.BS.k0 ^ 2) * 2 ^ D.BS.k0 + 10 := by ring
-      _ ≤ (1000 * D.BS.k0 ^ 2) * 2 ^ D.BS.k0 + 10 * 2 ^ D.BS.k0 := by nlinarith only [h2le]
-      _ = (1000 * D.BS.k0 ^ 2 + 10) * 2 ^ D.BS.k0 := by ring
-      _ ≤ 2 ^ D.BS.k0 * 2 ^ D.BS.k0 := Nat.mul_le_mul_right _ hkey
-      _ = 2 ^ (2 * D.BS.k0) := hpoweq.symm
   have h10N : 10 * (N : ℝ) ≤ (2 : ℝ) ^ (2 * D.BS.k0) := by
-    have hd : 10 * (100 * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0 + 1) ≤ (2 : ℝ) ^ (2 * D.BS.k0) := by
-      calc 10 * (100 * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0 + 1)
-          = ((10 * (100 * D.BS.k0 ^ 2 * 2 ^ D.BS.k0 + 1) : ℕ) : ℝ) := by push_cast; ring
-        _ ≤ ((2 ^ (2 * D.BS.k0) : ℕ) : ℝ) := by exact_mod_cast hN10nat
-        _ = (2 : ℝ) ^ (2 * D.BS.k0) := by push_cast; ring
-    linarith [hNreal, hd]
+    linarith [hNreal, hwindow]
   have hN : (1 : ℝ) / Real.sqrt (sigmaE2 D.E W.theta) ≤ (N : ℝ) := by
     have hlb : (1 : ℝ) / Real.sqrt (sigmaE2 D.E W.theta) ≤ 1 / (Real.sqrt (2 / 9) * σ) :=
       one_div_le_one_div_of_le (by positivity) hsigmaE_lb
@@ -735,57 +766,33 @@ lemma r2_close_numericFields {T : Finset ℕ} {b : ℕ}
       nlinarith only [hh, hCge3]
     linarith [hlb, h2, h3]
   have hsumsq : (N : ℝ) ^ 2 * (∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2)
-      ≤ (N : ℝ) ^ 2 * (1000001 * σ ^ 2) :=
+      ≤ (N : ℝ) ^ 2 * (S * σ ^ 2) :=
     mul_le_mul_of_nonneg_left hsumE (by positivity)
   have hsmallN : (N : ℝ) / (2 : ℝ) ^ (2 * D.BS.k0)
-      ≤ 1 / (1000000 * ((N : ℝ) ^ 2 * (1000001 * σ ^ 2))) := by
-    have hCk0' : C ≤ (D.BS.k0 : ℝ) := by
-      have hcl : Nat.ceil C ≤ D.BS.k0 := by
-        have hp : Nat.ceil C + 1 ≤ (Nat.ceil C + 1) ^ 4 := Nat.le_self_pow (by norm_num) _
-        nlinarith only [hp, hk0dom]
-      calc C ≤ (Nat.ceil C : ℝ) := Nat.le_ceil C
-        _ ≤ (D.BS.k0 : ℝ) := by exact_mod_cast hcl
-    have hk0lb : 256000000 ≤ D.BS.k0 := by
-      have hp : (256 : ℕ) ≤ (Nat.ceil C + 1) ^ 4 := by
-        have h3 : 3 ≤ Nat.ceil C := by
-          have : (3 : ℝ) ≤ (Nat.ceil C : ℝ) := le_trans hCge3 (Nat.le_ceil C)
-          exact_mod_cast this
-        calc (256 : ℕ) = 4 ^ 4 := by norm_num
-          _ ≤ (Nat.ceil C + 1) ^ 4 := Nat.pow_le_pow_left (by omega) 4
-      nlinarith only [hp, hk0dom]
+      ≤ 1 / (1000000 * ((N : ℝ) ^ 2 * (S * σ ^ 2))) := by
+    have hk0R : (1 : ℝ) ≤ (D.BS.k0 : ℝ) := by exact_mod_cast hk0pos
     have htwo : (1 : ℝ) ≤ (2 : ℝ) ^ D.BS.k0 := one_le_pow₀ (by norm_num)
-    have hk0r : (256000000 : ℝ) ≤ (D.BS.k0 : ℝ) := by exact_mod_cast hk0lb
-    have hquart : (500000000000000 : ℕ) * D.BS.k0 ^ 4 ≤ 2 ^ D.BS.k0 :=
-      quartic_le_two_pow_of_le_sq _ D.BS.k0 (by nlinarith only [hk0lb]) (by omega)
-    have hquartr : (500000000000000 : ℝ) * (D.BS.k0 : ℝ) ^ 4 ≤ (2 : ℝ) ^ D.BS.k0 := by
-      exact_mod_cast hquart
-    have hNσ : (N : ℝ) * σ ≤ (D.BS.k0 : ℝ) + 1 := le_trans hNsigma (by linarith [hCk0'])
-    have hNσ2 : ((N : ℝ) * σ) ^ 2 ≤ ((D.BS.k0 : ℝ) + 1) ^ 2 := by
-      have : (0 : ℝ) ≤ (N : ℝ) * σ := by positivity
-      nlinarith only [hNσ, this]
+    have hNσ : (N : ℝ) * σ ≤ (D.BS.k0 : ℝ) + 1 := le_trans hNsigma (by linarith [hCk0])
+    have hNσ2 : ((N : ℝ) * σ) ^ 2 ≤ 4 * (D.BS.k0 : ℝ) ^ 2 := by
+      have hnn : (0 : ℝ) ≤ (N : ℝ) * σ := by positivity
+      nlinarith only [hNσ, hnn, hk0R]
+    have hNle : (N : ℝ) ≤ (cS + 1) * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0 := by
+      have hone : (1 : ℝ) ≤ (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0 := by
+        have hk2 : (1 : ℝ) ≤ (D.BS.k0 : ℝ) ^ 2 := one_le_pow₀ hk0R
+        exact le_trans hk2 (le_mul_of_one_le_right (by positivity) htwo)
+      nlinarith [hNreal, hone]
     rw [div_le_div_iff₀ (by positivity) (by positivity), one_mul]
-    have hlhs : (N : ℝ) * (1000000 * ((N : ℝ) ^ 2 * (1000001 * σ ^ 2)))
-        = 1000000 * 1000001 * ((N : ℝ) * ((N : ℝ) * σ) ^ 2) := by ring
-    rw [hlhs]
-    have hprod : (N : ℝ) * ((N : ℝ) * σ) ^ 2
-        ≤ (101 * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0) * (4 * (D.BS.k0 : ℝ) ^ 2) := by
-      refine mul_le_mul ?_ ?_ (sq_nonneg _) (by positivity)
-      · calc (N : ℝ) ≤ 100 * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0 + 1 := hNreal
-          _ ≤ 101 * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0 := by nlinarith only [hk0r, htwo]
-      · calc ((N : ℝ) * σ) ^ 2 ≤ ((D.BS.k0 : ℝ) + 1) ^ 2 := hNσ2
-          _ ≤ 4 * (D.BS.k0 : ℝ) ^ 2 := by nlinarith only [hk0r]
-    calc 1000000 * 1000001 * ((N : ℝ) * ((N : ℝ) * σ) ^ 2)
-        ≤ 1000000 * 1000001 *
-            ((101 * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0) * (4 * (D.BS.k0 : ℝ) ^ 2)) :=
-          mul_le_mul_of_nonneg_left hprod (by norm_num)
-      _ = (1000000 * 1000001 * 404) * ((D.BS.k0 : ℝ) ^ 4 * (2 : ℝ) ^ D.BS.k0) := by ring
-      _ ≤ 500000000000000 * ((D.BS.k0 : ℝ) ^ 4 * (2 : ℝ) ^ D.BS.k0) :=
-          mul_le_mul_of_nonneg_right (by norm_num) (by positivity)
-      _ = (500000000000000 * (D.BS.k0 : ℝ) ^ 4) * (2 : ℝ) ^ D.BS.k0 := by ring
+    calc (N : ℝ) * (1000000 * ((N : ℝ) ^ 2 * (S * σ ^ 2)))
+        = 1000000 * S * ((N : ℝ) * ((N : ℝ) * σ) ^ 2) := by ring
+      _ ≤ 1000000 * S *
+            (((cS + 1) * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0) * (4 * (D.BS.k0 : ℝ) ^ 2)) := by
+          refine mul_le_mul_of_nonneg_left ?_ (by positivity)
+          exact mul_le_mul hNle hNσ2 (sq_nonneg _) (by positivity)
+      _ = (4 * 1000000 * S * (cS + 1)) * (D.BS.k0 : ℝ) ^ 4 * (2 : ℝ) ^ D.BS.k0 := by ring
       _ ≤ (2 : ℝ) ^ D.BS.k0 * (2 : ℝ) ^ D.BS.k0 :=
-          mul_le_mul_of_nonneg_right hquartr (by positivity)
+          mul_le_mul_of_nonneg_right hcubic (by positivity)
       _ = (2 : ℝ) ^ (2 * D.BS.k0) := by rw [two_mul, pow_add]
-  exact r2_numericFields D W N ((2 : ℝ) ^ (2 * D.BS.k0)) ((N : ℝ) ^ 2 * (1000001 * σ ^ 2))
+  exact r2_numericFields D W N ((2 : ℝ) ^ (2 * D.BS.k0)) ((N : ℝ) ^ 2 * (S * σ ^ 2))
     (by positivity) he0 (by positivity) hEmin hN hNnonneg h10N hsumsq hsmallN
 
 

@@ -41,12 +41,14 @@ namespace CircleMethod
 
 /-! ## Foundation / scale layer -/
 
-/-- **Numeric ledger.**  The scale-parameter / constant slice of the foundation:
-the constants (`c3, η, Ctail, C, base_b, Dmp, G`), the bottom-scale thresholds
-(`k0minM, k0density, k0ctrl, k1`), and all the facts that are *independent of the
-chosen block system* — the numeric relations among the constants, the abstract
-minor-support supply principle `hSB`, the dyadic prime-density bound `hk0density`,
-the control-load bound `hk0ctrl`, and the block-product Mertens load `hload`. -/
+/-- **Numeric ledger.**  The scale-parameter / constant slice of the foundation: the
+budget quantities (`c3, η, Ctail, C, base_b, Dmp, G`), the abstract analytic constants
+(`cSigma, Sload, K` — supplied existentially by leaf lemmas; no witness value is visible
+at this level), the bottom-scale thresholds, and all the facts *independent of the chosen
+block system*.  Every field states exactly the property its downstream consumer uses:
+the single budget inequality `hbudget` replaces any definitional pinning of `η`/`Dmp`
+(the allocation scheme is the constructor's private witness), and each threshold field
+carries its eventual-domination fact parametrically. -/
 structure R2NumericLedger (b : ℕ) where
   c3 : ℝ
   η : ℝ
@@ -55,18 +57,36 @@ structure R2NumericLedger (b : ℕ) where
   base_b : ℝ
   Dmp : ℝ
   G : ℕ
+  /-- abstract `σ_ctrl` lower-bound coefficient (`exists_sigmaCtrl_lower_supply`). -/
+  cSigma : ℝ
+  /-- abstract edge square-load slack (`exists_edge_square_load_supply`). -/
+  Sload : ℝ
+  /-- abstract `σ_E ≤ K·σ_ctrl` bridge constant. -/
+  K : ℝ
   k0minM : ℕ
   k0density : ℕ
   k0ctrl : ℕ
   k1 : ℕ
+  /-- threshold for the `σ_ctrl` lower bound. -/
+  k0sigma : ℕ
+  /-- threshold for the main-arc window-growth domination. -/
+  k0window : ℕ
+  /-- threshold for the cubic-Taylor quartic-absorption domination. -/
+  k0cubic : ℕ
+  /-- threshold for the edge square-load bound. -/
+  k0load : ℕ
   hbpos : 0 < b
   hb3 : 3 ≤ b
   hbsf : Squarefree b
   hc3eq : c3 = r2MinorMainCtrlConstant
   hc3pos : 0 < c3
-  hηdef : η = c3 / (2004 * (b : ℝ))
   hηpos : 0 < η
   hCtail : 0 < Ctail
+  hcS1 : 1 ≤ cSigma
+  hS1 : 1 ≤ Sload
+  hK1 : 1 ≤ K
+  hKS : Sload ≤ 4 * K ^ 2
+  hG1 : 1 ≤ G
   hSB : ∀ {T' : Finset ℕ} {b' : ℕ}
       (D : R2ConcreteData T' b') (W : R2ConcreteData.Weights D) (N : ℤ)
       (Bblock Bextra ρ : ℝ) (Cls : R2MinorClassificationData D W N),
@@ -75,15 +95,27 @@ structure R2NumericLedger (b : ℕ) where
       Nonempty (R2MinorSupportBudgetData D W N Bblock Bextra)
   hCge3 : (3 : ℝ) ≤ C
   hCge1 : (1 : ℝ) ≤ C
-  hCbound : (b : ℝ) * (Ctail * Real.exp (-C ^ 2 * (16 / 9) / 2)) < c3 / 2004
   hbbdef : base_b = Real.sqrt (1 - (8 / 9) / (b : ℝ) ^ 2)
   hG : base_b ^ G ≤ Dmp
-  hDmpdef : Dmp = c3 / (2004 * (b : ℝ) * (2 * C + 3))
   hDmppos : 0 < Dmp
+  /-- the whole minor budget beats `c3/K`; how it is allocated among the three lanes
+  is the constructor's private witness. -/
+  hbudget : (b : ℝ) * η + (b : ℝ) * (Ctail * Real.exp (-C ^ 2 * (16 / 9) / 2))
+      + (b : ℝ) * Dmp * (2 * C + 3) < c3 / K
   hk0density : ∀ k : ℕ, k0density ≤ k →
       (G : ℝ) ≤ (2 : ℝ) ^ k / (2 * Real.log ((2 : ℝ) ^ k))
   hk0ctrl : ∀ BS' : BlockSystem, k0ctrl ≤ BS'.k0 →
       R2ConcreteData.recipLoad (ctrlEdges BS') ≤ 3 / (4 * (b : ℝ))
+  hk0sigmaFact : ∀ BS' : BlockSystem, k0sigma ≤ BS'.k0 →
+      (1 : ℝ) / (cSigma * (BS'.k0 : ℝ) * (2 : ℝ) ^ BS'.k0) ≤ sigmaCtrl BS'
+  hk0windowFact : ∀ k : ℕ, k0window ≤ k →
+      10 * (cSigma * (k : ℝ) ^ 2 * (2 : ℝ) ^ k + 1) ≤ (2 : ℝ) ^ (2 * k)
+  hk0cubicFact : ∀ k : ℕ, k0cubic ≤ k →
+      (4 * 1000000 * Sload * (cSigma + 1)) * (k : ℝ) ^ 4 ≤ (2 : ℝ) ^ k
+  hk0loadFact : ∀ {T' : Finset ℕ} (D : R2ConcreteData T' b) (QB : R2MassBatchSupply D),
+      k0load ≤ D.BS.k0 → D.S.card = G →
+      (∀ s ∈ D.S, 2 ^ (2 * D.BS.k0) ≤ s) → (∀ r ∈ D.R, 2 ≤ r) → D.R.card ≤ b →
+      ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2 ≤ Sload * (sigmaCtrl D.BS) ^ 2
   hk15 : 5 ≤ k1
   hload : ∀ k0 : ℕ, k1 ≤ k0 →
       (1 : ℝ) / 2 ≤ ∑ pq ∈ (blockPrimes k0).offDiag.filter (fun pq : ℕ × ℕ => pq.1 < pq.2),
@@ -111,7 +143,11 @@ structure R2BlockSystemCertificate (T : Finset ℕ) (b : ℕ) (L : R2NumericLedg
   hk1le : L.k1 ≤ BS.k0
   hk0big : 1000 * L.G + 1000 * b + 100000 ≤ BS.k0
   hk0T : T.sup id + 1 ≤ BS.k0
-  hk0dom : 1000000 * (Nat.ceil L.C + 1) ^ 4 ≤ BS.k0
+  hk0sigma : L.k0sigma ≤ BS.k0
+  hk0window : L.k0window ≤ BS.k0
+  hk0cubic : L.k0cubic ≤ BS.k0
+  hk0load : L.k0load ≤ BS.k0
+  hk0C : Nat.ceil L.C ≤ BS.k0
 
 /-- **Foundation certificate.**  The join of the two foundation stages: the
 numeric ledger of constants and thresholds (chosen first, independently of any
@@ -129,17 +165,33 @@ lemma exists_r2_numeric_ledger (b : ℕ) (hb : 3 ≤ b) (hbsf : Squarefree b) :
     Nonempty (R2NumericLedger b) := by
   classical
   have hbpos : 0 < b := by omega
+  have hbR : (0 : ℝ) < (b : ℝ) := by exact_mod_cast hbpos
   have hc3pos : 0 < r2MinorMainCtrlConstant := by
     rw [r2MinorMainCtrlConstant]; positivity
   set c3 := r2MinorMainCtrlConstant with hc3def
-  set η : ℝ := c3 / (2004 * (b : ℝ)) with hηdef
+  -- abstract analytic constants from the supply leaves (all witnesses stay inside them)
+  obtain ⟨S, hS1, hSfam⟩ := exists_edge_square_load_supply
+  have hS0 : (0 : ℝ) < S := lt_of_lt_of_le one_pos hS1
+  obtain ⟨cσ, hcS1, k0sigma, hk0sigmaFact⟩ := exists_sigmaCtrl_lower_supply
+  -- σ_E/σ_ctrl bridge constant: any K ≥ 1 with Sload ≤ 4K²
+  set K : ℝ := max 1 (Real.sqrt S) with hKdef
+  have hK1 : (1 : ℝ) ≤ K := le_max_left _ _
+  have hK0 : (0 : ℝ) < K := lt_of_lt_of_le one_pos hK1
+  have hKS : S ≤ 4 * K ^ 2 := by
+    have h1 : Real.sqrt S ≤ K := le_max_right _ _
+    have h2 : Real.sqrt S ^ 2 = S := Real.sq_sqrt hS0.le
+    nlinarith [mul_self_le_mul_self (Real.sqrt_nonneg S) h1, h2, sq_nonneg K]
+  -- budget allocation (the equal-quarters split below is a private witness of this proof)
+  set η : ℝ := c3 / (4 * K * (b : ℝ)) with hηdef
   have hηpos : 0 < η := by rw [hηdef]; positivity
   obtain ⟨k0minM, Ctail, hCtail, hSB⟩ :=
     exists_r2_minorSupportBudget_from_multiGadget_lanes η hηpos
-  obtain ⟨C0, hC0one, hC0bd⟩ := r2_exists_C Ctail (c3 / 501) b hCtail (by positivity) hbpos
+  obtain ⟨C0, hC0one, hC0bd⟩ :=
+    r2_exists_C Ctail (c3 / K) b hCtail (by positivity) hbpos
   set C : ℝ := max C0 3 with hCdef
   have hCge3 : (3 : ℝ) ≤ C := le_max_right _ _
   have hCge1 : (1 : ℝ) ≤ C := le_trans (by norm_num) hCge3
+  have h2C3 : (0 : ℝ) < 2 * C + 3 := by linarith
   set base_b : ℝ := Real.sqrt (1 - (8 / 9) / (b : ℝ) ^ 2) with hbbdef
   have hbb0 : 0 ≤ base_b := Real.sqrt_nonneg _
   have hbb1 : base_b < 1 := by
@@ -149,15 +201,48 @@ lemma exists_r2_numeric_ledger (b : ℕ) (hb : 3 ≤ b) (hbsf : Squarefree b) :
     rw [one_pow]
     have : (0 : ℝ) < (8 / 9) / (b : ℝ) ^ 2 := by positivity
     linarith
-  set Dmp : ℝ := c3 / (2004 * (b : ℝ) * (2 * C + 3)) with hDmpdef
+  set Dmp : ℝ := c3 / (4 * K * (b : ℝ) * (2 * C + 3)) with hDmpdef
   have hDmppos : 0 < Dmp := by
     rw [hDmpdef]; positivity
-  obtain ⟨G, hG⟩ := r2_exists_pow_le base_b Dmp hbb0 hbb1 hDmppos
+  obtain ⟨G', hG'⟩ := r2_exists_pow_le base_b Dmp hbb0 hbb1 hDmppos
+  set G : ℕ := max 1 G' with hGdef
+  have hG1 : 1 ≤ G := le_max_left _ _
+  have hG : base_b ^ G ≤ Dmp :=
+    le_trans (pow_le_pow_of_le_one hbb0 hbb1.le (le_max_right 1 G')) hG'
   obtain ⟨k0density, hk0density⟩ := r2_exists_k0_density G
   obtain ⟨k1, hk15, hload⟩ := blockPrimes_product_load_ge
   obtain ⟨k0ctrl, hk0ctrl⟩ := exists_k0_controlLoad_lt (3 / (4 * (b : ℝ))) (by positivity)
-  have hCbound : (b : ℝ) * (Ctail * Real.exp (-C ^ 2 * (16 / 9) / 2)) < c3 / 2004 := by
-    have hCC0 : C0 ≤ C := by rw [hCdef]; exact le_max_left _ _
+  -- eventual polynomial ≪ exponential thresholds, at coefficients built from the
+  -- abstract constants
+  have hcS0 : (0 : ℝ) < cσ := lt_of_lt_of_le one_pos hcS1
+  obtain ⟨kw, hkw⟩ := exists_threshold_mul_pow_le_two_pow (10 * (cσ + 1)) 2
+  have hk0windowFact : ∀ k : ℕ, max kw 1 ≤ k →
+      10 * (cσ * (k : ℝ) ^ 2 * (2 : ℝ) ^ k + 1) ≤ (2 : ℝ) ^ (2 * k) := by
+    intro k hk
+    have hk1 : 1 ≤ k := le_trans (le_max_right kw 1) hk
+    have hk1R : (1 : ℝ) ≤ (k : ℝ) := by exact_mod_cast hk1
+    have hkw' := hkw k (le_trans (le_max_left kw 1) hk)
+    have h2k : (1 : ℝ) ≤ (2 : ℝ) ^ k := one_le_pow₀ (by norm_num)
+    have hk2 : (1 : ℝ) ≤ (k : ℝ) ^ 2 := one_le_pow₀ hk1R
+    have hprod : (1 : ℝ) ≤ (k : ℝ) ^ 2 * (2 : ℝ) ^ k :=
+      le_trans hk2 (le_mul_of_one_le_right (by positivity) h2k)
+    calc 10 * (cσ * (k : ℝ) ^ 2 * (2 : ℝ) ^ k + 1)
+        ≤ (10 * (cσ + 1)) * (k : ℝ) ^ 2 * (2 : ℝ) ^ k := by nlinarith [hprod]
+      _ ≤ (2 : ℝ) ^ k * (2 : ℝ) ^ k := mul_le_mul_of_nonneg_right hkw' (by positivity)
+      _ = (2 : ℝ) ^ (2 * k) := by rw [two_mul, pow_add]
+  obtain ⟨k0cubic, hk0cubicFact⟩ :=
+    exists_threshold_mul_pow_le_two_pow (4 * 1000000 * S * (cσ + 1)) 4
+  obtain ⟨k0load, hk0loadFact⟩ := hSfam G b
+  -- the single budget inequality (allocation: one quarter of `c3/K` per lane, one spare)
+  have hbne : (b : ℝ) ≠ 0 := hbR.ne'
+  have hKne : K ≠ 0 := hK0.ne'
+  have h2C3ne : (2 * C + 3 : ℝ) ≠ 0 := h2C3.ne'
+  have hb1 : (b : ℝ) * η = c3 / (4 * K) := by
+    rw [hηdef]; field_simp
+  have hb3 : (b : ℝ) * Dmp * (2 * C + 3) = c3 / (4 * K) := by
+    rw [hDmpdef]; field_simp
+  have hb2 : (b : ℝ) * (Ctail * Real.exp (-C ^ 2 * (16 / 9) / 2)) < c3 / (4 * K) := by
+    have hCC0 : C0 ≤ C := le_max_left _ _
     have hC0nn : (0 : ℝ) ≤ C0 := le_trans (by norm_num) hC0one
     have hmono : Real.exp (-C ^ 2 * (16 / 9) / 2) ≤ Real.exp (-C0 ^ 2 * (16 / 9) / 2) := by
       apply Real.exp_le_exp.mpr; nlinarith only [hCC0, hC0nn]
@@ -165,15 +250,28 @@ lemma exists_r2_numeric_ledger (b : ℕ) (hb : 3 ≤ b) (hbsf : Squarefree b) :
         = (b : ℝ) * Ctail * Real.exp (-C ^ 2 * (16 / 9) / 2) := by ring
       _ ≤ (b : ℝ) * Ctail * Real.exp (-C0 ^ 2 * (16 / 9) / 2) :=
           mul_le_mul_of_nonneg_left hmono (by positivity)
-      _ < c3 / 501 / 4 := hC0bd
-      _ = c3 / 2004 := by ring
+      _ < c3 / K / 4 := hC0bd
+      _ = c3 / (4 * K) := by rw [div_div, mul_comm]
+  have hbudget : (b : ℝ) * η + (b : ℝ) * (Ctail * Real.exp (-C ^ 2 * (16 / 9) / 2))
+      + (b : ℝ) * Dmp * (2 * C + 3) < c3 / K := by
+    have hq : (0 : ℝ) < c3 / (4 * K) := by positivity
+    have h4 : 4 * (c3 / (4 * K)) = c3 / K := by
+      rw [mul_div_assoc']
+      exact mul_div_mul_left c3 K (by norm_num)
+    linarith [hb1, hb2, hb3, hq, h4]
   exact ⟨{
     c3 := c3, η := η, Ctail := Ctail, C := C, base_b := base_b, Dmp := Dmp, G := G,
+    cSigma := cσ, Sload := S, K := K,
     k0minM := k0minM, k0density := k0density, k0ctrl := k0ctrl, k1 := k1,
+    k0sigma := k0sigma, k0window := max kw 1, k0cubic := k0cubic, k0load := k0load,
     hbpos := hbpos, hb3 := hb, hbsf := hbsf, hc3eq := hc3def, hc3pos := hc3pos,
-    hηdef := hηdef, hηpos := hηpos, hCtail := hCtail, hSB := hSB,
-    hCge3 := hCge3, hCge1 := hCge1, hCbound := hCbound, hbbdef := hbbdef, hG := hG,
-    hDmpdef := hDmpdef, hDmppos := hDmppos, hk0density := hk0density, hk0ctrl := hk0ctrl,
+    hηpos := hηpos, hCtail := hCtail,
+    hcS1 := hcS1, hS1 := hS1, hK1 := hK1, hKS := hKS, hG1 := hG1,
+    hSB := hSB, hCge3 := hCge3, hCge1 := hCge1,
+    hbbdef := hbbdef, hG := hG, hDmppos := hDmppos, hbudget := hbudget,
+    hk0density := hk0density, hk0ctrl := hk0ctrl,
+    hk0sigmaFact := hk0sigmaFact, hk0windowFact := hk0windowFact,
+    hk0cubicFact := hk0cubicFact, hk0loadFact := hk0loadFact,
     hk15 := hk15, hload := hload }⟩
 
 /-- Build the block-system / prime-factor certificate at a bottom scale large
@@ -184,7 +282,7 @@ lemma exists_r2_block_system_certificate (T : Finset ℕ) (b : ℕ) (hb : 3 ≤ 
   classical
   set k0min' : ℕ :=
     L.k0minM + L.k0density + L.k1 + L.k0ctrl + T.sup id + 1000 * L.G + 1000 * b + 100000
-      + 1000000 * (Nat.ceil L.C + 1) ^ 4
+      + L.k0sigma + L.k0window + L.k0cubic + L.k0load + Nat.ceil L.C
       with hk0mindef
   obtain ⟨BS, hk0, hk05, hadm, hsub, hcopB, hRp, hRdvd, hcovR, hRout, _h2kK, hdyadic2k⟩ :=
     exists_r2_foundation_dyadic b hb k0min'
@@ -195,13 +293,18 @@ lemma exists_r2_block_system_certificate (T : Finset ℕ) (b : ℕ) (hb : 3 ≤ 
   have hk0big : 1000 * L.G + 1000 * b + 100000 ≤ BS.k0 := by
     have h := hk0; rw [hk0mindef] at h; omega
   have hk0T : T.sup id + 1 ≤ BS.k0 := by have h := hk0; rw [hk0mindef] at h; omega
-  have hk0dom : 1000000 * (Nat.ceil L.C + 1) ^ 4 ≤ BS.k0 := by
-    have h := hk0; rw [hk0mindef] at h; omega
+  have hk0sigma : L.k0sigma ≤ BS.k0 := by have h := hk0; rw [hk0mindef] at h; omega
+  have hk0window : L.k0window ≤ BS.k0 := by have h := hk0; rw [hk0mindef] at h; omega
+  have hk0cubic : L.k0cubic ≤ BS.k0 := by have h := hk0; rw [hk0mindef] at h; omega
+  have hk0load : L.k0load ≤ BS.k0 := by have h := hk0; rw [hk0mindef] at h; omega
+  have hk0C : Nat.ceil L.C ≤ BS.k0 := by have h := hk0; rw [hk0mindef] at h; omega
   exact ⟨{
     BS := BS, hk05 := hk05, hadm := hadm, hsub := hsub, hcopB := hcopB,
     hRp := hRp, hRdvd := hRdvd, hcovR := hcovR, hRout := hRout, hdyadic2k := hdyadic2k,
     hk0minM := hk0minM, hk0dens := hk0dens, hk0ctrlle := hk0ctrlle, hk1le := hk1le,
-    hk0big := hk0big, hk0T := hk0T, hk0dom := hk0dom }⟩
+    hk0big := hk0big, hk0T := hk0T,
+    hk0sigma := hk0sigma, hk0window := hk0window, hk0cubic := hk0cubic,
+    hk0load := hk0load, hk0C := hk0C }⟩
 
 /-- Produce the foundation certificate from its two stages. -/
 lemma exists_r2_foundation_certificate (T : Finset ℕ) (b : ℕ) (hb : 3 ≤ b)
@@ -283,7 +386,7 @@ structure R2MassCertificate {T : Finset ℕ} {b : ℕ}
   hgadgetAvoid : ∀ e ∈ gadgetEdges D.R D.S, e ∉ T
   havoid : ∀ e ∈ D.E, e ∉ T
   hloadUpper : R2ConcreteData.recipLoad D.E < 3 / (b : ℝ)
-  hsumE : ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2 ≤ 1000001 * (sigmaCtrl D.BS) ^ 2
+  hsumE : ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2 ≤ F.ledger.Sload * (sigmaCtrl D.BS) ^ 2
 
 /-- Produce the mass-batch certificate: choose the residual batch `Q`, assemble
 `D` and `W`, and discharge the edge structural facts. -/
@@ -331,22 +434,13 @@ lemma exists_r2_mass_certificate {T : Finset ℕ} {b : ℕ}
     D.avoid hctrlAvoid QB.hQavoid hgadgetAvoid
   have hloadUpper : R2ConcreteData.recipLoad D.E < 3 / (b : ℝ) :=
     (D.total_recipLoad_window_of_residual QB.hloadDisj QB.hloadLower QB.hloadUpper).2
-  have hsumE : ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2 ≤ 1000001 * (sigmaCtrl D.BS) ^ 2 := by
-    have hsplit : ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2
-        = (∑ e ∈ ctrlEdges D.BS, (1 : ℝ) / (e : ℝ) ^ 2)
-          + ∑ e ∈ D.E \ ctrlEdges D.BS, (1 : ℝ) / (e : ℝ) ^ 2 := by
-      rw [← Finset.sum_sdiff D.ctrlEdges_subset_E]; ring
-    rw [hsplit, sum_inv_sq_ctrlEdges_eq_sigmaCtrl_sq]
-    have hextra := r2_extra_inv_sq_le D
-      (show 14 ≤ D.BS.k0 by omega)
-      (show 1000 * D.S.card + 1000 * b + 100000 ≤ D.BS.k0 by
-        rw [hScardD]; exact hk0bigD)
-      QB Cc.hSge Cc.hRpos'
-      (show D.R.card ≤ b from
-        le_trans (Finset.card_le_card (fun x hx => Finset.mem_Icc.mpr
-          ⟨Nat.pos_of_mem_primeFactors hx, Nat.le_of_mem_primeFactors hx⟩))
-          (by rw [Nat.card_Icc]; omega))
-    linarith [hextra]
+  have hRcard : D.R.card ≤ b :=
+    le_trans (Finset.card_le_card (fun x hx => Finset.mem_Icc.mpr
+      ⟨Nat.pos_of_mem_primeFactors hx, Nat.le_of_mem_primeFactors hx⟩))
+      (by rw [Nat.card_Icc]; omega)
+  have hsumE : ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2
+      ≤ F.ledger.Sload * (sigmaCtrl D.BS) ^ 2 :=
+    F.ledger.hk0loadFact D QB F.bsCert.hk0load hScardD Cc.hSge Cc.hRpos' hRcard
   exact ⟨⟨Q, D, W, QB, hDdef, hLeq, hL, hsemi, he0, heL, hne, hctrlAvoid,
     hgadgetAvoid, havoid, hloadUpper, hsumE⟩⟩
 
@@ -354,37 +448,38 @@ lemma exists_r2_mass_certificate {T : Finset ℕ} {b : ℕ}
 
 /-- **σ_E ↔ σ_ctrl comparison.**  The edge variance `σ_E = √(sigmaE2 E θ)` is
 two-sidedly comparable with the control deviation `σ_ctrl`: it is at least
-`√(2/9)·σ_ctrl` (so positive) and at most `501·σ_ctrl`.  This is the conceptual
-"compare σ_E with σ_ctrl" step; the upper bound uses the reciprocal-square load
-window `M.hsumE`, the lower bound uses `sigmaE2_ge_ctrl`. -/
+`√(2/9)·σ_ctrl` (the `2/9` is the extremal value of `θ(1−θ)` on the weight window
+`[1/3, 2/3]`, so this is a structural constant) and at most `K·σ_ctrl` for the
+ledger's abstract bridge constant `K`.  The upper bound uses only the square-load
+certificate `M.hsumE` and `Sload ≤ 4K²`; no witness value of either constant
+appears anywhere in this chain. -/
 lemma r2_main_arc_sigmaE_compare {T : Finset ℕ} {b : ℕ}
     (F : R2FoundationCertificate T b) (Cc : R2ConcreteCertificate F)
     (M : R2MassCertificate F Cc) :
     Real.sqrt (2 / 9) * sigmaCtrl M.D.BS ≤ Real.sqrt (sigmaE2 M.D.E M.W.theta)
-      ∧ Real.sqrt (sigmaE2 M.D.E M.W.theta) ≤ 501 * sigmaCtrl M.D.BS
+      ∧ Real.sqrt (sigmaE2 M.D.E M.W.theta) ≤ F.ledger.K * sigmaCtrl M.D.BS
       ∧ 0 < Real.sqrt (sigmaE2 M.D.E M.W.theta) := by
   classical
   set D : R2ConcreteData T b := M.D with hDeq
   set W : R2ConcreteData.Weights D := M.W with hWeq
   have hBS : D.BS = F.bsCert.BS := by simp only [hDeq, M.hDdef, R2ConcreteData.withQ_BS]
   have hadmD : admissibleGlobalRange D.BS := by rw [hBS]; exact F.bsCert.hadm
-  have hsumE : ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2 ≤ 1000001 * (sigmaCtrl D.BS) ^ 2 := M.hsumE
+  have hK0 : (0 : ℝ) < F.ledger.K := lt_of_lt_of_le one_pos F.ledger.hK1
+  have hsumE : ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2
+      ≤ F.ledger.Sload * (sigmaCtrl D.BS) ^ 2 := M.hsumE
   set σ : ℝ := sigmaCtrl D.BS with hσdef
   have hσpos : 0 < σ := by
     rw [hσdef]
     exact sigmaCtrl_pos_of_admissible_range D.BS hadmD
-  have hsigmaE2_le : sigmaE2 D.E W.theta ≤ 250001 * σ ^ 2 := by
+  have hsigmaE2_le : sigmaE2 D.E W.theta ≤ F.ledger.K ^ 2 * σ ^ 2 := by
     have h := sigmaE2_le_quarter_sum_inv_sq D.E W.theta
-    have h2 : (1 / 4 : ℝ) * ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2
-        ≤ (1 / 4 : ℝ) * (1000001 * σ ^ 2) :=
-      mul_le_mul_of_nonneg_left hsumE (by norm_num)
-    linarith [h, h2, sq_nonneg σ]
-  have hsigmaE_ub : Real.sqrt (sigmaE2 D.E W.theta) ≤ 501 * σ := by
-    rw [show (501 : ℝ) * σ = Real.sqrt ((501 * σ) ^ 2) by
+    nlinarith [h, hsumE, mul_nonneg (sub_nonneg.mpr F.ledger.hKS) (sq_nonneg σ)]
+  have hsigmaE_ub : Real.sqrt (sigmaE2 D.E W.theta) ≤ F.ledger.K * σ := by
+    rw [show F.ledger.K * σ = Real.sqrt ((F.ledger.K * σ) ^ 2) by
       rw [Real.sqrt_sq (by positivity)]]
     apply Real.sqrt_le_sqrt
-    calc sigmaE2 D.E W.theta ≤ 250001 * σ ^ 2 := hsigmaE2_le
-      _ ≤ (501 * σ) ^ 2 := by nlinarith only [sq_nonneg σ]
+    calc sigmaE2 D.E W.theta ≤ F.ledger.K ^ 2 * σ ^ 2 := hsigmaE2_le
+      _ = (F.ledger.K * σ) ^ 2 := by ring
   have hsigmaE_lb : Real.sqrt (2 / 9) * σ ≤ Real.sqrt (sigmaE2 D.E W.theta) := by
     rw [show Real.sqrt (2 / 9) * σ = Real.sqrt ((2 / 9) * σ ^ 2) by
       rw [Real.sqrt_mul (by norm_num), Real.sqrt_sq hσpos.le]]
@@ -412,7 +507,7 @@ structure R2MainArcWindow {T : Finset ℕ} {b : ℕ}
   hNL : 2 * N + 1 ≤ (M.D.L : ℤ)
   hsigmapos : 0 < sigmaCtrl M.D.BS
   h2N1sigma : (2 * (N : ℝ) + 1) * sigmaCtrl M.D.BS ≤ 2 * F.ledger.C + 3
-  hsigmaE_ub : Real.sqrt (sigmaE2 M.D.E M.W.theta) ≤ 501 * sigmaCtrl M.D.BS
+  hsigmaE_ub : Real.sqrt (sigmaE2 M.D.E M.W.theta) ≤ F.ledger.K * sigmaCtrl M.D.BS
   hsigmaEpos : 0 < Real.sqrt (sigmaE2 M.D.E M.W.theta)
   hNF : MainArcNumericFields M.D.E M.W.theta N
 
@@ -427,43 +522,39 @@ lemma r2_main_arc_window_scale_period {T : Finset ℕ} {b : ℕ}
     (hNhi : (N : ℝ) ≤ F.ledger.C / sigmaCtrl M.D.BS + 1) :
     2 * N < (2 : ℤ) ^ (2 * M.D.BS.k0)
       ∧ 2 * N + 1 ≤ (M.D.L : ℤ)
-      ∧ (N : ℝ) ≤ 100 * (M.D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ M.D.BS.k0 + 1 := by
+      ∧ (N : ℝ) ≤ F.ledger.cSigma * (M.D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ M.D.BS.k0 + 1 := by
   classical
   have hbpos := F.ledger.hbpos
   set D : R2ConcreteData T b := M.D with hDeq
   set C : ℝ := F.ledger.C with hCeq
+  set cS : ℝ := F.ledger.cSigma with hcSeq
+  have hcS1 : (1 : ℝ) ≤ cS := F.ledger.hcS1
+  have hcS0 : (0 : ℝ) < cS := lt_of_lt_of_le one_pos hcS1
   have hBS : D.BS = F.bsCert.BS := by simp only [hDeq, M.hDdef, R2ConcreteData.withQ_BS]
   have hS : D.S = Cc.S := by simp only [hDeq, M.hDdef, R2ConcreteData.withQ_S]
   have hLeq : D.L = b * ∏ p ∈ blockSupport D.BS, p := M.hLeq
   have hadmD : admissibleGlobalRange D.BS := by rw [hBS]; exact F.bsCert.hadm
   have hCge3 : (3 : ℝ) ≤ C := F.ledger.hCge3
   have hbr : (3 : ℝ) ≤ (b : ℝ) := by exact_mod_cast F.ledger.hb3
-  have hk0dom : 1000000 * (Nat.ceil C + 1) ^ 4 ≤ D.BS.k0 := by rw [hBS]; exact F.bsCert.hk0dom
   have hSgeD : ∀ s ∈ D.S, 2 ^ (2 * D.BS.k0) ≤ s := by rw [hS, hBS]; exact Cc.hSge
   have hSblockD : D.S ⊆ blockSupport D.BS := by rw [hS, hBS]; exact Cc.hSblock
   have hScardD : D.S.card = F.ledger.G := by rw [hS]; exact Cc.hScard
   set σ : ℝ := sigmaCtrl D.BS with hσdef
-  have hk0big6 : 1000000 ≤ D.BS.k0 := by
-    have h1 : 1 ≤ (Nat.ceil C + 1) ^ 4 := Nat.one_le_pow _ _ (by omega)
-    nlinarith only [hk0dom, h1]
   have hσpos : 0 < σ := by
     rw [hσdef]
     exact sigmaCtrl_pos_of_admissible_range D.BS hadmD
-  have hσstrong : (1 : ℝ) / (100 * (D.BS.k0 : ℝ) * (2 : ℝ) ^ D.BS.k0) ≤ σ := by
-    rw [hσdef]; exact sigmaCtrl_ge_strong D.BS (by omega)
-  have hN2nat : 200 * D.BS.k0 ^ 2 * 2 ^ D.BS.k0 + 2 < 2 ^ (2 * D.BS.k0) := by
-    have hsq := two_hundred_sq_lt_two_pow D.BS.k0 hk0big6
-    have h2le : 2 ≤ 2 ^ D.BS.k0 := by
-      calc 2 = 2 ^ 1 := by norm_num
-        _ ≤ 2 ^ D.BS.k0 := Nat.pow_le_pow_right (by norm_num) (by omega)
-    have hpoweq : 2 ^ (2 * D.BS.k0) = 2 ^ D.BS.k0 * 2 ^ D.BS.k0 := by rw [two_mul, pow_add]
-    calc 200 * D.BS.k0 ^ 2 * 2 ^ D.BS.k0 + 2
-        ≤ 200 * D.BS.k0 ^ 2 * 2 ^ D.BS.k0 + 2 ^ D.BS.k0 := by omega
-      _ = (200 * D.BS.k0 ^ 2 + 1) * 2 ^ D.BS.k0 := by ring
-      _ < 2 ^ D.BS.k0 * 2 ^ D.BS.k0 := mul_lt_mul_of_pos_right hsq (by positivity)
-      _ = 2 ^ (2 * D.BS.k0) := hpoweq.symm
-  have hNreal : (N : ℝ) ≤ 100 * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0 + 1 := by
-    have hinvσ : (1 : ℝ) / σ ≤ 100 * (D.BS.k0 : ℝ) * (2 : ℝ) ^ D.BS.k0 := by
+  have hσstrong : (1 : ℝ) / (cS * (D.BS.k0 : ℝ) * (2 : ℝ) ^ D.BS.k0) ≤ σ := by
+    have hthr : F.ledger.k0sigma ≤ D.BS.k0 := by rw [hBS]; exact F.bsCert.hk0sigma
+    rw [hσdef, hcSeq]; exact F.ledger.hk0sigmaFact D.BS hthr
+  have hwindow : 10 * (cS * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0 + 1)
+      ≤ (2 : ℝ) ^ (2 * D.BS.k0) := by
+    have hthr : F.ledger.k0window ≤ D.BS.k0 := by rw [hBS]; exact F.bsCert.hk0window
+    rw [hcSeq]; exact F.ledger.hk0windowFact D.BS.k0 hthr
+  have hNreal : (N : ℝ) ≤ cS * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0 + 1 := by
+    have hk05 : 5 ≤ D.BS.k0 := by rw [hBS]; exact F.bsCert.hk05
+    have hk0cast : (0 : ℝ) < (D.BS.k0 : ℝ) := by
+      exact_mod_cast (by omega : 0 < D.BS.k0)
+    have hinvσ : (1 : ℝ) / σ ≤ cS * (D.BS.k0 : ℝ) * (2 : ℝ) ^ D.BS.k0 := by
       rw [div_le_iff₀ hσpos]
       have hs := hσstrong
       rw [div_le_iff₀ (by positivity)] at hs
@@ -471,41 +562,25 @@ lemma r2_main_arc_window_scale_period {T : Finset ℕ} {b : ℕ}
     have hCk0 : C ≤ (D.BS.k0 : ℝ) := by
       have hCm : C ≤ (Nat.ceil C : ℝ) := Nat.le_ceil C
       have hmk0 : (Nat.ceil C : ℝ) ≤ (D.BS.k0 : ℝ) := by
-        have hnat : Nat.ceil C ≤ D.BS.k0 := by
-          have hp : Nat.ceil C + 1 ≤ (Nat.ceil C + 1) ^ 4 := Nat.le_self_pow (by norm_num) _
-          nlinarith only [hp, hk0dom]
+        have hnat : Nat.ceil C ≤ D.BS.k0 := by rw [hBS]; exact F.bsCert.hk0C
         exact_mod_cast hnat
       linarith
-    have hCσ : C / σ ≤ 100 * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0 := by
+    have hCσ : C / σ ≤ cS * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0 := by
       rw [div_eq_mul_one_div]
       calc C * (1 / σ)
-          ≤ (D.BS.k0 : ℝ) * (100 * (D.BS.k0 : ℝ) * (2 : ℝ) ^ D.BS.k0) :=
+          ≤ (D.BS.k0 : ℝ) * (cS * (D.BS.k0 : ℝ) * (2 : ℝ) ^ D.BS.k0) :=
             mul_le_mul hCk0 hinvσ (by positivity) (by positivity)
-        _ = 100 * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0 := by ring
+        _ = cS * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0 := by ring
     linarith [hNhi, hCσ]
   have hN2 : 2 * N < (2 : ℤ) ^ (2 * D.BS.k0) := by
-    have hNint : N ≤ (100 * D.BS.k0 ^ 2 * 2 ^ D.BS.k0 + 1 : ℕ) := by
-      have hcast : (N : ℝ) ≤ ((100 * D.BS.k0 ^ 2 * 2 ^ D.BS.k0 + 1 : ℕ) : ℝ) := by
-        push_cast; linarith [hNreal]
-      exact_mod_cast hcast
-    calc 2 * N ≤ (200 * D.BS.k0 ^ 2 * 2 ^ D.BS.k0 + 2 : ℕ) := by
-          have hi : (N : ℤ) ≤ (100 * D.BS.k0 ^ 2 * 2 ^ D.BS.k0 + 1 : ℕ) := by exact_mod_cast hNint
-          push_cast at hi ⊢; linarith [hi]
-      _ < ((2 ^ (2 * D.BS.k0) : ℕ) : ℤ) := by exact_mod_cast hN2nat
-      _ = (2 : ℤ) ^ (2 * D.BS.k0) := by push_cast; ring
+    have hX0 : (0 : ℝ) ≤ cS * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0 := by positivity
+    have hR : 2 * (N : ℝ) < (2 : ℝ) ^ (2 * D.BS.k0) := by nlinarith [hNreal, hwindow, hX0]
+    have hcast : ((2 * N : ℤ) : ℝ) < (((2 : ℤ) ^ (2 * D.BS.k0) : ℤ) : ℝ) := by
+      push_cast
+      linarith [hR]
+    exact_mod_cast hcast
   have hNL : 2 * N + 1 ≤ (D.L : ℤ) := by
-    have hc3lt1 : F.ledger.c3 < 1 := by
-      rw [F.ledger.hc3eq, r2MinorMainCtrlConstant]
-      have he : Real.exp (-(Real.pi ^ 2 / 2)) < 1 :=
-        Real.exp_lt_one_iff.mpr (neg_lt_zero.mpr (by positivity))
-      nlinarith only [he, Real.exp_pos (-(Real.pi ^ 2 / 2))]
-    have hDmplt1 : F.ledger.Dmp < 1 := by
-      rw [F.ledger.hDmpdef, div_lt_one (by positivity)]
-      nlinarith only [hc3lt1, hbr, hCge3]
-    have hG1 : 1 ≤ F.ledger.G := by
-      rcases Nat.eq_zero_or_pos F.ledger.G with hG0 | hGpos
-      · have hh := F.ledger.hG; rw [hG0, pow_zero] at hh; linarith [hDmplt1]
-      · exact hGpos
+    have hG1 : 1 ≤ F.ledger.G := F.ledger.hG1
     have hSne : D.S.Nonempty := by rw [← Finset.card_pos, hScardD]; omega
     obtain ⟨s, hs⟩ := hSne
     have hprodpos : 0 < ∏ p ∈ blockSupport D.BS, p :=
@@ -539,10 +614,23 @@ lemma exists_r2_main_arc_window {T : Finset ℕ} {b : ℕ}
   have hR : D.R = b.primeFactors := by simp only [hDeq, M.hDdef, R2ConcreteData.withQ_R]
   have he0 : ∀ e ∈ D.E, 0 < e := M.he0
   have hLeq : D.L = b * ∏ p ∈ blockSupport D.BS, p := M.hLeq
-  have hsumE : ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2 ≤ 1000001 * (sigmaCtrl D.BS) ^ 2 := M.hsumE
+  have hsumE : ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2
+      ≤ F.ledger.Sload * (sigmaCtrl D.BS) ^ 2 := M.hsumE
   have hk05 : 5 ≤ D.BS.k0 := by rw [hBS]; exact F.bsCert.hk05
   have hCge3 : (3 : ℝ) ≤ C := F.ledger.hCge3
-  have hk0dom : 1000000 * (Nat.ceil C + 1) ^ 4 ≤ D.BS.k0 := by rw [hBS]; exact F.bsCert.hk0dom
+  have hk0pos : 1 ≤ D.BS.k0 := by omega
+  have hCk0 : C ≤ (D.BS.k0 : ℝ) := by
+    have hnat : Nat.ceil C ≤ D.BS.k0 := by rw [hBS]; exact F.bsCert.hk0C
+    calc C ≤ (Nat.ceil C : ℝ) := Nat.le_ceil C
+      _ ≤ (D.BS.k0 : ℝ) := by exact_mod_cast hnat
+  have hwindow : 10 * (F.ledger.cSigma * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0 + 1)
+      ≤ (2 : ℝ) ^ (2 * D.BS.k0) := by
+    have hthr : F.ledger.k0window ≤ D.BS.k0 := by rw [hBS]; exact F.bsCert.hk0window
+    exact F.ledger.hk0windowFact D.BS.k0 hthr
+  have hcubic : (4 * 1000000 * F.ledger.Sload * (F.ledger.cSigma + 1)) * (D.BS.k0 : ℝ) ^ 4
+      ≤ (2 : ℝ) ^ D.BS.k0 := by
+    have hthr : F.ledger.k0cubic ≤ D.BS.k0 := by rw [hBS]; exact F.bsCert.hk0cubic
+    exact F.ledger.hk0cubicFact D.BS.k0 hthr
   have hadmD : admissibleGlobalRange D.BS := by rw [hBS]; exact F.bsCert.hadm
   have hSgeD : ∀ s ∈ D.S, 2 ^ (2 * D.BS.k0) ≤ s := by rw [hS, hBS]; exact Cc.hSge
   have hRpos'D : ∀ r ∈ D.R, 2 ≤ r := by rw [hR]; exact Cc.hRpos'
@@ -575,8 +663,9 @@ lemma exists_r2_main_arc_window {T : Finset ℕ} {b : ℕ}
   -- large-k0 window facts (named certificate: N-window scale/period ledger)
   obtain ⟨hN2, hNL, hNreal⟩ := r2_main_arc_window_scale_period F Cc M N hNhi
   have hNF : MainArcNumericFields D.E W.theta N :=
-    r2_close_numericFields D W N σ C hσpos he0 QB hSgeD hRpos'D hsumE hsigmaE_lb
-      hNnonneg hCge3 hNlo hNsigma hk0dom hNreal
+    r2_close_numericFields D W N σ C F.ledger.cSigma F.ledger.Sload hσpos he0 QB hSgeD
+      hRpos'D F.ledger.hcS1 F.ledger.hS1 hsumE hsigmaE_lb hNnonneg hCge3 hNlo hNsigma
+      hk0pos hCk0 hwindow hcubic hNreal
   exact ⟨⟨N, hNnonneg, hNlo, hN2, hNL, hσpos, h2N1sigma, hsigmaE_ub, hsigmaEpos, hNF⟩⟩
 
 /-! ## Minor-arc budget layer
@@ -595,8 +684,8 @@ The minor-arc budget factors through explicitly named certificate steps:
   `hminorSum_of_block_extra_norm_bounds` into the per-`MainArcFields` minor sum
   bound `≤ r2MinorBudget`.
 * **budget closure** — `r2_minor_budget_closure` proves the budget is dominated by
-  the main-term floor at the actual `σ_E` (`r2_close_budget_501` +
-  `hbeat_of_sigma_le_sigmaCtrl`).
+  the main-term floor at the actual `σ_E` (the ledger's single `hbudget` inequality +
+  `hbeat_of_sigma_le_sigmaCtrl`, parametric in the abstract bridge constant `K`).
 -/
 
 /-- **Minor-arc budget value.**  The block component
@@ -669,9 +758,11 @@ lemma r2_minor_lane_bound {T : Finset ℕ} {b : ℕ}
   ring
 
 /-- **Minor budget closure.**  The minor-arc budget is strictly dominated by the
-main-term floor `0.8·e^{-π²/2}/2 / σ_E` at the actual edge variance `σ_E`.  Uses
-the numeric collapse `r2_close_budget_501` (budget `< c3/(501·σ_ctrl)`) and the
-variance comparison `hbeat_of_sigma_le_sigmaCtrl` (`σ_E ≤ 501·σ_ctrl`). -/
+main-term floor `0.8·e^{-π²/2}/2 / σ_E` at the actual edge variance `σ_E`.  Consumes
+only the ledger's single budget inequality `hbudget` (how the budget was allocated
+among the lanes is the ledger constructor's private witness), the window bound
+`(2N+1)·σ ≤ 2C+3`, and the abstract comparison `σ_E ≤ K·σ_ctrl` — every step works
+for an arbitrary positive `K`. -/
 lemma r2_minor_budget_closure {T : Finset ℕ} {b : ℕ}
     (F : R2FoundationCertificate T b) (Cc : R2ConcreteCertificate F)
     (M : R2MassCertificate F Cc) (A : R2MainArcWindow F Cc M) :
@@ -679,33 +770,48 @@ lemma r2_minor_budget_closure {T : Finset ℕ} {b : ℕ}
       Real.sqrt (sigmaE2 M.D.E M.W.theta) := by
   have hbpos := F.ledger.hbpos
   have hσpos : 0 < sigmaCtrl M.D.BS := A.hsigmapos
-  have hb1 : (b : ℝ) * F.ledger.η = F.ledger.c3 / 2004 := by rw [F.ledger.hηdef]; field_simp
-  have hb2 : (b : ℝ) * (F.ledger.Ctail * Real.exp (-F.ledger.C ^ 2 * (16 / 9) / 2)) < F.ledger.c3 / 2004 :=
-    F.ledger.hCbound
-  have hb3 : (b : ℝ) * (2 * (A.N : ℝ) + 1) * F.ledger.Dmp * sigmaCtrl M.D.BS ≤ F.ledger.c3 / 2004 := by
-    have hstep : (b : ℝ) * (2 * (A.N : ℝ) + 1) * F.ledger.Dmp * sigmaCtrl M.D.BS
+  have hK0 : (0 : ℝ) < F.ledger.K := lt_of_lt_of_le one_pos F.ledger.hK1
+  -- the extra lane, rescaled through `(2N+1)·σ ≤ 2C+3`
+  have hA3 : (b : ℝ) * (2 * (A.N : ℝ) + 1) * F.ledger.Dmp
+      ≤ (b : ℝ) * F.ledger.Dmp * (2 * F.ledger.C + 3) / sigmaCtrl M.D.BS := by
+    rw [le_div_iff₀ hσpos]
+    calc (b : ℝ) * (2 * (A.N : ℝ) + 1) * F.ledger.Dmp * sigmaCtrl M.D.BS
         = (b : ℝ) * F.ledger.Dmp * ((2 * (A.N : ℝ) + 1) * sigmaCtrl M.D.BS) := by ring
-    rw [hstep]
-    have hle : (b : ℝ) * F.ledger.Dmp * ((2 * (A.N : ℝ) + 1) * sigmaCtrl M.D.BS)
-        ≤ (b : ℝ) * F.ledger.Dmp * (2 * F.ledger.C + 3) :=
-      mul_le_mul_of_nonneg_left A.h2N1sigma (mul_nonneg (by positivity) F.ledger.hDmppos.le)
-    refine le_trans hle (le_of_eq ?_)
-    have hbne : (b : ℝ) ≠ 0 := by exact_mod_cast hbpos.ne'
-    have hCne : (2 * F.ledger.C + 3 : ℝ) ≠ 0 :=
-      ne_of_gt (show (0 : ℝ) < 2 * F.ledger.C + 3 by have := F.ledger.hCge3; linarith)
-    rw [F.ledger.hDmpdef]; field_simp
-  have hBm501 : r2MinorBudget F M A < F.ledger.c3 / (501 * sigmaCtrl M.D.BS) := by
-    have h := r2_close_budget_501 (sigmaCtrl M.D.BS) ((b : ℝ) * F.ledger.η)
-      ((b : ℝ) * (F.ledger.Ctail * Real.exp (-F.ledger.C ^ 2 * (16 / 9) / 2)))
-      ((b : ℝ) * (2 * (A.N : ℝ) + 1) * F.ledger.Dmp) F.ledger.c3 hσpos F.ledger.hc3pos hb1 hb2 hb3
+      _ ≤ (b : ℝ) * F.ledger.Dmp * (2 * F.ledger.C + 3) :=
+          mul_le_mul_of_nonneg_left A.h2N1sigma
+            (mul_nonneg (by positivity) F.ledger.hDmppos.le)
+  have hsum : r2MinorBudget F M A
+      ≤ ((b : ℝ) * F.ledger.η
+          + (b : ℝ) * (F.ledger.Ctail * Real.exp (-F.ledger.C ^ 2 * (16 / 9) / 2))
+          + (b : ℝ) * F.ledger.Dmp * (2 * F.ledger.C + 3)) / sigmaCtrl M.D.BS := by
     unfold r2MinorBudget
-    exact h
+    have hsplit : ((b : ℝ) * F.ledger.η
+        + (b : ℝ) * (F.ledger.Ctail * Real.exp (-F.ledger.C ^ 2 * (16 / 9) / 2))
+        + (b : ℝ) * F.ledger.Dmp * (2 * F.ledger.C + 3)) / sigmaCtrl M.D.BS
+        = ((b : ℝ) * F.ledger.η
+            + (b : ℝ) * (F.ledger.Ctail * Real.exp (-F.ledger.C ^ 2 * (16 / 9) / 2)))
+              / sigmaCtrl M.D.BS
+          + (b : ℝ) * F.ledger.Dmp * (2 * F.ledger.C + 3) / sigmaCtrl M.D.BS :=
+      add_div _ _ _
+    rw [hsplit]
+    linarith [hA3]
+  have hlt : r2MinorBudget F M A < F.ledger.c3 / (F.ledger.K * sigmaCtrl M.D.BS) := by
+    have hstep : ((b : ℝ) * F.ledger.η
+        + (b : ℝ) * (F.ledger.Ctail * Real.exp (-F.ledger.C ^ 2 * (16 / 9) / 2))
+        + (b : ℝ) * F.ledger.Dmp * (2 * F.ledger.C + 3)) / sigmaCtrl M.D.BS
+        < (F.ledger.c3 / F.ledger.K) / sigmaCtrl M.D.BS := by
+      gcongr
+      exact F.ledger.hbudget
+    calc r2MinorBudget F M A
+        ≤ _ := hsum
+      _ < (F.ledger.c3 / F.ledger.K) / sigmaCtrl M.D.BS := hstep
+      _ = F.ledger.c3 / (F.ledger.K * sigmaCtrl M.D.BS) := div_div _ _ _
   have hc3eq : F.ledger.c3 = 0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2) := by
     rw [F.ledger.hc3eq, r2MinorMainCtrlConstant]
   rw [← hc3eq]
   exact hbeat_of_sigma_le_sigmaCtrl F.ledger.c3 (Real.sqrt (sigmaE2 M.D.E M.W.theta))
-    (501 * sigmaCtrl M.D.BS) (r2MinorBudget F M A)
-    F.ledger.hc3pos A.hsigmaEpos (by positivity) A.hsigmaE_ub hBm501
+    (F.ledger.K * sigmaCtrl M.D.BS) (r2MinorBudget F M A)
+    F.ledger.hc3pos A.hsigmaEpos (by positivity) A.hsigmaE_ub hlt
 
 /-- **Minor certificate.**  The minor-arc budget `Bm`, the per-`MainArcFields`
 minor-sum bound (assembled from the block lane and the gadget/extra lane via the
