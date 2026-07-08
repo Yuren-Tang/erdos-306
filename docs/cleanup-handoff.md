@@ -34,6 +34,23 @@ disagree with them. Where a whole stretch of code is just a roundabout path
 to something that already exists cleanly elsewhere, prefer discarding the
 roundabout path over patching it in place.
 
+**The bar for keeping off-main-line content** (confirmed zero callers from
+`erdos_306`) is *independent mathematical value worth a paper mention as a
+derived corollary* — not "a doc describes it as planned/target
+architecture." `docs/architecture.md`'s own target module graphs can be
+stale exactly like any other doc in this repo (confirmed twice: the
+`GlobalControl.lean` aggregate's docstring claiming a dead file as live,
+and the target graph listing `Encoding.TotalEntropy` as planned when it
+was actually a superseded case-split branch — see the "Flagged, now
+resolved" entries below). Before keeping *or* deleting unused project
+content, also check whether it duplicates something Mathlib (v4.31.0)
+already provides — this pass has been inconsistent about checking that;
+do it explicitly each time, not by memory of having checked once. And
+where an abstraction can be stated more generally at no extra proof cost,
+prefer the more general statement — it costs nothing now and may make a
+downstream result stronger later (this is the same instinct behind P2's
+subset-domination principle absorbing three specific product bounds).
+
 ## Current state (2026-07-07)
 
 - The theorem itself is done: `erdos_306` / `erdos_306_unconditional` is
@@ -269,21 +286,40 @@ fragment the mechanical merge had hidden:
 dead — orphaned when `R2ComponentSupply.lean` was deleted in the batch-3
 sweep but not traced far enough at the time. Now removed.
 
-### Flagged, unresolved, needs judgment (not attempted)
+### Flagged, now resolved
 
-- `GlobalControl.BlockVarianceComparison` (`sigmaP_block_le`,
-  `sigmaP_sq_eq_internal`) vs `GlobalControl.ControlVarianceBounds` — two
-  routes to what looks like the same kind of "block deviation vs global
-  deviation" fact; `BlockVarianceComparison`'s version is unused and more
-  tactic-heavy (`grind +qlia`-style). Possibly redundant, possibly genuinely
-  different — not verified either way.
-- `GlobalControl.Encoding.TotalEntropy` — `docs/architecture.md` documents
-  it as load-bearing target architecture, but nothing currently imports it.
-  Looks more like an unfinished migration wire-up than dead code (the
-  aggregate `GlobalControl.lean`'s own docstring still lists
-  `BlockVarianceComparison` too, contradicting an earlier roadmap note that
-  claimed the aggregate "only re-exports Partition" — that roadmap claim is
-  stale, corrected in this pass, see the refactor-roadmap.md diff).
+- ~~`GlobalControl.BlockVarianceComparison` vs `GlobalControl.ControlVarianceBounds`~~
+  — resolved: not two routes to the same fact, just one dead one.
+  `BlockVarianceComparison` (`sigmaP_block_le`, `sigmaP_sq_eq_internal`) had
+  zero callers anywhere and was reachable only through the
+  `GlobalControl.lean` aggregate, which itself has zero importers (nothing
+  in `RequestProject` imports the bare `RequestProject.GlobalControl`
+  module — every real consumer imports the specific submodule it needs).
+  `ControlVarianceBounds` (`block_card_le`, `sigmaCtrl_le_one`,
+  `sigmaCtrl_le_geom`) is the genuinely live version, confirmed used
+  directly by `R2Certificates.lean` and several `GlobalControl/*` files.
+  Deleted `BlockVarianceComparison.lean`; fixed `GlobalControl.lean`'s
+  import and docstring (it had been claiming the deleted file as part of
+  "the complete global-control theory" — also now documents that this
+  aggregate isn't built by `RequestProject.Audit`, so edits to it need a
+  separate explicit `lake build RequestProject.GlobalControl` check).
+- ~~`GlobalControl.Encoding.TotalEntropy`~~ — resolved as dead, not
+  unfinished migration (the user corrected the standard being applied
+  here: "documented in architecture.md as planned" isn't sufficient reason
+  to keep something off the main line — it needs independent mathematical
+  value worth a paper mention, and this doesn't have it). Read its content
+  (`global_assignment_card_le_exp_above_threshold`): a technical,
+  parameter-bound-heavy "large-energy regime" trivial count bound, the
+  apparent large-`R` half of an original two-case split for the G5
+  level-set argument, superseded by the entropy/charge-aggregation
+  approach actually used (`ChargeAggregation`/`LevelSetAssembly`, reachable
+  live via `CircleMethodArcs → GlobalControl.Partition`). Not a clean
+  standalone result — fully tied to this project's `BlockSystem`/
+  `GlobalAssignment` types, so also not something Mathlib could already
+  have. Deleted; removed the corresponding line and contract bullet from
+  `docs/architecture.md`'s target module graph (which was itself stale
+  here, same as the `GlobalControl.lean` docstring case above — a
+  documented "planned" node is not proof something is still needed).
 
 ### A positive exemplar: the circle-method spine is already close to the target standard
 

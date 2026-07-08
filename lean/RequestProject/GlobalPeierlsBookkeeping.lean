@@ -61,41 +61,6 @@ lemma weighted_subset_entropy {ι : Type*} (I : Finset ι) (w cost : ι → ℝ)
     linarith [ Real.add_one_le_exp ( Real.exp ( -eps * w i / 4 ) ) ];
   exact h_sum_bound.trans ( mul_le_mul_of_nonneg_left ( h_prod_add.symm ▸ le_trans ( Finset.prod_le_prod ( fun _ _ => add_nonneg zero_le_one ( mul_nonneg ( hcost _ ‹_› ) ( Real.exp_nonneg _ ) ) ) h_exp_bound ) ( by rw [ ← Real.exp_sum ] ) ) ( Real.exp_nonneg _ ) )
 
-/-- **Subset-count entropy** (note 37 §3.2, the `cost ≡ 1` specialization used to
-bound the number of admissible *hot sets* and *mismatch-boundary sets* in G5).
-The number of subsets of `I` whose total weight is `≤ R` is bounded by
-`exp(εR/2)·exp(∑_i exp(-ε·w i/4))`. -/
-lemma subset_count_entropy {ι : Type*} (I : Finset ι) (w : ι → ℝ)
-    (eps R : ℝ) (heps : 0 ≤ eps) (hw : ∀ i ∈ I, 0 ≤ w i) :
-    ((I.powerset.filter (fun S => ∑ i ∈ S, w i ≤ R)).card : ℝ)
-      ≤ Real.exp (eps * R / 2) * Real.exp (∑ i ∈ I, Real.exp (-eps * w i / 4)) := by
-  have h := weighted_subset_entropy I w (fun _ => 1) eps R heps
-    (fun _ _ => zero_le_one)
-    (fun i hi => by
-      have : (0 : ℝ) ≤ eps * w i / 4 := by
-        have := mul_nonneg heps (hw i hi); linarith
-      simpa using Real.one_le_exp this)
-  simpa using h
-
-/-- **Product of local counts** (note 37 §3, the energy-shell product / the G5
-steps 2 and 5 multiplication of hot and fixed-label cold block counts).  If each
-local count `c i` is `≤ exp(ε·R i)` and the local energies sum to `≤ R`, then the
-product of local counts is `≤ exp(ε·R)`. -/
-lemma prod_local_count_le {ι : Type*} (I : Finset ι) (Renergy c : ι → ℝ)
-    (eps R : ℝ) (heps : 0 ≤ eps)
-    (hc : ∀ i ∈ I, 0 ≤ c i)
-    (hcb : ∀ i ∈ I, c i ≤ Real.exp (eps * Renergy i))
-    (hsum : ∑ i ∈ I, Renergy i ≤ R) :
-    (∏ i ∈ I, c i) ≤ Real.exp (eps * R) := by
-  calc (∏ i ∈ I, c i)
-      ≤ ∏ i ∈ I, Real.exp (eps * Renergy i) :=
-        Finset.prod_le_prod (fun i hi => hc i hi) (fun i hi => hcb i hi)
-    _ = Real.exp (∑ i ∈ I, eps * Renergy i) := by rw [Real.exp_sum]
-    _ = Real.exp (eps * ∑ i ∈ I, Renergy i) := by rw [Finset.mul_sum]
-    _ ≤ Real.exp (eps * R) := by
-        apply Real.exp_le_exp.mpr
-        exact mul_le_mul_of_nonneg_left hsum heps
-
 /-
 **Shell-sum lemma** (note 38 §1, Lemma SH).  Enumerating shell vectors
 `v : ι → ℕ` with `∑ v ≤ R`, the sum of products of per-block counts `c k (v k)`
@@ -151,24 +116,6 @@ lemma shell_sum_bound {ι : Type*} [Fintype ι] [DecidableEq ι] (c : ι → ℕ
   rw [← Real.exp_add, ← Real.exp_add, ← Real.exp_add]
   congr 1
   ring_nf
-
-/-- **Segment label constancy** (note 34 G5 step 4 / note 37 §3.2 "segment
-construction").  If across every index `k` of a connected run the edge predicate
-`P k` forces `label k = label (k+1)`, then the label is constant throughout the
-run: any two endpoints `i ≤ j` whose intermediate edges all satisfy `P` carry
-equal labels.  This is the combinatorial heart of "labels are constant on each
-cold segment". -/
-lemma segment_label_constant {α : Type*} (label : ℕ → α) (P : ℕ → Prop)
-    (h : ∀ k, P k → label k = label (k + 1)) :
-    ∀ i j, i ≤ j → (∀ k, i ≤ k → k < j → P k) → label i = label j := by
-  intro i j hij
-  induction j, hij using Nat.le_induction with
-  | base => intro _; rfl
-  | succ j hij ih =>
-      intro hseg
-      have hrun : label i = label j :=
-        ih (fun k hk1 hk2 => hseg k hk1 (Nat.lt_succ_of_lt hk2))
-      exact hrun.trans (h j (hseg j hij (Nat.lt_succ_self j)))
 
 end
 

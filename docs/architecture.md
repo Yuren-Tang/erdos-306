@@ -140,7 +140,6 @@ GlobalControl.BlockSystem
            -> GlobalControl.Encoding.Fibers
            -> GlobalControl.Encoding.FixedLabelCount
            -> GlobalControl.Encoding.HotBlockCount
-           -> GlobalControl.Encoding.TotalEntropy
 
 GlobalControl.CrossBlockEnergy
 GlobalControl.Encoding.HotBlockCount
@@ -202,8 +201,6 @@ The module contracts are:
   cold-block dominance, and propagation along cold segments;
 - `Encoding.Fibers`: assignment fibers determined by shells and segment labels,
   with their product bound;
-- `Encoding.TotalEntropy`: the total assignment bound in the large-energy
-  regime;
 - `Encoding.FixedLabelCount`: fixed-label counts for cold blocks;
 - `Encoding.HotBlockCount`: deviation-scale control and asymptotic absorption
   of the hot-block level-set prefactor;
