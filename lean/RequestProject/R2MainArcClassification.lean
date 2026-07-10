@@ -15,13 +15,13 @@ def freqAssignmentOf {T : Finset ℕ} {b : ℕ}
 /-- Frequencies not lying over a global-control main arc go to the block lane. -/
 def mainArcBlockSet {T : Finset ℕ} {b : ℕ}
     (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
-    (C : ℝ) (MA : MainArcFields D.E W.theta b D.L N) : Finset ℕ :=
+    (C : ℝ) (MA : MainArcFields D.E W.theta (D.L / b) D.L N) : Finset ℕ :=
   MA.Sm.filter (fun h => freqAssignmentOf D h ∉ mainArc D.BS C)
 
 /-- Frequencies lying over a global-control main arc go to the extra lane. -/
 def mainArcExtraSet {T : Finset ℕ} {b : ℕ}
     (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
-    (C : ℝ) (MA : MainArcFields D.E W.theta b D.L N) : Finset ℕ :=
+    (C : ℝ) (MA : MainArcFields D.E W.theta (D.L / b) D.L N) : Finset ℕ :=
   MA.Sm.filter (fun h => freqAssignmentOf D h ∈ mainArc D.BS C)
 
 /-- The block/extra split defined by global-control main-arc membership covers
@@ -83,7 +83,7 @@ def intFrequencyLabelData_of_mainArcClassification
     (D : R2ConcreteData T b)
     (W : R2ConcreteData.Weights D)
     (N : ℤ) (C : ℝ)
-    (MA : MainArcFields D.E W.theta b D.L N)
+    (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (hlabelRange : ∀ {m : ℤ}, |(m : ℝ)| ≤ C / sigmaCtrl D.BS →
       m ∈ Finset.Icc (-N) N) :
     R2ExtraIntFrequencyLabelData D W N MA

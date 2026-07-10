@@ -747,8 +747,8 @@ per-`MainArcFields` minor-sum bound `∑_{h∈Sm} ‖fourierTerm h‖ ≤ r2Mino
 lemma r2_minor_lane_bound {T : Finset ℕ} {b : ℕ}
     (F : R2FoundationCertificate T b) (Cc : R2ConcreteCertificate F)
     (M : R2MassCertificate F Cc) (A : R2MainArcWindow F Cc M) :
-    ∀ MA : MainArcFields M.D.E M.W.theta b M.D.L A.N,
-      (∑ h ∈ MA.Sm, ‖fourierTerm M.D.E M.W.theta b M.D.L h‖) ≤ r2MinorBudget F M A := by
+    ∀ MA : MainArcFields M.D.E M.W.theta (M.D.L / b) M.D.L A.N,
+      (∑ h ∈ MA.Sm, ‖fourierTerm M.D.E M.W.theta (M.D.L / b) M.D.L h‖) ≤ r2MinorBudget F M A := by
   obtain ⟨MB⟩ := r2_minor_support_budget F Cc M A
   intro MA
   refine hminorSum_of_block_extra_norm_bounds M.D.E M.W.theta b M.D.L MA.Sm
@@ -822,8 +822,8 @@ structure R2MinorCertificate {T : Finset ℕ} {b : ℕ}
     (M : R2MassCertificate F Cc) (A : R2MainArcWindow F Cc M) where
   /-- the minor-arc budget. -/
   Bm : ℝ
-  hminor : ∀ MA : MainArcFields M.D.E M.W.theta b M.D.L A.N,
-      (∑ h ∈ MA.Sm, ‖fourierTerm M.D.E M.W.theta b M.D.L h‖) ≤ Bm
+  hminor : ∀ MA : MainArcFields M.D.E M.W.theta (M.D.L / b) M.D.L A.N,
+      (∑ h ∈ MA.Sm, ‖fourierTerm M.D.E M.W.theta (M.D.L / b) M.D.L h‖) ≤ Bm
   hbeat : Bm < 0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2) /
       Real.sqrt (sigmaE2 M.D.E M.W.theta)
 

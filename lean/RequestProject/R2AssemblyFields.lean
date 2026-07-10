@@ -117,7 +117,7 @@ lemma hbeat_of_block_extra_sigmaCtrl
 
 /-- The main-arc finite data required by `ArcConstruction`, isolated from the
 rest of the construction. -/
-structure MainArcFields (E : Finset ℕ) (theta : ℕ → ℝ) (b L : ℕ) (N : ℤ) where
+structure MainArcFields (E : Finset ℕ) (theta : ℕ → ℝ) (q L : ℕ) (N : ℤ) where
   SM : Finset ℕ
   Sm : Finset ℕ
   lbl : ℕ → ℤ
@@ -127,17 +127,17 @@ structure MainArcFields (E : Finset ℕ) (theta : ℕ → ℝ) (b L : ℕ) (N : 
   hinj : ∀ h₁ ∈ SM, ∀ h₂ ∈ SM, lbl h₁ = lbl h₂ → h₁ = h₂
   hsurj : ∀ m ∈ Finset.Icc (-N) N, ∃ h ∈ SM, lbl h = m
   hmod : ∀ h ∈ SM, (L : ℤ) ∣ ((h : ℤ) - lbl h)
-  hterm : ∀ h ∈ SM, fourierTerm E theta b L h = term_label E theta b (lbl h)
+  hterm : ∀ h ∈ SM, fourierTerm E theta q L h = term_label E theta q L (lbl h)
 
 /-- Package the existing main-arc bijection as the exact record fields consumed
 by `ArcConstruction`.  The minor arc is the complement of `SM` inside
 `Finset.range L`. -/
 lemma exists_mainArcFields
-    (E : Finset ℕ) (theta : ℕ → ℝ) (b L : ℕ) (N : ℤ)
-    (hb : 0 < b) (hbL : b ∣ L) (hL : 0 < L)
+    (E : Finset ℕ) (theta : ℕ → ℝ) (q L : ℕ) (N : ℤ)
+    (hL : 0 < L)
     (he0 : ∀ e ∈ E, 0 < e) (heL : ∀ e ∈ E, e ∣ L)
     (hN : 0 ≤ N) (hNL : 2 * N + 1 ≤ (L : ℤ)) :
-    Nonempty (MainArcFields E theta b L N) := by
+    Nonempty (MainArcFields E theta q L N) := by
   classical
   obtain ⟨SM, lbl, hsub, hmaps, hinj, hsurj, hmod⟩ :=
     exists_mainArc_bijection L N hN hNL
@@ -156,8 +156,8 @@ lemma exists_mainArcFields
   · exact (Finset.union_sdiff_of_subset hsub).symm
   · exact Finset.sdiff_disjoint.symm
   · intro h hh
-    exact fourierTerm_eq_term_label_of_modL E theta b L h (lbl h)
-      hb hbL hL he0 heL (hmod h hh)
+    exact fourierTerm_eq_term_label_of_modL E theta q L h (lbl h)
+      hL he0 heL (hmod h hh)
 
 end CircleMethod
 

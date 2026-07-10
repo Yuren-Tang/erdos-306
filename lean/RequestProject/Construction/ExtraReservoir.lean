@@ -32,7 +32,7 @@ structure R2MultiGadgetReservoir
     (D : R2ConcreteData T b)
     (W : R2ConcreteData.Weights D)
     (N : ℤ)
-    (MA : MainArcFields D.E W.theta b D.L N)
+    (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ)
     (Bextra : ℝ) where
   rfun : ℕ → ℕ
@@ -71,7 +71,7 @@ extra-minor bound data.  The key proof field is obtained from
 def multiGadgetBoundData_of_reservoir
     {T : Finset ℕ} {b : ℕ}
     (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
-    (MA : MainArcFields D.E W.theta b D.L N)
+    (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ) (Bextra : ℝ)
     (X : R2MultiGadgetReservoir D W N MA Sblock Sextra Bextra)
     (hRprime : ∀ r ∈ D.R, Nat.Prime r)
@@ -112,7 +112,7 @@ structure R2ExtraPreparedReservoirChoice
     (D : R2ConcreteData T b)
     (W : R2ConcreteData.Weights D)
     (N : ℤ)
-    (MA : MainArcFields D.E W.theta b D.L N)
+    (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ)
     (Bextra : ℝ) where
   rfun : ℕ → ℕ
@@ -137,7 +137,7 @@ def r2MultiGadgetReservoir_of_preparedChoice
     (D : R2ConcreteData T b)
     (W : R2ConcreteData.Weights D)
     (N : ℤ)
-    (MA : MainArcFields D.E W.theta b D.L N)
+    (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ)
     (Bextra : ℝ)
     (X : R2ExtraPreparedReservoirChoice D W N MA Sblock Sextra Bextra) :
@@ -175,7 +175,7 @@ theorem extraPreparedReservoirBudget_of_pointwise_bound
     (D : R2ConcreteData T b)
     (W : R2ConcreteData.Weights D)
     (N : ℤ)
-    (MA : MainArcFields D.E W.theta b D.L N)
+    (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ)
     (rfun : ℕ → ℕ) (Gset : ℕ → Finset ℕ)
     (C Bextra : ℝ)
@@ -200,7 +200,7 @@ def preparedChoice_of_pointwise_budget
     (D : R2ConcreteData T b)
     (W : R2ConcreteData.Weights D)
     (N : ℤ)
-    (MA : MainArcFields D.E W.theta b D.L N)
+    (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ)
     (C Bextra : ℝ)
     (rfun : ℕ → ℕ) (Gset : ℕ → Finset ℕ) (mfun : ℕ → ℤ)

@@ -102,7 +102,7 @@ structure R2ExtraFrequencyLabelData
     (D : R2ConcreteData T b)
     (W : R2ConcreteData.Weights D)
     (N : ℤ)
-    (MA : MainArcFields D.E W.theta b D.L N)
+    (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ) where
   mfun : ℕ → ℕ
   hblock : ∀ h ∈ extraMinorPart MA.Sm Sblock Sextra, ∀ s ∈ blockSupport D.BS,
@@ -117,7 +117,7 @@ theorem exists_r_sibling_of_extraFrequencyLabelData
     (D : R2ConcreteData T b)
     (W : R2ConcreteData.Weights D)
     (N : ℤ)
-    (MA : MainArcFields D.E W.theta b D.L N)
+    (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ)
     (X : R2ExtraFrequencyLabelData D W N MA Sblock Sextra)
     (hbpos : 0 < b)
@@ -138,7 +138,7 @@ structure R2ExtraSiblingChoice
     (D : R2ConcreteData T b)
     (W : R2ConcreteData.Weights D)
     (N : ℤ)
-    (MA : MainArcFields D.E W.theta b D.L N)
+    (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ)
     (X : R2ExtraFrequencyLabelData D W N MA Sblock Sextra) where
   rfun : ℕ → ℕ
@@ -154,7 +154,7 @@ def r2ExtraSiblingChoice_of_labelData
     (D : R2ConcreteData T b)
     (W : R2ConcreteData.Weights D)
     (N : ℤ)
-    (MA : MainArcFields D.E W.theta b D.L N)
+    (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ)
     (X : R2ExtraFrequencyLabelData D W N MA Sblock Sextra)
     (hbpos : 0 < b)
@@ -209,7 +209,7 @@ structure R2ExtraIntFrequencyLabelData
     (D : R2ConcreteData T b)
     (W : R2ConcreteData.Weights D)
     (N : ℤ)
-    (MA : MainArcFields D.E W.theta b D.L N)
+    (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ) where
   mfun : ℕ → ℤ
   hblock : ∀ h ∈ extraMinorPart MA.Sm Sblock Sextra, ∀ s ∈ blockSupport D.BS,
@@ -225,7 +225,7 @@ def intLabelDataToNat
     (D : R2ConcreteData T b)
     (W : R2ConcreteData.Weights D)
     (N : ℤ)
-    (MA : MainArcFields D.E W.theta b D.L N)
+    (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ)
     (X : R2ExtraIntFrequencyLabelData D W N MA Sblock Sextra)
     (hbpos : 0 < b) :
@@ -280,7 +280,7 @@ def r2ExtraSiblingChoice_of_intLabelData
     (D : R2ConcreteData T b)
     (W : R2ConcreteData.Weights D)
     (N : ℤ)
-    (MA : MainArcFields D.E W.theta b D.L N)
+    (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ)
     (X : R2ExtraIntFrequencyLabelData D W N MA Sblock Sextra)
     (hbpos : 0 < b)
@@ -300,7 +300,7 @@ def preparedChoice_of_intExtraFrequencyLabelData
     (D : R2ConcreteData T b)
     (W : R2ConcreteData.Weights D)
     (N : ℤ)
-    (MA : MainArcFields D.E W.theta b D.L N)
+    (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ)
     (C Bextra : ℝ)
     (X : R2ExtraIntFrequencyLabelData D W N MA Sblock Sextra)
@@ -362,7 +362,7 @@ def r2MultiGadgetReservoir_of_intExtraFrequencyLabelData
     (D : R2ConcreteData T b)
     (W : R2ConcreteData.Weights D)
     (N : ℤ)
-    (MA : MainArcFields D.E W.theta b D.L N)
+    (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ)
     (C Bextra : ℝ)
     (X : R2ExtraIntFrequencyLabelData D W N MA Sblock Sextra)

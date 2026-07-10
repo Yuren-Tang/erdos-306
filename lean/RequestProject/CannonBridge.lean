@@ -14,7 +14,7 @@ the abstract **`spectral_existence`** cannon (`SpectralCannon.lean`).
 The cannon is instantiated over:
 * index set `J = {e // e ∈ E}` (the semiprime edges) with `A j = Bool` (each edge
   chosen or not);
-* the additive group `X = ℤ` with the integer target `t = L/b` and
+* the additive group `X = ℤ` with an integer target `t = q` and
   `S a = ∑_{e chosen} L/e` (no wraparound thanks to `∑_E L/e < L`);
 * frequency set `Ω = Fin L` and the additive characters `cannonChar`;
 * local spectral factors `cannonB`, so that `cannonF = fourierTerm`.
@@ -42,9 +42,9 @@ def cannonB (E : Finset ℕ) (theta : ℕ → ℝ) (L : ℕ)
 
 /-- The spectral term at frequency `ω`: the product of the local factors times
 the conjugate target phase.  Equal to `fourierTerm` (`cannonF_eq_fourierTerm`). -/
-def cannonF (E : Finset ℕ) (theta : ℕ → ℝ) (b L : ℕ) (ω : Fin L) : ℂ :=
+def cannonF (E : Finset ℕ) (theta : ℕ → ℝ) (q L : ℕ) (ω : Fin L) : ℂ :=
   (∏ j : {e // e ∈ E}, cannonB E theta L j ω)
-    * (starRingEnd ℂ) (cannonChar L ω ((L / b : ℕ) : ℤ))
+    * (starRingEnd ℂ) (cannonChar L ω (q : ℤ))
 
 /-- `cannonChar` has unit norm. -/
 lemma norm_cannonChar (L : ℕ) (ω : Fin L) (n : ℤ) : ‖cannonChar L ω n‖ = 1 := by
@@ -72,8 +72,8 @@ lemma norm_cannonB_le_one (E : Finset ℕ) (theta : ℕ → ℝ) (L : ℕ)
 
 /-- **Key correspondence.**  The cannon's spectral term equals the project's
 `fourierTerm` at the underlying natural-number frequency. -/
-lemma cannonF_eq_fourierTerm (E : Finset ℕ) (theta : ℕ → ℝ) (b L : ℕ) (ω : Fin L) :
-    cannonF E theta b L ω = fourierTerm E theta b L (ω : ℕ) := by
+lemma cannonF_eq_fourierTerm (E : Finset ℕ) (theta : ℕ → ℝ) (q L : ℕ) (ω : Fin L) :
+    cannonF E theta q L ω = fourierTerm E theta q L (ω : ℕ) := by
   unfold cannonF fourierTerm;
   congr! 1;
   · refine' Finset.prod_bij ( fun j _ => j.val ) _ _ _ _ <;> simp +decide [ cannonB_eq ];
@@ -131,25 +131,25 @@ lemma sum_attachFin {β : Type*} [AddCommMonoid β] (L : ℕ) (SS : Finset ℕ)
   · exact fun m hm => ⟨ ⟨ m, h m hm ⟩, hm, rfl ⟩
 
 /-- `cannonF` summed over `SS.attachFin` equals `fourierTerm` summed over `SS`. -/
-lemma cannonF_attachFin_sum (E : Finset ℕ) (theta : ℕ → ℝ) (b L : ℕ)
+lemma cannonF_attachFin_sum (E : Finset ℕ) (theta : ℕ → ℝ) (q L : ℕ)
     (SS : Finset ℕ) (h : ∀ m ∈ SS, m < L) :
-    ∑ ω ∈ SS.attachFin h, cannonF E theta b L ω
-      = ∑ m ∈ SS, fourierTerm E theta b L m := by
-  rw [Finset.sum_congr rfl (fun ω _ => cannonF_eq_fourierTerm E theta b L ω)]
-  exact sum_attachFin L SS h (fun m => fourierTerm E theta b L m)
+    ∑ ω ∈ SS.attachFin h, cannonF E theta q L ω
+      = ∑ m ∈ SS, fourierTerm E theta q L m := by
+  rw [Finset.sum_congr rfl (fun ω _ => cannonF_eq_fourierTerm E theta q L ω)]
+  exact sum_attachFin L SS h (fun m => fourierTerm E theta q L m)
 
 /-
 **Pointwise tail bound.**  With `Δ ω j = -log‖cannonB‖` (and a nonnegative
 fallback `Ktail` at the zeros), `exp(-∑_j Δ ω j)` is bounded by the norm of the
 spectral term plus `exp(-Ktail)`.
 -/
-lemma cannon_tail_pointwise (E : Finset ℕ) (theta : ℕ → ℝ) (b L : ℕ)
+lemma cannon_tail_pointwise (E : Finset ℕ) (theta : ℕ → ℝ) (q L : ℕ)
     (hthlb : ∀ e ∈ E, 0 ≤ theta e) (hthub : ∀ e ∈ E, theta e ≤ 1)
     (Ktail : ℝ) (hK0 : 0 ≤ Ktail) (ω : Fin L) :
     Real.exp (-(∑ j : {e // e ∈ E},
         (if ‖cannonB E theta L j ω‖ = 0 then Ktail
          else - Real.log ‖cannonB E theta L j ω‖)))
-      ≤ ‖fourierTerm E theta b L (ω : ℕ)‖ + Real.exp (-Ktail) := by
+      ≤ ‖fourierTerm E theta q L (ω : ℕ)‖ + Real.exp (-Ktail) := by
   by_cases h : ∃ j : { e // e ∈ E }, ‖cannonB E theta L j ω‖ = 0;
   · obtain ⟨ j, hj ⟩ := h; simp_all +decide [ Finset.prod_eq_zero ( Finset.mem_univ j ) ] ;
     refine' le_trans _ ( le_add_of_nonneg_left <| norm_nonneg _ );
@@ -158,7 +158,7 @@ lemma cannon_tail_pointwise (E : Finset ℕ) (theta : ℕ → ℝ) (b L : ℕ)
     exact le_trans ( by aesop ) ( Finset.single_le_sum ( fun x _ => by split_ifs <;> first | positivity | exact neg_nonneg_of_nonpos <| Real.log_nonpos ( norm_nonneg _ ) <| by exact le_trans ( norm_cannonB_le_one E theta L x ω ( hthlb _ <| x.2 ) ( hthub _ <| x.2 ) ) <| by norm_num ) <| Finset.mem_attach _ j );
   · simp_all +decide [ Finset.sum_ite ];
     rw [ Real.exp_sum, Finset.prod_congr rfl fun x hx => Real.exp_log ( norm_pos_iff.mpr ( h _ x.2 ) ) ];
-    rw [ show fourierTerm E theta b L ω = cannonF E theta b L ω by rw [ cannonF_eq_fourierTerm ] ];
+    rw [ show fourierTerm E theta q L ω = cannonF E theta q L ω by rw [ cannonF_eq_fourierTerm ] ];
     unfold cannonF;
     norm_num [ norm_mul, norm_cannonChar ];
     positivity
@@ -167,40 +167,40 @@ lemma cannon_tail_pointwise (E : Finset ℕ) (theta : ℕ → ℝ) (b L : ℕ)
 **Decode.**  A hitting configuration `a` decodes to a subset of `E` with the
 exact reciprocal identity.
 -/
-lemma decode_subset_sum (E : Finset ℕ) (b L : ℕ) (hb : 2 ≤ b) (hL : 0 < L)
-    (hbL : b ∣ L) (heL : ∀ e ∈ E, e ∣ L) (he0 : ∀ e ∈ E, 0 < e)
+lemma decode_subset_sum (E q L : ℕ) (hL : 0 < L)
+    (heL : ∀ e ∈ E, e ∣ L) (he0 : ∀ e ∈ E, 0 < e)
     (hbound : (∑ e ∈ E, (L / e : ℕ)) < L)
     (a : {e // e ∈ E} → Bool)
     (ha : (∑ j : {e // e ∈ E}, (if a j then ((L / j.1 : ℕ) : ℤ) else 0))
-            = ((L / b : ℕ) : ℤ)) :
+            = (q : ℤ)) :
     (∑ e ∈ (Finset.univ.filter (fun j : {e // e ∈ E} => a j)).image Subtype.val,
-        (1 : ℚ) / (e : ℚ)) = (1 : ℚ) / (b : ℚ) := by
+        (1 : ℚ) / (e : ℚ)) = (q : ℚ) / (L : ℚ) := by
   rw [ Finset.sum_image ];
   · convert congr_arg ( fun x : ℤ => x / ( L : ℚ ) ) ha using 1;
     · push_cast [ Finset.sum_filter ];
       rw [ Finset.sum_div _ _ _ ] ; congr ; ext ; split_ifs <;> simp +decide [ *, Nat.cast_div ];
       rw [ eq_div_iff ( by positivity ) ] ; ring;
-    · rw [ div_eq_div_iff ] <;> norm_cast <;> nlinarith [ Nat.div_mul_cancel hbL ];
+    · norm_cast
   · exact fun x hx y hy hxy => Subtype.ext hxy
 
 /-- **Cannon bridge (existence of a hitting subset).**  From the finite-Fourier
-data of a circle-method construction — the no-wraparound divisibility hypotheses,
+data of a circle-method construction — the no-wraparound hypotheses,
 a frequency partition `range L = SM ∪ Sm`, a low-frequency real-part lower bound
 `M`, and a (summed-norm) high-frequency tail bound `Bm < M` — the abstract
-`spectral_existence` cannon yields a subset `S ⊆ E` whose reciprocal sum is `1/b`.
+`spectral_existence` cannon yields a subset `S ⊆ E` whose reciprocal sum is `q/L`.
 
 This single theorem subsumes `wcount_fourier_identity`, `positivity_from_arcs`,
 `wcount_pos_of_split` and `exists_subset_of_Wcount_pos`. -/
 theorem exists_subset_of_fourier_arcs
-    (E : Finset ℕ) (theta : ℕ → ℝ) (b L : ℕ) (SM Sm : Finset ℕ) (Bm M : ℝ)
-    (hb : 2 ≤ b) (hL : 0 < L) (hbL : b ∣ L) (heL : ∀ e ∈ E, e ∣ L)
+    (E : Finset ℕ) (theta : ℕ → ℝ) (q L : ℕ) (SM Sm : Finset ℕ) (Bm M : ℝ)
+    (hq : q < L) (hL : 0 < L) (heL : ∀ e ∈ E, e ∣ L)
     (he0 : ∀ e ∈ E, 0 < e) (hbound : (∑ e ∈ E, (L / e : ℕ)) < L)
     (hthlb : ∀ e ∈ E, 0 ≤ theta e) (hthub : ∀ e ∈ E, theta e ≤ 1)
     (hpart : Finset.range L = SM ∪ Sm) (hdisj : Disjoint SM Sm)
-    (hmain : M ≤ (∑ h ∈ SM, fourierTerm E theta b L h).re)
-    (hminorSum : (∑ h ∈ Sm, ‖fourierTerm E theta b L h‖) ≤ Bm)
+    (hmain : M ≤ (∑ h ∈ SM, fourierTerm E theta q L h).re)
+    (hminorSum : (∑ h ∈ Sm, ‖fourierTerm E theta q L h‖) ≤ Bm)
     (hbeat : Bm < M) :
-    ∃ S ⊆ E, (∑ e ∈ S, (1 : ℚ) / (e : ℚ)) = (1 : ℚ) / (b : ℚ) := by
+    ∃ S ⊆ E, (∑ e ∈ S, (1 : ℚ) / (e : ℚ)) = (q : ℚ) / (L : ℚ) := by
   classical
   have hSML : ∀ m ∈ SM, m < L := by
     intro m hm; exact Finset.mem_range.mp (hpart ▸ Finset.mem_union_left _ hm)
@@ -210,13 +210,13 @@ theorem exists_subset_of_fourier_arcs
   obtain ⟨a, ha⟩ := spectral_existence
       (J := {e // e ∈ E}) (Ω := Fin L) (X := ℤ) (A := fun _ => Bool)
       (p := fun j a => if a then theta j.1 else 1 - theta j.1)
-      (t := ((L / b : ℕ) : ℤ))
+      (t := (q : ℤ))
       (S := fun a => ∑ j : {e // e ∈ E}, (if a j then ((L / j.1 : ℕ) : ℤ) else 0))
       (N := (L : ℝ)) (hN := by exact_mod_cast hL)
       (k := fun ω n => cannonChar L ω n)
       (hspec := by
         intro a;
-        have h_no_wraparound : |(∑ j : {e // e ∈ E}, (if a j then ((L / j.1 : ℕ) : ℤ) else 0)) - ((L / b : ℕ) : ℤ)| < L := by
+        have h_no_wraparound : |(∑ j : {e // e ∈ E}, (if a j then ((L / j.1 : ℕ) : ℤ) else 0)) - (q : ℤ)| < L := by
           refine' abs_sub_lt_iff.mpr ⟨ _, _ ⟩;
           · refine' lt_of_le_of_lt ( sub_le_self _ <| Nat.cast_nonneg _ ) _;
             refine' lt_of_le_of_lt _ ( Nat.cast_lt.mpr hbound );
@@ -228,8 +228,8 @@ theorem exists_subset_of_fourier_arcs
             · refine' le_of_eq _;
               refine' Finset.sum_bij ( fun x hx => x.val ) _ _ _ _ <;> aesop;
           · refine' lt_of_le_of_lt ( sub_le_self _ <| Finset.sum_nonneg fun _ _ => by positivity ) _;
-            exact_mod_cast Nat.div_lt_self hL ( by linarith );
-        have h_charsum : ∑ ω : Fin L, Complex.exp (2 * Real.pi * Complex.I * (ω : ℂ) * ((∑ j : {e // e ∈ E}, (if a j then ((L / j.1 : ℕ) : ℤ) else 0) - ((L / b : ℕ) : ℤ)) : ℂ) / (L : ℂ)) = if (L : ℤ) ∣ ((∑ j : {e // e ∈ E}, (if a j then ((L / j.1 : ℕ) : ℤ) else 0)) - ((L / b : ℕ) : ℤ)) then (L : ℂ) else 0 := by
+            exact_mod_cast hq;
+        have h_charsum : ∑ ω : Fin L, Complex.exp (2 * Real.pi * Complex.I * (ω : ℂ) * ((∑ j : {e // e ∈ E}, (if a j then ((L / j.1 : ℕ) : ℤ) else 0) - (q : ℤ) : ℂ) / (L : ℂ)) = if (L : ℤ) ∣ ((∑ j : {e // e ∈ E}, (if a j then ((L / j.1 : ℕ) : ℤ) else 0)) - (q : ℤ)) then (L : ℂ) else 0 := by
           convert charsum_orth L hL _ using 1;
           grind;
         convert congr_arg ( fun x : ℂ => ( 1 / L : ℂ ) * x ) h_charsum.symm using 1;
@@ -245,7 +245,7 @@ theorem exists_subset_of_fourier_arcs
       (hb_def := by intro j ω; rfl)
       (hfact := fun a ω =>
         cannonChar_sum_eq_prod L ω (fun j => if a j then ((L / j.1 : ℕ) : ℤ) else 0))
-      (F := fun ω => cannonF E theta b L ω)
+      (F := fun ω => cannonF E theta q L ω)
       (hF_def := by intro ω; rfl)
       (L := SM.attachFin hSML) (H := Sm.attachFin hSmL)
       (hdisj := by
@@ -261,8 +261,8 @@ theorem exists_subset_of_fourier_arcs
         exact Finset.mem_union.mp hmem)
       (M := M) (R := Bm + (M - Bm) / 2)
       (hM := by
-        show M ≤ (∑ ω ∈ SM.attachFin hSML, cannonF E theta b L ω).re
-        rw [cannonF_attachFin_sum E theta b L SM hSML]; exact hmain)
+        show M ≤ (∑ ω ∈ SM.attachFin hSML, cannonF E theta q L ω).re
+        rw [cannonF_attachFin_sum E theta q L SM hSML]; exact hmain)
       (Δ := fun ω j => if ‖cannonB E theta L j ω‖ = 0 then Ktail
                        else - Real.log ‖cannonB E theta L j ω‖)
       (C := fun _ => 1)
@@ -277,11 +277,11 @@ theorem exists_subset_of_fourier_arcs
             Real.exp_log (lt_of_le_of_ne (norm_nonneg _) (Ne.symm hz))])
       (hk := fun ω _ => le_of_eq (norm_cannonChar L ω _))
       (hR := by
-        have hre : (∑ ω ∈ Sm.attachFin hSmL, ‖fourierTerm E theta b L (ω : ℕ)‖)
-            = ∑ m ∈ Sm, ‖fourierTerm E theta b L m‖ :=
-          sum_attachFin L Sm hSmL (fun m => ‖fourierTerm E theta b L m‖)
+        have hre : (∑ ω ∈ Sm.attachFin hSmL, ‖fourierTerm E theta q L (ω : ℕ)‖)
+            = ∑ m ∈ Sm, ‖fourierTerm E theta q L m‖ :=
+          sum_attachFin L Sm hSmL (fun m => ‖fourierTerm E theta q L m‖)
         have hstep : (∑ ω ∈ Sm.attachFin hSmL,
-              (‖fourierTerm E theta b L (ω : ℕ)‖ + Real.exp (-Ktail)))
+              (‖fourierTerm E theta q L (ω : ℕ)‖ + Real.exp (-Ktail)))
             ≤ Bm + (M - Bm) / 2 := by
           rw [Finset.sum_add_distrib, Finset.sum_const, Finset.card_attachFin, nsmul_eq_mul, hre]
           linarith [hminorSum, hKtail]
@@ -290,7 +290,7 @@ theorem exists_subset_of_fourier_arcs
             if ‖cannonB E theta L j ω‖ = 0 then Ktail
             else -Real.log ‖cannonB E theta L j ω‖)) ≤ _
         rw [one_mul]
-        exact cannon_tail_pointwise E theta b L hthlb hthub Ktail hK0 ω)
+        exact cannon_tail_pointwise E theta q L hthlb hthub Ktail hK0 ω)
       (hMR := by linarith)
   -- Decode `∃ a, S a = t` into the subset and the reciprocal identity.
   refine ⟨(Finset.univ.filter (fun j : {e // e ∈ E} => a j)).image Subtype.val, ?_, ?_⟩
@@ -298,7 +298,7 @@ theorem exists_subset_of_fourier_arcs
     rw [Finset.mem_image] at he
     obtain ⟨j, _, rfl⟩ := he
     exact j.2
-  · exact decode_subset_sum E b L hb hL hbL heL he0 hbound a ha
+  · exact decode_subset_sum E q L hL heL he0 hbound a ha
 
 /-- **Representation from a hitting subset.**  Bundles a subset `S ⊆ E` with the
 reciprocal identity into an Egyptian semiprime representation avoiding `T`. -/

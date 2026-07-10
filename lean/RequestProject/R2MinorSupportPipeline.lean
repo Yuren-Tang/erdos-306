@@ -20,9 +20,9 @@ minor frequency set supplied by `MainArcFields`. -/
 structure R2MinorClassificationData
     {T : Finset ℕ} {b : ℕ}
     (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ) where
-  Sblock : MainArcFields D.E W.theta b D.L N → Finset ℕ
-  Sextra : MainArcFields D.E W.theta b D.L N → Finset ℕ
-  hcover : ∀ MA : MainArcFields D.E W.theta b D.L N,
+  Sblock : MainArcFields D.E W.theta (D.L / b) D.L N → Finset ℕ
+  Sextra : MainArcFields D.E W.theta (D.L / b) D.L N → Finset ℕ
+  hcover : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
     MA.Sm ⊆ Sblock MA ∪ Sextra MA
 
 /-- Analytic budget lanes for a fixed classification. -/
@@ -31,12 +31,12 @@ structure R2MinorBudgetLanes
     (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
     (C : R2MinorClassificationData D W N)
     (Bblock Bextra : ℝ) where
-  hblock : ∀ MA : MainArcFields D.E W.theta b D.L N,
+  hblock : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
     ∑ h ∈ blockMinorPart MA.Sm (C.Sblock MA),
-      fourierNormWeight D.E W.theta b D.L h ≤ Bblock
-  hextra : ∀ MA : MainArcFields D.E W.theta b D.L N,
+      fourierNormWeight D.E W.theta (D.L / b) D.L h ≤ Bblock
+  hextra : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
     ∑ h ∈ extraMinorPart MA.Sm (C.Sblock MA) (C.Sextra MA),
-      fourierNormWeight D.E W.theta b D.L h ≤ Bextra
+      fourierNormWeight D.E W.theta (D.L / b) D.L h ≤ Bextra
 
 /-- Assemble the support-budget record from an independent classification lane
 and analytic budget lanes. -/

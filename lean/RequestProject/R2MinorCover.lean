@@ -32,31 +32,31 @@ structure R2MinorCoverData (Sm : Finset ℕ) where
   hcover : Sm ⊆ Sblock ∪ Sextra
 
 /-- The norm of the Fourier summand at one frequency. -/
-def fourierNormWeight (E : Finset ℕ) (theta : ℕ → ℝ) (b L : ℕ) (h : ℕ) : ℝ :=
-  ‖fourierTerm E theta b L h‖
+def fourierNormWeight (E : Finset ℕ) (theta : ℕ → ℝ) (q L : ℕ) (h : ℕ) : ℝ :=
+  ‖fourierTerm E theta q L h‖
 
 /-- **Master per-frequency estimate.**  The Fourier-term norm at any frequency
 is dominated by the product, over any chosen subset `S` of the edges, of the
 Bernoulli factor norms: the target phase has modulus one, every factor is a
 contraction, and factors outside `S` are discarded. -/
 lemma fourierNormWeight_le_prod_norm_of_subset
-    (E : Finset ℕ) (theta : ℕ → ℝ) (b L h : ℕ) (S : Finset ℕ)
+    (E : Finset ℕ) (theta : ℕ → ℝ) (q L h : ℕ) (S : Finset ℕ)
     (hSE : S ⊆ E)
     (hθ0 : ∀ e ∈ E, 0 ≤ theta e)
     (hθ1 : ∀ e ∈ E, theta e ≤ 1)
     (heL : ∀ e ∈ E, e ∣ L)
     (hepos : ∀ e ∈ E, 0 < e)
     (hL : 0 < L) :
-    fourierNormWeight E theta b L h
+    fourierNormWeight E theta q L h
       ≤ ∏ e ∈ S, ‖bernoulliCharFun (theta e) ((h : ℝ) / (e : ℝ))‖ := by
   unfold fourierNormWeight fourierTerm
   rw [norm_mul]
   have hphase :
       ‖Complex.exp
-        (-(2 * Real.pi * Complex.I * (h : ℂ) * ((L / b : ℕ) : ℂ) / (L : ℂ)))‖ = 1 := by
+        (-(2 * Real.pi * Complex.I * (h : ℂ) * (q : ℂ) / (L : ℂ)))‖ = 1 := by
     rw [Complex.norm_exp]
     have hre :
-        (-(2 * Real.pi * Complex.I * (h : ℂ) * ((L / b : ℕ) : ℂ) / (L : ℂ))).re = 0 := by
+        (-(2 * Real.pi * Complex.I * (h : ℂ) * (q : ℂ) / (L : ℂ))).re = 0 := by
       simp [Complex.div_re, Complex.mul_re, Complex.mul_im, Complex.I_re, Complex.I_im]
     rw [hre, Real.exp_zero]
   rw [hphase, mul_one]
@@ -76,20 +76,20 @@ norm estimates and an additive budget.  This is the form consumed by the
 cannon-based existence step (`exists_subset_of_fourier_arcs`), which needs the
 sum of norms rather than the norm of the sum. -/
 theorem hminorSum_of_block_extra_norm_bounds
-    (E : Finset ℕ) (theta : ℕ → ℝ) (b L : ℕ)
+    (E : Finset ℕ) (theta : ℕ → ℝ) (q L : ℕ)
     (Sm : Finset ℕ) (C : R2MinorCoverData Sm)
     (Bblock Bextra Bm : ℝ)
     (hblock :
       ∑ h ∈ blockMinorPart Sm C.Sblock,
-        fourierNormWeight E theta b L h ≤ Bblock)
+        fourierNormWeight E theta q L h ≤ Bblock)
     (hextra :
       ∑ h ∈ extraMinorPart Sm C.Sblock C.Sextra,
-        fourierNormWeight E theta b L h ≤ Bextra)
+        fourierNormWeight E theta q L h ≤ Bextra)
     (hbudget : Bblock + Bextra ≤ Bm) :
-    (∑ h ∈ Sm, ‖fourierTerm E theta b L h‖) ≤ Bm :=
+    (∑ h ∈ Sm, ‖fourierTerm E theta q L h‖) ≤ Bm :=
   le_trans
     (sum_le_of_minor_split_bounds Sm C.Sblock C.Sextra
-      (fourierNormWeight E theta b L) C.hcover hblock hextra)
+      (fourierNormWeight E theta q L) C.hcover hblock hextra)
     hbudget
 
 end CircleMethod

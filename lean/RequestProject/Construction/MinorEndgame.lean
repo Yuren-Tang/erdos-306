@@ -39,9 +39,9 @@ structure R2MinorEndgameMultiGadgetLanes
     (Bblock Bextra η Ctail ρ : ℝ)
     (Cls : R2MinorClassificationData D W N) where
   component : R2ComponentScaleCoreSupply D N ρ
-  block : ∀ MA : MainArcFields D.E W.theta b D.L N,
+  block : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
     R2BlockFiberTailData D W N MA (Cls.Sblock MA) Bblock η Ctail
-  extra : ∀ MA : MainArcFields D.E W.theta b D.L N,
+  extra : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
     R2MultiGadgetReservoir D W N MA (Cls.Sblock MA) (Cls.Sextra MA) Bextra
 
 /-- G7 plus block lanes and multi-gadget extra lanes produce the final minor
@@ -131,22 +131,22 @@ structure R2MinorEndgameFrequencyLanes
   hsqfree : Squarefree b
   hcoverR : CoversPrimeDivisors D.R b
   hcopBlock : BlockSupportCoprimeWith D.BS b
-  block : ∀ MA : MainArcFields D.E W.theta b D.L N,
+  block : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
     R2BlockFiberTailData D W N MA (Cls.Sblock MA) Bblock η Ctail
-  label : ∀ MA : MainArcFields D.E W.theta b D.L N,
+  label : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
     R2ExtraIntFrequencyLabelData D W N MA (Cls.Sblock MA) (Cls.Sextra MA)
-  Gset : (MainArcFields D.E W.theta b D.L N) → ℕ → Finset ℕ
-  hSmem : ∀ MA : MainArcFields D.E W.theta b D.L N,
+  Gset : (MainArcFields D.E W.theta (D.L / b) D.L N) → ℕ → Finset ℕ
+  hSmem : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
     ∀ h ∈ extraMinorPart MA.Sm (Cls.Sblock MA) (Cls.Sextra MA),
       Gset MA h ⊆ D.S
-  hm_small : ∀ MA : MainArcFields D.E W.theta b D.L N,
+  hm_small : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
     ∀ h ∈ extraMinorPart MA.Sm (Cls.Sblock MA) (Cls.Sextra MA),
       ∀ s ∈ Gset MA h,
         2 * |(label MA).mfun h| < (s : ℤ)
-  hcard : ∀ MA : MainArcFields D.E W.theta b D.L N,
+  hcard : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
       ((extraMinorPart MA.Sm (Cls.Sblock MA) (Cls.Sextra MA)).card : ℝ) *
           Cextra ≤ Bextra
-  hpt : ∀ MA : MainArcFields D.E W.theta b D.L N,
+  hpt : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
     ∀ h ∈ extraMinorPart MA.Sm (Cls.Sblock MA) (Cls.Sextra MA),
       (Real.sqrt (1 - (8 / 9) /
         (((r2ExtraSiblingChoice_of_intLabelData D W N MA (Cls.Sblock MA)

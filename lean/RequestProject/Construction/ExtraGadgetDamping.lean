@@ -108,7 +108,7 @@ for frequency `h`, while `damp h` is the per-frequency damping base. -/
 structure R2ExtraMinorMultiGadgetBoundData
     {T : Finset ℕ} {b : ℕ}
     (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
-    (MA : MainArcFields D.E W.theta b D.L N)
+    (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ)
     (Bextra : ℝ) where
   rfun : ℕ → ℕ
@@ -124,7 +124,7 @@ structure R2ExtraMinorMultiGadgetBoundData
   hm_small : ∀ h ∈ extraMinorPart MA.Sm Sblock Sextra, ∀ s ∈ Gset h,
     2 * |mfun h| < (s : ℤ)
   hfactorMulti : ∀ h ∈ extraMinorPart MA.Sm Sblock Sextra,
-    fourierNormWeight D.E W.theta b D.L h ≤ damp h ^ (Gset h).card
+    fourierNormWeight D.E W.theta (D.L / b) D.L h ≤ damp h ^ (Gset h).card
   hbudget :
     ∑ h ∈ extraMinorPart MA.Sm Sblock Sextra, damp h ^ (Gset h).card ≤ Bextra
 
@@ -132,11 +132,11 @@ structure R2ExtraMinorMultiGadgetBoundData
 theorem r2_extra_minor_budget_of_multiGadgetBoundData
     {T : Finset ℕ} {b : ℕ}
     (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
-    (MA : MainArcFields D.E W.theta b D.L N)
+    (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ) (Bextra : ℝ)
     (X : R2ExtraMinorMultiGadgetBoundData D W N MA Sblock Sextra Bextra) :
     ∑ h ∈ extraMinorPart MA.Sm Sblock Sextra,
-      fourierNormWeight D.E W.theta b D.L h ≤ Bextra := by
+      fourierNormWeight D.E W.theta (D.L / b) D.L h ≤ Bextra := by
   exact le_trans (Finset.sum_le_sum X.hfactorMulti) X.hbudget
 
 end CircleMethod

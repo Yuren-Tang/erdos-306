@@ -58,8 +58,9 @@ structure ArcConstruction (T : Finset ℕ) (b : ℕ) where
   hmaps : ∀ h ∈ SM, lbl h ∈ Finset.Icc (-N) N
   hinj : ∀ h₁ ∈ SM, ∀ h₂ ∈ SM, lbl h₁ = lbl h₂ → h₁ = h₂
   hsurj : ∀ m ∈ Finset.Icc (-N) N, ∃ h ∈ SM, lbl h = m
-  hterm : ∀ h ∈ SM, fourierTerm E theta b L h = term_label E theta b (lbl h)
-  hminor : (∑ h ∈ Sm, ‖fourierTerm E theta b L h‖) ≤ Bm
+  hterm : ∀ h ∈ SM,
+    fourierTerm E theta (L / b) L h = term_label E theta (L / b) L (lbl h)
+  hminor : (∑ h ∈ Sm, ‖fourierTerm E theta (L / b) L h‖) ≤ Bm
   hbeat : Bm < 0.8 * (Real.exp (-(Real.pi^2/2)) / 2) / Real.sqrt (sigmaE2 E theta)
 
 

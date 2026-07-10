@@ -115,50 +115,46 @@ lemma bernoulliCharFun_cong (θ : ℝ) (h : ℕ) (m : ℤ) (e : ℕ) (he : 0 < e
   rw [hsplit, bernoulliCharFun_int_add]
 
 /-- **`hterm` core (CRT main-arc term identity).**  If the frequency `h` is congruent
-to the integer label `m` modulo every edge value and modulo `b`, then the Fourier term
-at `h` equals the diagonal label term at `m`.  (The construction's main arc consists
-of exactly such diagonal frequencies.) -/
+to the integer label `m` modulo every edge value and modulo the period `L`, then the
+Fourier term at `h` equals the diagonal label term at `m`.  The target `q` is an
+integer, so its phase has the same period `L`. -/
 lemma fourierTerm_eq_term_label_of_cong
-    (E : Finset ℕ) (θ : ℕ → ℝ) (b L : ℕ) (h : ℕ) (m : ℤ)
-    (hb : 0 < b) (hbL : b ∣ L) (hL : 0 < L)
+    (E : Finset ℕ) (θ : ℕ → ℝ) (q L : ℕ) (h : ℕ) (m : ℤ)
+    (hL : 0 < L)
     (he0 : ∀ e ∈ E, 0 < e) (heL : ∀ e ∈ E, e ∣ L)
-    (hcong : ∀ e ∈ E, (e : ℤ) ∣ ((h : ℤ) - m)) (hcongb : (b : ℤ) ∣ ((h : ℤ) - m)) :
-    fourierTerm E θ b L h = term_label E θ b m := by
+    (hcong : ∀ e ∈ E, (e : ℤ) ∣ ((h : ℤ) - m)) (hmodL : (L : ℤ) ∣ ((h : ℤ) - m)) :
+    fourierTerm E θ q L h = term_label E θ q L m := by
   unfold fourierTerm term_label
   congr 1
   · refine Finset.prod_congr rfl (fun e he => ?_)
     rw [charfactor_eq (θ e) h e L (he0 e he) (heL e he) hL]
     exact bernoulliCharFun_cong (θ e) h m e (he0 e he) (hcong e he)
-  · -- phase equality (b-periodicity): both equal exp(-2πi h/b) = exp(-2πi m/b)
-    obtain ⟨kk, hkk⟩ := hcongb  -- (h:ℤ) - m = b * kk
-    have hbC : (b : ℂ) ≠ 0 := by exact_mod_cast hb.ne'
+  · -- phase equality: `(h-m)q/L` is integral.
+    obtain ⟨kk, hkk⟩ := hmodL
     have hLC : (L : ℂ) ≠ 0 := by exact_mod_cast hL.ne'
-    have hLb : ((L / b : ℕ) : ℂ) = (L : ℂ) / (b : ℂ) := by
-      rw [Nat.cast_div hbL hbC]
-    have hc : (h : ℂ) - (m : ℂ) = (b : ℂ) * (kk : ℂ) := by exact_mod_cast hkk
-    have hm_eq : (m : ℂ) = (h : ℂ) - (b : ℂ) * (kk : ℂ) := by linear_combination -hc
-    have hphase : -(2 * Real.pi * Complex.I * (h : ℂ) * ((L / b : ℕ) : ℂ) / (L : ℂ))
-        = 2 * Real.pi * (-((m : ℝ) / (b : ℝ))) * Complex.I
-          + ((-kk : ℤ) : ℂ) * (2 * Real.pi * Complex.I) := by
-      rw [hLb]
+    have hc : (h : ℂ) - (m : ℂ) = (L : ℂ) * (kk : ℂ) := by exact_mod_cast hkk
+    have hm_eq : (m : ℂ) = (h : ℂ) - (L : ℂ) * (kk : ℂ) := by linear_combination -hc
+    have hphase : -(2 * Real.pi * Complex.I * (h : ℂ) * (q : ℂ) / (L : ℂ))
+        = 2 * Real.pi * (-((m : ℝ) * (q : ℝ) / (L : ℝ))) * Complex.I
+          + ((-(q : ℤ) * kk : ℤ) : ℂ) * (2 * Real.pi * Complex.I) := by
       push_cast
       rw [hm_eq]
       field_simp
       ring
     rw [hphase, Complex.exp_add, Complex.exp_int_mul_two_pi_mul_I, mul_one]
 
-/-- **`hterm` from a single mod-`L` congruence.**  Since every edge value and `b`
-divide the period `L`, it suffices that `h ≡ m (mod L)`: then `fourierTerm` at `h`
-equals the label term at `m`.  (The main-arc frequencies are `h ≡ m (mod L)`.) -/
+/-- **`hterm` from a single mod-`L` congruence.**  Since every edge value divides
+the period `L`, it suffices that `h ≡ m (mod L)`: then `fourierTerm` at `h` equals
+the label term at `m`. -/
 lemma fourierTerm_eq_term_label_of_modL
-    (E : Finset ℕ) (θ : ℕ → ℝ) (b L : ℕ) (h : ℕ) (m : ℤ)
-    (hb : 0 < b) (hbL : b ∣ L) (hL : 0 < L)
+    (E : Finset ℕ) (θ : ℕ → ℝ) (q L : ℕ) (h : ℕ) (m : ℤ)
+    (hL : 0 < L)
     (he0 : ∀ e ∈ E, 0 < e) (heL : ∀ e ∈ E, e ∣ L)
     (hmodL : (L : ℤ) ∣ ((h : ℤ) - m)) :
-    fourierTerm E θ b L h = term_label E θ b m :=
-  fourierTerm_eq_term_label_of_cong E θ b L h m hb hbL hL he0 heL
+    fourierTerm E θ q L h = term_label E θ q L m :=
+  fourierTerm_eq_term_label_of_cong E θ q L h m hL he0 heL
     (fun e he => dvd_trans (Int.natCast_dvd_natCast.mpr (heL e he)) hmodL)
-    (dvd_trans (Int.natCast_dvd_natCast.mpr hbL) hmodL)
+    hmodL
 
 /-- **Main-arc frequency/label bijection.**  For a period `L ≥ 2N+1`, the labels
 `[-N, N]` correspond bijectively to frequencies `(m mod L) ∈ range L`, with each

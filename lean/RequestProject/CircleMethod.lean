@@ -22,11 +22,11 @@ namespace CircleMethod
 
 /-! ## Fourier identity — the indicator core
 
-Under the no-wraparound hypotheses (`b ≥ 2` and the total mass
-`∑_{e∈E} L/e < L`, i.e. `∑ 1/e < 1`), the divisibility
-`L ∣ (∑_{e∈S} L/e − L/b)` is equivalent to the exact reciprocal identity
-`∑_{e∈S} 1/e = 1/b`.  This is the only piece of the former circle-method
-collector still used downstream (by `CannonBridge.decode_subset_sum`). -/
+Under the no-wraparound hypothesis `∑_{e∈E} L/e < L`, a target integer
+`q < L` is detected exactly: the divisibility
+`L ∣ (∑_{e∈S} L/e − q)` is equivalent to the reciprocal identity
+`∑_{e∈S} 1/e = q/L`.  The eventual Egyptian-fraction target is the explicit
+specialization `q = L / b`, not part of this Fourier mechanism itself. -/
 
 /-- For `e ∣ L` and `0 < e`, the reciprocal `1/e` equals `(L/e)/L` in `ℚ`. -/
 lemma one_div_eq_div_of_dvd (e L : ℕ) (he : 0 < e) (hL : 0 < L) (hdvd : e ∣ L) :
@@ -37,30 +37,38 @@ lemma one_div_eq_div_of_dvd (e L : ℕ) (he : 0 < e) (hL : 0 < L) (hdvd : e ∣ 
   rw [mul_comm]
   exact_mod_cast hmul.symm
 
-/-- **C0 indicator equivalence (no-wraparound).** -/
-lemma fourier_indicator (E : Finset ℕ) (b L : ℕ) (hb : 2 ≤ b) (hL : 0 < L)
-    (hbL : b ∣ L) (heL : ∀ e ∈ E, e ∣ L) (he0 : ∀ e ∈ E, 0 < e)
+/-- The unit-fraction target as the integerized Fourier target `q = L / b`.
+This is the sole arithmetic specialization needed when the general circle
+method is applied to Egyptian fractions. -/
+lemma one_div_eq_target_div_of_dvd_real (b L : ℕ) (hb : 0 < b) (hL : 0 < L)
+    (hbL : b ∣ L) :
+    (1 : ℝ) / (b : ℝ) = ((L / b : ℕ) : ℝ) / (L : ℝ) := by
+  exact_mod_cast one_div_eq_div_of_dvd b L hb hL hbL
+
+/-- **No-wraparound Fourier indicator.**  A subset of an `L`-divisor set has
+reciprocal mass `q / L` precisely when its integerized mass is congruent to
+`q` modulo `L`; the strict total-mass bound excludes all nonzero wraps. -/
+lemma fourier_indicator (E q L : ℕ) (hq : q < L) (hL : 0 < L)
+    (heL : ∀ e ∈ E, e ∣ L) (he0 : ∀ e ∈ E, 0 < e)
     (hbound : (∑ e ∈ E, (L / e : ℕ)) < L)
     (S : Finset ℕ) (hS : S ⊆ E) :
-    ((L : ℤ) ∣ ((∑ e ∈ S, ((L / e : ℕ) : ℤ)) - ((L / b : ℕ) : ℤ)))
-      ↔ (∑ e ∈ S, (1 : ℚ) / (e : ℚ)) = (1 : ℚ) / (b : ℚ) := by
+    ((L : ℤ) ∣ ((∑ e ∈ S, ((L / e : ℕ) : ℤ)) - (q : ℤ)))
+      ↔ (∑ e ∈ S, (1 : ℚ) / (e : ℚ)) = (q : ℚ) / (L : ℚ) := by
   set mS := ∑ e ∈ S, (L / e : ℕ) with hmSdef
-  set mb := (L / b : ℕ) with hmbdef
   have hsumcast : (∑ e ∈ S, ((L / e : ℕ) : ℤ)) = (mS : ℤ) := by
     rw [hmSdef, Nat.cast_sum]
   rw [hsumcast]
   have hmS_lt : mS < L := lt_of_le_of_lt (Finset.sum_le_sum_of_subset hS) hbound
-  have hmb_lt : mb < L := Nat.div_lt_self hL (by omega)
-  -- divisibility ↔ mS = mb
-  have hdiv_iff : ((L : ℤ) ∣ ((mS : ℤ) - (mb : ℤ))) ↔ mS = mb := by
+  -- divisibility ↔ equality of two representatives in `[0,L)`
+  have hdiv_iff : ((L : ℤ) ∣ ((mS : ℤ) - (q : ℤ))) ↔ mS = q := by
     constructor
     · intro h
       obtain ⟨k, hk⟩ := h
       have hkabs : |(mS : ℤ) - (mb : ℤ)| < (L : ℤ) := by
         have h1 : (mS : ℤ) < L := by exact_mod_cast hmS_lt
-        have h2 : (mb : ℤ) < L := by exact_mod_cast hmb_lt
+        have h2 : (q : ℤ) < L := by exact_mod_cast hq
         have h3 : (0 : ℤ) ≤ mS := Int.natCast_nonneg _
-        have h4 : (0 : ℤ) ≤ mb := Int.natCast_nonneg _
+        have h4 : (0 : ℤ) ≤ q := Int.natCast_nonneg _
         rw [abs_lt]; omega
       rw [hk, abs_mul] at hkabs
       have hLpos : (0 : ℤ) < L := by exact_mod_cast hL
@@ -81,10 +89,8 @@ lemma fourier_indicator (E : Finset ℕ) (b L : ℕ) (hb : 2 ≤ b) (hL : 0 < L)
     rw [hmSdef]; push_cast [Finset.sum_div]
     exact Finset.sum_congr rfl (fun e he =>
       one_div_eq_div_of_dvd e L (he0 e (hS he)) hL (heL e (hS he)))
-  have hqb : (1 : ℚ) / (b : ℚ) = (mb : ℚ) / (L : ℚ) :=
-    one_div_eq_div_of_dvd b L (by omega) hL hbL
   have hLne : (L : ℚ) ≠ 0 := by exact_mod_cast hL.ne'
-  rw [hqS, hqb, div_eq_div_iff hLne hLne]
+  rw [hqS, div_eq_div_iff hLne hLne]
   constructor
   · intro h; rw [h]
   · intro h; exact_mod_cast mul_right_cancel₀ hLne h

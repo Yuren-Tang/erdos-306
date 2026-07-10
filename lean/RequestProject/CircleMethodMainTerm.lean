@@ -12,8 +12,9 @@ namespace CircleMethod
 Builds the positive real main term of the circle method from the per-edge Taylor
 expansion `bernoulli_log_taylor` (L1) and the diagonal Gaussian lower bound
 `main_arc_gaussian_lower` (C3).  Everything here is self-contained over an edge
-set `E : Finset ℕ` (edge value `val(e) = e`), weights `θ`, target `b`, with the
-mass identity `∑_e θ_e/e = 1/b`; no `BlockSystem` is needed.  The assembly into
+set `E : Finset ℕ` (edge value `val(e) = e`), weights `θ`, and a rational
+Fourier target `q/L`, with mass identity `∑_e θ_e/e = q/L`; no `BlockSystem`
+is needed.  The assembly into
 the frequency sum (R3) is in `CircleMethod` (`exists_positive_weighted_construction`).
 -/
 
@@ -84,19 +85,19 @@ lemma bernoulliCharFun_ne_zero_main (θ t : ℝ) (hlb : 1/3 ≤ θ) (hub : θ �
   exact lt_irrefl 0 hpos
 
 /-- **L2-full** (note 44).  The summed log of the Bernoulli factors at the
-diagonal label `m` expands to `2πi(m/b) − 2π²m²σ_E²` up to a cubic remainder,
-the linear coefficient being pinned to `1/b` by the **mass identity**. -/
-lemma sum_logphi_bound (E : Finset ℕ) (θ : ℕ → ℝ) (b : ℕ) (m : ℤ)
+diagonal label `m` expands to `2πi(mq/L) − 2π²m²σ_E²` up to a cubic remainder,
+the linear coefficient being pinned to `q/L` by the **mass identity**. -/
+lemma sum_logphi_bound (E : Finset ℕ) (θ : ℕ → ℝ) (q L : ℕ) (m : ℤ)
     (hlb : ∀ e ∈ E, 1/3 ≤ θ e) (hub : ∀ e ∈ E, θ e ≤ 2/3)
-    (hmass : (∑ e ∈ E, θ e / (e : ℝ)) = 1 / (b : ℝ))
+    (hmass : (∑ e ∈ E, θ e / (e : ℝ)) = (q : ℝ) / (L : ℝ))
     (ht : ∀ e ∈ E, |(m : ℝ) / (e : ℝ)| ≤ 1/10) :
     ‖(∑ e ∈ E, Complex.log (bernoulliCharFun (θ e) ((m:ℝ)/(e:ℝ))))
-        - (2*Real.pi*((m:ℝ)/(b:ℝ))*Complex.I
+        - (2*Real.pi*((m:ℝ)*(q:ℝ)/(L:ℝ))*Complex.I
             - 2*Real.pi^2*(m:ℝ)^2*((sigmaE2 E θ : ℝ) : ℂ))‖
       ≤ ∑ e ∈ E, 100000 * |(m:ℝ)/(e:ℝ)|^3 := by
   have hstep := sum_bernoulli_log_taylor E θ (fun e => (m:ℝ)/(e:ℝ)) hlb hub ht
   -- mass identity over ℂ
-  have hmassC : (∑ e ∈ E, (θ e : ℂ) / (e : ℂ)) = 1 / (b : ℂ) := by
+  have hmassC : (∑ e ∈ E, (θ e : ℂ) / (e : ℂ)) = (q : ℂ) / (L : ℂ) := by
     have hcast : (∑ e ∈ E, (θ e : ℂ) / (e : ℂ))
         = ((∑ e ∈ E, θ e / (e:ℝ) : ℝ) : ℂ) := by push_cast; rfl
     rw [hcast, hmass]; push_cast; ring
@@ -109,11 +110,11 @@ lemma sum_logphi_bound (E : Finset ℕ) (θ : ℕ → ℝ) (b : ℕ) (m : ℤ)
   -- the key sum identity: ∑ (linImag − quad) = newTGT
   have key : (∑ e ∈ E, (2*(Real.pi:ℂ)*(θ e:ℂ)*((((m:ℝ)/(e:ℝ)):ℝ):ℂ)*Complex.I
                 - 2*(Real.pi:ℂ)^2*(θ e:ℂ)*(1-(θ e:ℂ))*((((m:ℝ)/(e:ℝ)):ℝ):ℂ)^2))
-            = 2*Real.pi*((m:ℝ)/(b:ℝ))*Complex.I
+            = 2*Real.pi*((m:ℝ)*(q:ℝ)/(L:ℝ))*Complex.I
                 - 2*Real.pi^2*(m:ℝ)^2*((sigmaE2 E θ : ℝ) : ℂ) := by
     rw [Finset.sum_sub_distrib]
     congr 1
-    · -- linear part: ∑ 2π θe (m/e) I = 2π (m/b) I
+    · -- linear part: ∑ 2π θe (m/e) I = 2π (mq/L) I
       have hlin : (∑ e ∈ E, 2*(Real.pi:ℂ)*(θ e:ℂ)*((((m:ℝ)/(e:ℝ)):ℝ):ℂ)*Complex.I)
           = 2*(Real.pi:ℂ)*Complex.I*(m:ℂ)*(∑ e ∈ E, (θ e : ℂ)/(e : ℂ)) := by
         rw [Finset.mul_sum]
@@ -128,23 +129,23 @@ lemma sum_logphi_bound (E : Finset ℕ) (θ : ℕ → ℝ) (b : ℕ) (m : ℤ)
   exact hstep
 
 /-- The diagonal **main-arc term** at label `m`: the Bernoulli product at `t_e =
-m/e` times the target phase `e(−m/b)`. -/
-def term_label (E : Finset ℕ) (θ : ℕ → ℝ) (b : ℕ) (m : ℤ) : ℂ :=
+`m/e` times the target phase `e(-mq/L)`. -/
+def term_label (E : Finset ℕ) (θ : ℕ → ℝ) (q L : ℕ) (m : ℤ) : ℂ :=
   (∏ e ∈ E, bernoulliCharFun (θ e) ((m:ℝ)/(e:ℝ)))
-    * Complex.exp (2 * Real.pi * (-((m:ℝ)/(b:ℝ))) * Complex.I)
+    * Complex.exp (2 * Real.pi * (-((m:ℝ)*(q:ℝ)/(L:ℝ))) * Complex.I)
 
 /-- **L3** (note 44).  The main-arc term equals the real Gaussian
 `exp(−2π²m²σ_E²)` times `exp(δ)`, where `δ` is the cubic Taylor remainder. -/
-lemma term_label_eq (E : Finset ℕ) (θ : ℕ → ℝ) (b : ℕ) (m : ℤ)
+lemma term_label_eq (E : Finset ℕ) (θ : ℕ → ℝ) (q L : ℕ) (m : ℤ)
     (hlb : ∀ e ∈ E, 1/3 ≤ θ e) (hub : ∀ e ∈ E, θ e ≤ 2/3)
     (ht : ∀ e ∈ E, |(m : ℝ) / (e : ℝ)| ≤ 1/10) :
-    term_label E θ b m
+    term_label E θ q L m
       = ((Real.exp (-(2*Real.pi^2*(m:ℝ)^2*(sigmaE2 E θ))) : ℝ) : ℂ)
           * Complex.exp ((∑ e ∈ E, Complex.log (bernoulliCharFun (θ e) ((m:ℝ)/(e:ℝ))))
-              - (2*Real.pi*((m:ℝ)/(b:ℝ))*Complex.I
+              - (2*Real.pi*((m:ℝ)*(q:ℝ)/(L:ℝ))*Complex.I
                   - 2*Real.pi^2*(m:ℝ)^2*((sigmaE2 E θ : ℝ) : ℂ))) := by
   set δ : ℂ := (∑ e ∈ E, Complex.log (bernoulliCharFun (θ e) ((m:ℝ)/(e:ℝ))))
-      - (2*Real.pi*((m:ℝ)/(b:ℝ))*Complex.I
+      - (2*Real.pi*((m:ℝ)*(q:ℝ)/(L:ℝ))*Complex.I
           - 2*Real.pi^2*(m:ℝ)^2*((sigmaE2 E θ : ℝ) : ℂ)) with hδ
   have hne : ∀ e ∈ E, bernoulliCharFun (θ e) ((m:ℝ)/(e:ℝ)) ≠ 0 :=
     fun e he => bernoulliCharFun_ne_zero_main (θ e) _ (hlb e he) (hub e he) (ht e he)
@@ -158,23 +159,23 @@ lemma term_label_eq (E : Finset ℕ) (θ : ℕ → ℝ) (b : ℕ) (m : ℤ)
 
 /-- **L3→Re** (per label).  When the cubic remainder is small (`≤ 1/10`), the
 real part of the main-arc term is at least `0.8` times the Gaussian. -/
-lemma term_label_re_lower (E : Finset ℕ) (θ : ℕ → ℝ) (b : ℕ) (m : ℤ)
+lemma term_label_re_lower (E : Finset ℕ) (θ : ℕ → ℝ) (q L : ℕ) (m : ℤ)
     (_he0 : ∀ e ∈ E, 0 < e)
     (hlb : ∀ e ∈ E, 1/3 ≤ θ e) (hub : ∀ e ∈ E, θ e ≤ 2/3)
-    (hmass : (∑ e ∈ E, θ e / (e : ℝ)) = 1 / (b : ℝ))
+    (hmass : (∑ e ∈ E, θ e / (e : ℝ)) = (q : ℝ) / (L : ℝ))
     (ht : ∀ e ∈ E, |(m : ℝ) / (e : ℝ)| ≤ 1/10)
     (hsmall : (∑ e ∈ E, 100000 * |(m:ℝ)/(e:ℝ)|^3) ≤ 1/10) :
-    0.8 * Real.exp (-(2*Real.pi^2*(m:ℝ)^2*(sigmaE2 E θ))) ≤ (term_label E θ b m).re := by
-  rw [term_label_eq E θ b m hlb hub ht]
+    0.8 * Real.exp (-(2*Real.pi^2*(m:ℝ)^2*(sigmaE2 E θ))) ≤ (term_label E θ q L m).re := by
+  rw [term_label_eq E θ q L m hlb hub ht]
   set G : ℝ := Real.exp (-(2*Real.pi^2*(m:ℝ)^2*(sigmaE2 E θ))) with hGdef
   have hGpos : 0 < G := Real.exp_pos _
   set δ : ℂ := (∑ e ∈ E, Complex.log (bernoulliCharFun (θ e) ((m:ℝ)/(e:ℝ))))
-      - (2*Real.pi*((m:ℝ)/(b:ℝ))*Complex.I
+      - (2*Real.pi*((m:ℝ)*(q:ℝ)/(L:ℝ))*Complex.I
           - 2*Real.pi^2*(m:ℝ)^2*((sigmaE2 E θ : ℝ) : ℂ)) with hδdef
   -- ‖δ‖ ≤ 1/10
   have hδnorm : ‖δ‖ ≤ 1/10 := by
     rw [hδdef]
-    exact le_trans (sum_logphi_bound E θ b m hlb hub hmass ht) hsmall
+    exact le_trans (sum_logphi_bound E θ q L m hlb hub hmass ht) hsmall
   -- ‖exp δ - 1‖ ≤ 2‖δ‖
   have hδle1 : ‖δ‖ ≤ 1 := by linarith [hδnorm]
   have hexpb : ‖Complex.exp δ - 1‖ ≤ 2 * ‖δ‖ := Complex.norm_exp_sub_one_le hδle1
@@ -194,15 +195,15 @@ lemma term_label_re_lower (E : Finset ℕ) (θ : ℕ → ℝ) (b : ℕ) (m : ℤ
 
 /-- **L4** (note 44).  The diagonal main sum over the label window
 `[-N, N]` has real part `≥ c₃/σ_E` with `c₃ = 0.8·e^{-π²/2}/2`. -/
-lemma main_re_lower (E : Finset ℕ) (θ : ℕ → ℝ) (b : ℕ) (N : ℤ)
+lemma main_re_lower (E : Finset ℕ) (θ : ℕ → ℝ) (q L : ℕ) (N : ℤ)
     (hne : E.Nonempty) (he0 : ∀ e ∈ E, 0 < e)
     (hlb : ∀ e ∈ E, 1/3 ≤ θ e) (hub : ∀ e ∈ E, θ e ≤ 2/3)
-    (hmass : (∑ e ∈ E, θ e / (e : ℝ)) = 1 / (b : ℝ))
+    (hmass : (∑ e ∈ E, θ e / (e : ℝ)) = (q : ℝ) / (L : ℝ))
     (hN : (1:ℝ) / Real.sqrt (sigmaE2 E θ) ≤ (N:ℝ))
     (ht : ∀ m ∈ Finset.Icc (-N) N, ∀ e ∈ E, |(m : ℝ) / (e : ℝ)| ≤ 1/10)
     (hsmall : ∀ m ∈ Finset.Icc (-N) N, (∑ e ∈ E, 100000 * |(m:ℝ)/(e:ℝ)|^3) ≤ 1/10) :
     0.8 * (Real.exp (-(Real.pi^2/2)) / 2) / Real.sqrt (sigmaE2 E θ)
-      ≤ (∑ m ∈ Finset.Icc (-N) N, term_label E θ b m).re := by
+      ≤ (∑ m ∈ Finset.Icc (-N) N, term_label E θ q L m).re := by
   set σ := Real.sqrt (sigmaE2 E θ) with hσdef
   have hσ2pos : 0 < sigmaE2 E θ := sigmaE2_pos E θ hne he0 hlb hub
   have hσpos : 0 < σ := Real.sqrt_pos.mpr hσ2pos
@@ -215,48 +216,48 @@ lemma main_re_lower (E : Finset ℕ) (θ : ℕ → ℝ) (b : ℕ) (N : ℤ)
         exact main_arc_gaussian_lower σ hσpos N hN
     _ = ∑ m ∈ Finset.Icc (-N) N, 0.8 * Real.exp (-(2*Real.pi^2*σ^2)*(m:ℝ)^2) := by
         rw [Finset.mul_sum]
-    _ ≤ ∑ m ∈ Finset.Icc (-N) N, (term_label E θ b m).re := by
+    _ ≤ ∑ m ∈ Finset.Icc (-N) N, (term_label E θ q L m).re := by
         refine Finset.sum_le_sum (fun m hm => ?_)
         have hgauss : Real.exp (-(2*Real.pi^2*σ^2)*(m:ℝ)^2)
             = Real.exp (-(2*Real.pi^2*(m:ℝ)^2*(sigmaE2 E θ))) := by
           congr 1; rw [hσsq]; ring
         rw [hgauss]
-        exact term_label_re_lower E θ b m he0 hlb hub hmass (ht m hm) (hsmall m hm)
+        exact term_label_re_lower E θ q L m he0 hlb hub hmass (ht m hm) (hsmall m hm)
 
 /-- The Fourier-identity summand at frequency `h` (matches `fourierTerm` in the
 cannon bridge `CannonBridge.cannonF_eq_fourierTerm`). -/
-def fourierTerm (E : Finset ℕ) (theta : ℕ → ℝ) (b L h : ℕ) : ℂ :=
+def fourierTerm (E : Finset ℕ) (theta : ℕ → ℝ) (q L h : ℕ) : ℂ :=
   (∏ e ∈ E, ((theta e : ℂ) *
       Complex.exp (2 * Real.pi * Complex.I * (h : ℂ) * ((L / e : ℕ) : ℂ) / (L : ℂ))
       + (1 - theta e)))
-    * Complex.exp (-(2 * Real.pi * Complex.I * (h : ℂ) * ((L / b : ℕ) : ℂ) / (L : ℂ)))
+    * Complex.exp (-(2 * Real.pi * Complex.I * (h : ℂ) * (q : ℂ) / (L : ℂ)))
 
 /-- **R3 main-arc reindex.**  Given a label map `lbl` that bijects the main-arc
 frequency set `SM` onto the label window `[-N, N]` and identifies the Fourier
 term with the diagonal label term (the CRT/periodicity facts the construction
 supplies), the real part of the main-arc Fourier sum is `≥ c₃/σ_E`. -/
-lemma main_sum_re_lower (E : Finset ℕ) (θ : ℕ → ℝ) (b L : ℕ) (N : ℤ) (SM : Finset ℕ)
+lemma main_sum_re_lower (E : Finset ℕ) (θ : ℕ → ℝ) (q L : ℕ) (N : ℤ) (SM : Finset ℕ)
     (lbl : ℕ → ℤ)
     (hne : E.Nonempty) (he0 : ∀ e ∈ E, 0 < e)
     (hlb : ∀ e ∈ E, 1/3 ≤ θ e) (hub : ∀ e ∈ E, θ e ≤ 2/3)
-    (hmass : (∑ e ∈ E, θ e / (e : ℝ)) = 1 / (b : ℝ))
+    (hmass : (∑ e ∈ E, θ e / (e : ℝ)) = (q : ℝ) / (L : ℝ))
     (hN : (1:ℝ) / Real.sqrt (sigmaE2 E θ) ≤ (N:ℝ))
     (htw : ∀ m ∈ Finset.Icc (-N) N, ∀ e ∈ E, |(m : ℝ) / (e : ℝ)| ≤ 1/10)
     (hsmall : ∀ m ∈ Finset.Icc (-N) N, (∑ e ∈ E, 100000 * |(m:ℝ)/(e:ℝ)|^3) ≤ 1/10)
     (hmaps : ∀ h ∈ SM, lbl h ∈ Finset.Icc (-N) N)
     (hinj : ∀ h₁ ∈ SM, ∀ h₂ ∈ SM, lbl h₁ = lbl h₂ → h₁ = h₂)
     (hsurj : ∀ m ∈ Finset.Icc (-N) N, ∃ h ∈ SM, lbl h = m)
-    (hterm : ∀ h ∈ SM, fourierTerm E θ b L h = term_label E θ b (lbl h)) :
+    (hterm : ∀ h ∈ SM, fourierTerm E θ q L h = term_label E θ q L (lbl h)) :
     0.8 * (Real.exp (-(Real.pi^2/2)) / 2) / Real.sqrt (sigmaE2 E θ)
-      ≤ (∑ h ∈ SM, fourierTerm E θ b L h).re := by
-  have hsum : (∑ h ∈ SM, fourierTerm E θ b L h)
-      = ∑ m ∈ Finset.Icc (-N) N, term_label E θ b m := by
+      ≤ (∑ h ∈ SM, fourierTerm E θ q L h).re := by
+  have hsum : (∑ h ∈ SM, fourierTerm E θ q L h)
+      = ∑ m ∈ Finset.Icc (-N) N, term_label E θ q L m := by
     rw [Finset.sum_congr rfl hterm]
     exact Finset.sum_bij (fun h _ => lbl h) hmaps hinj
       (fun m hm => by obtain ⟨h, hh, he⟩ := hsurj m hm; exact ⟨h, hh, he⟩)
       (fun h _ => rfl)
   rw [hsum]
-  exact main_re_lower E θ b N hne he0 hlb hub hmass hN htw hsmall
+  exact main_re_lower E θ q L N hne he0 hlb hub hmass hN htw hsmall
 
 end CircleMethod
 

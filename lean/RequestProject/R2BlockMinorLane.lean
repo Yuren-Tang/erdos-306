@@ -19,20 +19,20 @@ The key point is that the final `R2MinorSupportBudgetData` asks for a sum of
 
 /-- Pointwise C2/QE bridge at the constant used by the final minor arc. -/
 lemma fourierNormWeight_le_exp_QE
-    (E : Finset ℕ) (theta : ℕ → ℝ) (b L : ℕ)
+    (E : Finset ℕ) (theta : ℕ → ℝ) (q L : ℕ)
     (hθ_lb : ∀ e ∈ E, (1 / 3 : ℝ) ≤ theta e)
     (hθ_ub : ∀ e ∈ E, theta e ≤ 2 / 3)
     (heL : ∀ e ∈ E, e ∣ L) (he0 : ∀ e ∈ E, 0 < e) (hL : 0 < L)
     (h : ℕ) :
-    fourierNormWeight E theta b L h ≤ Real.exp (-(16 / 9 : ℝ) * QE E h) := by
+    fourierNormWeight E theta q L h ≤ Real.exp (-(16 / 9 : ℝ) * QE E h) := by
   unfold fourierNormWeight fourierTerm
   rw [norm_mul]
   have hphase :
       ‖Complex.exp
-        (-(2 * Real.pi * Complex.I * (h : ℂ) * ((L / b : ℕ) : ℂ) / (L : ℂ)))‖ = 1 := by
+        (-(2 * Real.pi * Complex.I * (h : ℂ) * (q : ℂ) / (L : ℂ)))‖ = 1 := by
     rw [Complex.norm_exp]
     have hre :
-        (-(2 * Real.pi * Complex.I * (h : ℂ) * ((L / b : ℕ) : ℂ) / (L : ℂ))).re = 0 := by
+        (-(2 * Real.pi * Complex.I * (h : ℂ) * (q : ℂ) / (L : ℂ))).re = 0 := by
       simp [Complex.div_re, Complex.mul_re, Complex.mul_im, Complex.I_re, Complex.I_im]
     rw [hre, Real.exp_zero]
   rw [hphase, mul_one]
@@ -57,20 +57,20 @@ lemma fourierNormWeight_le_exp_QE
 
 /-- Sum form of the pointwise bridge. -/
 lemma sum_fourierNormWeight_le_exp_QE
-    (E : Finset ℕ) (theta : ℕ → ℝ) (b L : ℕ) (S : Finset ℕ)
+    (E : Finset ℕ) (theta : ℕ → ℝ) (q L : ℕ) (S : Finset ℕ)
     (hθ_lb : ∀ e ∈ E, (1 / 3 : ℝ) ≤ theta e)
     (hθ_ub : ∀ e ∈ E, theta e ≤ 2 / 3)
     (heL : ∀ e ∈ E, e ∣ L) (he0 : ∀ e ∈ E, 0 < e) (hL : 0 < L) :
-    ∑ h ∈ S, fourierNormWeight E theta b L h
+    ∑ h ∈ S, fourierNormWeight E theta q L h
       ≤ ∑ h ∈ S, Real.exp (-(16 / 9 : ℝ) * QE E h) := by
   exact Finset.sum_le_sum (fun h _ =>
-    fourierNormWeight_le_exp_QE E theta b L hθ_lb hθ_ub heL he0 hL h)
+    fourierNormWeight_le_exp_QE E theta q L hθ_lb hθ_ub heL he0 hL h)
 
 /-- Block-minor budget from a `QE`-energy budget over the block part. -/
 theorem r2_block_minor_budget_from_exp_QE
     {T : Finset ℕ} {b : ℕ}
     (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
-    (MA : MainArcFields D.E W.theta b D.L N)
+    (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock : Finset ℕ) (Bblock : ℝ)
     (heL : ∀ e ∈ D.E, e ∣ D.L)
     (he0 : ∀ e ∈ D.E, 0 < e)
@@ -79,9 +79,9 @@ theorem r2_block_minor_budget_from_exp_QE
       ∑ h ∈ blockMinorPart MA.Sm Sblock,
         Real.exp (-(16 / 9 : ℝ) * QE D.E h) ≤ Bblock) :
     ∑ h ∈ blockMinorPart MA.Sm Sblock,
-      fourierNormWeight D.E W.theta b D.L h ≤ Bblock := by
+      fourierNormWeight D.E W.theta (D.L / b) D.L h ≤ Bblock := by
   exact le_trans
-    (sum_fourierNormWeight_le_exp_QE D.E W.theta b D.L
+    (sum_fourierNormWeight_le_exp_QE D.E W.theta (D.L / b) D.L
       (blockMinorPart MA.Sm Sblock) W.hlb W.hub heL he0 hL)
     hExp
 
@@ -93,7 +93,7 @@ work is exactly to provide `hQE`, `hnotmain`, and `hfiber` for the chosen
 theorem r2_block_minor_budget_from_fiber_tail
     {T : Finset ℕ} {b : ℕ}
     (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
-    (MA : MainArcFields D.E W.theta b D.L N)
+    (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock : Finset ℕ) (Bblock : ℝ)
     (C K : ℝ) (Qextra : ℕ → ℝ)
     (heL : ∀ e ∈ D.E, e ∣ D.L)
@@ -112,7 +112,7 @@ theorem r2_block_minor_budget_from_fiber_tail
       K * ∑' a : {a : GlobalAssignment D.BS // a ∉ mainArc D.BS C},
           Real.exp (-(16 / 9 : ℝ) * Qctrl D.BS a.1) ≤ Bblock) :
     ∑ h ∈ blockMinorPart MA.Sm Sblock,
-      fourierNormWeight D.E W.theta b D.L h ≤ Bblock := by
+      fourierNormWeight D.E W.theta (D.L / b) D.L h ≤ Bblock := by
   refine r2_block_minor_budget_from_exp_QE D W N MA Sblock Bblock heL he0 hL ?_
   exact le_trans
     (block_part_bound D.BS D.E (16 / 9) C K MA.Sm Sblock Qextra
@@ -131,7 +131,7 @@ theorem exists_r2_block_minor_budget_from_fiber_tail_g7
     ∃ (k0min : ℕ) (Ctail : ℝ), 0 < Ctail ∧
       ∀ {T : Finset ℕ} {b : ℕ}
       (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
-      (MA : MainArcFields D.E W.theta b D.L N)
+      (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
       (Sblock : Finset ℕ) (Bblock C K : ℝ) (Qextra : ℕ → ℝ),
       k0min ≤ D.BS.k0 → admissibleGlobalRange D.BS →
       1 ≤ C → 0 ≤ K →
@@ -148,7 +148,7 @@ theorem exists_r2_block_minor_budget_from_fiber_tail_g7
       K * ((η + Ctail * Real.exp (-C ^ 2 * (16 / 9) / 2)) / sigmaCtrl D.BS)
         ≤ Bblock →
       ∑ h ∈ blockMinorPart MA.Sm Sblock,
-        fourierNormWeight D.E W.theta b D.L h ≤ Bblock := by
+        fourierNormWeight D.E W.theta (D.L / b) D.L h ≤ Bblock := by
   obtain ⟨k0min, Ctail, hCtail, hgcp⟩ :=
     global_control_partition (16 / 9) (by norm_num) η hη
   refine ⟨k0min, Ctail, hCtail, ?_⟩

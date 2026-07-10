@@ -25,16 +25,18 @@ theorem egyptian_rep_ge3_R2 (T : Finset ℕ) (b : ℕ) (hb : 3 ≤ b) (hbsf : Sq
     HasEgyptianSemiprimeReprAvoiding T ((1 : ℚ) / (b : ℚ)) := by
   obtain ⟨c⟩ := exists_arcConstruction_final T b hb hbsf
   obtain ⟨S, hSE, hSsum⟩ :=
-    exists_subset_of_fourier_arcs c.E c.theta b c.L c.SM c.Sm c.Bm
+    exists_subset_of_fourier_arcs c.E c.theta (c.L / b) c.L c.SM c.Sm c.Bm
       (0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2) / Real.sqrt (sigmaE2 c.E c.theta))
-      (by omega) c.hL c.hbL c.heL c.he0 c.hbound
+      (Nat.div_lt_self c.hL (by omega)) c.hL c.heL c.he0 c.hbound
       (fun e he => by linarith [c.hlb e he])
       (fun e he => by linarith [c.hub e he])
       c.hpart c.hdisj
-      (main_sum_re_lower c.E c.theta b c.L c.N c.SM c.lbl c.hne c.he0 c.hlb c.hub
-        c.hmass c.hN c.htw c.hsmall c.hmaps c.hinj c.hsurj c.hterm)
+      (main_sum_re_lower c.E c.theta (c.L / b) c.L c.N c.SM c.lbl c.hne c.he0 c.hlb c.hub
+        (c.hmass.trans (one_div_eq_target_div_of_dvd_real b c.L (by omega) c.hL c.hbL))
+        c.hN c.htw c.hsmall c.hmaps c.hinj c.hsurj c.hterm)
       c.hminor c.hbeat
-  exact repr_of_subset T c.E b c.hsemi c.havoid S hSE hSsum
+  exact repr_of_subset T c.E b c.hsemi c.havoid S hSE
+    (hSsum.trans (one_div_eq_div_of_dvd b c.L (by omega) c.hL c.hbL).symm)
 
 /-- `egyptian_rep_eq2` (the `b = 2` reduction `1/2 = 1/3 + 1/6`) wired to the R2
 construction (its `1/3`, `1/6` sub-representations go through `egyptian_rep_ge3_R2`). -/

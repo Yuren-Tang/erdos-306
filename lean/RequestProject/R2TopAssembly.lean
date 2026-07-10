@@ -86,7 +86,7 @@ lemma exists_r2_data_of_numerics_set {T : Finset ℕ} {b : ℕ} (hb : 3 ≤ b)
 (so `hQE` is an equality and `Qextra ≥ 0`, making `hfiber` the `b`-to-1 fiber count). -/
 def r2_blockFiberTail {T : Finset ℕ} {b : ℕ}
     (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
-    (MA : MainArcFields D.E W.theta b D.L N)
+    (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock : Finset ℕ) (C η Ctail Bblock : ℝ) (hC : 1 ≤ C)
     (heL : ∀ e ∈ D.E, e ∣ D.L) (he0 : ∀ e ∈ D.E, 0 < e) (hL : 0 < D.L)
     (hLeq : D.L = b * ∏ p ∈ blockSupport D.BS, p)
@@ -172,7 +172,7 @@ lemma r2_extra_count_le {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
     (hN : 0 ≤ N)
     (hCN : C / sigmaCtrl D.BS ≤ (N : ℝ))
     (hLeq : D.L = b * ∏ p ∈ blockSupport D.BS, p)
-    (MA : MainArcFields D.E W.theta b D.L N) :
+    (MA : MainArcFields D.E W.theta (D.L / b) D.L N) :
     ((extraMinorPart MA.Sm ((mainArcClassificationData D W N C).Sblock MA)
         ((mainArcClassificationData D W N C).Sextra MA)).card : ℝ)
       ≤ (b : ℝ) * (2 * (N : ℝ) + 1) := by
@@ -535,7 +535,7 @@ each extra frequency. -/
 def r2FreqLabelLane {T : Finset ℕ} {b : ℕ}
     (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ) (C : ℝ)
     (hCN : C / sigmaCtrl D.BS ≤ (N : ℝ)) :
-    ∀ MA : MainArcFields D.E W.theta b D.L N,
+    ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
       R2ExtraIntFrequencyLabelData D W N MA
         ((mainArcClassificationData D W N C).Sblock MA)
         ((mainArcClassificationData D W N C).Sextra MA) :=
@@ -555,7 +555,7 @@ def r2_freqLane_block {T : Finset ℕ} {b : ℕ}
     (C η Ctail : ℝ) (hC : 1 ≤ C)
     (heL : ∀ e ∈ D.E, e ∣ D.L) (he0 : ∀ e ∈ D.E, 0 < e) (hL : 0 < D.L)
     (hLeq : D.L = b * ∏ p ∈ blockSupport D.BS, p) :
-    ∀ MA : MainArcFields D.E W.theta b D.L N,
+    ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
       R2BlockFiberTailData D W N MA
         ((mainArcClassificationData D W N C).Sblock MA)
         ((b : ℝ) * (η + Ctail * Real.exp (-C ^ 2 * (16 / 9) / 2)) / sigmaCtrl D.BS)
@@ -578,7 +578,7 @@ lemma r2_freqLane_extra_count {T : Finset ℕ} {b : ℕ}
     (C Dmp : ℝ) (hNnonneg : 0 ≤ N) (hDmpnn : 0 ≤ Dmp)
     (hCN : C / sigmaCtrl D.BS ≤ (N : ℝ))
     (hLeq : D.L = b * ∏ p ∈ blockSupport D.BS, p) :
-    ∀ MA : MainArcFields D.E W.theta b D.L N,
+    ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
       ((extraMinorPart MA.Sm ((mainArcClassificationData D W N C).Sblock MA)
           ((mainArcClassificationData D W N C).Sextra MA)).card : ℝ) * Dmp
         ≤ (b : ℝ) * (2 * (N : ℝ) + 1) * Dmp :=
@@ -600,7 +600,7 @@ lemma r2_freqLane_gadget_damping {T : Finset ℕ} {b : ℕ}
     (hCN : C / sigmaCtrl D.BS ≤ (N : ℝ))
     (hScard : D.S.card = G)
     (hG : (Real.sqrt (1 - (8 / 9) / (b : ℝ) ^ 2)) ^ G ≤ Dmp) :
-    ∀ MA : MainArcFields D.E W.theta b D.L N,
+    ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
       ∀ h ∈ extraMinorPart MA.Sm ((mainArcClassificationData D W N C).Sblock MA)
           ((mainArcClassificationData D W N C).Sextra MA),
         (Real.sqrt (1 - (8 / 9) /
@@ -625,7 +625,7 @@ lemma r2_freqLane_label_small_gap {T : Finset ℕ} {b : ℕ}
     (hCN : C / sigmaCtrl D.BS ≤ (N : ℝ))
     (hN2 : 2 * N < (2 : ℤ) ^ (2 * D.BS.k0))
     (hSge : ∀ s ∈ D.S, 2 ^ (2 * D.BS.k0) ≤ s) :
-    ∀ MA : MainArcFields D.E W.theta b D.L N,
+    ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
       ∀ h ∈ extraMinorPart MA.Sm ((mainArcClassificationData D W N C).Sblock MA)
           ((mainArcClassificationData D W N C).Sextra MA),
         ∀ s ∈ D.S, 2 * |(r2FreqLabelLane D W N C hCN MA).mfun h| < (s : ℤ) := by

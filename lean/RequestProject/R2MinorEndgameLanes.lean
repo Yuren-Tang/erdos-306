@@ -19,7 +19,7 @@ every extra-minor discharge strategy (`R2MinorEndgameMultiGadget`,
 structure R2BlockFiberTailData
     {T : Finset ℕ} {b : ℕ}
     (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
-    (MA : MainArcFields D.E W.theta b D.L N)
+    (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock : Finset ℕ) (Bblock η Ctail : ℝ) where
   C : ℝ
   K : ℝ

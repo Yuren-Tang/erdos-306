@@ -93,15 +93,15 @@ theorem exists_arcConstruction_of_component_numeric_minor_sets
       3 / (2 * (b : ℝ)) ≤ D.baseLoad + R2ConcreteData.recipLoad D.Q)
     (hloadUpper :
       D.baseLoad + R2ConcreteData.recipLoad D.Q < 3 / (b : ℝ))
-    (Sblock Sextra : MainArcFields D.E W.theta b D.L N → Finset ℕ)
-    (hcover : ∀ MA : MainArcFields D.E W.theta b D.L N,
+    (Sblock Sextra : MainArcFields D.E W.theta (D.L / b) D.L N → Finset ℕ)
+    (hcover : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
       MA.Sm ⊆ Sblock MA ∪ Sextra MA)
-    (hblock : ∀ MA : MainArcFields D.E W.theta b D.L N,
+    (hblock : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
       ∑ h ∈ blockMinorPart MA.Sm (Sblock MA),
-        fourierNormWeight D.E W.theta b D.L h ≤ Bblock)
-    (hextra : ∀ MA : MainArcFields D.E W.theta b D.L N,
+        fourierNormWeight D.E W.theta (D.L / b) D.L h ≤ Bblock)
+    (hextra : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
       ∑ h ∈ extraMinorPart MA.Sm (Sblock MA) (Sextra MA),
-        fourierNormWeight D.E W.theta b D.L h ≤ Bextra)
+        fourierNormWeight D.E W.theta (D.L / b) D.L h ≤ Bextra)
     (hextraLight : ∑ e ∈ D.E \ ctrlEdges D.BS, 1 / (e : ℝ) ^ 2
         ≤ 3 * (sigmaCtrl D.BS) ^ 2)
     (hminorCtrl :

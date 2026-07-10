@@ -49,13 +49,13 @@ theorem exists_arcConstruction_of_componentData_raw_numeric_minor_window
       3 / (2 * (b : ℝ)) ≤ D.baseLoad + R2ConcreteData.recipLoad D.Q)
     (hloadUpper :
       D.baseLoad + R2ConcreteData.recipLoad D.Q < 3 / (b : ℝ))
-    (C : ∀ MA : MainArcFields D.E W.theta b D.L N, R2MinorCoverData MA.Sm)
-    (hblock : ∀ MA : MainArcFields D.E W.theta b D.L N,
+    (C : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N, R2MinorCoverData MA.Sm)
+    (hblock : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
       ∑ h ∈ blockMinorPart MA.Sm (C MA).Sblock,
-        fourierNormWeight D.E W.theta b D.L h ≤ Bblock)
-    (hextra : ∀ MA : MainArcFields D.E W.theta b D.L N,
+        fourierNormWeight D.E W.theta (D.L / b) D.L h ≤ Bblock)
+    (hextra : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
       ∑ h ∈ extraMinorPart MA.Sm (C MA).Sblock (C MA).Sextra,
-        fourierNormWeight D.E W.theta b D.L h ≤ Bextra)
+        fourierNormWeight D.E W.theta (D.L / b) D.L h ≤ Bextra)
     (hextraLight : ∑ e ∈ D.E \ ctrlEdges D.BS, 1 / (e : ℝ) ^ 2
         ≤ 3 * (sigmaCtrl D.BS) ^ 2)
     (hminorCtrl :
@@ -106,22 +106,22 @@ theorem exists_arcConstruction_of_componentData_raw_numeric_minor_sets
       3 / (2 * (b : ℝ)) ≤ D.baseLoad + R2ConcreteData.recipLoad D.Q)
     (hloadUpper :
       D.baseLoad + R2ConcreteData.recipLoad D.Q < 3 / (b : ℝ))
-    (Sblock Sextra : MainArcFields D.E W.theta b D.L N → Finset ℕ)
-    (hcover : ∀ MA : MainArcFields D.E W.theta b D.L N,
+    (Sblock Sextra : MainArcFields D.E W.theta (D.L / b) D.L N → Finset ℕ)
+    (hcover : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
       MA.Sm ⊆ Sblock MA ∪ Sextra MA)
-    (hblock : ∀ MA : MainArcFields D.E W.theta b D.L N,
+    (hblock : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
       ∑ h ∈ blockMinorPart MA.Sm (Sblock MA),
-        fourierNormWeight D.E W.theta b D.L h ≤ Bblock)
-    (hextra : ∀ MA : MainArcFields D.E W.theta b D.L N,
+        fourierNormWeight D.E W.theta (D.L / b) D.L h ≤ Bblock)
+    (hextra : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
       ∑ h ∈ extraMinorPart MA.Sm (Sblock MA) (Sextra MA),
-        fourierNormWeight D.E W.theta b D.L h ≤ Bextra)
+        fourierNormWeight D.E W.theta (D.L / b) D.L h ≤ Bextra)
     (hextraLight : ∑ e ∈ D.E \ ctrlEdges D.BS, 1 / (e : ℝ) ^ 2
         ≤ 3 * (sigmaCtrl D.BS) ^ 2)
     (hminorCtrl :
       Bblock + Bextra <
         (0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2)) / sigmaCtrl D.BS) :
     Nonempty (ArcConstruction T b) := by
-  let C : ∀ MA : MainArcFields D.E W.theta b D.L N, R2MinorCoverData MA.Sm :=
+  let C : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N, R2MinorCoverData MA.Sm :=
     fun MA => { Sblock := Sblock MA, Sextra := Sextra MA, hcover := hcover MA }
   exact exists_arcConstruction_of_componentData_raw_numeric_minor_window hb D W N
     Bblock Bextra ρ hadm hNscale hedge hρnonneg hratio hcard hNL hQsemi
