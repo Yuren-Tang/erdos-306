@@ -12,6 +12,20 @@ set_option autoImplicit false
 
 open Finset
 
+/-- A disjoint low/high-frequency decomposition has positive total real part
+when the low-frequency contribution strictly dominates the high-frequency
+loss. -/
+private lemma spectralSum_re_pos_of_gap
+    {Ω : Type*} [Fintype Ω] [DecidableEq Ω]
+    (F : Ω → ℂ) (L H : Finset Ω) (M R : ℝ)
+    (hdisj : Disjoint L H) (hcover : L ∪ H = Finset.univ)
+    (hmain : M ≤ (∑ ω ∈ L, F ω).re)
+    (hminor : -R ≤ (∑ ω ∈ H, F ω).re)
+    (hgap : R < M) :
+    0 < (∑ ω, F ω).re := by
+  rw [← hcover, Finset.sum_union hdisj, Complex.add_re]
+  linarith
+
 /-
 **Finite spectral probabilistic existence principle.**
 
@@ -74,13 +88,13 @@ theorem exists_eq_of_spectral_gap
       · exact fun b => ⟨ fun j => b j ( Finset.mem_univ j ), rfl ⟩;
       · simp +decide [ Finset.prod_mul_distrib, Finset.mul_sum _ _ _, mul_assoc ];
     grind;
-  -- Applying the hypothesis `hF_def` to each `ω`, we get that the sum over `ω` of `F ω` is zero.
-  have h_sum_zero : (∑ ω ∈ H, F ω).re ≥ -R := by
-    have h_sum_zero : ∀ ω ∈ H, ‖F ω‖ ≤ C ω * Real.exp (-∑ j, Δ ω j) := by
+  have hminor : (∑ ω ∈ H, F ω).re ≥ -R := by
+    have hterm : ∀ ω ∈ H, ‖F ω‖ ≤ C ω * Real.exp (-∑ j, Δ ω j) := by
       intro ω hω
       rw [hF_def];
       simp +decide [ mul_comm, Real.exp_neg, Real.exp_sum ];
       exact mul_le_mul ( hk ω hω ) ( by rw [ ← Finset.prod_inv_distrib ] ; exact Finset.prod_le_prod ( fun _ _ => norm_nonneg _ ) fun _ _ => by simpa [ Real.exp_neg ] using hb ω hω _ ) ( Finset.prod_nonneg fun _ _ => norm_nonneg _ ) ( by linarith [ norm_nonneg ( k ω t ), hk ω hω ] );
-    exact neg_le_of_abs_le ( le_trans ( Complex.abs_re_le_norm _ ) ( le_trans ( norm_sum_le _ _ ) ( le_trans ( Finset.sum_le_sum h_sum_zero ) hR ) ) );
-  rw [ ← hcover, Finset.sum_union hdisj ] at *;
-  norm_num [ Complex.ext_iff ] at * ; linarith
+    exact neg_le_of_abs_le ( le_trans ( Complex.abs_re_le_norm _ ) ( le_trans ( norm_sum_le _ _ ) ( le_trans ( Finset.sum_le_sum hterm ) hR ) ) );
+  have hpos := spectralSum_re_pos_of_gap F L H M R hdisj hcover hM hminor hMR
+  rw [h_sum_zero] at hpos
+  norm_num at hpos
