@@ -511,7 +511,7 @@ block-support primes, the same order of inverse-square mass as the control pairs
 so the ratio is bounded but does not vanish. -/
 lemma exists_edge_square_load_supply :
     ∃ S : ℝ, 1 ≤ S ∧ ∀ G b : ℕ, ∃ K0 : ℕ, ∀ {T : Finset ℕ}
-      (D : R2ConcreteData T b) (QB : R2MassBatchSupply D),
+      (D : R2ConcreteData T b), R2MassBatchSupply D →
       K0 ≤ D.BS.k0 → D.S.card = G →
       (∀ s ∈ D.S, 2 ^ (2 * D.BS.k0) ≤ s) → (∀ r ∈ D.R, 2 ≤ r) → D.R.card ≤ b →
       ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2 ≤ S * (sigmaCtrl D.BS) ^ 2 := by

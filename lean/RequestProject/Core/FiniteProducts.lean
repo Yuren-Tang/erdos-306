@@ -37,12 +37,11 @@ lemma norm_prod_le_prod_of_subset {α : Type*} [DecidableEq α]
     _ = ∏ e ∈ S, g e := one_mul _
 
 /-- Constant-bound corollary: `‖∏_E F‖ ≤ D ^ |S|` when the kept factors are
-uniformly bounded by `D ≥ 0`. -/
+uniformly bounded by `D`. -/
 lemma norm_prod_le_pow_of_subset {α : Type*} [DecidableEq α]
     (E S : Finset α) (F : α → ℂ) (D : ℝ)
     (hSE : S ⊆ E)
     (hF1 : ∀ e ∈ E, ‖F e‖ ≤ 1)
-    (hD0 : 0 ≤ D)
     (hFD : ∀ e ∈ S, ‖F e‖ ≤ D) :
     ‖∏ e ∈ E, F e‖ ≤ D ^ S.card := by
   simpa using norm_prod_le_prod_of_subset E S F (fun _ => D) hSE hF1 hFD

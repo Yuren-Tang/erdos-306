@@ -1,4 +1,5 @@
 import RequestProject.CircleMethodMainArc
+import RequestProject.Spectral.BernoulliVariance
 
 open Complex Finset BigOperators Real
 
@@ -7,48 +8,16 @@ noncomputable section
 namespace CircleMethod
 
 /-!
-# Phase C — C3 main term (L2-full / L3 / L4), note 44
+# Bernoulli main-arc estimate
 
 Builds the positive real main term of the circle method from the per-edge Taylor
-expansion `bernoulli_log_taylor` (L1) and the diagonal Gaussian lower bound
-`main_arc_gaussian_lower` (C3).  Everything here is self-contained over an edge
+expansion `bernoulli_log_taylor` and the diagonal Gaussian lower bound
+`main_arc_gaussian_lower`.  Everything here is self-contained over an edge
 set `E : Finset ℕ` (edge value `val(e) = e`), weights `θ`, and a rational
 Fourier target `q/L`, with mass identity `∑_e θ_e/e = q/L`; no `BlockSystem`
-is needed.  The assembly into
-the frequency sum (R3) is in `CircleMethod` (`exists_positive_weighted_construction`).
+is needed.  The final theorem `main_sum_re_lower` reindexes this label sum as
+the low-frequency Fourier sum used by spectral selection.
 -/
-
-/-- The deviation `σ_E² = ∑_e θ_e(1-θ_e)/e²`. -/
-def sigmaE2 (E : Finset ℕ) (θ : ℕ → ℝ) : ℝ :=
-  ∑ e ∈ E, θ e * (1 - θ e) / (e : ℝ) ^ 2
-
-lemma sigmaE2_nonneg (E : Finset ℕ) (θ : ℕ → ℝ)
-    (hlb : ∀ e ∈ E, 1/3 ≤ θ e) (hub : ∀ e ∈ E, θ e ≤ 2/3) :
-    0 ≤ sigmaE2 E θ := by
-  unfold sigmaE2
-  refine Finset.sum_nonneg (fun e he => ?_)
-  have h1 := hlb e he
-  have h2 := hub e he
-  have : 0 ≤ θ e * (1 - θ e) := by nlinarith
-  positivity
-
-/-- `σ_E² > 0` once the edge set is nonempty (each term is `≥ (2/9)/e² > 0`). -/
-lemma sigmaE2_pos (E : Finset ℕ) (θ : ℕ → ℝ) (hne : E.Nonempty)
-    (he0 : ∀ e ∈ E, 0 < e)
-    (hlb : ∀ e ∈ E, 1/3 ≤ θ e) (hub : ∀ e ∈ E, θ e ≤ 2/3) :
-    0 < sigmaE2 E θ := by
-  obtain ⟨e0, he0'⟩ := hne
-  unfold sigmaE2
-  apply Finset.sum_pos'
-  · intro e he
-    have h1 := hlb e he; have h2 := hub e he
-    have : 0 ≤ θ e * (1 - θ e) := by nlinarith
-    positivity
-  · refine ⟨e0, he0', ?_⟩
-    have h1 := hlb e0 he0'; have h2 := hub e0 he0'
-    have hθ : 0 < θ e0 * (1 - θ e0) := by nlinarith
-    have hepos : 0 < (e0 : ℝ) := by exact_mod_cast he0 e0 he0'
-    positivity
 
 /-- **Non-vanishing of the Bernoulli factor on the main arc.**  For `θ ∈ [1/3,2/3]`
 and `|t| ≤ 1/10`, `φ_θ(t) ≠ 0`.  (Indeed `|φ|² ≥ cos²(πt) > 0`.) -/
@@ -84,7 +53,7 @@ lemma bernoulliCharFun_ne_zero_main (θ t : ℝ) (hlb : 1/3 ≤ θ) (hub : θ �
   rw [hzero, Complex.normSq_zero] at hpos
   exact lt_irrefl 0 hpos
 
-/-- **L2-full** (note 44).  The summed log of the Bernoulli factors at the
+/-- The summed log of the Bernoulli factors at the
 diagonal label `m` expands to `2πi(mq/L) − 2π²m²σ_E²` up to a cubic remainder,
 the linear coefficient being pinned to `q/L` by the **mass identity**. -/
 lemma sum_logphi_bound (E : Finset ℕ) (θ : ℕ → ℝ) (q L : ℕ) (m : ℤ)
@@ -128,13 +97,7 @@ lemma sum_logphi_bound (E : Finset ℕ) (θ : ℕ → ℝ) (q L : ℕ) (m : ℤ)
   rw [key] at hstep
   exact hstep
 
-/-- The diagonal **main-arc term** at label `m`: the Bernoulli product at `t_e =
-`m/e` times the target phase `e(-mq/L)`. -/
-def term_label (E : Finset ℕ) (θ : ℕ → ℝ) (q L : ℕ) (m : ℤ) : ℂ :=
-  (∏ e ∈ E, bernoulliCharFun (θ e) ((m:ℝ)/(e:ℝ)))
-    * Complex.exp (2 * Real.pi * (-((m:ℝ)*(q:ℝ)/(L:ℝ))) * Complex.I)
-
-/-- **L3** (note 44).  The main-arc term equals the real Gaussian
+/-- The main-arc term equals the real Gaussian
 `exp(−2π²m²σ_E²)` times `exp(δ)`, where `δ` is the cubic Taylor remainder. -/
 lemma term_label_eq (E : Finset ℕ) (θ : ℕ → ℝ) (q L : ℕ) (m : ℤ)
     (hlb : ∀ e ∈ E, 1/3 ≤ θ e) (hub : ∀ e ∈ E, θ e ≤ 2/3)
@@ -157,10 +120,9 @@ lemma term_label_eq (E : Finset ℕ) (θ : ℕ → ℝ) (q L : ℕ) (m : ℤ)
   congr 1
   rw [hδ]; push_cast; ring
 
-/-- **L3→Re** (per label).  When the cubic remainder is small (`≤ 1/10`), the
+/-- When the cubic remainder is small (`≤ 1/10`), the
 real part of the main-arc term is at least `0.8` times the Gaussian. -/
 lemma term_label_re_lower (E : Finset ℕ) (θ : ℕ → ℝ) (q L : ℕ) (m : ℤ)
-    (_he0 : ∀ e ∈ E, 0 < e)
     (hlb : ∀ e ∈ E, 1/3 ≤ θ e) (hub : ∀ e ∈ E, θ e ≤ 2/3)
     (hmass : (∑ e ∈ E, θ e / (e : ℝ)) = (q : ℝ) / (L : ℝ))
     (ht : ∀ e ∈ E, |(m : ℝ) / (e : ℝ)| ≤ 1/10)
@@ -193,7 +155,7 @@ lemma term_label_re_lower (E : Finset ℕ) (θ : ℕ → ℝ) (q L : ℕ) (m : �
   rw [hmulre]
   nlinarith [mul_le_mul_of_nonneg_left hre hGpos.le, hGpos]
 
-/-- **L4** (note 44).  The diagonal main sum over the label window
+/-- The diagonal main sum over the label window
 `[-N, N]` has real part `≥ c₃/σ_E` with `c₃ = 0.8·e^{-π²/2}/2`. -/
 lemma main_re_lower (E : Finset ℕ) (θ : ℕ → ℝ) (q L : ℕ) (N : ℤ)
     (hne : E.Nonempty) (he0 : ∀ e ∈ E, 0 < e)
@@ -222,17 +184,9 @@ lemma main_re_lower (E : Finset ℕ) (θ : ℕ → ℝ) (q L : ℕ) (N : ℤ)
             = Real.exp (-(2*Real.pi^2*(m:ℝ)^2*(sigmaE2 E θ))) := by
           congr 1; rw [hσsq]; ring
         rw [hgauss]
-        exact term_label_re_lower E θ q L m he0 hlb hub hmass (ht m hm) (hsmall m hm)
+        exact term_label_re_lower E θ q L m hlb hub hmass (ht m hm) (hsmall m hm)
 
-/-- The Fourier-identity summand at frequency `h` (matches `fourierTerm` in the
-cannon bridge `CannonBridge.cannonF_eq_fourierTerm`). -/
-def fourierTerm (E : Finset ℕ) (theta : ℕ → ℝ) (q L h : ℕ) : ℂ :=
-  (∏ e ∈ E, ((theta e : ℂ) *
-      Complex.exp (2 * Real.pi * Complex.I * (h : ℂ) * ((L / e : ℕ) : ℂ) / (L : ℂ))
-      + (1 - theta e)))
-    * Complex.exp (-(2 * Real.pi * Complex.I * (h : ℂ) * (q : ℂ) / (L : ℂ)))
-
-/-- **R3 main-arc reindex.**  Given a label map `lbl` that bijects the main-arc
+/-- **Main-arc reindexing.**  Given a label map `lbl` that bijects the main-arc
 frequency set `SM` onto the label window `[-N, N]` and identifies the Fourier
 term with the diagonal label term (the CRT/periodicity facts the construction
 supplies), the real part of the main-arc Fourier sum is `≥ c₃/σ_E`. -/

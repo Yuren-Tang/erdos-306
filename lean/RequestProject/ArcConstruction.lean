@@ -1,4 +1,5 @@
-import RequestProject.CircleMethodMainTerm
+import RequestProject.Spectral.BernoulliSum
+import RequestProject.CircleMethodArcs
 import RequestProject.Core.Semiprime
 
 open Finset BigOperators GlobalControl

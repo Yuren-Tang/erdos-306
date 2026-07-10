@@ -73,7 +73,7 @@ lemma fourierNormWeight_le_prod_norm_of_subset
 
 /-- Summed-norm minor-arc bound `∑_{h∈Sm} ‖fourierTerm h‖ ≤ Bm` from block/extra
 norm estimates and an additive budget.  This is the form consumed by the
-cannon-based existence step (`exists_subset_of_fourier_arcs`), which needs the
+spectral-selection step (`exists_subset_sum_eq_of_fourier_gap`), which needs the
 sum of norms rather than the norm of the sum. -/
 theorem hminorSum_of_block_extra_norm_bounds
     (E : Finset ℕ) (theta : ℕ → ℝ) (q L : ℕ)

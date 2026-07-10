@@ -1,5 +1,6 @@
-import RequestProject.BernoulliFourier
+import RequestProject.Spectral.BernoulliCharacteristic
 import RequestProject.GlobalControl.Partition
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
 
 open Finset BigOperators Classical Real GlobalControl
 

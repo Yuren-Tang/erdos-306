@@ -93,7 +93,7 @@ def multiGadgetBoundData_of_reservoir
     hm_r := X.hm_r
     hm_small := X.hm_small
     hfactorMulti := fun h hh =>
-      fourierNormWeight_le_multi_gadget_damp D.E W.theta b D.L h (X.rfun h)
+      fourierNormWeight_le_multi_gadget_damp D.E W.theta (D.L / b) D.L h (X.rfun h)
         (X.mfun h) (X.Gset h) (hRprime _ (X.hRmem h hh))
         (fun s hs => hSprime s (X.hSmem h hh hs))
         (fun s hs => ne_of_lt (hlt _ (X.hRmem h hh) s (X.hSmem h hh hs)))

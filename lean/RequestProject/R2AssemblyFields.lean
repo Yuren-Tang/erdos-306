@@ -1,5 +1,6 @@
 import RequestProject.Construction.Edges
 import RequestProject.R2MinorEstimateInterface
+import RequestProject.Spectral.BernoulliVariance
 
 open Finset BigOperators GlobalControl
 

@@ -1,20 +1,18 @@
 /-
-  BernoulliFourier.lean
+  BernoulliCharacteristic.lean
 
-  Bernoulli random variable Fourier analysis for the Erdős 306 proof.
+  Characteristic-function estimates for Bernoulli random variables.
 
   Core facts:
   1. The characteristic function of a Bernoulli(θ) variable at frequency t is
      φ(t) = 1 - θ + θ · exp(2πit) = 1 - θ(1 - exp(2πit)).
   2. |φ(t)|² = 1 - 4θ(1-θ)sin²(πt).
   3. For θ ∈ [θ₀, 1-θ₀], |φ(t)| ≤ exp(-c·‖t‖²) where ‖t‖ = min_{n∈ℤ}|t-n|.
-  4. For independent Bernoulli variables, the product of characteristic
-     functions gives |μ̂(h)| ≤ exp(-c · ∑ ‖h/eᵢ‖²).
-  5. Fourier inversion on ℤ/Lℤ: ℙ(Y = m) = (1/L) ∑_{h mod L} μ̂(h)·e(-hm/L).
-
-  These are the foundational estimates used in §4-§6 of the conditional proof.
+  4. Products of these factors inherit exponential decay.
 -/
-import Mathlib
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 open Real BigOperators Complex
 
@@ -61,7 +59,7 @@ lemma bernoulliCharFun_norm_le_one (θ t : ℝ) (hθ0 : 0 ≤ θ) (hθ1 : θ ≤
     nlinarith
   nlinarith [sq_nonneg (‖bernoulliCharFun θ t‖ - 1)]
 
-/-! ## 2. Product bound for independent Bernoulli variables -/
+/-! ## Product decay -/
 
 /-
 For independent Bernoulli(θ_e) variables with θ_e ∈ [θ₀, 1-θ₀],
@@ -104,25 +102,5 @@ theorem product_charFun_bound (θ₀ : ℝ) (hθ₀ : 0 < θ₀) (hθ₀' : θ�
       apply Finset.sum_congr rfl
       intro e _
       ring
-
-/-! ## 3. Fourier inversion on ℤ/Lℤ
-
-The Fourier inversion identity for Bernoulli sums on ℤ/Lℤ:
-  ℙ(Y ≡ m (mod L)) = (1/L) ∑_{h=0}^{L-1} μ̂(h) · e(-hm/L)
-where μ̂(h) = ∏_e φ_{θ_e}(h/e).
-
-This is the starting point for the main-arc / minor-arc decomposition.
-Full formalization requires a Bernoulli probability space. The identity
-itself is a standard consequence of character orthogonality on ℤ/Lℤ
-and independence of the Bernoulli variables. -/
-
-/-! ## 4. Main-arc Taylor expansion
-
-The main-arc Gaussian lower bound sketched here (log φ_θ(m/e) Taylor-expanded,
-summed via the mass identity ∑θ_e/e = 1/b) is realized in full generality by
-`main_re_lower`/`main_sum_re_lower` in `CircleMethodMainTerm.lean`; this
-file's own `main_arc_positive` was an early toy version (positivity of a
-3-term sum over `m ∈ {-1,0,1}` only) and has been removed as dead code
-(zero references anywhere in the project). -/
 
 end

@@ -1,5 +1,5 @@
-import RequestProject.CircleMethod
-import RequestProject.CircleMethodMainTerm
+import RequestProject.Spectral.BernoulliSum
+import RequestProject.Core.Semiprime
 
 open Complex Finset BigOperators Real
 
@@ -8,22 +8,22 @@ noncomputable section
 namespace CircleMethod
 
 /-!
-# Phase C — R3 assembly interface (note 35 C5 / note 44 R3)
+# Circle-method construction data
 
 This file records the `ArcConstruction` interface: the bundle of circle-method
 construction data (semiprime edges, weights, period, the main-arc label
 bijection, the main-arc smallness conditions, and the **summed-norm** minor-arc
 bound) produced by the R2 construction.  It is consumed downstream by
-`egyptian_rep_ge3_R2`, which feeds it to the abstract `spectral_existence` cannon
-via `CannonBridge.exists_subset_of_fourier_arcs`.
+`egyptian_rep_ge3_R2`, which feeds it to the abstract spectral selection principle
+via `Spectral.CircleMethodBridge.exists_subset_sum_eq_of_fourier_gap`.
 
 The earlier bespoke positivity glue (`wcount_pos_of_split`,
 `exists_pos_weighted_of_construction`) has been retired: the arc-separation
 positivity, the finite Fourier identity, and the subset extraction are now all
-discharged in one step by the cannon.
+discharged by that principle.
 -/
 
-/-- **R2 construction interface (note 35 C1 / note 44 R3).**  The data of a
+/-- The data of a
 block-aligned circle-method construction for `1/b`: semiprime edges `E` avoiding
 `T` with weights in `[1/3,2/3]` and exact mass, a common period `L`, a main-arc
 frequency set `SM` bijecting (via `lbl`) to the label window `[-N,N]` with the

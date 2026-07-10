@@ -92,9 +92,7 @@ numeric-field lane returns `0 ≤ N` and `2N+1 ≤ L`. -/
 theorem exists_R2FinalSupply_of_mainArcParams
     {T : Finset ℕ} {b : ℕ}
     (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ) (Bm : ℝ)
-    (hbpos : 0 < b)
     (hL : 0 < D.L)
-    (hbL : b ∣ D.L)
     (hNnonneg : 0 ≤ N)
     (hNL : 2 * N + 1 ≤ (D.L : ℤ))
     (hsemi : ∀ e ∈ D.E, IsSemiprime e)
@@ -160,7 +158,7 @@ theorem exists_arcConstruction_of_mainArcParams
   have hbpos : 0 < b := Nat.lt_of_lt_of_le (by norm_num) hb
   have hL : 0 < D.L := D.period_pos hbpos
   obtain ⟨S⟩ := exists_R2FinalSupply_of_mainArcParams D W N Bm
-    hbpos hL D.base_dvd_period hNnonneg hNL hsemi havoid hne heL he0 hloadUpper
+    hL hNnonneg hNL hsemi havoid hne heL he0 hloadUpper
     hN htw hsmall hminor hbeat
   exact exists_arcConstruction_of_R2FinalSupply T b hb S
 
@@ -396,7 +394,7 @@ theorem exists_arcConstruction_of_componentData_numeric_minor_window
     hgadgetAvoid hQne hQdvd hRdvd hSblock hloadDisj hloadLower hloadUpper
     NF.hN NF.htw NF.hsmall ?_ hextraLight hminorCtrl
   intro MA
-  exact hminorSum_of_block_extra_norm_bounds D.E W.theta b D.L MA.Sm (C MA)
+  exact hminorSum_of_block_extra_norm_bounds D.E W.theta (D.L / b) D.L MA.Sm (C MA)
     Bblock Bextra (Bblock + Bextra) (hblock MA) (hextra MA) le_rfl
 
 end CircleMethod

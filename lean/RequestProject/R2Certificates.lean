@@ -112,7 +112,7 @@ structure R2NumericLedger (b : ℕ) where
       10 * (cSigma * (k : ℝ) ^ 2 * (2 : ℝ) ^ k + 1) ≤ (2 : ℝ) ^ (2 * k)
   hk0cubicFact : ∀ k : ℕ, k0cubic ≤ k →
       (4 * 1000000 * Sload * (cSigma + 1)) * (k : ℝ) ^ 4 ≤ (2 : ℝ) ^ k
-  hk0loadFact : ∀ {T' : Finset ℕ} (D : R2ConcreteData T' b) (QB : R2MassBatchSupply D),
+  hk0loadFact : ∀ {T' : Finset ℕ} (D : R2ConcreteData T' b), R2MassBatchSupply D →
       k0load ≤ D.BS.k0 → D.S.card = G →
       (∀ s ∈ D.S, 2 ^ (2 * D.BS.k0) ≤ s) → (∀ r ∈ D.R, 2 ≤ r) → D.R.card ≤ b →
       ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2 ≤ Sload * (sigmaCtrl D.BS) ^ 2
@@ -751,7 +751,7 @@ lemma r2_minor_lane_bound {T : Finset ℕ} {b : ℕ}
       (∑ h ∈ MA.Sm, ‖fourierTerm M.D.E M.W.theta (M.D.L / b) M.D.L h‖) ≤ r2MinorBudget F M A := by
   obtain ⟨MB⟩ := r2_minor_support_budget F Cc M A
   intro MA
-  refine hminorSum_of_block_extra_norm_bounds M.D.E M.W.theta b M.D.L MA.Sm
+  refine hminorSum_of_block_extra_norm_bounds M.D.E M.W.theta (M.D.L / b) M.D.L MA.Sm
     ⟨MB.Sblock MA, MB.Sextra MA, MB.hcover MA⟩ _ _ (r2MinorBudget F M A)
     (MB.hblock MA) (MB.hextra MA) (le_of_eq ?_)
   unfold r2MinorBudget
