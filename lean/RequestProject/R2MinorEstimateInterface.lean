@@ -11,7 +11,7 @@ namespace CircleMethod
 open GlobalControl
 
 /-!
-# R2 minor estimate interface (note 53 → final `exists_arcConstruction`)
+# R2 minor estimate interface
 
 `R2MinorAssembly.lean` proved the *pure finite-sum splitter*
 `sum_le_of_minor_split_bounds`: if `Sm ⊆ Sblock ∪ Sextra` and the two
@@ -35,7 +35,7 @@ stated over the block part, so the conclusion is a bound directly on
 `∑_{blockMinorPart} exp(-c · QE)`. -/
 theorem block_part_bound
     (BS : BlockSystem) (E : Finset ℕ) (c C K : ℝ) (Sm Sblock : Finset ℕ)
-    (Qextra : ℕ → ℝ) (hc : 0 ≤ c) (hK : 0 ≤ K)
+    (Qextra : ℕ → ℝ) (hc : 0 ≤ c)
     (hQE : ∀ h ∈ blockMinorPart Sm Sblock,
       Qctrl BS (fun p => ((h : ZMod p.1))) + Qextra h ≤ QE E h)
     (hnotmain : ∀ h ∈ blockMinorPart Sm Sblock,

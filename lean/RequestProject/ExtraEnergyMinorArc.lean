@@ -9,13 +9,13 @@ namespace CircleMethod
 open GlobalControl
 
 /-!
-# Extra-energy minor arc interface (note 46)
+# Fiber-tail minor-arc estimate
 
-`minor_arc_bound_mult` uses a raw fiber cardinality `M`.  When mass/gadget edges
-introduce primes outside `blockSupport BS`, the right object is the **extra-edge
-energy** `Qextra` retained inside each fiber, with a fiber-tail bound
-`∑_{fiber} exp(-c·Qextra) ≤ K` replacing the cardinality bound.  This file proves the
-fiber-tail analogues of `minor_energy_sum_le_mult` / `minor_arc_bound_mult`.
+When mass or damping edges introduce primes outside `blockSupport BS`, the
+right fiber datum is the extra-edge energy `Qextra`. A bound
+`∑_{fiber} exp(-c·Qextra) ≤ K` controls the global minor contribution. This
+strictly contains the cardinality and bounded-multiplicity cases as special
+instances.
 -/
 
 /-- **Fiber-tail minor energy reindex.**  If `QE ≥ Qctrl + Qextra` and the

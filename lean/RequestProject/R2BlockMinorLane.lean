@@ -116,7 +116,7 @@ theorem r2_block_minor_budget_from_fiber_tail
   refine r2_block_minor_budget_from_exp_QE D W N MA Sblock Bblock heL he0 hL ?_
   exact le_trans
     (block_part_bound D.BS D.E (16 / 9) C K MA.Sm Sblock Qextra
-      (by norm_num) hK hQE hnotmain hfiber)
+      (by norm_num) hQE hnotmain hfiber)
     hbudget
 
 /-- G7-packaged block-minor budget.
