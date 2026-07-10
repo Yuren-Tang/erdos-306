@@ -48,7 +48,7 @@ lemma one_div_eq_target_div_of_dvd_real (b L : ℕ) (hb : 0 < b) (hL : 0 < L)
 /-- **No-wraparound Fourier indicator.**  A subset of an `L`-divisor set has
 reciprocal mass `q / L` precisely when its integerized mass is congruent to
 `q` modulo `L`; the strict total-mass bound excludes all nonzero wraps. -/
-lemma fourier_indicator (E q L : ℕ) (hq : q < L) (hL : 0 < L)
+lemma fourier_indicator (E : Finset ℕ) (q L : ℕ) (hq : q < L) (hL : 0 < L)
     (heL : ∀ e ∈ E, e ∣ L) (he0 : ∀ e ∈ E, 0 < e)
     (hbound : (∑ e ∈ E, (L / e : ℕ)) < L)
     (S : Finset ℕ) (hS : S ⊆ E) :
@@ -64,7 +64,7 @@ lemma fourier_indicator (E q L : ℕ) (hq : q < L) (hL : 0 < L)
     constructor
     · intro h
       obtain ⟨k, hk⟩ := h
-      have hkabs : |(mS : ℤ) - (mb : ℤ)| < (L : ℤ) := by
+      have hkabs : |(mS : ℤ) - (q : ℤ)| < (L : ℤ) := by
         have h1 : (mS : ℤ) < L := by exact_mod_cast hmS_lt
         have h2 : (q : ℤ) < L := by exact_mod_cast hq
         have h3 : (0 : ℤ) ≤ mS := Int.natCast_nonneg _

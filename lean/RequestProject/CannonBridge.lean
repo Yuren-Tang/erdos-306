@@ -167,7 +167,7 @@ lemma cannon_tail_pointwise (E : Finset ℕ) (theta : ℕ → ℝ) (q L : ℕ)
 **Decode.**  A hitting configuration `a` decodes to a subset of `E` with the
 exact reciprocal identity.
 -/
-lemma decode_subset_sum (E q L : ℕ) (hL : 0 < L)
+lemma decode_subset_sum (E : Finset ℕ) (q L : ℕ) (hL : 0 < L)
     (heL : ∀ e ∈ E, e ∣ L) (he0 : ∀ e ∈ E, 0 < e)
     (hbound : (∑ e ∈ E, (L / e : ℕ)) < L)
     (a : {e // e ∈ E} → Bool)
@@ -229,7 +229,12 @@ theorem exists_subset_of_fourier_arcs
               refine' Finset.sum_bij ( fun x hx => x.val ) _ _ _ _ <;> aesop;
           · refine' lt_of_le_of_lt ( sub_le_self _ <| Finset.sum_nonneg fun _ _ => by positivity ) _;
             exact_mod_cast hq;
-        have h_charsum : ∑ ω : Fin L, Complex.exp (2 * Real.pi * Complex.I * (ω : ℂ) * ((∑ j : {e // e ∈ E}, (if a j then ((L / j.1 : ℕ) : ℤ) else 0) - (q : ℤ) : ℂ) / (L : ℂ)) = if (L : ℤ) ∣ ((∑ j : {e // e ∈ E}, (if a j then ((L / j.1 : ℕ) : ℤ) else 0)) - (q : ℤ)) then (L : ℂ) else 0 := by
+        have h_charsum :
+            (∑ ω : Fin L, Complex.exp (2 * Real.pi * Complex.I * (ω : ℂ)
+              * (((∑ j : {e // e ∈ E}, (if a j then ((L / j.1 : ℕ) : ℤ) else 0))
+                  - (q : ℤ) : ℂ) / (L : ℂ))))
+              = if (L : ℤ) ∣ ((∑ j : {e // e ∈ E},
+                (if a j then ((L / j.1 : ℕ) : ℤ) else 0)) - (q : ℤ)) then (L : ℂ) else 0 := by
           convert charsum_orth L hL _ using 1;
           grind;
         convert congr_arg ( fun x : ℂ => ( 1 / L : ℂ ) * x ) h_charsum.symm using 1;
