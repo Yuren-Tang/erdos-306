@@ -1,7 +1,6 @@
 import Mathlib.Algebra.CharP.Basic
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.Complex.Exponential
-import Std.Tactic.BVDecide.LRAT.Internal.Clause
 
 open scoped BigOperators
 open scoped Real
