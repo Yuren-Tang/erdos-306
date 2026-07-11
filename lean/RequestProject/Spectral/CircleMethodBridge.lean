@@ -1,7 +1,6 @@
-import RequestProject.Spectral.BernoulliSum
+import RequestProject.Spectral.BernoulliCyclicFourier
 import RequestProject.Core.EgyptianRepresentation
 import RequestProject.Spectral.Selection
-import Mathlib.Analysis.SpecialFunctions.Complex.CircleAddChar
 
 /-!
 # Spectral selection for reciprocal subset sums
@@ -25,115 +24,6 @@ noncomputable section
 
 namespace CircleMethod
 
-/-- The additive character `n ↦ exp(2πi·ω·n/L)` on `ℤ`, indexed by `ω : Fin L`. -/
-def cyclicCharacter (L : ℕ) (ω : Fin L) (n : ℤ) : ℂ :=
-  Complex.exp (2 * Real.pi * Complex.I * (ω : ℂ) * (n : ℂ) / (L : ℂ))
-
-/-- The explicit cyclic character is Mathlib's standard additive character on
-`ZMod L`, evaluated at the product of the frequency and the integer argument. -/
-lemma cyclicCharacter_eq_stdAddChar (L : ℕ) [NeZero L] (ω : Fin L) (n : ℤ) :
-    cyclicCharacter L ω n =
-      ZMod.stdAddChar (((((ω : ℕ) : ℤ) * n : ℤ) : ZMod L)) := by
-  rw [cyclicCharacter, ZMod.stdAddChar_coe]
-  congr 1
-  push_cast
-  ring
-
-/-- The local spectral factor of edge `j` at frequency `ω`:
-`(1-θ_e) + θ_e·exp(2πi·ω·(L/e)/L)`, written as the Bernoulli expectation
-`∑_{a∈Bool} p(a)·char(x(a))`. -/
-def bernoulliSpectralFactor (E : Finset ℕ) (theta : ℕ → ℝ) (L : ℕ)
-    (j : {e // e ∈ E}) (ω : Fin L) : ℂ :=
-  ∑ a : Bool, ((if a then theta j.1 else 1 - theta j.1 : ℝ) : ℂ)
-      * cyclicCharacter L ω (if a then ((L / j.1 : ℕ) : ℤ) else 0)
-
-/-- The spectral term at frequency `ω`: the product of the local factors times
-the conjugate target phase.  Equal to `fourierTerm` (`bernoulliFourierTerm_eq_fourierTerm`). -/
-def bernoulliFourierTerm (E : Finset ℕ) (theta : ℕ → ℝ) (q L : ℕ) (ω : Fin L) : ℂ :=
-  (∏ j : {e // e ∈ E}, bernoulliSpectralFactor E theta L j ω)
-    * (starRingEnd ℂ) (cyclicCharacter L ω (q : ℤ))
-
-/-- `cyclicCharacter` has unit norm. -/
-lemma norm_cyclicCharacter (L : ℕ) (ω : Fin L) (n : ℤ) : ‖cyclicCharacter L ω n‖ = 1 := by
-  unfold cyclicCharacter; norm_num [ Complex.norm_exp ]
-
-/-- Multiplying an additive character by the conjugate character at the target
-evaluates the same character on the difference. -/
-lemma cyclicCharacter_mul_star (L : ℕ) (ω : Fin L) (m q : ℤ) :
-    cyclicCharacter L ω m * (starRingEnd ℂ) (cyclicCharacter L ω q) =
-      cyclicCharacter L ω (m - q) := by
-  unfold cyclicCharacter
-  rw [← Complex.exp_conj, ← Complex.exp_add]
-  congr 1
-  apply Complex.ext
-  · norm_num [Complex.mul_re, Complex.mul_im, Complex.div_re, Complex.div_im]
-  · norm_num [Complex.mul_re, Complex.mul_im, Complex.div_re, Complex.div_im]
-    ring
-
-/-- The local factor equals the Bernoulli factor used in `fourierTerm`. -/
-lemma bernoulliSpectralFactor_eq (E : Finset ℕ) (theta : ℕ → ℝ) (L : ℕ)
-    (j : {e // e ∈ E}) (ω : Fin L) :
-    bernoulliSpectralFactor E theta L j ω
-      = (theta j.1 : ℂ)
-          * Complex.exp (2 * Real.pi * Complex.I * (ω : ℂ) * ((L / j.1 : ℕ) : ℂ) / (L : ℂ))
-        + (1 - theta j.1) := by
-  unfold bernoulliSpectralFactor; simp +decide;
-  unfold cyclicCharacter; norm_num;
-  norm_cast ; aesop
-
-/-- The norm of the local factor is `≤ 1` when `0 ≤ θ ≤ 1`. -/
-lemma norm_bernoulliSpectralFactor_le_one (E : Finset ℕ) (theta : ℕ → ℝ) (L : ℕ)
-    (j : {e // e ∈ E}) (ω : Fin L)
-    (h0 : 0 ≤ theta j.1) (h1 : theta j.1 ≤ 1) :
-    ‖bernoulliSpectralFactor E theta L j ω‖ ≤ 1 := by
-  rw [ bernoulliSpectralFactor_eq ];
-  convert norm_add_le ( ( theta j : ℂ ) * Complex.exp ( 2 * Real.pi * Complex.I * ( ω : ℂ ) * ( L / j : ℕ ) / L ) ) ( 1 - ( theta j : ℂ ) ) using 2 ; norm_num [ Complex.norm_exp ];
-  norm_cast ; rw [ abs_of_nonneg h0 ] ; rw [ Real.norm_of_nonneg ] <;> linarith
-
-/-- **Key correspondence.**  The Bernoulli spectral term equals the circle method's
-`fourierTerm` at the underlying natural-number frequency. -/
-lemma bernoulliFourierTerm_eq_fourierTerm (E : Finset ℕ) (theta : ℕ → ℝ) (q L : ℕ) (ω : Fin L) :
-    bernoulliFourierTerm E theta q L ω = fourierTerm E theta q L (ω : ℕ) := by
-  unfold bernoulliFourierTerm fourierTerm;
-  congr! 1;
-  · refine' Finset.prod_bij ( fun j _ => j.val ) _ _ _ _ <;> simp +decide [ bernoulliSpectralFactor_eq ]
-  · unfold cyclicCharacter
-    rw [← Complex.exp_conj]
-    congr 1
-    apply Complex.ext
-    · norm_num [Complex.mul_re, Complex.mul_im, Complex.div_re, Complex.div_im]
-    · norm_num [Complex.mul_re, Complex.mul_im, Complex.div_re, Complex.div_im]
-      ring
-
-/-- **Character orthogonality on `Fin L`.**  Recast of `fourier_orthogonality`
-over the finite type `Fin L`. -/
-lemma charsum_orth (L : ℕ) (hL : 0 < L) (n : ℤ) :
-    (∑ ω : Fin L, cyclicCharacter L ω n)
-      = if (L : ℤ) ∣ n then (L : ℂ) else 0 := by
-  letI : NeZero L := ⟨hL.ne'⟩
-  let ψ := (ZMod.stdAddChar (N := L)).mulShift (n : ZMod L)
-  have hsum : ∑ x : ZMod L, ψ x = if ψ = 0 then (L : ℂ) else 0 := by
-    simpa [ZMod.card] using AddChar.sum_eq_ite ψ
-  have hψ : ψ = 0 ↔ (n : ZMod L) = 0 := by
-    constructor
-    · intro h
-      by_contra hn
-      exact (ZMod.isPrimitive_stdAddChar L hn) (h.trans AddChar.one_eq_zero.symm)
-    · intro h
-      calc
-        ψ = 1 := by simp [ψ, h]
-        _ = 0 := AddChar.one_eq_zero
-  have hfin : ∀ ω : Fin L, ZMod.finEquiv L ω = (ω : ZMod L) := by
-    intro ω
-    cases L with
-    | zero => exact Fin.elim0 ω
-    | succ L =>
-        change (ω : ZMod (L + 1)) = (ω.val : ZMod (L + 1))
-        exact (ZMod.natCast_zmod_val (show ZMod (L + 1) from ω)).symm
-  rw [← (ZMod.finEquiv L).sum_comp] at hsum
-  simpa [ψ, cyclicCharacter_eq_stdAddChar, AddChar.mulShift_apply, mul_comm, hψ, hfin,
-    ZMod.intCast_zmod_eq_zero_iff_dvd] using hsum
-
 /-- For a finite count `m` and a positive slack `d`, some nonnegative exponential
 decay makes `m·exp(-K)` fit within `d`. -/
 private lemma exists_K_tail (m : ℕ) (d : ℝ) (hd : 0 < d) :
@@ -142,14 +32,6 @@ private lemma exists_K_tail (m : ℕ) (d : ℝ) (hd : 0 < d) :
   rw [ Real.exp_neg, Real.exp_log ( by positivity ) ]
   rw [ mul_inv_le_iff₀ ( by positivity ) ]
   nlinarith [ Real.log_le_sub_one_of_pos ( by positivity : 0 < ( m : ℝ ) / d + 1 ), mul_div_cancel₀ ( m : ℝ ) hd.ne' ]
-
-/-
-**Additive characters turn sums into products** (over any `Fintype` index).
--/
-lemma cyclicCharacter_sum_eq_prod (L : ℕ) (ω : Fin L) {ι : Type*} [Fintype ι] (g : ι → ℤ) :
-    cyclicCharacter L ω (∑ i, g i) = ∏ i, cyclicCharacter L ω (g i) := by
-  unfold cyclicCharacter; simp +decide [← Complex.exp_sum]; ring_nf
-  simp +decide [mul_assoc, mul_comm, mul_left_comm, Finset.mul_sum _ _ _]
 
 /-
 Reindexing a sum over `s.attachFin` back to a sum over `s` (the summand only
