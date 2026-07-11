@@ -30,7 +30,21 @@ lemma log_one_sub_remainder (w : ℂ) (hw : ‖w‖ < 1) :
   norm_num at h ⊢
   linarith [h]
 
-set_option maxHeartbeats 1200000 in
+/-- A unit-scale exponential perturbation loses at most twice its norm in real
+part. -/
+lemma one_sub_two_norm_le_exp_re (δ : ℂ) (hδ : ‖δ‖ ≤ 1) :
+    1 - 2 * ‖δ‖ ≤ (Complex.exp δ).re := by
+  have hexp : ‖Complex.exp δ - 1‖ ≤ 2 * ‖δ‖ :=
+    Complex.norm_exp_sub_one_le hδ
+  have hre : |(Complex.exp δ - 1).re| ≤ ‖Complex.exp δ - 1‖ :=
+    Complex.abs_re_le_norm _
+  have hid : (Complex.exp δ).re = 1 + (Complex.exp δ - 1).re := by
+    rw [Complex.sub_re, Complex.one_re]
+    ring
+  rw [hid]
+  linarith [(abs_le.mp (hre.trans hexp)).1]
+
+set_option maxHeartbeats 400000 in
 /-- **L1: per-edge Bernoulli Taylor** (note 44).  For `θ ∈ [1/3,2/3]` and
 `|t| ≤ 1/10`, `log φ_θ(t) = 2πiθt − 2π²θ(1−θ)t² + O(|t|³)` with an absolute
 constant.  Built from `log_one_sub_remainder` + `Complex.exp_bound`. -/

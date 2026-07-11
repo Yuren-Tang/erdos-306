@@ -138,17 +138,10 @@ lemma term_label_re_lower (E : Finset ℕ) (θ : ℕ → ℝ) (q L : ℕ) (m : �
   have hδnorm : ‖δ‖ ≤ 1/10 := by
     rw [hδdef]
     exact le_trans (sum_logphi_bound E θ q L m hlb hub hmass ht) hsmall
-  -- ‖exp δ - 1‖ ≤ 2‖δ‖
   have hδle1 : ‖δ‖ ≤ 1 := by linarith [hδnorm]
-  have hexpb : ‖Complex.exp δ - 1‖ ≤ 2 * ‖δ‖ := Complex.norm_exp_sub_one_le hδle1
   -- (exp δ).re ≥ 0.8
   have hre : (0.8 : ℝ) ≤ (Complex.exp δ).re := by
-    have h1 : |(Complex.exp δ - 1).re| ≤ ‖Complex.exp δ - 1‖ := Complex.abs_re_le_norm _
-    have h2 : (Complex.exp δ).re = 1 + (Complex.exp δ - 1).re := by
-      rw [Complex.sub_re, Complex.one_re]; ring
-    have h3 : |(Complex.exp δ - 1).re| ≤ 2 * (1/10) := le_trans (le_trans h1 hexpb) (by linarith [hδnorm])
-    rw [h2]
-    linarith [(abs_le.mp h3).1]
+    linarith [one_sub_two_norm_le_exp_re δ hδle1, hδnorm]
   -- combine
   have hmulre : (((G:ℂ)) * Complex.exp δ).re = G * (Complex.exp δ).re := by
     simp [Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im]
