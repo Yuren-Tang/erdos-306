@@ -1,4 +1,3 @@
-import Mathlib.Algebra.CharP.Basic
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.Complex.Exponential
 
@@ -15,7 +14,7 @@ open Finset
 /-- A disjoint low/high-frequency decomposition has positive total real part
 when the low-frequency contribution strictly dominates the high-frequency
 loss. -/
-private lemma spectralSum_re_pos_of_gap
+lemma spectralSum_re_pos_of_partition_gap
     {Ω : Type*} [Fintype Ω] [DecidableEq Ω]
     (F : Ω → ℂ) (L H : Finset Ω) (M R : ℝ)
     (hdisj : Disjoint L H) (hcover : L ∪ H = Finset.univ)
@@ -25,6 +24,50 @@ private lemma spectralSum_re_pos_of_gap
     0 < (∑ ω, F ω).re := by
   rw [← hcover, Finset.sum_union hdisj, Complex.add_re]
   linarith
+
+/-- A finite product weight turns a sum of factorized functions into the
+product of their one-coordinate weighted sums.  The additional factor `c ω`
+is independent of the product coordinate. -/
+lemma sum_product_weight_mul_sum_product
+    {J Ω : Type*} [Fintype J] [DecidableEq J] [Fintype Ω]
+    {A : J → Type*} [∀ j, Fintype (A j)]
+    (w : (j : J) → A j → ℂ)
+    (z : (j : J) → Ω → A j → ℂ)
+    (c : Ω → ℂ) :
+    ∑ a : ∀ j, A j, (∏ j, w j (a j)) * (∑ ω, (∏ j, z j ω (a j)) * c ω) =
+      ∑ ω, (∏ j, ∑ a : A j, w j a * z j ω a) * c ω := by
+  simp +decide only [prod_sum, sum_mul]
+  rw [Finset.sum_comm]
+  refine' Finset.sum_bij (fun a _ => fun j _ => a j) _ _ _ _ <;> simp +decide
+  · simp +decide [funext_iff]
+  · exact fun b => ⟨fun j => b j (Finset.mem_univ j), rfl⟩
+  · simp +decide [Finset.prod_mul_distrib, Finset.mul_sum _ _ _, mul_assoc]
+
+/-- Coordinatewise exponential decay bounds the possible negative real part
+of the total contribution from a finite set of frequencies. -/
+lemma neg_le_spectralSum_re_of_exponential_bounds
+    {J Ω X : Type*} [Fintype J] [Fintype Ω]
+    (b : J → Ω → ℂ) (k : Ω → X → ℂ) (t : X)
+    (F : Ω → ℂ) (H : Finset Ω)
+    (Δ : Ω → J → ℝ) (C : Ω → ℝ) (R : ℝ)
+    (hF_def : ∀ ω, F ω = (∏ j, b j ω) * (starRingEnd ℂ) (k ω t))
+    (hb : ∀ ω ∈ H, ∀ j, ‖b j ω‖ ≤ Real.exp (-(Δ ω j)))
+    (hk : ∀ ω ∈ H, ‖k ω t‖ ≤ C ω)
+    (hR : (∑ ω ∈ H, C ω * Real.exp (-(∑ j, Δ ω j))) ≤ R) :
+    -R ≤ (∑ ω ∈ H, F ω).re := by
+  have hterm : ∀ ω ∈ H, ‖F ω‖ ≤ C ω * Real.exp (-∑ j, Δ ω j) := by
+    intro ω hω
+    rw [hF_def]
+    simp +decide [mul_comm, Real.exp_neg, Real.exp_sum]
+    exact mul_le_mul (hk ω hω)
+      (by
+        rw [← Finset.prod_inv_distrib]
+        exact Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun _ _ => by
+          simpa [Real.exp_neg] using hb ω hω _)
+      (Finset.prod_nonneg fun _ _ => norm_nonneg _)
+      (by linarith [norm_nonneg (k ω t), hk ω hω])
+  exact neg_le_of_abs_le (le_trans (Complex.abs_re_le_norm _)
+    (le_trans (norm_sum_le _ _) (le_trans (Finset.sum_le_sum hterm) hR)))
 
 /-
 **Finite spectral probabilistic existence principle.**
@@ -79,22 +122,15 @@ theorem exists_eq_of_spectral_gap
     have h_sum_zero : ∑ a : ∀ j, A j, (∏ j, (p j (a j) : ℂ)) * (∑ ω, (∏ j, k ω (x j (a j))) * (starRingEnd ℂ) (k ω t)) = 0 := by
       refine' Finset.sum_eq_zero fun a ha => _;
       specialize hspec a; simp_all +decide [ ne_of_gt hN ] ;
-    -- By Fubini's theorem, we can interchange the order of summation.
-    have h_fubini : ∑ a : ∀ j, A j, (∏ j, (p j (a j) : ℂ)) * (∑ ω, (∏ j, k ω (x j (a j))) * (starRingEnd ℂ) (k ω t)) = ∑ ω, (∏ j, (∑ a : A j, (p j a : ℂ) * k ω (x j a))) * (starRingEnd ℂ) (k ω t) := by
-      simp +decide only [prod_sum, sum_mul];
-      rw [ Finset.sum_comm ];
-      refine' Finset.sum_bij ( fun a _ => fun j _ => a j ) _ _ _ _ <;> simp +decide;
-      · simp +decide [ funext_iff ];
-      · exact fun b => ⟨ fun j => b j ( Finset.mem_univ j ), rfl ⟩;
-      · simp +decide [ Finset.prod_mul_distrib, Finset.mul_sum _ _ _, mul_assoc ];
-    grind;
-  have hminor : (∑ ω ∈ H, F ω).re ≥ -R := by
-    have hterm : ∀ ω ∈ H, ‖F ω‖ ≤ C ω * Real.exp (-∑ j, Δ ω j) := by
-      intro ω hω
-      rw [hF_def];
-      simp +decide [ mul_comm, Real.exp_neg, Real.exp_sum ];
-      exact mul_le_mul ( hk ω hω ) ( by rw [ ← Finset.prod_inv_distrib ] ; exact Finset.prod_le_prod ( fun _ _ => norm_nonneg _ ) fun _ _ => by simpa [ Real.exp_neg ] using hb ω hω _ ) ( Finset.prod_nonneg fun _ _ => norm_nonneg _ ) ( by linarith [ norm_nonneg ( k ω t ), hk ω hω ] );
-    exact neg_le_of_abs_le ( le_trans ( Complex.abs_re_le_norm _ ) ( le_trans ( norm_sum_le _ _ ) ( le_trans ( Finset.sum_le_sum hterm ) hR ) ) );
-  have hpos := spectralSum_re_pos_of_gap F L H M R hdisj hcover hM hminor hMR
+    have h_fubini := sum_product_weight_mul_sum_product
+      (fun j a => (p j a : ℂ))
+      (fun j ω a => k ω (x j a))
+      (fun ω => (starRingEnd ℂ) (k ω t))
+    have h_factorized_zero := h_fubini.symm.trans h_sum_zero
+    simpa only [← hb_def, ← hF_def] using h_factorized_zero
+  have hminor := neg_le_spectralSum_re_of_exponential_bounds
+    b k t F H Δ C R hF_def hb hk hR
+  have hpos := spectralSum_re_pos_of_partition_gap
+    F L H M R hdisj hcover hM hminor hMR
   rw [h_sum_zero] at hpos
   norm_num at hpos
