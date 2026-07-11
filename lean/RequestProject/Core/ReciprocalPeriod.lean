@@ -46,6 +46,26 @@ lemma one_div_eq_period_div_real (b L : ℕ) (hb : 0 < b) (hL : 0 < L)
     (by exact_mod_cast hL.ne' : (L : ℝ) ≠ 0), one_mul, mul_comm]
   exact_mod_cast hmul.symm
 
+/-- An equality of integerized masses over a common positive period gives the
+corresponding equality of reciprocal masses. -/
+lemma reciprocal_sum_eq_of_integerized_sum_eq
+    (E : Finset ℕ) (q L : ℕ) (hL : 0 < L)
+    (heL : ∀ e ∈ E, e ∣ L)
+    (S : Finset ℕ) (hS : S ⊆ E)
+    (hsum : (∑ e ∈ S, ((L / e : ℕ) : ℤ)) = (q : ℤ)) :
+    (∑ e ∈ S, (1 : ℚ) / (e : ℚ)) = (q : ℚ) / (L : ℚ) := by
+  calc
+    ∑ e ∈ S, (1 : ℚ) / (e : ℚ) =
+        ∑ e ∈ S, ((L / e : ℕ) : ℚ) / (L : ℚ) :=
+      Finset.sum_congr rfl fun e he =>
+        one_div_eq_period_div e L
+          (Nat.pos_of_dvd_of_pos (heL e (hS he)) hL) hL (heL e (hS he))
+    _ = (∑ e ∈ S, ((L / e : ℕ) : ℚ)) / (L : ℚ) := by
+      rw [Finset.sum_div]
+    _ = (q : ℚ) / (L : ℚ) := by
+      congr 1
+      exact_mod_cast hsum
+
 /-- **No-wraparound Fourier indicator.**  A subset of an `L`-divisor set has
 reciprocal mass `q / L` precisely when its integerized mass is congruent to
 `q` modulo `L`; the strict total-mass bound excludes all nonzero wraps. -/

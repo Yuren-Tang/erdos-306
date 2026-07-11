@@ -1,5 +1,6 @@
 import RequestProject.Spectral.BernoulliCyclicFourier
 import RequestProject.Core.EgyptianRepresentation
+import RequestProject.Core.ReciprocalPeriod
 import RequestProject.Spectral.Selection
 
 /-!
@@ -88,13 +89,19 @@ lemma decode_subset_sum (E : Finset ℕ) (q L : ℕ) (hL : 0 < L)
             = (q : ℤ)) :
     (∑ e ∈ (Finset.univ.filter (fun j : {e // e ∈ E} => a j)).image Subtype.val,
         (1 : ℚ) / (e : ℚ)) = (q : ℚ) / (L : ℚ) := by
-  rw [ Finset.sum_image ];
-  · convert congr_arg ( fun x : ℤ => (x : ℚ) / (L : ℚ) ) ha using 1;
-    · push_cast [ Finset.sum_filter ];
-      rw [ Finset.sum_div _ _ _ ] ; congr ; ext ; split_ifs <;> simp +decide [ * ];
-      rw [ eq_div_iff ( by positivity ) ] ; ring;
-    · norm_num
-  · exact fun x hx y hy hxy => Subtype.ext hxy
+  let S := (Finset.univ.filter (fun j : {e // e ∈ E} => a j)).image Subtype.val
+  have hSE : S ⊆ E := by
+    intro e he
+    change e ∈ (Finset.univ.filter (fun j : {e // e ∈ E} => a j)).image Subtype.val at he
+    rw [Finset.mem_image] at he
+    obtain ⟨j, _, rfl⟩ := he
+    exact j.2
+  apply ReciprocalPeriod.reciprocal_sum_eq_of_integerized_sum_eq E q L hL heL S hSE
+  change (∑ e ∈ (Finset.univ.filter (fun j : {e // e ∈ E} => a j)).image Subtype.val,
+    ((L / e : ℕ) : ℤ)) = (q : ℤ)
+  rw [Finset.sum_image]
+  · simpa [Finset.sum_filter] using ha
+  · exact fun x _ y _ hxy => Subtype.ext hxy
 
 set_option maxHeartbeats 2000000 in
 /-- **Spectral selection for reciprocal subset sums.**  From the finite-Fourier
