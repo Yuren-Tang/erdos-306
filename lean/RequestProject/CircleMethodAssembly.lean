@@ -1,4 +1,5 @@
 import RequestProject.Spectral.BernoulliSum
+import RequestProject.Spectral.MainArcParameters
 import RequestProject.Core.Semiprime
 
 open Complex Finset BigOperators Real
@@ -53,15 +54,18 @@ structure ArcConstruction (T : Finset ℕ) (b : ℕ) where
   hpart : Finset.range L = SM ∪ Sm
   hdisj : Disjoint SM Sm
   hN : (1:ℝ) / Real.sqrt (sigmaE2 E theta) ≤ (N:ℝ)
-  htw : ∀ m ∈ Finset.Icc (-N) N, ∀ e ∈ E, |(m : ℝ) / (e : ℝ)| ≤ 1/10
-  hsmall : ∀ m ∈ Finset.Icc (-N) N, (∑ e ∈ E, 100000 * |(m:ℝ)/(e:ℝ)|^3) ≤ 1/10
+  htw : ∀ m ∈ Finset.Icc (-N) N, ∀ e ∈ E,
+    |(m : ℝ) / (e : ℝ)| ≤ bernoulliTaylorRadius
+  hsmall : ∀ m ∈ Finset.Icc (-N) N,
+    (∑ e ∈ E, bernoulliTaylorRemainderConstant * |(m:ℝ)/(e:ℝ)|^3) ≤
+      bernoulliMainTermRemainderBudget
   hmaps : ∀ h ∈ SM, lbl h ∈ Finset.Icc (-N) N
   hinj : ∀ h₁ ∈ SM, ∀ h₂ ∈ SM, lbl h₁ = lbl h₂ → h₁ = h₂
   hsurj : ∀ m ∈ Finset.Icc (-N) N, ∃ h ∈ SM, lbl h = m
   hterm : ∀ h ∈ SM,
     fourierTerm E theta (L / b) L h = term_label E theta (L / b) L (lbl h)
   hminor : (∑ h ∈ Sm, ‖fourierTerm E theta (L / b) L h‖) ≤ Bm
-  hbeat : Bm < 0.8 * (Real.exp (-(Real.pi^2/2)) / 2) / Real.sqrt (sigmaE2 E theta)
+  hbeat : Bm < bernoulliMainTermConstant / Real.sqrt (sigmaE2 E theta)
 
 
 end CircleMethod

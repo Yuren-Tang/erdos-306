@@ -50,9 +50,11 @@ lemma htw_of_window_edge_lower
 lemma hsmall_of_cubic_sum_bound
     (E : Finset ℕ) (N : ℤ)
     (hbound : ∀ m ∈ Finset.Icc (-N) N,
-      (∑ e ∈ E, 100000 * |(m : ℝ) / (e : ℝ)| ^ 3) ≤ 1 / 10) :
+      (∑ e ∈ E, bernoulliTaylorRemainderConstant * |(m : ℝ) / (e : ℝ)| ^ 3) ≤
+        bernoulliMainTermRemainderBudget) :
     ∀ m ∈ Finset.Icc (-N) N,
-      (∑ e ∈ E, 100000 * |(m : ℝ) / (e : ℝ)| ^ 3) ≤ 1 / 10 :=
+      (∑ e ∈ E, bernoulliTaylorRemainderConstant * |(m : ℝ) / (e : ℝ)| ^ 3) ≤
+        bernoulliMainTermRemainderBudget :=
   hbound
 
 /-- `hsmall` from a uniform ratio bound and a cardinality/cubic-load bound. -/
@@ -61,20 +63,24 @@ lemma hsmall_of_uniform_ratio_bound
     (_hρnonneg : 0 ≤ ρ)
     (hratio : ∀ m ∈ Finset.Icc (-N) N, ∀ e ∈ E,
       |(m : ℝ) / (e : ℝ)| ≤ ρ)
-    (hcard : (E.card : ℝ) * 100000 * ρ ^ 3 ≤ 1 / 10) :
+    (hcard : (E.card : ℝ) * bernoulliTaylorRemainderConstant * ρ ^ 3 ≤
+      bernoulliMainTermRemainderBudget) :
     ∀ m ∈ Finset.Icc (-N) N,
-      (∑ e ∈ E, 100000 * |(m : ℝ) / (e : ℝ)| ^ 3) ≤ 1 / 10 := by
+      (∑ e ∈ E, bernoulliTaylorRemainderConstant * |(m : ℝ) / (e : ℝ)| ^ 3) ≤
+        bernoulliMainTermRemainderBudget := by
   intro m hm
   have hsum :
-      (∑ e ∈ E, 100000 * |(m : ℝ) / (e : ℝ)| ^ 3)
-        ≤ ∑ _e ∈ E, 100000 * ρ ^ 3 := by
+      (∑ e ∈ E, bernoulliTaylorRemainderConstant * |(m : ℝ) / (e : ℝ)| ^ 3)
+        ≤ ∑ _e ∈ E, bernoulliTaylorRemainderConstant * ρ ^ 3 := by
     apply Finset.sum_le_sum
     intro e he
     have hr := hratio m hm e he
     have hab : |(m : ℝ) / (e : ℝ)| ≤ ρ := hr
+    have hC := bernoulliTaylorRemainderConstant_nonneg
     gcongr
   have hconst :
-      (∑ _e ∈ E, 100000 * ρ ^ 3) = (E.card : ℝ) * 100000 * ρ ^ 3 := by
+      (∑ _e ∈ E, bernoulliTaylorRemainderConstant * ρ ^ 3) =
+        (E.card : ℝ) * bernoulliTaylorRemainderConstant * ρ ^ 3 := by
     rw [Finset.sum_const, nsmul_eq_mul]; ring
   rw [hconst] at hsum
   exact le_trans hsum hcard
@@ -84,9 +90,10 @@ structure MainArcNumericFields (E : Finset ℕ) (theta : ℕ → ℝ) (N : ℤ) 
   hN : (1 : ℝ) / Real.sqrt (sigmaE2 E theta) ≤ (N : ℝ)
   hNnonneg : 0 ≤ N
   htw : ∀ m ∈ Finset.Icc (-N) N, ∀ e ∈ E,
-    |(m : ℝ) / (e : ℝ)| ≤ 1 / 10
+    |(m : ℝ) / (e : ℝ)| ≤ bernoulliTaylorRadius
   hsmall : ∀ m ∈ Finset.Icc (-N) N,
-    (∑ e ∈ E, 100000 * |(m : ℝ) / (e : ℝ)| ^ 3) ≤ 1 / 10
+    (∑ e ∈ E, bernoulliTaylorRemainderConstant * |(m : ℝ) / (e : ℝ)| ^ 3) ≤
+      bernoulliMainTermRemainderBudget
 
 /-- Constructor for `MainArcNumericFields` from the scale hypothesis, a uniform
 edge lower bound, a uniform ratio bound, and a cubic-load cardinality bound. -/
@@ -98,7 +105,8 @@ def mainArcNumericFields_of
     (hρnonneg : 0 ≤ ρ)
     (hratio : ∀ m ∈ Finset.Icc (-N) N, ∀ e ∈ E,
       |(m : ℝ) / (e : ℝ)| ≤ ρ)
-    (hcard : (E.card : ℝ) * 100000 * ρ ^ 3 ≤ 1 / 10) :
+    (hcard : (E.card : ℝ) * bernoulliTaylorRemainderConstant * ρ ^ 3 ≤
+      bernoulliMainTermRemainderBudget) :
     MainArcNumericFields E theta N where
   hN := hN
   hNnonneg := mainArc_N_nonneg_of_inv_sqrt_le E theta N hN

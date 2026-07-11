@@ -22,8 +22,9 @@ the low-frequency Fourier sum used by spectral selection.
 /-- **Non-vanishing of the Bernoulli factor on the main arc.**  For `θ ∈ [1/3,2/3]`
 and `|t| ≤ 1/10`, `φ_θ(t) ≠ 0`.  (Indeed `|φ|² ≥ cos²(πt) > 0`.) -/
 lemma bernoulliCharFun_ne_zero_main (θ t : ℝ) (hlb : 1/3 ≤ θ) (hub : θ ≤ 2/3)
-    (ht : |t| ≤ 1/10) :
+    (ht : |t| ≤ bernoulliTaylorRadius) :
     bernoulliCharFun θ t ≠ 0 := by
+  change |t| ≤ 1 / 10 at ht
   have hns : Complex.normSq (bernoulliCharFun θ t)
       = 1 - 4 * θ * (1 - θ) * Real.sin (Real.pi * t) ^ 2 := bernoulliCharFun_normSq θ t
   -- 4θ(1-θ) ≤ 1
@@ -59,11 +60,11 @@ the linear coefficient being pinned to `q/L` by the **mass identity**. -/
 lemma sum_logphi_bound (E : Finset ℕ) (θ : ℕ → ℝ) (q L : ℕ) (m : ℤ)
     (hlb : ∀ e ∈ E, 1/3 ≤ θ e) (hub : ∀ e ∈ E, θ e ≤ 2/3)
     (hmass : (∑ e ∈ E, θ e / (e : ℝ)) = (q : ℝ) / (L : ℝ))
-    (ht : ∀ e ∈ E, |(m : ℝ) / (e : ℝ)| ≤ 1/10) :
+    (ht : ∀ e ∈ E, |(m : ℝ) / (e : ℝ)| ≤ bernoulliTaylorRadius) :
     ‖(∑ e ∈ E, Complex.log (bernoulliCharFun (θ e) ((m:ℝ)/(e:ℝ))))
         - (2*Real.pi*((m:ℝ)*(q:ℝ)/(L:ℝ))*Complex.I
             - 2*Real.pi^2*(m:ℝ)^2*((sigmaE2 E θ : ℝ) : ℂ))‖
-      ≤ ∑ e ∈ E, 100000 * |(m:ℝ)/(e:ℝ)|^3 := by
+      ≤ ∑ e ∈ E, bernoulliTaylorRemainderConstant * |(m:ℝ)/(e:ℝ)|^3 := by
   have hstep := sum_bernoulli_log_taylor E θ (fun e => (m:ℝ)/(e:ℝ)) hlb hub ht
   -- mass identity over ℂ
   have hmassC : (∑ e ∈ E, (θ e : ℂ) / (e : ℂ)) = (q : ℂ) / (L : ℂ) := by
@@ -101,7 +102,7 @@ lemma sum_logphi_bound (E : Finset ℕ) (θ : ℕ → ℝ) (q L : ℕ) (m : ℤ)
 `exp(−2π²m²σ_E²)` times `exp(δ)`, where `δ` is the cubic Taylor remainder. -/
 lemma term_label_eq (E : Finset ℕ) (θ : ℕ → ℝ) (q L : ℕ) (m : ℤ)
     (hlb : ∀ e ∈ E, 1/3 ≤ θ e) (hub : ∀ e ∈ E, θ e ≤ 2/3)
-    (ht : ∀ e ∈ E, |(m : ℝ) / (e : ℝ)| ≤ 1/10) :
+    (ht : ∀ e ∈ E, |(m : ℝ) / (e : ℝ)| ≤ bernoulliTaylorRadius) :
     term_label E θ q L m
       = ((Real.exp (-(2*Real.pi^2*(m:ℝ)^2*(sigmaE2 E θ))) : ℝ) : ℂ)
           * Complex.exp ((∑ e ∈ E, Complex.log (bernoulliCharFun (θ e) ((m:ℝ)/(e:ℝ))))
@@ -125,9 +126,11 @@ real part of the main-arc term is at least `0.8` times the Gaussian. -/
 lemma term_label_re_lower (E : Finset ℕ) (θ : ℕ → ℝ) (q L : ℕ) (m : ℤ)
     (hlb : ∀ e ∈ E, 1/3 ≤ θ e) (hub : ∀ e ∈ E, θ e ≤ 2/3)
     (hmass : (∑ e ∈ E, θ e / (e : ℝ)) = (q : ℝ) / (L : ℝ))
-    (ht : ∀ e ∈ E, |(m : ℝ) / (e : ℝ)| ≤ 1/10)
-    (hsmall : (∑ e ∈ E, 100000 * |(m:ℝ)/(e:ℝ)|^3) ≤ 1/10) :
-    0.8 * Real.exp (-(2*Real.pi^2*(m:ℝ)^2*(sigmaE2 E θ))) ≤ (term_label E θ q L m).re := by
+    (ht : ∀ e ∈ E, |(m : ℝ) / (e : ℝ)| ≤ bernoulliTaylorRadius)
+    (hsmall : (∑ e ∈ E, bernoulliTaylorRemainderConstant * |(m:ℝ)/(e:ℝ)|^3)
+      ≤ bernoulliMainTermRemainderBudget) :
+    bernoulliMainTermRetention * Real.exp
+      (-(2*Real.pi^2*(m:ℝ)^2*(sigmaE2 E θ))) ≤ (term_label E θ q L m).re := by
   rw [term_label_eq E θ q L m hlb hub ht]
   set G : ℝ := Real.exp (-(2*Real.pi^2*(m:ℝ)^2*(sigmaE2 E θ))) with hGdef
   have hGpos : 0 < G := Real.exp_pos _
@@ -135,13 +138,19 @@ lemma term_label_re_lower (E : Finset ℕ) (θ : ℕ → ℝ) (q L : ℕ) (m : �
       - (2*Real.pi*((m:ℝ)*(q:ℝ)/(L:ℝ))*Complex.I
           - 2*Real.pi^2*(m:ℝ)^2*((sigmaE2 E θ : ℝ) : ℂ)) with hδdef
   -- ‖δ‖ ≤ 1/10
-  have hδnorm : ‖δ‖ ≤ 1/10 := by
+  have hδnorm : ‖δ‖ ≤ bernoulliMainTermRemainderBudget := by
     rw [hδdef]
     exact le_trans (sum_logphi_bound E θ q L m hlb hub hmass ht) hsmall
-  have hδle1 : ‖δ‖ ≤ 1 := by linarith [hδnorm]
+  have hδle1 : ‖δ‖ ≤ 1 := by
+    rw [bernoulliMainTermRemainderBudget] at hδnorm
+    linarith [hδnorm]
   -- (exp δ).re ≥ 0.8
-  have hre : (0.8 : ℝ) ≤ (Complex.exp δ).re := by
-    linarith [one_sub_two_norm_le_exp_re δ hδle1, hδnorm]
+  have hre : bernoulliMainTermRetention ≤ (Complex.exp δ).re := by
+    calc
+      bernoulliMainTermRetention =
+          1 - 2 * bernoulliMainTermRemainderBudget := rfl
+      _ ≤ 1 - 2 * ‖δ‖ := by linarith [hδnorm]
+      _ ≤ (Complex.exp δ).re := one_sub_two_norm_le_exp_re δ hδle1
   -- combine
   have hmulre : (((G:ℂ)) * Complex.exp δ).re = G * (Complex.exp δ).re := by
     simp [Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im]
@@ -155,21 +164,25 @@ lemma main_re_lower (E : Finset ℕ) (θ : ℕ → ℝ) (q L : ℕ) (N : ℤ)
     (hlb : ∀ e ∈ E, 1/3 ≤ θ e) (hub : ∀ e ∈ E, θ e ≤ 2/3)
     (hmass : (∑ e ∈ E, θ e / (e : ℝ)) = (q : ℝ) / (L : ℝ))
     (hN : (1:ℝ) / Real.sqrt (sigmaE2 E θ) ≤ (N:ℝ))
-    (ht : ∀ m ∈ Finset.Icc (-N) N, ∀ e ∈ E, |(m : ℝ) / (e : ℝ)| ≤ 1/10)
-    (hsmall : ∀ m ∈ Finset.Icc (-N) N, (∑ e ∈ E, 100000 * |(m:ℝ)/(e:ℝ)|^3) ≤ 1/10) :
-    0.8 * (Real.exp (-(Real.pi^2/2)) / 2) / Real.sqrt (sigmaE2 E θ)
+    (ht : ∀ m ∈ Finset.Icc (-N) N, ∀ e ∈ E,
+      |(m : ℝ) / (e : ℝ)| ≤ bernoulliTaylorRadius)
+    (hsmall : ∀ m ∈ Finset.Icc (-N) N,
+      (∑ e ∈ E, bernoulliTaylorRemainderConstant * |(m:ℝ)/(e:ℝ)|^3)
+        ≤ bernoulliMainTermRemainderBudget) :
+    bernoulliMainTermConstant / Real.sqrt (sigmaE2 E θ)
       ≤ (∑ m ∈ Finset.Icc (-N) N, term_label E θ q L m).re := by
+  norm_num [bernoulliMainTermConstant, bernoulliMainTermRetention,
+    bernoulliMainTermRemainderBudget]
   set σ := Real.sqrt (sigmaE2 E θ) with hσdef
   have hσ2pos : 0 < sigmaE2 E θ := sigmaE2_pos E θ hne he0 hlb hub
   have hσpos : 0 < σ := Real.sqrt_pos.mpr hσ2pos
   have hσsq : σ ^ 2 = sigmaE2 E θ := Real.sq_sqrt hσ2pos.le
-  rw [Complex.re_sum]
-  calc 0.8 * (Real.exp (-(Real.pi^2/2)) / 2) / σ
-      = 0.8 * (Real.exp (-(Real.pi^2/2)) / 2 / σ) := by ring
-    _ ≤ 0.8 * (∑ m ∈ Finset.Icc (-N) N, Real.exp (-(2*Real.pi^2*σ^2)*(m:ℝ)^2)) := by
+  calc (4 / 5 : ℝ) * (Real.exp (-(Real.pi^2/2)) / 2) / σ
+      = (4 / 5 : ℝ) * (Real.exp (-(Real.pi^2/2)) / 2 / σ) := by ring
+    _ ≤ (4 / 5 : ℝ) * (∑ m ∈ Finset.Icc (-N) N, Real.exp (-(2*Real.pi^2*σ^2)*(m:ℝ)^2)) := by
         apply mul_le_mul_of_nonneg_left _ (by norm_num)
         exact main_arc_gaussian_lower σ hσpos N hN
-    _ = ∑ m ∈ Finset.Icc (-N) N, 0.8 * Real.exp (-(2*Real.pi^2*σ^2)*(m:ℝ)^2) := by
+    _ = ∑ m ∈ Finset.Icc (-N) N, (4 / 5 : ℝ) * Real.exp (-(2*Real.pi^2*σ^2)*(m:ℝ)^2) := by
         rw [Finset.mul_sum]
     _ ≤ ∑ m ∈ Finset.Icc (-N) N, (term_label E θ q L m).re := by
         refine Finset.sum_le_sum (fun m hm => ?_)
@@ -177,7 +190,10 @@ lemma main_re_lower (E : Finset ℕ) (θ : ℕ → ℝ) (q L : ℕ) (N : ℤ)
             = Real.exp (-(2*Real.pi^2*(m:ℝ)^2*(sigmaE2 E θ))) := by
           congr 1; rw [hσsq]; ring
         rw [hgauss]
-        exact term_label_re_lower E θ q L m hlb hub hmass (ht m hm) (hsmall m hm)
+        have hterm := term_label_re_lower E θ q L m hlb hub hmass
+          (ht m hm) (hsmall m hm)
+        norm_num [bernoulliMainTermRetention, bernoulliMainTermRemainderBudget] at hterm
+        exact hterm
 
 /-- **Main-arc reindexing.**  Given a label map `lbl` that bijects the main-arc
 frequency set `SM` onto the label window `[-N, N]` and identifies the Fourier
@@ -189,13 +205,16 @@ lemma main_sum_re_lower (E : Finset ℕ) (θ : ℕ → ℝ) (q L : ℕ) (N : ℤ
     (hlb : ∀ e ∈ E, 1/3 ≤ θ e) (hub : ∀ e ∈ E, θ e ≤ 2/3)
     (hmass : (∑ e ∈ E, θ e / (e : ℝ)) = (q : ℝ) / (L : ℝ))
     (hN : (1:ℝ) / Real.sqrt (sigmaE2 E θ) ≤ (N:ℝ))
-    (htw : ∀ m ∈ Finset.Icc (-N) N, ∀ e ∈ E, |(m : ℝ) / (e : ℝ)| ≤ 1/10)
-    (hsmall : ∀ m ∈ Finset.Icc (-N) N, (∑ e ∈ E, 100000 * |(m:ℝ)/(e:ℝ)|^3) ≤ 1/10)
+    (htw : ∀ m ∈ Finset.Icc (-N) N, ∀ e ∈ E,
+      |(m : ℝ) / (e : ℝ)| ≤ bernoulliTaylorRadius)
+    (hsmall : ∀ m ∈ Finset.Icc (-N) N,
+      (∑ e ∈ E, bernoulliTaylorRemainderConstant * |(m:ℝ)/(e:ℝ)|^3)
+        ≤ bernoulliMainTermRemainderBudget)
     (hmaps : ∀ h ∈ SM, lbl h ∈ Finset.Icc (-N) N)
     (hinj : ∀ h₁ ∈ SM, ∀ h₂ ∈ SM, lbl h₁ = lbl h₂ → h₁ = h₂)
     (hsurj : ∀ m ∈ Finset.Icc (-N) N, ∃ h ∈ SM, lbl h = m)
     (hterm : ∀ h ∈ SM, fourierTerm E θ q L h = term_label E θ q L (lbl h)) :
-    0.8 * (Real.exp (-(Real.pi^2/2)) / 2) / Real.sqrt (sigmaE2 E θ)
+    bernoulliMainTermConstant / Real.sqrt (sigmaE2 E θ)
       ≤ (∑ h ∈ SM, fourierTerm E θ q L h).re := by
   have hsum : (∑ h ∈ SM, fourierTerm E θ q L h)
       = ∑ m ∈ Finset.Icc (-N) N, term_label E θ q L m := by

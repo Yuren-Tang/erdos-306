@@ -1,4 +1,5 @@
-import RequestProject.CircleMethodArcs
+import RequestProject.Spectral.BernoulliCharacteristic
+import RequestProject.Spectral.MainArcParameters
 import Mathlib.Analysis.SpecialFunctions.Complex.LogBounds
 
 open Complex Finset BigOperators Real
@@ -49,9 +50,12 @@ set_option maxHeartbeats 400000 in
 `|t| ≤ 1/10`, `log φ_θ(t) = 2πiθt − 2π²θ(1−θ)t² + O(|t|³)` with an absolute
 constant.  Built from `log_one_sub_remainder` + `Complex.exp_bound`. -/
 lemma bernoulli_log_taylor (θ t : ℝ) (hθlb : 1/3 ≤ θ) (hθub : θ ≤ 2/3)
-    (ht : |t| ≤ 1/10) :
+    (ht : |t| ≤ bernoulliTaylorRadius) :
     ‖Complex.log (bernoulliCharFun θ t) -
-        (2*Real.pi*θ*t*Complex.I - 2*Real.pi^2*θ*(1-θ)*t^2)‖ ≤ 100000 * |t|^3 := by
+        (2*Real.pi*θ*t*Complex.I - 2*Real.pi^2*θ*(1-θ)*t^2)‖ ≤
+      bernoulliTaylorRemainderConstant * |t|^3 := by
+  change |t| ≤ 1 / 10 at ht
+  change _ ≤ 100000 * |t| ^ 3
   have hθ0 : (0:ℝ) ≤ θ := le_trans (by norm_num) hθlb
   have hpi : (0:ℝ) < Real.pi := Real.pi_pos
   have ht0 : (0:ℝ) ≤ |t| := abs_nonneg t
@@ -171,11 +175,11 @@ lemma prod_eq_exp_sum_log {ι : Type*} (E : Finset ι) (f : ι → ℂ)
 any edge set with weights in `[1/3,2/3]` and `|t e| ≤ 1/10`. -/
 lemma sum_bernoulli_log_taylor {ι : Type*} (E : Finset ι) (θ t : ι → ℝ)
     (hlb : ∀ e ∈ E, 1/3 ≤ θ e) (hub : ∀ e ∈ E, θ e ≤ 2/3)
-    (ht : ∀ e ∈ E, |t e| ≤ 1/10) :
+    (ht : ∀ e ∈ E, |t e| ≤ bernoulliTaylorRadius) :
     ‖(∑ e ∈ E, Complex.log (bernoulliCharFun (θ e) (t e))) -
         ∑ e ∈ E, (2*Real.pi*(θ e)*(t e)*Complex.I
           - 2*Real.pi^2*(θ e)*(1-(θ e))*(t e)^2)‖
-      ≤ ∑ e ∈ E, 100000 * |t e|^3 := by
+      ≤ ∑ e ∈ E, bernoulliTaylorRemainderConstant * |t e|^3 := by
   rw [← Finset.sum_sub_distrib]
   refine le_trans (norm_sum_le _ _) ?_
   exact Finset.sum_le_sum (fun e he =>
