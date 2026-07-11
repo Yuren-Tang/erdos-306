@@ -54,31 +54,6 @@ private lemma bernoulliFourierTerm_attachFin_sum (E : Finset ℕ) (theta : ℕ �
   exact sum_attachFin L SS h (fun m => fourierTerm E theta q L m)
 
 /-
-**Pointwise tail bound.**  With `Δ ω j = -log‖bernoulliSpectralFactor‖` (and a nonnegative
-fallback `Ktail` at the zeros), `exp(-∑_j Δ ω j)` is bounded by the norm of the
-spectral term plus `exp(-Ktail)`.
--/
-private lemma bernoulliSpectralTail_pointwise (E : Finset ℕ) (theta : ℕ → ℝ) (q L : ℕ)
-    (hthlb : ∀ e ∈ E, 0 ≤ theta e) (hthub : ∀ e ∈ E, theta e ≤ 1)
-    (Ktail : ℝ) (hK0 : 0 ≤ Ktail) (ω : Fin L) :
-    Real.exp (-(∑ j : {e // e ∈ E},
-        (if ‖bernoulliSpectralFactor E theta L j ω‖ = 0 then Ktail
-         else - Real.log ‖bernoulliSpectralFactor E theta L j ω‖)))
-      ≤ ‖fourierTerm E theta q L (ω : ℕ)‖ + Real.exp (-Ktail) := by
-  by_cases h : ∃ j : { e // e ∈ E }, ‖bernoulliSpectralFactor E theta L j ω‖ = 0;
-  · obtain ⟨ j, hj ⟩ := h; simp_all +decide;
-    refine' le_trans _ ( le_add_of_nonneg_left <| norm_nonneg _ );
-    rw [ Finset.sum_eq_add_sum_sdiff_singleton_of_mem ( Finset.mem_attach _ j ) ];
-    simp [hj];
-    exact le_trans ( by aesop ) ( Finset.single_le_sum ( fun x _ => by split_ifs <;> first | positivity | exact neg_nonneg_of_nonpos <| Real.log_nonpos ( norm_nonneg _ ) <| by exact le_trans ( norm_bernoulliSpectralFactor_le_one E theta L x ω ( hthlb _ <| x.2 ) ( hthub _ <| x.2 ) ) <| by norm_num ) <| Finset.mem_attach _ j );
-  · simp_all +decide;
-    rw [ Real.exp_sum, Finset.prod_congr rfl fun x hx => Real.exp_log ( norm_pos_iff.mpr ( h _ x.2 ) ) ];
-    rw [ show fourierTerm E theta q L ω = bernoulliFourierTerm E theta q L ω by rw [ bernoulliFourierTerm_eq_fourierTerm ] ];
-    unfold bernoulliFourierTerm;
-    norm_num [ norm_mul, norm_cyclicCharacter ];
-    positivity
-
-/-
 **Decode.**  A hitting configuration `a` decodes to a subset of `E` with the
 exact reciprocal identity.
 -/
