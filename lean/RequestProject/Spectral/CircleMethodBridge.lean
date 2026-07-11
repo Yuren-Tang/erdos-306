@@ -141,20 +141,9 @@ theorem exists_subset_sum_eq_of_fourier_gap
               refine' Finset.sum_bij ( fun x hx => x.val ) _ _ _ _ <;> aesop;
           · refine' lt_of_le_of_lt ( sub_le_self _ <| Finset.sum_nonneg fun _ _ => by positivity ) _;
             exact_mod_cast hq;
-        have h_charsum :
-            (∑ ω : Fin L, cyclicCharacter L ω
-              ((∑ j : {e // e ∈ E}, if a j then ((L / j.1 : ℕ) : ℤ) else 0) - (q : ℤ)))
-              = if (L : ℤ) ∣ ((∑ j : {e // e ∈ E},
-                if a j then ((L / j.1 : ℕ) : ℤ) else 0) - (q : ℤ)) then (L : ℂ) else 0 := by
-          exact charsum_orth L hL _
-        convert congr_arg ( fun x : ℂ => ( 1 / L : ℂ ) * x ) h_charsum.symm using 1;
-        · split_ifs <;> norm_num [ hL.ne' ];
-          · aesop;
-          · exact ‹¬_› ( by obtain ⟨ k, hk ⟩ := ‹_›; nlinarith [ show k = 0 by nlinarith [ abs_lt.mp h_no_wraparound ] ] );
-        · congr 1
-          exact Finset.sum_congr rfl (fun ω _ => cyclicCharacter_mul_star L ω
-              (∑ j : {e // e ∈ E}, if a j then ((L / j.1 : ℕ) : ℤ) else 0)
-              (q : ℤ)))
+        exact cyclicCharacter_indicator_of_abs_sub_lt L hL
+          (∑ j : {e // e ∈ E}, if a j then ((L / j.1 : ℕ) : ℤ) else 0)
+          (q : ℤ) h_no_wraparound)
       (x := fun j a => if a then ((L / j.1 : ℕ) : ℤ) else 0)
       (b := fun j ω => bernoulliSpectralFactor E theta L j ω)
       (hb_def := by intro j ω; rfl)

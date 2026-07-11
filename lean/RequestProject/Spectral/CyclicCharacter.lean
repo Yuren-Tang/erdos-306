@@ -74,6 +74,22 @@ lemma charsum_orth (L : ℕ) (hL : 0 < L) (n : ℤ) :
   simpa [ψ, cyclicCharacter_eq_stdAddChar, AddChar.mulShift_apply, mul_comm, hψ, hfin,
     ZMod.intCast_zmod_eq_zero_iff_dvd] using hsum
 
+/-- Inside one fundamental interval, the normalized cyclic character sum is
+the indicator of equality. -/
+lemma cyclicCharacter_indicator_of_abs_sub_lt
+    (L : ℕ) (hL : 0 < L) (m q : ℤ) (hnowrap : |m - q| < L) :
+    (if m = q then (1 : ℂ) else 0) =
+      (1 / (L : ℂ)) *
+        ∑ ω : Fin L, cyclicCharacter L ω m *
+          (starRingEnd ℂ) (cyclicCharacter L ω q) := by
+  rw [Finset.sum_congr rfl fun ω _ => cyclicCharacter_mul_star L ω m q]
+  rw [charsum_orth L hL]
+  by_cases hmq : m = q
+  · simp [hmq, hL.ne']
+  · have hnotdvd : ¬(L : ℤ) ∣ m - q := fun hdiv =>
+      hmq (sub_eq_zero.mp (Int.eq_zero_of_abs_lt_dvd hdiv hnowrap))
+    simp [hmq, hnotdvd]
+
 /-- Additive characters turn a finite sum into a product. -/
 lemma cyclicCharacter_sum_eq_prod (L : ℕ) (ω : Fin L)
     {ι : Type*} [Fintype ι] (g : ι → ℤ) :
