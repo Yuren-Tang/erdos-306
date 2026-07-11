@@ -1,5 +1,4 @@
 import RequestProject.Core.FiniteProducts
-import RequestProject.R2MinorEstimateInterface
 import RequestProject.R2AssemblyFields
 
 open Finset BigOperators

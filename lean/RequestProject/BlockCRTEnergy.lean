@@ -20,9 +20,6 @@ must exhibit a saving over this product.
 - CP 02 §1 (CRT energy definitions)
 - CP 03 §4 (single-block counting theorem)
 -/
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Data.ZMod.Basic
-import Mathlib.Data.ZMod.ValMinAbs
 import Mathlib.Tactic
 
 open Finset BigOperators Classical

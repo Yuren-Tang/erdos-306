@@ -4,7 +4,6 @@
 Deterministic reciprocal-phase dispersion and the energy penalty forced by a
 label mismatch between consecutive prime blocks.
 -/
-import RequestProject.GlobalControl.ControlEnergy
 import RequestProject.GlobalControl.ControlVarianceBounds
 import RequestProject.Core.PrimeDivisorCount
 import RequestProject.LocalEnergy.AdjacentScaleEnergy

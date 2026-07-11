@@ -9,7 +9,7 @@ namespace GlobalControl
 /-- Prime-counting upper bound on a dyadic block, from Mathlib's
 `primorial_le_four_pow`: the primes in `[2^k, 2^(k+1))` number at most
 `2^(k+2)/k`. -/
-lemma dyadic_block_card_upper (k : ℕ) (_hk : 1 ≤ k) :
+lemma dyadic_block_card_upper (k : ℕ) :
     (k : ℝ) * ((dyadicBlock k).card : ℝ) ≤ (2 : ℝ) ^ (k + 2) := by
   have h_card : (dyadicBlock k).card * k ≤ 2 ^ (k + 2) := by
     have h_card : (2 ^ k) ^ (dyadicBlock k).card ≤ 4 ^ (2 ^ (k + 1)) := by
@@ -58,7 +58,7 @@ lemma dyadicBlock_recip_sum_le_four_div (k : ℕ) (hk : 1 ≤ k) :
             Finset.sum_le_sum hterm
       _ = ((dyadicBlock k).card : ℝ) * (1 / ((2 : ℝ) ^ k)) := by
             rw [Finset.sum_const, nsmul_eq_mul]
-  have hcard := dyadic_block_card_upper k hk
+  have hcard := dyadic_block_card_upper k
   have hkR : 0 < (k : ℝ) := by exact_mod_cast hk
   have hpow : 0 < (2 : ℝ) ^ k := pow_pos (by norm_num) k
   have hcard' : ((dyadicBlock k).card : ℝ) ≤ (2 : ℝ) ^ (k + 2) / (k : ℝ) := by

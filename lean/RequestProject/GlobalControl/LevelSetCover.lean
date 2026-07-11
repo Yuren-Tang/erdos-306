@@ -1,6 +1,5 @@
 import RequestProject.GlobalControl.ControlEnergy
 import RequestProject.GlobalControl.Encoding.AssignmentData
-import RequestProject.GlobalControl.LevelSetParameters
 
 /-!
 # Finite cover of a global energy level set

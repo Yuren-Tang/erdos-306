@@ -1,7 +1,4 @@
-import RequestProject.Core.Asymptotics
-import RequestProject.Core.FiniteInterval
 import RequestProject.Core.LevelSetLaplace
-import RequestProject.LocalEnergy.CRTModel
 import RequestProject.LocalEnergy.DominantLabel
 import RequestProject.LocalEnergy.FingerprintLevelSet
 

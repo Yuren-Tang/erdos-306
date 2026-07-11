@@ -1,4 +1,3 @@
-import Mathlib.Data.Int.Basic
 import Mathlib.Data.Int.NatAbs
 import Mathlib.Order.Interval.Finset.Nat
 

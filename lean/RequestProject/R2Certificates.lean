@@ -187,7 +187,7 @@ lemma exists_r2_numeric_ledger (b : ℕ) (hb : 3 ≤ b) (hbsf : Squarefree b) :
   obtain ⟨k0minM, Ctail, hCtail, hSB⟩ :=
     exists_r2_minorSupportBudget_from_multiGadget_lanes η hηpos
   obtain ⟨C0, hC0one, hC0bd⟩ :=
-    r2_exists_C Ctail (c3 / K) b hCtail (by positivity) hbpos
+    r2_exists_C Ctail (c3 / K) b (by positivity)
   set C : ℝ := max C0 3 with hCdef
   have hCge3 : (3 : ℝ) ≤ C := le_max_right _ _
   have hCge1 : (1 : ℝ) ≤ C := le_trans (by norm_num) hCge3
@@ -204,7 +204,7 @@ lemma exists_r2_numeric_ledger (b : ℕ) (hb : 3 ≤ b) (hbsf : Squarefree b) :
   set Dmp : ℝ := c3 / (4 * K * (b : ℝ) * (2 * C + 3)) with hDmpdef
   have hDmppos : 0 < Dmp := by
     rw [hDmpdef]; positivity
-  obtain ⟨G', hG'⟩ := r2_exists_pow_le base_b Dmp hbb0 hbb1 hDmppos
+  obtain ⟨G', hG'⟩ := r2_exists_pow_le base_b Dmp hbb1 hDmppos
   set G : ℕ := max 1 G' with hGdef
   have hG1 : 1 ≤ G := le_max_left _ _
   have hG : base_b ^ G ≤ Dmp :=

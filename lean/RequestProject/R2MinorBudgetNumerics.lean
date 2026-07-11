@@ -1,5 +1,4 @@
 import RequestProject.R2MinorSupportBudget
-import RequestProject.GlobalControl.ControlVariancePositivity
 
 open Finset BigOperators GlobalControl
 

@@ -1,5 +1,3 @@
-import RequestProject.LocalEnergy.DominantLabel.Encoding
-import RequestProject.LocalEnergy.DominantLabel.Threshold
 import RequestProject.LocalEnergy.DominantLabel.FixedLabel
 import RequestProject.LocalEnergy.DominantLabel.ColdRange
 

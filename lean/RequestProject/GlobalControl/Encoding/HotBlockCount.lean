@@ -1,4 +1,3 @@
-import RequestProject.Core.Asymptotics
 import RequestProject.GlobalControl.Encoding.BlockData
 import RequestProject.LocalEnergy.LevelSet
 

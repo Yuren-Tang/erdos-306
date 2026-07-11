@@ -1,6 +1,4 @@
 import RequestProject.R2MinorAssembly
-import RequestProject.ExtraEnergyMinorArc
-import RequestProject.ExtraMinorDamping
 
 open Finset BigOperators Classical Real
 

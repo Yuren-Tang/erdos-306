@@ -247,7 +247,7 @@ def intLabelDataToNat
       rw [Int.toNat_of_nonneg (Int.emod_nonneg _ (by exact_mod_cast hLpos.ne'))]
     have hm : (X.mfun h % D.L : ℤ) ≡ X.mfun h [ZMOD s] := by
       have hDL : (X.mfun h % D.L : ℤ) ≡ X.mfun h [ZMOD D.L] := by
-        simp [Int.ModEq, Int.emod_emod_of_dvd (X.mfun h) hsdvd]
+        simp [Int.ModEq]
       exact Int.ModEq.of_dvd hsdvd hDL
     have hcast : ((Int.toNat (X.mfun h % D.L) : ℤ) : ZMod s) =
         (X.mfun h : ZMod s) := by
@@ -345,7 +345,7 @@ def preparedChoice_of_intExtraFrequencyLabelData
       rw [hrep]
       have hm : (X.mfun h % D.L : ℤ) ≡ X.mfun h [ZMOD Sibling.rfun h] := by
         have hDL : (X.mfun h % D.L : ℤ) ≡ X.mfun h [ZMOD D.L] := by
-          simp [Int.ModEq, Int.emod_emod_of_dvd (X.mfun h) hrdvdLZ]
+          simp [Int.ModEq]
         exact Int.ModEq.of_dvd hrdvdLZ hDL
       exact (ZMod.intCast_eq_intCast_iff _ _ (Sibling.rfun h)).mpr hm
     have hcastNat : ((Int.toNat (X.mfun h % D.L) : ℕ) : ZMod (Sibling.rfun h)) =

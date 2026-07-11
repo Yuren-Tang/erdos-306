@@ -1,4 +1,3 @@
-import RequestProject.Core.IntervalSegmentation
 import RequestProject.GlobalControl.Encoding.DominantLabels
 
 /-!

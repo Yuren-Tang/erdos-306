@@ -99,7 +99,6 @@ theorem r2_block_minor_budget_from_fiber_tail
     (heL : ∀ e ∈ D.E, e ∣ D.L)
     (he0 : ∀ e ∈ D.E, 0 < e)
     (hL : 0 < D.L)
-    (hK : 0 ≤ K)
     (hQE : ∀ h ∈ blockMinorPart MA.Sm Sblock,
       Qctrl D.BS (fun p => ((h : ZMod p.1))) + Qextra h ≤ QE D.E h)
     (hnotmain : ∀ h ∈ blockMinorPart MA.Sm Sblock,
@@ -155,7 +154,7 @@ theorem exists_r2_block_minor_budget_from_fiber_tail_g7
   intro T b D W N MA Sblock Bblock C K Qextra hk0 hadm hC hK
     heL he0 hL hQE hnotmain hfiber hBblock
   refine r2_block_minor_budget_from_fiber_tail D W N MA Sblock Bblock C K Qextra
-    heL he0 hL hK hQE hnotmain hfiber ?_
+    heL he0 hL hQE hnotmain hfiber ?_
   exact le_trans
     (mul_le_mul_of_nonneg_left (hgcp D.BS hk0 hadm C hC) hK)
     hBblock

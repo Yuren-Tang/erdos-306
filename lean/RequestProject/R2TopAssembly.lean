@@ -1,4 +1,5 @@
 import RequestProject.Construction.BaseLoadBudget
+import RequestProject.DyadicBlockUpper
 import RequestProject.R2DyadicBlockSupport
 import RequestProject.R2LargeK0
 import RequestProject.R2MainArcClassification
@@ -129,8 +130,7 @@ def r2_blockFiberTail {T : Finset ℕ} {b : ℕ}
 Numeric chase: a large main-arc cutoff `C` makes the block-lane tail term beat
 `c₃/4`.
 -/
-lemma r2_exists_C (Ctail c3 : ℝ) (b : ℕ) (hCtail : 0 < Ctail) (hc3 : 0 < c3)
-    (hb : 0 < b) :
+lemma r2_exists_C (Ctail c3 : ℝ) (b : ℕ) (hc3 : 0 < c3) :
     ∃ C : ℝ, 1 ≤ C ∧ (b : ℝ) * Ctail * Real.exp (-C ^ 2 * (16 / 9) / 2) < c3 / 4 := by
   have h_exp_zero : Filter.Tendsto (fun C : ℝ => (b : ℝ) * Ctail * Real.exp (-C ^ 2 * (16 / 9) / 2)) Filter.atTop (nhds 0) := by
     simpa using tendsto_const_nhds.mul ( Real.tendsto_exp_atBot.comp <| Filter.tendsto_atTop_atBot.mpr fun x => ⟨ |x| + 1, fun y hy => by cases abs_cases x <;> nlinarith ⟩ );
@@ -141,7 +141,7 @@ Geometric decay: a base in `[0,1)` raised to a large enough power drops below an
 positive budget.  Applied with base `√(1-(8/9)/b²) < 1` (the worst-case per-gadget
 sibling damping over `rfun ≤ b`).
 -/
-lemma r2_exists_pow_le (base Dmp : ℝ) (h0 : 0 ≤ base) (h1 : base < 1)
+lemma r2_exists_pow_le (base Dmp : ℝ) (h1 : base < 1)
     (hDmp : 0 < Dmp) :
     ∃ G : ℕ, base ^ G ≤ Dmp := by
   obtain ⟨G, hG⟩ := exists_pow_lt_of_lt_one hDmp h1
@@ -380,27 +380,6 @@ lemma r2_getQ {T : Finset ℕ} {b : ℕ} (hb : 3 ≤ b)
   · intro e he; nlinarith [ show e ≤ T.sup id from Finset.le_sup ( f := id ) he, show 2 ^ BS.k0 > BS.k0 from Nat.recOn BS.k0 ( by norm_num ) fun n ihn => by rw [ pow_succ' ] ; linarith [ Nat.one_le_pow n 2 zero_lt_two ] ] ;
 
 /-
-Prime-counting upper bound on a dyadic block, from Mathlib's `primorial_le_4_pow`:
-the primes in `[2^k, 2^{k+1})` number at most `2^(k+2)/k`.  This is the missing
-*upper* companion to the density axiom, and is what makes `σ_E ≤ K·σ_ctrl` hold with a
-*constant* `K` (not `~k0`).
--/
-lemma dyadic_block_card_upper (k : ℕ) (hk : 1 ≤ k) :
-    (k : ℝ) * ((dyadicBlock k).card : ℝ) ≤ (2 : ℝ) ^ (k + 2) := by
-  have h_card : (dyadicBlock k).card * k ≤ 2 ^ (k + 2) := by
-    have h_card : (2 ^ k) ^ (dyadicBlock k).card ≤ 4 ^ (2 ^ (k + 1)) := by
-      have h_prod : (∏ p ∈ dyadicBlock k, p) ≤ 4 ^ (2 ^ (k + 1)) := by
-        refine' le_trans _ ( primorial_le_4_pow ( 2 ^ ( k + 1 ) ) );
-        refine' Finset.prod_le_prod_of_subset_of_one_le' _ _ <;> norm_num [ dyadicBlock ];
-        · exact fun x hx => Finset.mem_filter.mpr ⟨ Finset.mem_range.mpr ( by linarith [ Finset.mem_Ico.mp ( Finset.mem_filter.mp hx |>.1 ) ] ), Finset.mem_filter.mp hx |>.2 ⟩;
-        · exact fun i hi₁ hi₂ hi₃ => Nat.Prime.pos hi₂;
-      refine le_trans ?_ h_prod;
-      exact le_trans ( by norm_num [ pow_mul ] ) ( Finset.prod_le_prod' fun x hx => show x ≥ 2 ^ k from Finset.mem_filter.mp hx |>.2 |> fun hx' => by linarith [ Finset.mem_Ico.mp ( Finset.mem_filter.mp hx |>.1 ) ] );
-    convert Nat.pow_le_pow_iff_right ( show 1 < 2 by norm_num ) |>.1 ( show 2 ^ ( k * #(dyadicBlock k) ) ≤ 2 ^ ( 2 ^ ( k + 2 ) ) from ?_ ) using 1 <;> ring_nf at *;
-    exact h_card.trans ( by rw [ show ( 4 : ℕ ) = 2 ^ 2 by norm_num, ← pow_mul ] ; ring_nf; norm_num );
-  norm_cast ; linarith
-
-/-
 The block-support reciprocal-square sum decays like `2^{-k0}/k0` (using the
 prime-counting upper bound).
 -/
@@ -421,10 +400,10 @@ lemma r2_blockSupport_inv_sq_le (BS : BlockSystem) (hk0 : 1 ≤ BS.k0) :
   have h_card_bound : ∀ k ∈ Finset.Icc BS.k0 BS.K, (dyadicBlock k).card * (1 / (2 ^ k) ^ 2 : ℝ) ≤ 4 / (BS.k0 * 2 ^ k) := by
     intro k hk
     have h_card_bound : (dyadicBlock k).card ≤ (2 ^ (k + 2)) / k := by
-      have := dyadic_block_card_upper k ( by linarith [ Finset.mem_Icc.mp hk ] ) ; rw [ Nat.le_div_iff_mul_le ( by linarith [ Finset.mem_Icc.mp hk ] ) ] ; norm_cast at *;
+      have := dyadic_block_card_upper k ; rw [ Nat.le_div_iff_mul_le ( by linarith [ Finset.mem_Icc.mp hk ] ) ] ; norm_cast at *;
       linarith;
     rw [ mul_one_div, div_le_div_iff₀ ] <;> norm_cast <;> norm_num [ pow_succ' ] at *;
-    · exact le_trans ( Nat.mul_le_mul_right _ h_card_bound ) ( by nlinarith [ Nat.div_mul_le_self ( 2 * ( 2 * 2 ^ k ) ) k, pow_pos ( zero_lt_two' ℕ ) k, pow_pos ( zero_lt_two' ℕ ) ( k + 1 ), pow_pos ( zero_lt_two' ℕ ) ( k + 2 ), mul_le_mul_left' hk.1 ( 2 ^ k ) ] );
+    · exact le_trans ( Nat.mul_le_mul_right _ h_card_bound ) ( by nlinarith [ Nat.div_mul_le_self ( 2 * ( 2 * 2 ^ k ) ) k, pow_pos ( zero_lt_two' ℕ ) k, pow_pos ( zero_lt_two' ℕ ) ( k + 1 ), pow_pos ( zero_lt_two' ℕ ) ( k + 2 ), Nat.mul_le_mul_right ( 2 ^ k ) hk.1 ] );
     · linarith;
   refine le_trans h_sum_le_card <| le_trans ( Finset.sum_le_sum h_card_bound ) ?_;
   erw [ Finset.sum_Ico_eq_sum_range ] ; norm_num [ div_eq_mul_inv, Finset.mul_sum _ _ _, mul_assoc, mul_comm, mul_left_comm, pow_add ] ; ring_nf ; norm_num;

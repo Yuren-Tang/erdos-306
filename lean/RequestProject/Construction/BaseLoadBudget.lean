@@ -173,7 +173,7 @@ lemma internalPairs_recip_sum_le_sq (BS : BlockSystem) (k : ℕ) :
     _ = (∑ p ∈ BS.P k, (1 : ℝ) / (p : ℝ)) ^ 2 := by
       rw [Finset.sum_product]
       rw [sq]
-      simp [Nat.cast_mul, div_eq_mul_inv, Finset.mul_sum, Finset.sum_mul, mul_comm, mul_assoc]
+      simp [div_eq_mul_inv, Finset.mul_sum, mul_comm]
 
 lemma bipartitePairs_recip_sum_eq_mul (BS : BlockSystem) (k : ℕ) :
     ∑ pq ∈ bipartitePairs BS k, (1 : ℝ) / ((pq.1 : ℝ) * pq.2)
@@ -181,7 +181,7 @@ lemma bipartitePairs_recip_sum_eq_mul (BS : BlockSystem) (k : ℕ) :
         (∑ q ∈ BS.P (k + 1), (1 : ℝ) / (q : ℝ)) *
           (∑ p ∈ BS.P k, (1 : ℝ) / (p : ℝ)) := by
   rw [bipartitePairs, Finset.sum_product_right]
-  simp [Nat.cast_mul, div_eq_mul_inv, Finset.mul_sum, Finset.sum_mul, mul_comm, mul_assoc]
+  simp [div_eq_mul_inv, Finset.mul_sum, mul_comm]
 
 lemma inv_sq_sum_Icc_le (k0 K : ℕ) (hk0 : 2 ≤ k0) :
     ∑ k ∈ Finset.Icc k0 K, (1 : ℝ) / (k : ℝ) ^ 2 ≤ 1 / ((k0 : ℝ) - 1) := by
@@ -221,7 +221,7 @@ lemma inv_sq_sum_Icc_le (k0 K : ℕ) (hk0 : 2 ≤ k0) :
       · intro hx
         exact False.elim (Finset.notMem_empty x hx)
     rw [hempty]
-    simp [hk0]
+    simp
     omega
 
 /-- Elementary dyadic control-load bound. -/
@@ -453,8 +453,6 @@ def baseLoadBudget_of_control_and_gadget
 theorem exists_k0_baseLoadBudget_of_gadget_bound
     {T : Finset ℕ} {b : ℕ}
     (D0 : R2ConcreteData T b)
-    (r0 s0 : ℕ)
-    (hr0 : 0 < r0) (hs0 : 0 < s0)
     (Cgadget : ℝ)
     (hgap : Cgadget < 3 / (2 * (b : ℝ)))
     (hgadget_bound : ∀ D : R2ConcreteData T b,

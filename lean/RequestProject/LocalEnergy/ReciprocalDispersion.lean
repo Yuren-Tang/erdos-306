@@ -1,7 +1,6 @@
 import RequestProject.Core.SmallBallEnergy
 import RequestProject.Core.ShortIntervalCongruence
 import RequestProject.Core.UnitCircleResidue
-import Mathlib.Analysis.Normed.Group.AddCircle
 import Mathlib.RingTheory.Int.Basic
 
 /-! # Reciprocal dispersion
