@@ -18,6 +18,19 @@ structure BlockSystem where
   hdensity : ∀ k, k0 ≤ k → k ≤ K →
     (2 ^ k : ℝ) / (2 * Real.log (2 ^ k)) ≤ (P k).card
 
+/-- A scale estimate of the form `2 c log(2^k) ≤ 2^k` turns the block-density
+assumption into the cardinality bound `c ≤ |P_k|`. -/
+lemma BlockSystem.card_ge_of_two_mul_log_le (BS : BlockSystem) (k : ℕ)
+    (hk0 : BS.k0 ≤ k) (hkK : k ≤ BS.K) (c : ℝ)
+    (hscale : 2 * c * Real.log ((2 : ℝ) ^ k) ≤ (2 : ℝ) ^ k) :
+    c ≤ (BS.P k).card := by
+  have hk : 0 < k := lt_of_lt_of_le (Nat.zero_lt_of_lt BS.hk0) hk0
+  have hlog : 0 < Real.log ((2 : ℝ) ^ k) :=
+    Real.log_pos (one_lt_pow₀ one_lt_two hk.ne')
+  refine le_trans ?_ (BS.hdensity k hk0 hkK)
+  rw [le_div_iff₀ (mul_pos two_pos hlog)]
+  nlinarith
+
 /-- The finite set of primes occurring in a block system. -/
 def blockSupport (BS : BlockSystem) : Finset ℕ :=
   (Finset.Icc BS.k0 BS.K).biUnion (fun k => BS.P k)

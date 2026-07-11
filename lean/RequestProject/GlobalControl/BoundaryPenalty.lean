@@ -15,7 +15,6 @@ noncomputable section
 
 namespace GlobalControl
 
-set_option maxHeartbeats 500000 in
 /-- Produces the global cold
     constants and, besides the per-cold-block facts, the boundary penalty floor:
     every mismatch-boundary block contributes bipartite energy `≥ Pifloor`. -/
@@ -36,15 +35,20 @@ lemma boundary_penalty_per_k :
   refine' ⟨ hc2, he0, _, _ ⟩;
   · intro BS a k hk1 hk2 hk3 hk4 hk5 hk6; specialize hCBF BS a k hk1 hk2 hk3 hk6; aesop;
   · intro BS a k hk1 hk2 hk3 hk4 hk5 hk6
+    have hblock_card (j : ℕ) (hj0 : BS.k0 ≤ j) (hjK : j ≤ BS.K)
+        (hjX : X0den ≤ (2 : ℝ) ^ j) :
+        2 * e0 + 13 ≤ ((BS.P j).card : ℝ) := by
+      apply BS.card_ge_of_two_mul_log_le j hj0 hjK
+      have hj := hden (2 ^ j) (by exact_mod_cast hjX)
+      norm_num [Nat.cast_pow] at hj ⊢
+      nlinarith
     set Nk := (BS.P k).card
     set Nk1 := (BS.P (k + 1)).card
     set ck := (BS.P k \ excSet BS a k).card
     set ck1 := (BS.P (k + 1) \ excSet BS a (k + 1)).card
     have hNk : 12 ≤ ck := by
       have hNk : Nk ≥ 2 * e0 + 13 := by
-        have := BS.hdensity k hk1 ( by linarith ) ; norm_num [ Real.log_pow ] at this;
-        have := hden ( 2 ^ k ) ( mod_cast hk4 ) ; norm_num at *;
-        rw [ div_le_iff₀ ] at * <;> nlinarith [ show ( k : ℝ ) * Real.log 2 > 0 by exact mul_pos ( Nat.cast_pos.mpr ( Nat.pos_of_ne_zero ( by rintro rfl; linarith [ Nat.le_ceil X0cbf ] ) ) ) ( Real.log_pos one_lt_two ) ] ;
+        exact hblock_card k hk1 (by linarith) (by linarith)
       have hck : (ck : ℝ) ≥ Nk - e0 := by
         have hck : (ck : ℝ) = Nk - (excSet BS a k).card := by
           exact eq_sub_of_add_eq <| mod_cast Finset.card_sdiff_add_card_eq_card ( excSet_subset BS a k )
@@ -59,9 +63,7 @@ lemma boundary_penalty_per_k :
         · rw_mod_cast [ ← Finset.card_union_of_disjoint ( Finset.disjoint_sdiff ), Finset.union_sdiff_of_subset ( excSet_subset BS a k ) ];
         · ring;
       have hck : (Nk : ℝ) ≥ 2 * e0 + 13 := by
-        have := BS.hdensity k hk1 ( by linarith ) ; norm_num [ Real.log_pow ] at this;
-        have := hden ( 2 ^ k ) ( by exact_mod_cast hk4 ) ; norm_num at *;
-        rw [ div_le_iff₀ ] at * <;> nlinarith [ show ( k : ℝ ) ≥ 1 by norm_cast; linarith [ show k > 0 from Nat.pos_of_ne_zero ( by rintro rfl; linarith [ Nat.le_ceil X0cbf ] ) ], Real.log_pos one_lt_two ];
+        exact hblock_card k hk1 (by linarith) (by linarith)
       have := hCBF BS a k hk1 ( by linarith ) hk3 ( by
         exact Finset.mem_filter.mp hk6 |>.2.1 ) ; norm_num at *;
       rw [ ← @Int.cast_le ℝ ] ; norm_num ; nlinarith [ pow_pos ( zero_lt_two' ℝ ) k ]
@@ -72,9 +74,7 @@ lemma boundary_penalty_per_k :
       rw [ ← @Int.cast_le ℝ ] ; push_cast ; nlinarith [ pow_pos ( zero_lt_two' ℝ ) k, pow_succ' ( 2 : ℝ ) k ]
     have hck : (ck : ℝ) ≥ Nk / 2 := by
       have hNk_ge : (Nk : ℝ) ≥ 2 * e0 + 13 := by
-        have := hden ( 2 ^ k ) ( by simpa using hk4 ) ; norm_num at *;
-        have := BS.hdensity k hk1 ( by linarith ) ; norm_num at *;
-        rw [ div_le_iff₀ ] at this <;> nlinarith [ show ( k : ℝ ) * Real.log 2 > 0 by exact mul_pos ( Nat.cast_pos.mpr ( Nat.pos_of_ne_zero ( by rintro rfl; linarith [ show ( 2 : ℝ ) ^ 0 = 1 by norm_num ] ) ) ) ( Real.log_pos one_lt_two ) ] ;
+        exact hblock_card k hk1 (by linarith) (by linarith)
       have := hCBF BS a k hk1 ( by linarith ) hk3 ( by unfold boundarySet at hk6; aesop ) ; norm_num at * ; linarith [ show ( ck : ℝ ) = Nk - ( excSet BS a k |> Finset.card ) by exact eq_sub_of_add_eq <| mod_cast Finset.card_sdiff_add_card_eq_card <| excSet_subset BS a k ] ;
     have hck1 : (ck1 : ℝ) ≥ Nk1 - e0 := by
       have := hCBF BS a ( k + 1 ) ( by linarith ) ( by linarith ) ( by
@@ -103,18 +103,14 @@ lemma boundary_penalty_per_k :
     exact (by
     refine le_trans ?_ hck4;
     unfold Pifloor; gcongr;
-    · exact pow_nonneg ( sub_nonneg_of_le <| by linarith [ show ( Nk : ℝ ) ≥ 2 * e0 + 13 by
-                                                            have := BS.hdensity k hk1 ( by linarith ) ; norm_num at *;
-                                                            have := hden ( 2 ^ k ) ( by exact_mod_cast hk4 ) ; norm_num at *;
-                                                            rw [ div_le_iff₀ ] at * <;> nlinarith [ show ( k : ℝ ) * Real.log 2 > 0 by exact mul_pos ( Nat.cast_pos.mpr ( Nat.pos_of_ne_zero ( by rintro rfl; linarith ) ) ) ( Real.log_pos one_lt_two ) ] ] ) _;
-    · have := BS.hdensity ( k + 1 ) ( by linarith [ show k + 1 ≥ BS.k0 from by linarith ] ) ( by linarith ) ; norm_num at *;
-      refine' Nat.pos_of_ne_zero _;
-      intro h; norm_num [ h ] at *;
-      have := hden ( 2 ^ ( k + 1 ) ) ( by exact_mod_cast hk4.trans ( pow_le_pow_right₀ ( by norm_num ) ( Nat.le_succ _ ) ) ) ; norm_num at *;
-      rw [ div_le_iff₀ ] at * <;> nlinarith [ show 0 < ( k + 1 : ℝ ) * Real.log 2 by positivity, show ( 2 : ℝ ) ^ ( k + 1 ) > 0 by positivity ];
-    · have := BS.hdensity k hk1 ( by linarith ) ; norm_num [ Real.log_pow ] at this;
-      have := hden ( 2 ^ k ) ( mod_cast hk4 ) ; norm_num at *;
-      rw [ div_le_iff₀ ] at * <;> nlinarith [ show ( k : ℝ ) ≥ 1 by norm_cast; linarith [ show k > 0 from Nat.pos_of_ne_zero ( by rintro rfl; linarith [ Nat.le_ceil X0cbf ] ) ], Real.log_pos one_lt_two, mul_pos ( show ( k : ℝ ) > 0 by norm_cast; linarith [ show k > 0 from Nat.pos_of_ne_zero ( by rintro rfl; linarith [ Nat.le_ceil X0cbf ] ) ] ) ( Real.log_pos one_lt_two ) ])
+    · exact pow_nonneg (sub_nonneg_of_le <| by
+        linarith [hblock_card k hk1 (by linarith) (by linarith)]) _
+    · have hcard := hblock_card (k + 1) (by linarith) (by linarith)
+          (le_trans hk4 (pow_le_pow_right₀ (by norm_num) (Nat.le_succ _)))
+      exact_mod_cast (show (0 : ℝ) ≤ (ck1 : ℝ) - 1 by linarith)
+    · have hcard := hblock_card k hk1 (by linarith) (by linarith)
+      linarith
+    )
 
 end GlobalControl
 
