@@ -89,7 +89,6 @@ Remark.  The statement only uses `p j` as a family of complex weights; the fact 
 `p j` are genuine probability weights (nonnegative and summing to `1`) is **not** needed for
 this existence conclusion, so those hypotheses are omitted.
 -/
-set_option maxHeartbeats 500000 in
 theorem exists_eq_of_spectral_gap
     {J Ω X : Type*} [Fintype J] [DecidableEq J] [Fintype Ω] [DecidableEq X]
     {A : J → Type*} [∀ j, Fintype (A j)]

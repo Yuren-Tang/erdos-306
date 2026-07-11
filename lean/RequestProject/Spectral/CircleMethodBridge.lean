@@ -78,7 +78,6 @@ lemma decode_subset_sum (E : Finset ℕ) (q L : ℕ) (hL : 0 < L)
   · simpa [Finset.sum_filter] using ha
   · exact fun x _ y _ hxy => Subtype.ext hxy
 
-set_option maxHeartbeats 500000 in
 /-- **Spectral selection for reciprocal subset sums.**  From the finite-Fourier
 data of a circle-method construction — the no-wraparound hypotheses,
 a frequency partition `range L = SM ∪ Sm`, a low-frequency real-part lower bound

@@ -1,6 +1,5 @@
 import RequestProject.R2Certificates
 import RequestProject.CircleMethodMainTerm
-import RequestProject.Core.ReciprocalPeriod
 import RequestProject.Core.UnitNumeratorReduction
 import RequestProject.Spectral.CircleMethodBridge
 
