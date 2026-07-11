@@ -106,7 +106,7 @@ theorem exists_arcConstruction_of_component_numeric_minor_sets
         ≤ 3 * (sigmaCtrl D.BS) ^ 2)
     (hminorCtrl :
       Bblock + Bextra <
-        (0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2)) / sigmaCtrl D.BS) :
+        bernoulliMainTermConstant / sigmaCtrl D.BS) :
     Nonempty (ArcConstruction T b) := by
   exact exists_arcConstruction_of_componentData_raw_numeric_minor_sets hb D W N
     Bblock Bextra ρ hadm hNscale

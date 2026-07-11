@@ -15,10 +15,6 @@ lane.  The analytic lanes naturally produce estimates of the form
 their sum to be strictly below the main-term constant divided by `sigmaCtrl`.
 -/
 
-/-- The main-term control constant appearing in the R2 final sockets. -/
-def r2MinorMainCtrlConstant : ℝ :=
-  0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2)
-
 /-- Generic scalar budget gate. -/
 lemma add_lt_div_of_add_scaled_lt
     {σ Bblock Bextra Ablock Aextra c : ℝ}
@@ -42,14 +38,14 @@ lemma r2_minor_ctrl_from_scaled_budgets
     (hσ : 0 < sigmaCtrl D.BS)
     (hblock : Bblock ≤ Ablock / sigmaCtrl D.BS)
     (hextra : Bextra ≤ Aextra / sigmaCtrl D.BS)
-    (hscaled : Ablock + Aextra < r2MinorMainCtrlConstant) :
+    (hscaled : Ablock + Aextra < bernoulliMainTermConstant) :
     Bblock + Bextra <
-      (0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2)) / sigmaCtrl D.BS := by
-  simpa [r2MinorMainCtrlConstant] using
+      bernoulliMainTermConstant / sigmaCtrl D.BS := by
+  simpa using
     add_lt_div_of_add_scaled_lt (σ := sigmaCtrl D.BS)
       (Bblock := Bblock) (Bextra := Bextra)
       (Ablock := Ablock) (Aextra := Aextra)
-      (c := r2MinorMainCtrlConstant) hσ hblock hextra hscaled
+      (c := bernoulliMainTermConstant) hσ hblock hextra hscaled
 
 /-- Same scalar gate, using admissibility to obtain `sigmaCtrl > 0`. -/
 lemma r2_minor_ctrl_from_scaled_budgets_admissible
@@ -59,9 +55,9 @@ lemma r2_minor_ctrl_from_scaled_budgets_admissible
     (hadm : admissibleGlobalRange D.BS)
     (hblock : Bblock ≤ Ablock / sigmaCtrl D.BS)
     (hextra : Bextra ≤ Aextra / sigmaCtrl D.BS)
-    (hscaled : Ablock + Aextra < r2MinorMainCtrlConstant) :
+    (hscaled : Ablock + Aextra < bernoulliMainTermConstant) :
     Bblock + Bextra <
-      (0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2)) / sigmaCtrl D.BS :=
+      bernoulliMainTermConstant / sigmaCtrl D.BS :=
   r2_minor_ctrl_from_scaled_budgets D Bblock Bextra Ablock Aextra
     (sigmaCtrl_pos_of_admissible_range D.BS hadm) hblock hextra hscaled
 
@@ -78,9 +74,9 @@ lemma r2_minor_ctrl_from_g7_block_and_extra
     (hextra : Bextra ≤ Aextra / sigmaCtrl D.BS)
     (hscaled :
       K * (η + Ctail * Real.exp (-C ^ 2 * (16 / 9) / 2)) + Aextra
-        < r2MinorMainCtrlConstant) :
+        < bernoulliMainTermConstant) :
     Bblock + Bextra <
-      (0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2)) / sigmaCtrl D.BS := by
+      bernoulliMainTermConstant / sigmaCtrl D.BS := by
   refine r2_minor_ctrl_from_scaled_budgets D Bblock Bextra
     (K * (η + Ctail * Real.exp (-C ^ 2 * (16 / 9) / 2))) Aextra hσ ?_ hextra
     hscaled
@@ -99,9 +95,9 @@ lemma r2_minor_ctrl_from_g7_block_and_extra_admissible
     (hextra : Bextra ≤ Aextra / sigmaCtrl D.BS)
     (hscaled :
       K * (η + Ctail * Real.exp (-C ^ 2 * (16 / 9) / 2)) + Aextra
-        < r2MinorMainCtrlConstant) :
+        < bernoulliMainTermConstant) :
     Bblock + Bextra <
-      (0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2)) / sigmaCtrl D.BS :=
+      bernoulliMainTermConstant / sigmaCtrl D.BS :=
   r2_minor_ctrl_from_g7_block_and_extra D Bblock Bextra K η Ctail C Aextra
     (sigmaCtrl_pos_of_admissible_range D.BS hadm) hblock hextra hscaled
 

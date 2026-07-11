@@ -33,6 +33,11 @@ def bernoulliMainTermRetention : ℝ :=
 def bernoulliMainTermConstant : ℝ :=
   bernoulliMainTermRetention * (Real.exp (-(Real.pi ^ 2 / 2)) / 2)
 
+lemma bernoulliMainTermConstant_pos : 0 < bernoulliMainTermConstant := by
+  norm_num [bernoulliMainTermConstant, bernoulliMainTermRetention,
+    bernoulliMainTermRemainderBudget]
+  positivity
+
 end
 
 end CircleMethod

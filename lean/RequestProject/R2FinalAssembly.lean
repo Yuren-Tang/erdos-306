@@ -38,7 +38,7 @@ structure R2FinalSupply (T : Finset ℕ) (b : ℕ) where
   hsmall : ∀ m ∈ Finset.Icc (-N) N,
     (∑ e ∈ D.E, 100000 * |(m : ℝ) / (e : ℝ)| ^ 3) ≤ 1 / 10
   hminor : (∑ h ∈ MA.Sm, ‖fourierTerm D.E W.theta (D.L / b) D.L h‖) ≤ Bm
-  hbeat : Bm < 0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2) /
+  hbeat : Bm < bernoulliMainTermConstant /
     Real.sqrt (sigmaE2 D.E W.theta)
 
 /-- Assemble an `ArcConstruction` from the final supply package. -/
@@ -106,7 +106,7 @@ theorem exists_R2FinalSupply_of_mainArcParams
       (∑ e ∈ D.E, 100000 * |(m : ℝ) / (e : ℝ)| ^ 3) ≤ 1 / 10)
     (hminor : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
       (∑ h ∈ MA.Sm, ‖fourierTerm D.E W.theta (D.L / b) D.L h‖) ≤ Bm)
-    (hbeat : Bm < 0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2) /
+    (hbeat : Bm < bernoulliMainTermConstant /
       Real.sqrt (sigmaE2 D.E W.theta)) :
     Nonempty (R2FinalSupply T b) := by
   obtain ⟨MA⟩ := exists_mainArcFields D.E W.theta (D.L / b) D.L N
@@ -150,7 +150,7 @@ theorem exists_arcConstruction_of_mainArcParams
       (∑ e ∈ D.E, 100000 * |(m : ℝ) / (e : ℝ)| ^ 3) ≤ 1 / 10)
     (hminor : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
       (∑ h ∈ MA.Sm, ‖fourierTerm D.E W.theta (D.L / b) D.L h‖) ≤ Bm)
-    (hbeat : Bm < 0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2) /
+    (hbeat : Bm < bernoulliMainTermConstant /
       Real.sqrt (sigmaE2 D.E W.theta)) :
     Nonempty (ArcConstruction T b) := by
   have hbpos : 0 < b := Nat.lt_of_lt_of_le (by norm_num) hb
@@ -188,16 +188,15 @@ theorem exists_arcConstruction_of_blockExtraBudget
     (hσle : Real.sqrt (sigmaE2 D.E W.theta) ≤ sigmaCtrl D.BS)
     (hminorCtrl :
       Bblock + Bextra <
-        (0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2)) / sigmaCtrl D.BS) :
+        bernoulliMainTermConstant / sigmaCtrl D.BS) :
     Nonempty (ArcConstruction T b) := by
   have hσE : 0 < Real.sqrt (sigmaE2 D.E W.theta) :=
     sigmaE_sqrt_pos_of_weights D W hne he0
-  have hc3 : 0 < 0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2) := by
-    positivity
+  have hc3 : 0 < bernoulliMainTermConstant := bernoulliMainTermConstant_pos
   exact exists_arcConstruction_of_mainArcParams hb D W N (Bblock + Bextra)
     hNnonneg hNL hsemi havoid hne heL he0 hloadUpper hN htw hsmall hminor
     (hbeat_of_sigma_le_sigmaCtrl
-      (0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2))
+      bernoulliMainTermConstant
       (Real.sqrt (sigmaE2 D.E W.theta)) (sigmaCtrl D.BS) (Bblock + Bextra)
       hc3 hσE hσctrl hσle hminorCtrl)
 
@@ -233,7 +232,7 @@ theorem exists_arcConstruction_of_componentData
     (hσle : Real.sqrt (sigmaE2 D.E W.theta) ≤ sigmaCtrl D.BS)
     (hminorCtrl :
       Bblock + Bextra <
-        (0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2)) / sigmaCtrl D.BS) :
+        bernoulliMainTermConstant / sigmaCtrl D.BS) :
     Nonempty (ArcConstruction T b) := by
   have hsemi : ∀ e ∈ D.E, IsSemiprime e :=
     D.semiprime hQsemi hRprime hSprime hlt
@@ -282,7 +281,7 @@ theorem exists_arcConstruction_of_componentData_light
         ≤ 3 * (sigmaCtrl D.BS) ^ 2)
     (hminorCtrl :
       Bblock + Bextra <
-        (0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2)) / sigmaCtrl D.BS) :
+        bernoulliMainTermConstant / sigmaCtrl D.BS) :
     Nonempty (ArcConstruction T b) := by
   exact exists_arcConstruction_of_componentData hb D W N Bblock Bextra
     hNnonneg hNL hQsemi hRprime hSprime hlt hctrlAvoid hQavoid hgadgetAvoid
@@ -332,7 +331,7 @@ theorem exists_arcConstruction_of_componentData_light_window
         ≤ 3 * (sigmaCtrl D.BS) ^ 2)
     (hminorCtrl :
       Bblock + Bextra <
-        (0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2)) / sigmaCtrl D.BS) :
+        bernoulliMainTermConstant / sigmaCtrl D.BS) :
     Nonempty (ArcConstruction T b) := by
   have hloadWindow :=
     D.total_recipLoad_window_of_residual hloadDisj hloadLower hloadUpper
@@ -385,7 +384,7 @@ theorem exists_arcConstruction_of_componentData_numeric_minor_window
         ≤ 3 * (sigmaCtrl D.BS) ^ 2)
     (hminorCtrl :
       Bblock + Bextra <
-        (0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2)) / sigmaCtrl D.BS) :
+        bernoulliMainTermConstant / sigmaCtrl D.BS) :
     Nonempty (ArcConstruction T b) := by
   refine exists_arcConstruction_of_componentData_light_window hb D W N Bblock Bextra
     hadm NF.hNnonneg hNL hQsemi hRprime hSprime hlt hctrlAvoid hQavoid

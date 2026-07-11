@@ -60,7 +60,7 @@ theorem exists_arcConstruction_of_componentData_raw_numeric_minor_window
         ≤ 3 * (sigmaCtrl D.BS) ^ 2)
     (hminorCtrl :
       Bblock + Bextra <
-        (0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2)) / sigmaCtrl D.BS) :
+        bernoulliMainTermConstant / sigmaCtrl D.BS) :
     Nonempty (ArcConstruction T b) := by
   have hsemi : ∀ e ∈ D.E, IsSemiprime e :=
     D.semiprime hQsemi hRprime hSprime hlt
@@ -119,7 +119,7 @@ theorem exists_arcConstruction_of_componentData_raw_numeric_minor_sets
         ≤ 3 * (sigmaCtrl D.BS) ^ 2)
     (hminorCtrl :
       Bblock + Bextra <
-        (0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2)) / sigmaCtrl D.BS) :
+        bernoulliMainTermConstant / sigmaCtrl D.BS) :
     Nonempty (ArcConstruction T b) := by
   let C : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N, R2MinorCoverData MA.Sm :=
     fun MA => { Sblock := Sblock MA, Sextra := Sextra MA, hcover := hcover MA }

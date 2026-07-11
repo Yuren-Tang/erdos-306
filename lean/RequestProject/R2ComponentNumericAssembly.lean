@@ -92,7 +92,7 @@ theorem exists_arcConstruction_of_component_rho_numeric_minor_sets
         ≤ 3 * (sigmaCtrl D.BS) ^ 2)
     (hminorCtrl :
       Bblock + Bextra <
-        (0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2)) / sigmaCtrl D.BS) :
+        bernoulliMainTermConstant / sigmaCtrl D.BS) :
     Nonempty (ArcConstruction T b) := by
   have hcard : (D.E.card : ℝ) * 100000 * ρ ^ 3 ≤ 1 / 10 :=
     D.cubic_card_bound_of_component_card_bound ρ K hρnonneg hcomponentCard hK
