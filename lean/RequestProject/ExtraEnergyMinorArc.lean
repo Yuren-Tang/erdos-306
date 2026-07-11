@@ -56,7 +56,6 @@ lemma minor_energy_sum_le_fiber_tail
   · intro a _
     exact hfiber a
 
-set_option maxHeartbeats 4000000 in
 /-- **Fiber-tail minor-arc bound.**  The Fourier wrapper of
 `minor_energy_sum_le_fiber_tail`. -/
 theorem minor_arc_bound_fiber_tail :

@@ -96,7 +96,7 @@ lemma energy_relation (P F : Finset ℕ) [∀ p : P, NeZero p.1]
     the sub-set/residue counting `∑_{k ≤ h_max} C(|P∖F|,k)(2X)^k ≤
     (h_max+1)·C(|P|,h_max)(2X)^{h_max}`.
 -/
-set_option maxHeartbeats 2000000 in
+set_option maxHeartbeats 500000 in
 private lemma decoding_card_bound
     (X : ℕ) (hX : 1 ≤ X) (P F : Finset ℕ) [∀ p : P, NeZero p.1]
     (hP : ∀ p ∈ P, Nat.Prime p ∧ X ≤ p ∧ p ≤ 2 * X)
@@ -273,7 +273,6 @@ private lemma hmax_bound_helper (eps Ceps : ℝ) (hε0 : 0 < eps)
   · contrapose! hR;
     exact lt_of_le_of_lt ( le_of_not_gt hR_pos ) ( mul_pos ( mul_pos ( show 0 < Ceps by exact lt_of_not_ge fun h => by nlinarith [ pow_pos hε0 4, pow_nonneg ( neg_nonneg.mpr h ) 3 ] ) ( by positivity ) ) ( by exact Real.rpow_pos_of_pos ( Real.log_pos ( by norm_cast; linarith ) ) _ ) )
 
-set_option maxHeartbeats 1000000 in
 /-- For every `ε ∈ (0,1)` there are `Cε, X₀` such that
     for `X ≥ X₀`, any **nonempty** prime block `P ⊆ [X,2X]`, and any
     `R ≥ R_C := Cε · X^{2/3} · (log X)^{4/3}`, the full level set satisfies

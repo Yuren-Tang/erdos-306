@@ -32,7 +32,6 @@ lemma cold_label_bound_div_64 (c2 : ℝ) (hc2 : 0 < c2) :
             |(m : ℝ)| ≤ (P.card : ℝ) * (X : ℝ) / 64 := by
   simpa using LocalEnergy.cold_label_bound_with_divisor
     (1 / 4) (by norm_num) (by norm_num) 64 (by norm_num) c2 hc2
-set_option maxHeartbeats 1600000 in
 /-- **Bundled cold-block facts.**  Produces the global cold constants `c2,e0`
     and, for every cold block, (i) a small exception set, (ii) a sharp label
     bound `|coldLabel| ≤ N·X/64`, and (iii) the conforming primes carry the

@@ -147,7 +147,6 @@ private lemma dominant_energy_polynomial_bound (eps ρ : ℝ) (hε : 0 < eps) (h
 
 /- **Label `≤ NX/16`.**  In the small-`R` regime, the label-range bound
     `(5/(1-ρ))√R/σ_P` is `≤ N·X/16` (uses `block_deviation_lower_bound`). -/
-set_option maxHeartbeats 1000000 in
 lemma dominant_label_linear_bound_with_divisor
     (X : ℕ) (hX : 1 ≤ X) (P : Finset ℕ) [∀ p : P, NeZero p.1]
     (hP : ∀ p ∈ P, Nat.Prime p ∧ X ≤ p ∧ p ≤ 2*X) (hN : 2 ≤ P.card)
@@ -202,7 +201,6 @@ private lemma dominant_label_linear_bound (X : ℕ) (hX : 1 ≤ X) (P : Finset �
     `|m| ≤ (5/(1-ρ))·√R/σ_P`, a contribution of at least
     `N³/2¹⁵X²` from each exceptional coordinate, and the exception-encoding
     entropy bound `3e log X ≤ εR`. -/
-set_option maxHeartbeats 1000000 in
 theorem dominant_level_set_bound
     (eps : ℝ) (hε : 0 < eps) (ρ : ℝ) (hρ : 0 < ρ) (hρ4 : ρ ≤ 1/4) :
     ∃ X0 : ℝ, 0 < X0 ∧

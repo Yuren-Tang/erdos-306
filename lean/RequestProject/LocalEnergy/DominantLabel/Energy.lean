@@ -52,7 +52,7 @@ private lemma exception_energy_lower_bound_of_close_count
     `S = ∑_{in-class}1/(pq)²`, and the
     restricted-σ comparison `S ≥ ((1-ρ)²/25)σ_P²`.
 -/
-set_option maxHeartbeats 1600000 in
+set_option maxHeartbeats 500000 in
 lemma dominant_label_bound (X : ℕ) (hX : 16 ≤ X)
     (P : Finset ℕ) [∀ p : P, NeZero p.1]
     (hP : ∀ p ∈ P, Nat.Prime p ∧ X ≤ p ∧ p ≤ 2*X) (hN : 8 ≤ P.card)
@@ -200,8 +200,6 @@ private lemma exception_subsum_le_QP (P : Finset ℕ) [∀ p : P, NeZero p.1] (a
 
 /- **(A3 close) Close-count bound.**  With `δ = N/(128X)`, at most `N/2` primes of
     the class are `δ`-close to an exception vertex `q` (using `crossLabel_close_fiber_bound`). -/
-set_option maxHeartbeats 1000000 in
-set_option maxRecDepth 10000 in
 private lemma dominant_exception_close_count (X : ℕ) (hX : 16 ≤ X) (P : Finset ℕ) [∀ p : P, NeZero p.1]
     (hP : ∀ p ∈ P, Nat.Prime p ∧ X ≤ p ∧ p ≤ 2*X) (hN : 32 ≤ P.card)
     (ρ : ℝ) (_hρ : 0 < ρ) (hρ4 : ρ ≤ 1/4)
@@ -260,8 +258,6 @@ private lemma dominant_exception_energy_arithmetic (N X ρ c : ℝ) (hX : 0 < X)
     exception vertex `q` (`a q ≠ m mod q`) carries cross-energy over the class `C`
     at least `E₁ = (1-ρ)N³/2¹⁵X²`.  Via `crossLabel_close_fiber_bound` (close-count `≤ N/4`) and
     `exception_energy_lower_bound_of_close_count` with `δ = N/(128X)`. -/
-set_option maxHeartbeats 1000000 in
-set_option maxRecDepth 10000 in
 private lemma dominant_exception_energy_lower_bound (X : ℕ) (hX : 16 ≤ X) (P : Finset ℕ) [∀ p : P, NeZero p.1]
     (hP : ∀ p ∈ P, Nat.Prime p ∧ X ≤ p ∧ p ≤ 2*X) (hN : 32 ≤ P.card)
     (ρ : ℝ) (hρ : 0 < ρ) (hρ4 : ρ ≤ 1/4)
@@ -286,8 +282,6 @@ private lemma dominant_exception_energy_lower_bound (X : ℕ) (hX : 16 ≤ X) (P
     `≤ R` (label small, `|m| ≤ NX/16`) has at most `2¹⁵RX²/((1-ρ)N³)` exceptions:
     each exception carries energy `≥ E₁` (`dominant_exception_energy_lower_bound`) and these
     cross-energies sum to `≤ Q_P ≤ R` (`exception_subsum_le_QP`). -/
-set_option maxHeartbeats 1000000 in
-set_option maxRecDepth 10000 in
 lemma dominant_exception_count_bound (X : ℕ) (hX : 16 ≤ X) (P : Finset ℕ) [∀ p : P, NeZero p.1]
     (hP : ∀ p ∈ P, Nat.Prime p ∧ X ≤ p ∧ p ≤ 2*X) (hN : 32 ≤ P.card)
     (ρ : ℝ) (hρ : 0 < ρ) (hρ4 : ρ ≤ 1/4)

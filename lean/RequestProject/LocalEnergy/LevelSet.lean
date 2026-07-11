@@ -70,7 +70,6 @@ lemma fingerprint_threshold_le_nondominant_threshold (cp Ceps : ℝ) (hcp : 0 < 
     `fingerprint_levelSet_bound`, every level set is bounded by
     `C₀·e^{εR}·(1 + √R/σ_P)` for all `R ≥ 1`.
 -/
-set_option maxHeartbeats 1000000 in
 lemma block_level_set_bound (eps : ℝ) (hε0 : 0 < eps) (hε1 : eps < 1) :
     ∃ (C0 X1 : ℝ), 0 < C0 ∧ 0 < X1 ∧
       ∀ (X : ℕ), X1 ≤ X →

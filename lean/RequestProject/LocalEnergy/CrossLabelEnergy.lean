@@ -45,7 +45,6 @@ lemma crtRepr_symm (p q : ℕ) (hp : Nat.Prime p) (hq : Nat.Prime q) (hpq : p �
 
 /-! ## Cross-label energy -/
 
-set_option maxHeartbeats 1600000 in
 open LocalEnergy in
 /-- Fix a prime `q ∈ [X,2X]` carrying residue
     `n'`, with `q ∤ (n'-n)`.  The primes `p ∈ C` (residue `n`) whose cross

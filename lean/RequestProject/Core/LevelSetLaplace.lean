@@ -40,7 +40,6 @@ lemma laplace_sum_above_le {ι : Type*} [Fintype ι] (q : ι → ℝ) (c c' T : 
     `#{qᵢ ≤ R} ≤ C₀·e^{εR}·(1 + √R/σ)` (for `R ≥ 1`, `ε < c`) via a geometric
     majorant.
 -/
-set_option maxHeartbeats 1000000 in
 lemma partition_function_bound_of_level_sets {ι : Type*} [Fintype ι] (q : ι → ℝ) (hq : ∀ i, 0 ≤ q i)
     (c eps C0 sig : ℝ) (hc : 0 < c) (_hε0 : 0 ≤ eps) (hεc : eps < c)
     (hC0 : 0 ≤ C0) (hsig : 0 < sig)

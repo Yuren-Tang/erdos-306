@@ -78,7 +78,6 @@ lemma adjacent_block_prime_divisor_count_le_one (BS : BlockSystem) (k N : ℕ)
     `(Pₖ₊₁ \ Eₖ₊₁).card - 1` are good.
 
 -/
-set_option maxHeartbeats 1000000 in
 theorem consecutive_block_mismatch_energy_lower_bound (BS : BlockSystem)
     (a : (p : ℕ) → ZMod p) (k : ℕ)
     (m m' : ℤ) (hmm : m ≠ m')

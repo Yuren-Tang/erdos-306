@@ -15,7 +15,7 @@ noncomputable section
 
 namespace GlobalControl
 
-set_option maxHeartbeats 2000000 in
+set_option maxHeartbeats 500000 in
 /-- Produces the global cold
     constants and, besides the per-cold-block facts, the boundary penalty floor:
     every mismatch-boundary block contributes bipartite energy `≥ Pifloor`. -/
