@@ -124,9 +124,13 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
           cat "$GITHUB_STEP_SUMMARY"
   lint:
-    name: Lint Lean sources
+    name: Lint Lean sources (${{ matrix.shard }}/4)
     needs: build
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -155,7 +159,14 @@ jobs:
               sort |
               sed -e 's/\.lean$//' -e 's|/|.|g'
           )
-          lake lint --builtin-only "${modules[@]}"
+          selected=()
+          shard_index=$(( ${{ matrix.shard }} - 1 ))
+          for i in "${!modules[@]}"; do
+            if (( i % 4 == shard_index )); then
+              selected+=("${modules[$i]}")
+            fi
+          done
+          lake lint --builtin-only "${selected[@]}"
 
   workflow-lint:
     name: Lint GitHub Actions workflows
