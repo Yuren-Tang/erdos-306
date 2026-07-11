@@ -45,7 +45,6 @@ lemma one_sub_two_norm_le_exp_re (δ : ℂ) (hδ : ‖δ‖ ≤ 1) :
   rw [hid]
   linarith [(abs_le.mp (hre.trans hexp)).1]
 
-set_option maxHeartbeats 400000 in
 /-- **L1: per-edge Bernoulli Taylor** (note 44).  For `θ ∈ [1/3,2/3]` and
 `|t| ≤ 1/10`, `log φ_θ(t) = 2πiθt − 2π²θ(1−θ)t² + O(|t|³)` with an absolute
 constant.  Built from `log_one_sub_remainder` + `Complex.exp_bound`. -/
@@ -123,8 +122,10 @@ lemma bernoulli_log_taylor (θ t : ℝ) (hθlb : 1/3 ≤ θ) (hθub : θ ≤ 2/3
     calc ‖2*z + z^2/2 + r3‖ ≤ ‖2*z + z^2/2‖ + ‖r3‖ := norm_add_le _ _
       _ ≤ ‖2*z‖ + ‖z^2/2‖ + ‖r3‖ := by linarith [norm_add_le (2*z) (z^2/2)]
       _ = 2*‖z‖ + ‖z‖^2/2 + ‖r3‖ := by rw [norm_mul, norm_div, norm_pow]; norm_num
-  have hzms_t : ‖z - s‖ ≤ 80 * |t|^2 := by linarith [hzms, hZsq, hr3t, ht3, pow_nonneg ht0 2]
-  have hzps_t : ‖z + s‖ ≤ 21 * |t| := by linarith [hzps, hZt, hZsq, hr3t, ht2, ht3b, pow_nonneg ht0 2]
+  have hzms_t : ‖z - s‖ ≤ 80 * |t|^2 := by
+    nlinarith only [hzms, hZsq, hr3t, ht3, pow_nonneg ht0 2]
+  have hzps_t : ‖z + s‖ ≤ 21 * |t| := by
+    nlinarith only [hzps, hZt, hZsq, hr3t, ht2, ht3b, pow_nonneg ht0 2]
   have hzsq_t : ‖z^2 - s^2‖ ≤ 1680 * |t|^3 := by
     rw [hzs_fac, norm_mul]
     calc ‖z - s‖ * ‖z + s‖ ≤ (80*|t|^2) * (21*|t|) :=
@@ -140,10 +141,10 @@ lemma bernoulli_log_taylor (θ t : ℝ) (hθlb : 1/3 ≤ θ) (hθub : θ ≤ 2/3
               abs_of_nonneg hθ0]; norm_num
     refine le_trans hsplit ?_
     have hb1 : θ^2*‖z^2-s^2‖/2 ≤ (2/3)^2*(1680*|t|^3)/2 := by
-      have : θ^2 ≤ (2/3)^2 := by nlinarith [hθub, hθ0]
-      nlinarith [this, hzsq_t, norm_nonneg (z^2-s^2), pow_nonneg ht0 3]
+      have : θ^2 ≤ (2/3)^2 := by nlinarith only [hθub, hθ0]
+      nlinarith only [this, hzsq_t, norm_nonneg (z^2-s^2), pow_nonneg ht0 3]
     have hb2 : θ*‖r3‖ ≤ (2/3)*(114*|t|^3) := mul_le_mul hθub hr3t (norm_nonneg r3) (by norm_num)
-    nlinarith [hb1, hb2, pow_nonneg ht0 3]
+    nlinarith only [hb1, hb2, pow_nonneg ht0 3]
   have hAbnd : ‖Complex.log (bernoulliCharFun θ t) - (↑θ*s - (↑θ*s)^2/2)‖ ≤ 99000 * |t|^3 := by
     refine le_trans hA ?_
     have hinv : (1 - ‖(θ:ℂ)*s‖)⁻¹ ≤ 10 := by
@@ -154,7 +155,8 @@ lemma bernoulli_log_taylor (θ t : ℝ) (hθlb : 1/3 ≤ θ) (hθub : θ ≤ 2/3
       exact mul_le_mul hcube hinv (inv_nonneg.mpr (by linarith [hNhalf])) (by positivity)
     refine le_trans hstep ?_
     have : (9*|t|)^3 = 729*|t|^3 := by ring
-    rw [this]; nlinarith [pow_nonneg ht0 3]
+    rw [this]
+    nlinarith only [pow_nonneg ht0 3]
   calc ‖Complex.log (bernoulliCharFun θ t) - T‖
       = ‖(Complex.log (bernoulliCharFun θ t) - (↑θ*s - (↑θ*s)^2/2)) +
           ((↑θ*s - (↑θ*s)^2/2) - T)‖ := by ring_nf

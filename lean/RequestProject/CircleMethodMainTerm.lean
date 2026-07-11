@@ -1,3 +1,4 @@
+import RequestProject.CircleMethodArcs
 import RequestProject.CircleMethodMainArc
 import RequestProject.Spectral.BernoulliVariance
 
