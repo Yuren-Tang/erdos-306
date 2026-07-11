@@ -25,7 +25,7 @@ theorem egyptian_rep_ge3_R2 (T : Finset ℕ) (b : ℕ) (hb : 3 ≤ b) (hbsf : Sq
   obtain ⟨c⟩ := exists_arcConstruction_final T b hb hbsf
   obtain ⟨S, hSE, hSsum⟩ :=
     exists_subset_sum_eq_of_fourier_gap c.E c.theta (c.L / b) c.L c.SM c.Sm c.Bm
-      (0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2) / Real.sqrt (sigmaE2 c.E c.theta))
+      (bernoulliMainTermConstant / Real.sqrt (sigmaE2 c.E c.theta))
       (Nat.div_lt_self c.hL (by omega)) c.hL c.heL c.hbound
       (fun e he => by linarith [c.hlb e he])
       (fun e he => by linarith [c.hub e he])

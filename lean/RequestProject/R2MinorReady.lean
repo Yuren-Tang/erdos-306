@@ -23,7 +23,7 @@ structure R2MinorReadyData
   MB : R2MinorSupportBudgetData D W N Bblock Bextra
   hminorCtrl :
     Bblock + Bextra <
-      (0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2)) / sigmaCtrl D.BS
+      bernoulliMainTermConstant / sigmaCtrl D.BS
 
 end CircleMethod
 

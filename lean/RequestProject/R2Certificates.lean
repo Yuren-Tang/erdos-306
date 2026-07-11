@@ -78,7 +78,7 @@ structure R2NumericLedger (b : ℕ) where
   hbpos : 0 < b
   hb3 : 3 ≤ b
   hbsf : Squarefree b
-  hc3eq : c3 = r2MinorMainCtrlConstant
+  hc3eq : c3 = bernoulliMainTermConstant
   hc3pos : 0 < c3
   hηpos : 0 < η
   hCtail : 0 < Ctail
@@ -166,9 +166,8 @@ lemma exists_r2_numeric_ledger (b : ℕ) (hb : 3 ≤ b) (hbsf : Squarefree b) :
   classical
   have hbpos : 0 < b := by omega
   have hbR : (0 : ℝ) < (b : ℝ) := by exact_mod_cast hbpos
-  have hc3pos : 0 < r2MinorMainCtrlConstant := by
-    rw [r2MinorMainCtrlConstant]; positivity
-  set c3 := r2MinorMainCtrlConstant with hc3def
+  have hc3pos : 0 < bernoulliMainTermConstant := bernoulliMainTermConstant_pos
+  set c3 := bernoulliMainTermConstant with hc3def
   -- abstract analytic constants from the supply leaves (all witnesses stay inside them)
   obtain ⟨S, hS1, hSfam⟩ := exists_edge_square_load_supply
   have hS0 : (0 : ℝ) < S := lt_of_lt_of_le one_pos hS1
@@ -766,7 +765,7 @@ for an arbitrary positive `K`. -/
 lemma r2_minor_budget_closure {T : Finset ℕ} {b : ℕ}
     (F : R2FoundationCertificate T b) (Cc : R2ConcreteCertificate F)
     (M : R2MassCertificate F Cc) (A : R2MainArcWindow F Cc M) :
-    r2MinorBudget F M A < 0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2) /
+    r2MinorBudget F M A < bernoulliMainTermConstant /
       Real.sqrt (sigmaE2 M.D.E M.W.theta) := by
   have hbpos := F.ledger.hbpos
   have hσpos : 0 < sigmaCtrl M.D.BS := A.hsigmapos
@@ -806,8 +805,7 @@ lemma r2_minor_budget_closure {T : Finset ℕ} {b : ℕ}
         ≤ _ := hsum
       _ < (F.ledger.c3 / F.ledger.K) / sigmaCtrl M.D.BS := hstep
       _ = F.ledger.c3 / (F.ledger.K * sigmaCtrl M.D.BS) := div_div _ _ _
-  have hc3eq : F.ledger.c3 = 0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2) := by
-    rw [F.ledger.hc3eq, r2MinorMainCtrlConstant]
+  have hc3eq : F.ledger.c3 = bernoulliMainTermConstant := F.ledger.hc3eq
   rw [← hc3eq]
   exact hbeat_of_sigma_le_sigmaCtrl F.ledger.c3 (Real.sqrt (sigmaE2 M.D.E M.W.theta))
     (F.ledger.K * sigmaCtrl M.D.BS) (r2MinorBudget F M A)
@@ -824,7 +822,7 @@ structure R2MinorCertificate {T : Finset ℕ} {b : ℕ}
   Bm : ℝ
   hminor : ∀ MA : MainArcFields M.D.E M.W.theta (M.D.L / b) M.D.L A.N,
       (∑ h ∈ MA.Sm, ‖fourierTerm M.D.E M.W.theta (M.D.L / b) M.D.L h‖) ≤ Bm
-  hbeat : Bm < 0.8 * (Real.exp (-(Real.pi ^ 2 / 2)) / 2) /
+  hbeat : Bm < bernoulliMainTermConstant /
       Real.sqrt (sigmaE2 M.D.E M.W.theta)
 
 /-- Produce the minor-arc certificate: take the minor budget `r2MinorBudget`, its

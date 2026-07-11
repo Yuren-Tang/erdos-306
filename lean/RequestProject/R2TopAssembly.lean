@@ -324,9 +324,12 @@ lemma r2_numericFields {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
     (hsmallN : (N : ℝ) / Emin ≤ 1 / (1000000 * B)) :
     MainArcNumericFields D.E W.theta N := by
   refine' ⟨ hN, hNnonneg, _, _ ⟩;
-  · intro m hm e he; rw [ abs_div, abs_of_nonneg ( by positivity : ( 0 : ℝ ) ≤ e ) ] ; rw [ div_le_iff₀ ( by norm_cast; linarith [ he0 e he ] ) ] ; ring_nf at *; norm_num at *;
+  · intro m hm e he
+    change |(m : ℝ) / (e : ℝ)| ≤ 1 / 10
+    rw [ abs_div, abs_of_nonneg ( by positivity : ( 0 : ℝ ) ≤ e ) ] ; rw [ div_le_iff₀ ( by norm_cast; linarith [ he0 e he ] ) ] ; ring_nf at *; norm_num at *;
     cases abs_cases ( m : ℝ ) <;> nlinarith [ show ( m : ℝ ) ≥ -N by exact_mod_cast hm.1, show ( m : ℝ ) ≤ N by exact_mod_cast hm.2, show ( e : ℝ ) ≥ Emin by exact_mod_cast hEmin e he ];
-  · intro m hm;
+  · intro m hm
+    change (∑ e ∈ D.E, 100000 * |(m : ℝ) / (e : ℝ)| ^ 3) ≤ 1 / 10
     -- For each edge e, |(m:ℝ)/e|^3 ≤ N/Emin * (m^2 * 1/e^2).
     have h_edge_bound : ∀ e ∈ D.E, |(m : ℝ) / e| ^ 3 ≤ (N / Emin) * ((m : ℝ) ^ 2 * (1 / e ^ 2 : ℝ)) := by
       intros e he

@@ -100,7 +100,7 @@ theorem exists_r2_minorReady_from_multiGadget_lanes
       k0min ≤ D.BS.k0 → admissibleGlobalRange D.BS →
       R2MinorEndgameMultiGadgetLanes D W N
         (Ablock / sigmaCtrl D.BS) (Aextra / sigmaCtrl D.BS) η Ctail ρ Cls →
-      Ablock + Aextra < r2MinorMainCtrlConstant →
+      Ablock + Aextra < bernoulliMainTermConstant →
       Nonempty (R2MinorReadyData D W N) := by
   obtain ⟨k0min, Ctail, hCtail, hminor⟩ :=
     exists_r2_minorSupportBudget_from_multiGadget_lanes η hη
@@ -184,7 +184,7 @@ theorem exists_r2_minorReady_from_frequency_lanes
       R2MinorEndgameFrequencyLanes D W N
         (Ablock / sigmaCtrl D.BS) (Aextra / sigmaCtrl D.BS)
         η Ctail ρ Cextra Cls →
-      Ablock + Aextra < r2MinorMainCtrlConstant →
+      Ablock + Aextra < bernoulliMainTermConstant →
       Nonempty (R2MinorReadyData D W N) := by
   obtain ⟨k0min, Ctail, hCtail, hminor⟩ :=
     exists_r2_minorReady_from_multiGadget_lanes η hη
