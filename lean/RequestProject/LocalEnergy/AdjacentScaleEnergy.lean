@@ -1,3 +1,5 @@
+import Mathlib.Data.ZMod.Basic
+import Mathlib.RingTheory.Int.Basic
 import RequestProject.Core.SmallBallEnergy
 import RequestProject.Core.ShortIntervalCongruence
 import RequestProject.Core.UnitCircleResidue
@@ -101,7 +103,13 @@ theorem adjacent_scale_reciprocal_energy_lower_bound (X : ℕ) (hX : 0 < X) (P :
       intro p hp
       have h_not_div : ¬(q : ℤ) ∣ (d * pinv p) := by
         haveI := Fact.mk hq; simp_all +decide [ ← ZMod.intCast_zmod_eq_zero_iff_dvd ] ;
-        intro H; specialize hpinv p hp; simp_all +decide [ ← ZMod.natCast_eq_natCast_iff' ] ;
+        intro H; specialize hpinv p hp; simp_all +decide [ ← ZMod.natCast_eq_natCast_iff' ]
+        exact hqd (by
+          calc
+            (d : ZMod q) = d * 1 := by simp
+            _ = d * (p * pinv p) := by rw [hpinv]
+            _ = (d * pinv p) * p := by ring
+            _ = 0 := by rw [H]; simp)
       gcongr
       simpa only [Function.comp_apply, Int.cast_mul, Int.cast_natCast] using
         RequestProject.inv_natCast_le_unitCircle_norm_int_div_nat
@@ -205,7 +213,8 @@ lemma crt_energy_lower_bound_for_fixed_outer_prime (X : ℕ) (hX : 0 < X) (P : F
       convert adjacent_scale_small_phase_count X hX P hP q hq hqlb hqub (m' - m) hqd pinv _ using 1;
       intro p hp; haveI := Fact.mk hq; simp +decide [ ← ZMod.natCast_eq_natCast_iff' ] ;
       simp +zetaDelta at *;
-      rw [ mul_inv_cancel₀ ] ; exact by rw [ Ne.eq_def, ZMod.natCast_eq_zero_iff ] ; exact Nat.not_dvd_of_pos_of_lt ( Nat.Prime.pos ( hP p hp |>.1 ) ) ( by linarith [ hP p hp |>.2 ] ) ;
+      exact ZMod.coe_mul_inv_eq_one p
+        ((Nat.coprime_primes (hP p hp).1 hq).2 (by linarith [(hP p hp).2.2]))
     have h_residue_count : ((P.filter (fun p => (norm ∘ ((↑) : ℝ → UnitAddCircle)) ((m' - m : ℤ) * (pinv p : ℝ) / (q : ℝ)) > (P.card : ℝ) / (32 * X))).card : ℝ) = (P.card : ℝ) - ((P.filter (fun p => (norm ∘ ((↑) : ℝ → UnitAddCircle)) ((m' - m : ℤ) * (pinv p : ℝ) / (q : ℝ)) ≤ (P.card : ℝ) / (32 * X))).card : ℝ) := by
       rw [ eq_sub_iff_add_eq, ← Nat.cast_add, ← Finset.card_union_of_disjoint ];
       · congr with p ; by_cases hp : (norm ∘ ((↑) : ℝ → UnitAddCircle)) ( ( m' - m : ℤ ) * ( pinv p : ℝ ) / q ) ≤ ( P.card : ℝ ) / ( 32 * X ) <;> aesop;
@@ -219,7 +228,9 @@ lemma crt_energy_lower_bound_for_fixed_outer_prime (X : ℕ) (hX : 0 < X) (P : F
         linarith [ hP p ( Finset.filter_subset _ _ hp ) ] ) m m' ( pinv p ) ( by
         haveI := Fact.mk hq; simp +decide [ ← ZMod.natCast_eq_natCast_iff' ] ;
         simp +zetaDelta at *;
-        rw [ mul_inv_cancel₀ ] ; norm_num [ ZMod.natCast_eq_zero_iff ] ; exact Nat.not_dvd_of_pos_of_lt ( Nat.Prime.pos ( hP p hp.1 |>.1 ) ) ( by linarith [ hP p hp.1 |>.2.2 ] ) ) using 1;
+        exact ZMod.coe_mul_inv_eq_one p
+          ((Nat.coprime_primes (hP p hp.1).1 hq).2
+            (by linarith [(hP p hp.1).2.2]))) using 1;
     have h_abs_m : |(m : ℝ)| / ((p : ℝ) * (q : ℝ)) ≤ (P.card : ℝ) / (64 * X) := by
       rw [ div_le_div_iff₀ ] <;> norm_cast at * <;> try nlinarith;
       · norm_num at *;

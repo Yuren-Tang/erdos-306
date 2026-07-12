@@ -1,3 +1,4 @@
+import Lean.Elab.Tactic.Grind
 import RequestProject.GlobalControl.BlockRestriction
 import RequestProject.GlobalControl.ControlEnergy
 
@@ -43,7 +44,7 @@ lemma ctrlPairs_prod_lower (BS : BlockSystem) (hk0 : 2 ≤ BS.k0) {pq : ℕ × �
     · have := BS.hprime k pq.1 hk.1; simp_all +decide [ Nat.prime_iff ] ;
     · exact lt_of_le_of_ne ( Nat.le_trans ( pow_le_pow_right₀ ( by decide ) hk.2.1 ) this.1 ) ( Ne.symm h_eq )
   have h2 : 2 ^ BS.k0 < pq.2 := by
-    cases' Finset.mem_union.mp ( show pq ∈ ( Finset.biUnion ( Finset.Icc BS.k0 BS.K ) ( internalPairs BS ) ) ∪ ( Finset.biUnion ( Finset.Ico BS.k0 BS.K ) ( bipartitePairs BS ) ) from h );
+    rcases Finset.mem_union.mp ( show pq ∈ ( Finset.biUnion ( Finset.Icc BS.k0 BS.K ) ( internalPairs BS ) ) ∪ ( Finset.biUnion ( Finset.Ico BS.k0 BS.K ) ( bipartitePairs BS ) ) from h ) with h | h
     · simp_all +decide [ Finset.mem_biUnion, internalPairs ];
       grind;
     · simp_all +decide [ bipartitePairs ];

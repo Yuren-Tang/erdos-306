@@ -1,4 +1,5 @@
 import Mathlib.Analysis.Complex.ExponentialBounds
+import Mathlib.Tactic.NormNum.RealSqrt
 import RequestProject.Core.Asymptotics
 import RequestProject.LocalEnergy.DominantLabel.Covering
 
@@ -319,4 +320,3 @@ theorem nondominant_energy_lower_bound
       gcongr
 
 end LocalEnergy
-

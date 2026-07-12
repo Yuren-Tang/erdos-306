@@ -1,3 +1,5 @@
+import Aesop
+import Lean.Elab.Tactic.Grind
 import RequestProject.GlobalControl.BlockRestriction
 import RequestProject.GlobalControl.ControlEnergy
 
@@ -44,7 +46,9 @@ lemma sigmaCtrl_le_one (BS : BlockSystem) (hk0 : 2 ≤ BS.k0) :
           · exact pow_pos ( mul_pos ( Nat.cast_pos.mp ( lt_of_lt_of_le ( by positivity ) h_bound.1 ) ) ( Nat.cast_pos.mp ( lt_of_lt_of_le ( by positivity ) h_bound.2 ) ) ) _;
         refine le_trans h_bound ?_;
         gcongr;
-        · exact sq_pos_of_pos <| Nat.cast_pos.mpr <| Finset.card_pos.mpr <| by obtain ⟨ p, hp ⟩ := Finset.nonempty_of_ne_empty ( by aesop_cat : BS.P k ≠ ∅ ) ; exact ⟨ p, hp ⟩ ;
+        · exact sq_pos_of_pos <| Nat.cast_pos.mpr <| Finset.card_pos.mpr <| by
+            obtain ⟨p, hp⟩ := Finset.nonempty_of_ne_empty (by aesop : BS.P k ≠ ∅)
+            exact ⟨p, hp⟩
         · exact_mod_cast block_card_le BS k
       have h_sum_bound : ∑ pq ∈ internalPairs BS k, (1 : ℝ) / ((pq.1 : ℝ) * pq.2) ^ 2 ≤ (1 / 4 : ℝ) ^ k := by
         refine' le_trans ( Finset.sum_le_sum h_bound ) _;
@@ -96,7 +100,7 @@ lemma sigmaCtrl_le_one (BS : BlockSystem) (hk0 : 2 ≤ BS.k0) :
     refine' le_trans _ ( add_le_add ( Finset.sum_le_sum h_sum_bound ) ( Finset.sum_le_sum h_sum_bound_bipartite ) );
     rw [ ← Finset.sum_biUnion, ← Finset.sum_biUnion ];
     · rw [ ← Finset.sum_union_inter ];
-      exact le_add_of_le_of_nonneg ( Finset.sum_le_sum_of_subset_of_nonneg ( by aesop_cat ) fun _ _ _ => by positivity ) ( Finset.sum_nonneg fun _ _ => by positivity );
+      exact le_add_of_le_of_nonneg ( Finset.sum_le_sum_of_subset_of_nonneg ( by aesop ) fun _ _ _ => by positivity ) ( Finset.sum_nonneg fun _ _ => by positivity );
     · intros k hk l hl hkl; simp_all +decide [ Finset.disjoint_left, bipartitePairs ] ;
       intro a b ha hb ha' hb'; have := blocks_disjoint BS ( show k ≠ l by tauto ) ; simp_all +decide [ Finset.disjoint_left ] ;
     · intros k hk l hl hkl; simp_all +decide [ Finset.disjoint_left, internalPairs ] ;
@@ -158,4 +162,3 @@ lemma sigmaCtrl_le_geom (BS : BlockSystem) (_hk0 : 2 ≤ BS.k0) :
   exact le_add_of_le_of_nonneg ( le_add_of_le_of_nonneg ( mul_le_mul_of_nonneg_left ( by norm_num ) ( by positivity ) ) ( by positivity ) ) ( by positivity )end GlobalControl
 
 end
-

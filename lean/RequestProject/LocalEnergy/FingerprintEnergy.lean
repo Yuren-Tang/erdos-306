@@ -1,4 +1,5 @@
 import Mathlib.Analysis.Complex.ExponentialBounds
+import Mathlib.Data.ZMod.Basic
 import RequestProject.Core.FiniteInterval
 import RequestProject.LocalEnergy.CRTModel
 import RequestProject.LocalEnergy.ReciprocalDispersion
@@ -75,10 +76,14 @@ private lemma reciprocalPhase_le_crtEnergy (p q : ℕ) (hp : p.Prime) (hq : q.Pr
           convert crtRepr_congr_right p q ( a p ) w _ using 1;
           · exact hp.coprime_iff_not_dvd.mpr fun h => hpq <| Nat.prime_dvd_prime_iff_eq hp hq |>.1 h;
         rw [ ← ZMod.intCast_zmod_eq_zero_iff_dvd ] ; aesop;
+    letI : NeZero p := ⟨hp.ne_zero⟩
+    letI : Fact (Nat.Prime p) := ⟨hp⟩
     have h_mod : (H - wtilde) / q ≡ E * qbar [ZMOD p] := by
       simp_all +decide [ ← ZMod.intCast_eq_intCast_iff ];
       simp +zetaDelta at *;
-      rw [ ← h_mod, mul_assoc, mul_inv_cancel₀ ( by rw [ Ne.eq_def, ZMod.natCast_eq_zero_iff ] ; exact fun h => hpq <| by have := Nat.prime_dvd_prime_iff_eq hp hq; tauto ), mul_one ];
+      have hqinv : (q : ZMod p) * (q : ZMod p)⁻¹ = 1 :=
+        ZMod.coe_mul_inv_eq_one q ((Nat.coprime_primes hq hp).2 (Ne.symm hpq))
+      rw [← h_mod, mul_assoc, hqinv, mul_one]
     exact h_mod.dvd;
   -- So |x - round x| = |(v:ℝ)/p - round ((v:ℝ)/p)|.
   have h_abs : reciprocalPhase E q p = |(H - wtilde : ℝ) / (p * q) - round ((H - wtilde : ℝ) / (p * q))| := by
@@ -195,4 +200,3 @@ lemma cold_residue_unique (X : ℕ) (hX : 1 ≤ X) (F : Finset ℕ)
   exact absurd h_simplified ( by norm_cast; nlinarith only [ hFcard ] )
 
 end LocalEnergy
-

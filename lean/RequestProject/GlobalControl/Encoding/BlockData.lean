@@ -1,3 +1,4 @@
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import RequestProject.GlobalControl.BlockRestriction
 
 /-!
