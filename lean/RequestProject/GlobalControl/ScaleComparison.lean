@@ -20,7 +20,8 @@ lemma sigmaCtrl_le_sigmaP_k0 :
       have := BS.hdensity BS.k0 le_rfl ( by linarith [ BS.hk ] );
       rw [ Real.log_pow, div_le_iff₀ ] at this <;> norm_num at *;
       · contrapose! this;
-        interval_cases _ : Finset.card ( BS.P BS.k0 ) <;> norm_num at *;
+        have hcard : (BS.P BS.k0).card = 0 ∨ (BS.P BS.k0).card = 1 := by omega
+        rcases hcard with hcard | hcard <;> simp_all
         rcases n : BS.k0 with ( _ | _ | k0 ) <;> simp_all +decide [ pow_succ' ];
         exact Nat.recOn k0 ( by norm_num; have := Real.log_two_lt_d9; norm_num1 at *; linarith ) fun n ihn => by norm_num [ pow_succ' ] at * ; nlinarith [ Real.log_le_sub_one_of_pos zero_lt_two, pow_le_pow_right₀ ( by norm_num : ( 1 : ℝ ) ≤ 2 ) n.zero_le ] ;
       · positivity;

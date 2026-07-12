@@ -1,3 +1,4 @@
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import RequestProject.LocalEnergy.FingerprintEnergy
 
 /-!
@@ -213,4 +214,3 @@ lemma entropy_inequality2 (eps : ℝ) (hε0 : 0 < eps) (hε1 : eps < 1) :
       ring
 
 end LocalEnergy
-
