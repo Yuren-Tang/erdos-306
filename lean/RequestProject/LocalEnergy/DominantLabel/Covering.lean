@@ -1,5 +1,4 @@
-import Mathlib.Analysis.MeanInequalitiesPow
-import RequestProject.Core.FiniteInterval
+import RequestProject.Core.FiniteSums
 import RequestProject.LocalEnergy.CrossLabelEnergy
 import RequestProject.LocalEnergy.DominantLabel.Definition
 
@@ -115,50 +114,6 @@ lemma exists_sparse_crt_basepoint
   contrapose! h_avg;
   convert Finset.sum_lt_sum_of_nonempty ( Finset.card_pos.mp <| by simpa [ Finset.card_attach ] using hPne ) h_avg using 1 ; norm_num ; ring_nf;
   norm_num [ hPne.ne' ]
-
-/-
-**Power-mean energy lower bound (combinatorial heart of `29 §6`).**  For a
-    family of nonnegative class sizes `x` over labels `L`, with a maximal label
-    `nstar`, the off-diagonal cubic form `∑_{n≠n'} x_n³ x_{n'}` is at least
-    `M₂⁴ / |L|²`, where `M₂ = ∑_{n≠nstar} x_n`.  (Uses `S₄ ≤ x_{nstar}·S₃` and the
-    power-mean inequality `∑ x_n³ ≥ (∑ x_n)³ / |L|²`.)
--/
-private lemma sum_cube_offdiag_ge {ι : Type*} [DecidableEq ι]
-    (L : Finset ι) (x : ι → ℝ) (hx : ∀ i ∈ L, 0 ≤ x i)
-    (nstar : ι) (hns : nstar ∈ L) (hmax : ∀ i ∈ L, x i ≤ x nstar) :
-    (∑ n ∈ L \ {nstar}, x n)^4 / (L.card:ℝ)^2
-      ≤ ∑ n ∈ L, ∑ n' ∈ L \ {n}, (x n)^3 * (x n') := by
-  -- By the properties of sums and the power mean inequality, we can simplify the expression.
-  have h_simplify : (∑ n ∈ L, ∑ n' ∈ L \ {n}, (x n)^3 * (x n')) ≥ (∑ n ∈ L, (x n)^3) * (∑ n ∈ L \ {nstar}, (x n)) := by
-    have h_simplify : (∑ n ∈ L, ∑ n' ∈ L \ {n}, (x n)^3 * (x n')) = (∑ n ∈ L, (x n)^3 * (∑ n' ∈ L \ {n}, (x n'))) := by
-      simp +decide only [Finset.mul_sum _ _ _];
-    rw [ h_simplify, Finset.sum_mul _ _ _ ];
-    refine' Finset.sum_le_sum fun i hi => mul_le_mul_of_nonneg_left _ ( pow_nonneg ( hx i hi ) 3 );
-    by_cases hi' : i = nstar <;> simp_all +decide [ Finset.sdiff_singleton_eq_erase ];
-    linarith [ hmax i hi ];
-  -- Apply the power mean inequality to the sum of cubes.
-  have h_power_mean : (∑ n ∈ L \ {nstar}, x n) ^ 3 / (L.card - 1 : ℝ) ^ 2 ≤ ∑ n ∈ L \ {nstar}, x n ^ 3 := by
-    have h_power_mean : ∀ (s : Finset ι) (f : ι → ℝ) (hf : ∀ i ∈ s, 0 ≤ f i), s.Nonempty → (∑ i ∈ s, f i) ^ 3 / s.card ^ 2 ≤ ∑ i ∈ s, f i ^ 3 := by
-      intro s f hf hs_nonempty
-      have h_power_mean : (∑ i ∈ s, f i ^ 3) / s.card ≥ ((∑ i ∈ s, f i) / s.card) ^ 3 := by
-        have := @Real.rpow_arith_mean_le_arith_mean_rpow;
-        specialize this s ( fun _i => 1 / s.card ) ( fun _i => f _i ) ; simp_all +decide [ div_eq_inv_mul, Finset.mul_sum _ _ _ ];
-        exact_mod_cast this ( mul_inv_cancel₀ ( Nat.cast_ne_zero.mpr hs_nonempty.card_pos.ne' ) ) ( show 1 ≤ ( 3 : ℝ ) by norm_num );
-      contrapose! h_power_mean;
-      convert div_lt_div_iff_of_pos_right ( Nat.cast_pos.mpr hs_nonempty.card_pos ) |>.2 h_power_mean using 1 ; ring;
-    by_cases hL : L = {nstar} <;> simp_all +decide;
-    convert h_power_mean ( L \ { nstar } ) x ( fun i hi => hx i ( Finset.mem_sdiff.mp hi |>.1 ) ) ( Finset.nonempty_of_ne_empty ( by aesop ) ) using 1 <;> simp +decide [*, Finset.card_sdiff];
-    rw [ Nat.cast_pred ( Finset.card_pos.mpr ⟨ nstar, hns ⟩ ) ];
-  by_cases hL : L.card = 1 <;> simp_all +decide [ Finset.sdiff_singleton_eq_erase ];
-  · rw [ Finset.card_eq_one ] at hL ; aesop;
-  · refine' le_trans _ ( h_simplify.trans _ );
-    · refine' le_trans _ ( mul_le_mul_of_nonneg_right ( show ∑ n ∈ L, x n ^ 3 ≥ ( ∑ n ∈ L, x n - x nstar ) ^ 3 / ( L.card - 1 : ℝ ) ^ 2 from _ ) ( sub_nonneg.mpr <| Finset.single_le_sum ( fun i _ => hx i ‹_› ) hns ) );
-      · rw [ div_mul_eq_mul_div, div_le_div_iff₀ ];
-        · exact mul_le_mul_of_nonneg_left ( by nlinarith only [ show ( L.card : ℝ ) ≥ 2 by norm_cast; exact Nat.lt_of_le_of_ne ( Finset.card_pos.mpr ⟨ nstar, hns ⟩ ) ( Ne.symm hL ) ] ) ( mul_nonneg ( pow_nonneg ( sub_nonneg.mpr <| Finset.single_le_sum ( fun i _ => hx i ‹_› ) hns ) _ ) <| sub_nonneg.mpr <| Finset.single_le_sum ( fun i _ => hx i ‹_› ) hns );
-        · exact sq_pos_of_pos ( Nat.cast_pos.mpr ( Finset.card_pos.mpr ⟨ nstar, hns ⟩ ) );
-        · exact sq_pos_of_pos ( sub_pos_of_lt ( mod_cast lt_of_le_of_ne ( Finset.card_pos.mpr ⟨ nstar, hns ⟩ ) ( Ne.symm hL ) ) );
-      · exact h_power_mean.trans ( sub_le_self _ ( pow_nonneg ( hx _ hns ) _ ) );
-    · rfl
 
 /-
 **Short list cardinality (`29 §4`).**  The covered labels `n = H_{p0 q}` lie in
@@ -461,7 +416,8 @@ lemma label_covering_energy_dichotomy
         grind +qlia) (fun n hn => by
         exact le_trans ( by linarith [ show ( 0 : ℝ ) ≤ B / X by positivity ] ) ( Finset.mem_filter.mp hn |>.2 )) R hQ cE hcE0 hcE;
     have h_power_mean : (∑ n ∈ Lsub \ {nstar}, ((Cls n).card : ℝ))^4 / (Lsub.card : ℝ)^2 ≤ ∑ n ∈ Lsub, ∑ n' ∈ Lsub \ {n}, ((Cls n).card : ℝ)^3 * ((Cls n').card : ℝ) := by
-      convert sum_cube_offdiag_ge Lsub ( fun n => ( Cls n |> Finset.card : ℝ ) ) _ nstar _ _ using 1 <;> norm_num [ hnstar ];
+      convert RequestProject.offDiagonalCubeSum_lower_bound Lsub
+        (fun n => (Cls n).card) _ nstar _ _ using 1 <;> norm_num [hnstar];
       exact hnstar.2;
     have h_final : cE / X^2 * (ρ * N / 2)^4 / (2 * B / X + 2)^2 ≤ 2 * R := by
       have h_final : cE / X^2 * (ρ * N / 2)^4 / (Lsub.card : ℝ)^2 ≤ 2 * R := by

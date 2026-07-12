@@ -1,4 +1,6 @@
-import Mathlib.Topology.Algebra.InfiniteSum.Real
+import Mathlib.Algebra.Order.Chebyshev
+import Mathlib.Topology.Algebra.InfiniteSum.Basic
+import Mathlib.Topology.MetricSpace.Pseudo.Defs
 
 /-!
 # Finite sums over subtypes and covers
@@ -75,6 +77,57 @@ lemma sum_comp_mul_le_of_fiber_sum_le
           rw [Finset.sum_congr rfl heq, ← Finset.mul_sum, mul_comm]
           exact mul_le_mul_of_nonneg_right (hfiber y hy) (hg y hy)
     _ = K * ∑ y ∈ t, g y := by rw [Finset.mul_sum]
+
+/-- For a finite nonnegative family with a maximal entry, the off-diagonal
+cubic form controls the fourth power of the mass away from that entry. -/
+lemma offDiagonalCubeSum_lower_bound {ι : Type*} [DecidableEq ι]
+    (L : Finset ι) (x : ι → ℝ) (hx : ∀ i ∈ L, 0 ≤ x i)
+    (m : ι) (hm : m ∈ L) (hmax : ∀ i ∈ L, x i ≤ x m) :
+    (∑ i ∈ L \ {m}, x i) ^ 4 / (L.card : ℝ) ^ 2 ≤
+      ∑ i ∈ L, ∑ j ∈ L \ {i}, x i ^ 3 * x j := by
+  have h_simplify : (∑ i ∈ L, ∑ j ∈ L \ {i}, x i ^ 3 * x j) ≥
+      (∑ i ∈ L, x i ^ 3) * (∑ i ∈ L \ {m}, x i) := by
+    have hrewrite : (∑ i ∈ L, ∑ j ∈ L \ {i}, x i ^ 3 * x j) =
+        ∑ i ∈ L, x i ^ 3 * (∑ j ∈ L \ {i}, x j) := by
+      simp +decide only [Finset.mul_sum _ _ _]
+    rw [hrewrite, Finset.sum_mul]
+    refine Finset.sum_le_sum fun i hi =>
+      mul_le_mul_of_nonneg_left ?_ (pow_nonneg (hx i hi) 3)
+    by_cases him : i = m <;>
+      simp_all +decide [Finset.sdiff_singleton_eq_erase]
+    linarith [hmax i hi]
+  have h_power_mean :
+      (∑ i ∈ L \ {m}, x i) ^ 3 / (L.card - 1 : ℝ) ^ 2 ≤
+        ∑ i ∈ L \ {m}, x i ^ 3 := by
+    have h := pow_sum_div_card_le_sum_pow
+      (s := L \ {m}) (f := x)
+      (fun i hi => hx i (Finset.mem_sdiff.mp hi).1) 2
+    simpa [Finset.card_sdiff, hm,
+      Nat.cast_pred (Finset.card_pos.mpr ⟨m, hm⟩)] using h
+  by_cases hL : L.card = 1 <;>
+    simp_all +decide [Finset.sdiff_singleton_eq_erase]
+  · rw [Finset.card_eq_one] at hL
+    aesop
+  · have hLtwoNat : 2 ≤ L.card := by
+      have := Finset.card_pos.mpr ⟨m, hm⟩
+      omega
+    have hLtwo : (2 : ℝ) ≤ L.card := by exact_mod_cast hLtwoNat
+    refine le_trans ?_ (h_simplify.trans ?_)
+    · refine le_trans ?_ (mul_le_mul_of_nonneg_right
+        (show ∑ i ∈ L, x i ^ 3 ≥
+          (∑ i ∈ L, x i - x m) ^ 3 / (L.card - 1 : ℝ) ^ 2 from ?_)
+        (sub_nonneg.mpr <| Finset.single_le_sum (fun i _ => hx i ‹_›) hm))
+      · rw [div_mul_eq_mul_div, div_le_div_iff₀]
+        · exact mul_le_mul_of_nonneg_left
+            (by nlinarith only [hLtwo])
+            (mul_nonneg
+              (pow_nonneg (sub_nonneg.mpr <| Finset.single_le_sum
+                (fun i _ => hx i ‹_›) hm) _)
+              (sub_nonneg.mpr <| Finset.single_le_sum (fun i _ => hx i ‹_›) hm))
+        · exact sq_pos_of_pos (Nat.cast_pos.mpr (Finset.card_pos.mpr ⟨m, hm⟩))
+        · exact sq_pos_of_pos (by linarith)
+      · exact h_power_mean.trans (sub_le_self _ (pow_nonneg (hx m hm) _))
+    · rfl
 
 end RequestProject
 
