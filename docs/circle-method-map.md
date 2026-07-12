@@ -170,6 +170,20 @@ delegatable with this spec):**
       `exists_edge_square_load_supply`): wrap `hk0big`'s `1000·G + 1000·b + 100000`
       and `r2_getQ`'s inline `k0³·2 < 2^k0` inductions.
 - [ ] **D3** naming/file sweep remainder (delegatable, last).
+- [ ] **D4** import-audit policy fix (delegatable, independent): the audit currently
+      fails on "transitively redundant imports". But an import line is a *direct-
+      dependency statement*, not a hypothesis: if a file directly uses `Aesop`,
+      `Mathlib.Tactic.LinearCombination.Lemmas`, or `ZMod` (the three currently
+      flagged cases are exactly of this kind — mostly tactic modules used invisibly
+      by proofs), the explicit import is honest and *protective*: it is what keeps
+      the file alive when an upstream file stops relaying the module (the precise
+      failure that broke `FingerprintLevelSet` and `LevelSet` this week). Policy,
+      now standing: **redundancy at the DAG-edge level is not an error; the import
+      list must state direct uses truthfully.** Change `lean/scripts/audit_imports.sh`
+      to report the redundant category as info without failing (keep failing on
+      build breaks and on `missing imports`), then judge the 3 flagged files
+      individually: direct-use imports stay; genuine leftovers (imports naming
+      modules the file does not use at all) go.
 
 ## 4. Record: the Codex pass (2026-07-12, 28 commits d362ddb..9d3a697)
 
@@ -189,3 +203,48 @@ the direct `Mathlib.Tactic.IntervalCases` import, Fable follow-up pass).
 `lake build RequestProject.Audit` before commit, no exceptions** — per-target builds
 do not cover transitive relay breakage, and the CI lint shards only catch it after
 push.
+
+## 5. Handoff protocol (tiers, escalation, and what stays Fable-level)
+
+**Dispatch tiers.** D1, D2, D3, D4 → Sonnet 5 (Lean proof repair after statement
+changes is above Haiku; none of the four needs Fable — every design decision is
+pinned above, with acceptance greps). Run D1 → D2 → D3 sequentially (they overlap in
+`R2Certificates.lean` / file moves); D4 any time in parallel (CI-only).
+
+**Prompt preamble for every dispatched session** (include verbatim):
+1. Read `docs/circle-method-map.md` (your task's section) and
+   `docs/cleanup-handoff.md`'s "Known gotchas" before touching anything.
+2. Standing rules: any commit touching an `import` line requires a full
+   `lake build RequestProject.Audit` first; never push with the build gate red;
+   the acceptance greps of your task must pass before you call it done; update the
+   task's checkbox in this doc in the same commit.
+3. Verify claims against the live code — docs record intent, the tree is the truth.
+
+**Escalation triggers — stop and hand back to Fable 5 when any of these occurs:**
+- The pinned spec turns out to require changing a theorem statement it does not
+  explicitly list, or you find yourself choosing between two abstraction shapes.
+- A proof does not close after ~3 honest attempts. Never `sorry`, never weaken a
+  statement, never add hypotheses, never bump `maxHeartbeats`, never delete a
+  failing declaration to make the build pass — these are all escalation events,
+  not fixes.
+- A consumer turns out to use the concrete *value* of a constant the spec treats
+  as opaque (this falsifies a design assumption).
+- The full-tree build is red in a file your diff does not explain.
+
+**What remains genuinely Fable-level (queue for a fresh Fable session):**
+- **The GlobalControl/LocalEnergy stream has never been mapped.** It is the larger
+  half of the proof (~40 files: BlockSystem, Qctrl, the level-set/entropy/Laplace
+  chain, `global_control_partition` as its summit) and this document's treatment
+  stops at its boundary. The same program applies: full read, identify the abstract
+  principle behind `global_control_partition` (shape: sub-Gaussian partition bound
+  for quadratic CRT energy on a finite product of ZMod p — is it an instance of a
+  general independent-coordinate large-deviation mechanism?), find dead ladders and
+  witness bundles (known: the level-set `20`, the `hk0big`-adjacent thresholds
+  beyond D2's scope), audit the 4 Codex abstraction commits there (only 1 of 4
+  sampled so far). Deliverable: `docs/global-control-map.md` in this document's
+  format.
+- **A1(ii)** from `docs/construction-redesign.md`: the never-executed trace that
+  certificate stages consume C-node entry points rather than adapter internals.
+- The long-term genuinely-new-math item (unchanged): sufficient dispersion
+  conditions on an arbitrary edge set — the "ideal theorem" — is research, not
+  refactor; do not let any cleanup session attempt it.
