@@ -1,5 +1,6 @@
 import Mathlib.Analysis.Complex.ExponentialBounds
 import RequestProject.Core.Asymptotics
+import RequestProject.Core.FiniteSums
 import RequestProject.LocalEnergy.DominantLabel.Definition
 import RequestProject.LocalEnergy.DominantLabel.Energy
 
@@ -46,15 +47,9 @@ lemma dominant_assignment_encoding_bound (X : ℕ) (_hX : 1 ≤ X) (P : Finset �
         intro a ha; aesop;
       · exact fun x hx y hy hxy => Finset.disjoint_left.mpr fun z hz₁ hz₂ => hxy <| by aesop;
     exact h_card.trans ( Finset.sum_le_sum fun S hS => by aesop );
-  · norm_num [ Finset.sum_ite ];
-    refine' le_trans ( Finset.sum_le_sum fun s hs => Finset.prod_le_prod ( fun _ _ => Nat.cast_nonneg _ ) fun _ _ => show ( _ : ℝ ) ≤ 2 * X from _ ) _;
-    · exact_mod_cast hP _ ( Subtype.mem _ ) |>.2.2;
-    · simp +decide;
-      rw [ show ( Finset.powerset ( Finset.attach P ) |> Finset.filter fun x => Finset.card x ≤ h ) = Finset.biUnion ( Finset.range ( h + 1 ) ) fun e => Finset.powersetCard e ( Finset.attach P ) from ?_, Finset.sum_biUnion ];
-      · exact Finset.sum_le_sum fun i hi => by rw [ Finset.sum_congr rfl fun x hx => by rw [ Finset.mem_powersetCard.mp hx |>.2 ] ] ; simp +decide [ mul_comm ] ;
-      · exact fun i hi j hj hij => Finset.disjoint_left.mpr fun x hx₁ hx₂ => hij <| by rw [ Finset.mem_powersetCard ] at hx₁ hx₂; aesop;
-      · ext; simp [Finset.mem_biUnion, Finset.mem_powersetCard];
-        tauto
+  · exact_mod_cast RequestProject.weightedPowersetSum_le_binomial
+      P.attach (fun q : P => q.1) (2 * X) P.card h (by simp)
+      (fun q _ => (hP q.1 q.2).2.2)
 
 /-
 **(A4 entropy) Exception entropy.**  For `X` large, `∑_{e≤h} C(N,e)(2X)^e ≤ e^{εR}`

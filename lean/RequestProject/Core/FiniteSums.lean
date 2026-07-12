@@ -129,6 +129,76 @@ lemma offDiagonalCubeSum_lower_bound {ι : Type*} [DecidableEq ι]
       · exact h_power_mean.trans (sub_le_self _ (pow_nonneg (hx m hm) _))
     · rfl
 
+/-- If every coordinate has at most `M` choices, the total weight of supports
+of size at most `h` is bounded by the corresponding truncated binomial sum.
+The ambient cardinality `N` may be larger than the actual coordinate set. -/
+lemma weightedPowersetSum_le_binomial {α : Type*} [DecidableEq α]
+    (S : Finset α) (w : α → ℕ) (M N h : ℕ)
+    (hSN : S.card ≤ N) (hw : ∀ i ∈ S, w i ≤ M) :
+    ∑ T ∈ S.powerset, (if T.card ≤ h then ∏ i ∈ T, w i else 0) ≤
+      ∑ k ∈ Finset.range (h + 1), Nat.choose N k * M ^ k := by
+  rw [Finset.sum_ite]
+  simp only [Finset.sum_const_zero, add_zero]
+  have hdecomp :
+      S.powerset.filter (fun T => T.card ≤ h) =
+        (Finset.range (h + 1)).biUnion fun k => S.powersetCard k := by
+    ext T
+    simp [Finset.mem_biUnion, Finset.mem_powersetCard]
+    tauto
+  rw [hdecomp, Finset.sum_biUnion]
+  · change (∑ k ∈ Finset.range (h + 1),
+      ∑ T ∈ S.powersetCard k, ∏ i ∈ T, w i) ≤ _
+    refine Finset.sum_le_sum fun k hk => ?_
+    have hprod : ∀ T ∈ S.powersetCard k, ∏ i ∈ T, w i ≤ M ^ k := by
+      intro T hT
+      exact le_trans (Finset.prod_le_prod' fun i hi =>
+        hw i ((Finset.mem_powersetCard.mp hT).1 hi)) (by
+          simp [(Finset.mem_powersetCard.mp hT).2])
+    calc
+      ∑ T ∈ S.powersetCard k, ∏ i ∈ T, w i
+          ≤ ∑ _T ∈ S.powersetCard k, M ^ k := Finset.sum_le_sum hprod
+      _ = Nat.choose S.card k * M ^ k := by
+        simp [Finset.card_powersetCard]
+      _ ≤ Nat.choose N k * M ^ k :=
+        Nat.mul_le_mul_right _ (Nat.choose_le_choose k hSN)
+  · exact fun i _ j _ hij => Finset.disjoint_left.mpr fun T hi hj =>
+      hij <| by
+        rw [Finset.mem_powersetCard] at hi hj
+        omega
+
+/-- When `h ≤ N ≤ M`, every term of the truncated weighted binomial sum is
+bounded by its final term. -/
+lemma truncatedBinomialSum_le_last (N M h : ℕ) (hhN : h ≤ N) (hNM : N ≤ M) :
+    ∑ k ∈ Finset.range (h + 1), Nat.choose N k * M ^ k ≤
+      (h + 1) * Nat.choose N h * M ^ h := by
+  have hterm : ∀ k ∈ Finset.range (h + 1),
+      Nat.choose N k * M ^ k ≤ Nat.choose N h * M ^ h := by
+    intro k hk
+    have hk_le : k ≤ h := Finset.mem_range_succ_iff.mp hk
+    have hstep : ∀ j < h, Nat.choose N j ≤ Nat.choose N (j + 1) * M := by
+      intro j hj
+      have hchoose : Nat.choose N j ≤ Nat.choose N (j + 1) * (j + 1) := by
+        nlinarith [Nat.add_one_mul_choose_eq N j, Nat.choose_succ_succ N j]
+      exact hchoose.trans (Nat.mul_le_mul_left _ (le_trans (by omega) hNM))
+    have hiterate : ∀ m : ℕ, k + m ≤ h →
+        Nat.choose N k ≤ Nat.choose N (k + m) * M ^ m := by
+      intro m hm
+      induction m with
+      | zero => simp
+      | succ m ih =>
+        exact le_trans (ih (by omega)) <| calc
+          Nat.choose N (k + m) * M ^ m
+              ≤ (Nat.choose N (k + m + 1) * M) * M ^ m :=
+                Nat.mul_le_mul_right _ (hstep (k + m) (by omega))
+          _ = Nat.choose N (k + (m + 1)) * M ^ (m + 1) := by
+                rw [pow_succ]
+                ring_nf
+    have hchoose : Nat.choose N k ≤ Nat.choose N h * M ^ (h - k) := by
+      simpa [Nat.add_sub_of_le hk_le] using hiterate (h - k) (by omega)
+    exact le_trans (Nat.mul_le_mul_right _ hchoose) (by
+      rw [mul_assoc, ← pow_add, Nat.sub_add_cancel hk_le])
+  simpa [mul_assoc] using Finset.sum_le_sum hterm
+
 end RequestProject
 
 end

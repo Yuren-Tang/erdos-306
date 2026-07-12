@@ -1,5 +1,6 @@
 import RequestProject.LocalEnergy.FingerprintDecoding
 import RequestProject.LocalEnergy.FingerprintEntropy
+import RequestProject.Core.FiniteSums
 
 /-!
 # Fingerprint level-set bound
@@ -50,9 +51,11 @@ private lemma extendAssign_injective (P : Finset ℕ) :
 -/
 private lemma exists_lower_subset (P : Finset ℕ) (k : ℕ) (hk : k ≤ P.card) :
     ∃ F ⊆ P, F.card = k ∧ ∀ p ∈ F, ∀ q ∈ P \ F, p < q := by
-  induction' k with k ih generalizing P;
-  · exact ⟨ ∅, by norm_num ⟩;
-  · -- Let $m$ be the smallest element in $P$.
+  induction k generalizing P with
+  | zero =>
+    exact ⟨ ∅, by norm_num ⟩
+  | succ k ih =>
+    -- Let $m$ be the smallest element in $P$.
     obtain ⟨m, hm⟩ : ∃ m ∈ P, ∀ p ∈ P, p ≥ m := by
       exact ⟨ Nat.find <| Finset.card_pos.mp <| pos_of_gt hk, Nat.find_spec <| Finset.card_pos.mp <| pos_of_gt hk, fun p hp => Nat.find_min' _ hp ⟩;
     obtain ⟨ F, hF₁, hF₂, hF₃ ⟩ := ih ( P.erase m ) ( by simpa [ Finset.card_erase_of_mem hm.1 ] using by omega ) ; use Insert.insert m F; simp_all +decide [ Finset.subset_iff ] ;
@@ -96,7 +99,6 @@ lemma energy_relation (P F : Finset ℕ) [∀ p : P, NeZero p.1]
     the sub-set/residue counting `∑_{k ≤ h_max} C(|P∖F|,k)(2X)^k ≤
     (h_max+1)·C(|P|,h_max)(2X)^{h_max}`.
 -/
-set_option maxHeartbeats 500000 in
 private lemma decoding_card_bound
     (X : ℕ) (hX : 1 ≤ X) (P F : Finset ℕ) [∀ p : P, NeZero p.1]
     (hP : ∀ p ∈ P, Nat.Prime p ∧ X ≤ p ∧ p ≤ 2 * X)
@@ -145,38 +147,14 @@ private lemma decoding_card_bound
     split_ifs <;> simp_all +decide [ Finset.subset_iff ];
     grind;
   have h_card_bound : (∑ S ∈ Finset.powerset (P \ F), if S.card ≤ hmax then (∏ q ∈ S, q) else 0) ≤ (∑ k ∈ Finset.range (hmax + 1), (Nat.choose (P.card) k) * (2 * X) ^ k) := by
-    have h_card_bound : ∀ k ≤ hmax, (∑ S ∈ Finset.powersetCard k (P \ F), (∏ q ∈ S, q)) ≤ (Nat.choose (P.card) k) * (2 * X) ^ k := by
-      intros k hk
-      have h_card_bound : ∀ S ∈ Finset.powersetCard k (P \ F), (∏ q ∈ S, q) ≤ (2 * X) ^ k := by
-        intros S hS;
-        exact le_trans ( Finset.prod_le_prod' fun x hx => hP x ( Finset.mem_sdiff.mp ( Finset.mem_powersetCard.mp hS |>.1 hx ) |>.1 ) |>.2.2 ) ( by norm_num [ Finset.mem_powersetCard.mp hS |>.2 ] );
-      refine' le_trans ( Finset.sum_le_sum h_card_bound ) _;
-      simp +zetaDelta at *;
-      exact Nat.mul_le_mul_right _ ( Nat.choose_le_choose _ ( Finset.card_le_card ( Finset.sdiff_subset ) ) );
-    rw [ Finset.sum_ite ];
-    rw [ show ( Finset.powerset ( P \ F ) |> Finset.filter fun x => #x ≤ hmax ) = Finset.biUnion ( Finset.range ( hmax + 1 ) ) fun k => Finset.powersetCard k ( P \ F ) from ?_, Finset.sum_biUnion ];
-    · simpa using Finset.sum_le_sum fun i hi => h_card_bound i <| Finset.mem_range_succ_iff.mp hi;
-    · exact fun i hi j hj hij => Finset.disjoint_left.mpr fun x hx₁ hx₂ => hij <| by rw [ Finset.mem_powersetCard ] at hx₁ hx₂; aesop;
-    · ext; simp [Finset.mem_biUnion, Finset.mem_powersetCard];
-      tauto;
+    exact RequestProject.weightedPowersetSum_le_binomial (P \ F) id
+      (2 * X) P.card hmax (Finset.card_le_card Finset.sdiff_subset)
+      (fun q hq => (hP q (Finset.mem_sdiff.mp hq).1).2.2)
   have h_card_bound : (∑ k ∈ Finset.range (hmax + 1), (Nat.choose (P.card) k) * (2 * X) ^ k) ≤ (hmax + 1) * (Nat.choose (P.card) hmax) * (2 * X) ^ hmax := by
-    have h_card_bound : ∀ k ∈ Finset.range (hmax + 1), (Nat.choose (P.card) k) * (2 * X) ^ k ≤ (Nat.choose (P.card) hmax) * (2 * X) ^ hmax := by
-      intros k hk
-      have h_binom : Nat.choose (P.card) k ≤ Nat.choose (P.card) hmax * (2 * X) ^ (hmax - k) := by
-        have h_binom : ∀ k < hmax, Nat.choose (P.card) k ≤ Nat.choose (P.card) (k + 1) * (2 * X) := by
-          intros k hk_lt_hmax
-          have h_binom : Nat.choose (P.card) k ≤ Nat.choose (P.card) (k + 1) * (k + 1) := by
-            nlinarith [ Nat.add_one_mul_choose_eq ( P.card ) k, Nat.choose_succ_succ ( P.card ) k ];
-          exact h_binom.trans ( Nat.mul_le_mul_left _ ( by linarith [ show k + 1 ≤ 2 * X from by linarith [ show #P ≤ 2 * X from by
-                                                                                                              exact le_trans ( Finset.card_le_card ( show P ⊆ Finset.Icc X ( 2 * X ) from fun p hp => Finset.mem_Icc.mpr ⟨ hP p hp |>.2.1, hP p hp |>.2.2 ⟩ ) ) ( by simpa ) ] ] ) );
-        have h_binom : ∀ m : ℕ, k + m ≤ hmax → Nat.choose (P.card) k ≤ Nat.choose (P.card) (k + m) * (2 * X) ^ m := by
-          intro m hm
-          induction' m with m ih;
-          · norm_num;
-          · exact le_trans ( ih ( by linarith ) ) ( by rw [ pow_succ' ] ; nlinarith! [ h_binom ( k + m ) ( by linarith ), pow_pos ( by linarith : 0 < 2 * X ) m ] );
-        convert h_binom ( hmax - k ) ( by rw [ add_tsub_cancel_of_le ( Finset.mem_range_succ_iff.mp hk ) ] ) using 1 ; rw [ add_tsub_cancel_of_le ( Finset.mem_range_succ_iff.mp hk ) ];
-      exact le_trans ( Nat.mul_le_mul_right _ h_binom ) ( by rw [ mul_assoc, ← pow_add, Nat.sub_add_cancel ( Finset.mem_range_succ_iff.mp hk ) ] );
-    simpa [ mul_assoc ] using Finset.sum_le_sum h_card_bound;
+    apply RequestProject.truncatedBinomialSum_le_last P.card (2 * X) hmax hmaxP
+    exact le_trans (Finset.card_le_card (show P ⊆ Finset.Icc X (2 * X) from
+      fun p hp => Finset.mem_Icc.mpr ⟨(hP p hp).2.1, (hP p hp).2.2⟩))
+      (by simpa using hX)
   have h_card_bound : (∏ p ∈ F, p) ≤ (2 * X) ^ F.card := by
     exact le_trans ( Finset.prod_le_prod' fun p hp => hP p ( hFP hp ) |>.2.2 ) ( by norm_num );
   norm_cast;
