@@ -1,4 +1,4 @@
-import RequestProject.LocalEnergy.CRTModel
+import RequestProject.BlockCRTEnergy
 import RequestProject.LocalEnergy.ReciprocalDispersion
 
 /-!
@@ -223,7 +223,9 @@ theorem crossLabel_energy_lower_bound :
     rw [ Finset.sum_product ] at h_energy_lower_bound;
     refine le_trans ?_ h_energy_lower_bound;
     convert mul_le_mul_of_nonneg_right h_far_card ( sq_nonneg ( δ : ℝ ) ) using 1 ; ring;
-  · interval_cases X ; norm_num at *;
+  · have : X = 0 := by omega
+    subst X
+    norm_num at *
     exact Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _
 
 

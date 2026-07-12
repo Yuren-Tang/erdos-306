@@ -20,7 +20,8 @@ must exhibit a saving over this product.
 - CP 02 §1 (CRT energy definitions)
 - CP 03 §4 (single-block counting theorem)
 -/
-import Mathlib.Tactic
+import Mathlib.Analysis.Complex.Exponential
+import Mathlib.Data.ZMod.ValMinAbs
 
 open Finset BigOperators Classical
 
@@ -86,6 +87,46 @@ abbrev BlockAssignment (P : Finset ℕ) := ∀ p : P, ZMod p.1
 /-- Ordered pairs from P.attach: pairs (p, q) with p.1 < q.1. -/
 def orderedPrimePairsA (P : Finset ℕ) : Finset (P × P) :=
   (P.attach ×ˢ P.attach).filter fun pq => pq.1.1 < pq.2.1
+
+/-- A prime block has one increasing pair for each two-element subset. -/
+theorem card_orderedPrimePairsA (P : Finset ℕ) :
+    (orderedPrimePairsA P).card = Nat.choose P.card 2 := by
+  have hpairs : (orderedPrimePairsA P).card =
+      (Finset.powersetCard 2 P).card := by
+    refine' Finset.card_bij (fun x hx => {x.1.1, x.2.1}) _ _ _ <;>
+      simp +decide [orderedPrimePairsA]
+    · grind
+    · simp +contextual [Finset.Subset.antisymm_iff, Finset.subset_iff]
+      grind
+    · intro s hs hs2
+      rw [Finset.card_eq_two] at hs2
+      obtain ⟨p, q, hpq, rfl⟩ := hs2
+      cases lt_trichotomy p q <;> aesop
+  rw [hpairs, Finset.card_powersetCard]
+
+/-- Restricting both endpoints to `S` leaves exactly `|S| choose 2`
+increasing pairs. -/
+theorem card_filter_orderedPrimePairsA (P : Finset ℕ) (S : Finset P) :
+    ((orderedPrimePairsA P).filter fun pq => pq.1 ∈ S ∧ pq.2 ∈ S).card =
+      Nat.choose S.card 2 := by
+  have hpairs :
+      ((orderedPrimePairsA P).filter fun pq => pq.1 ∈ S ∧ pq.2 ∈ S).card =
+        (Finset.powersetCard 2 S).card := by
+    refine' Finset.card_bij (fun pq hpq => {pq.1, pq.2}) _ _ _ <;>
+      simp +decide [orderedPrimePairsA]
+    · grind
+    · simp +contextual [Finset.Subset.antisymm_iff, Finset.subset_iff]
+      intros
+      omega
+    · intro s hs hs2
+      rw [Finset.card_eq_two] at hs2
+      obtain ⟨p, q, hpq⟩ := hs2
+      simp_all +decide [Finset.subset_iff]
+      cases lt_or_gt_of_ne
+          (show p.1 ≠ q.1 from fun h => hpq.1 (Subtype.ext h)) <;>
+        [exact ⟨p.1, p.2, q.1, q.2, ⟨by assumption, hs.1, hs.2⟩, by aesop⟩;
+         exact ⟨q.1, q.2, p.1, p.2, ⟨by assumption, hs.2, hs.1⟩, by aesop⟩]
+  rw [hpairs, Finset.card_powersetCard]
 
 /-- The CRT energy for an assignment a on a prime block P:
 

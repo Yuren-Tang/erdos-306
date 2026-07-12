@@ -1,7 +1,6 @@
-import Mathlib.Analysis.MeanInequalitiesPow
 import RequestProject.Core.FiniteInterval
 import RequestProject.LocalEnergy.CrossLabelEnergy
-import RequestProject.LocalEnergy.DominantLabel.Definition
+import RequestProject.LocalEnergy.CRTModel
 
 /-!
 # Energy forced by deviations from a dominant label
@@ -52,7 +51,6 @@ private lemma exception_energy_lower_bound_of_close_count
     `S = ∑_{in-class}1/(pq)²`, and the
     restricted-σ comparison `S ≥ ((1-ρ)²/25)σ_P²`.
 -/
-set_option maxHeartbeats 500000 in
 lemma dominant_label_bound (X : ℕ) (hX : 16 ≤ X)
     (P : Finset ℕ) [∀ p : P, NeZero p.1]
     (hP : ∀ p ∈ P, Nat.Prime p ∧ X ≤ p ∧ p ≤ 2*X) (hN : 8 ≤ P.card)
@@ -95,20 +93,7 @@ lemma dominant_label_bound (X : ℕ) (hX : 16 ≤ X)
         · exact pow_pos ( mul_pos ( Nat.cast_pos.mpr ( Nat.Prime.pos ( hP _ pq.1.2 |>.1 ) ) ) ( Nat.cast_pos.mpr ( Nat.Prime.pos ( hP _ pq.2.2 |>.1 ) ) ) ) _;
         · exact le_trans ( Nat.pow_le_pow_left ( Nat.mul_le_mul ( hP _ pq.1.2 |>.2.2 ) ( hP _ pq.2.2 |>.2.2 ) ) 2 ) ( by ring_nf; norm_num );
       have h_card_filter : (Finset.filter (fun pq => pq.1 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ))) ∧ pq.2 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ)))) (orderedPrimePairsA P)).card = c * (c - 1) / 2 := by
-        have h_card_filter : ∀ (S : Finset P), (Finset.filter (fun pq => pq.1 ∈ S ∧ pq.2 ∈ S ∧ pq.1.1 < pq.2.1) (P.attach ×ˢ P.attach)).card = S.card * (S.card - 1) / 2 := by
-          intros S
-          have h_card_pairs : Finset.card (Finset.filter (fun pq => pq.1 ∈ S ∧ pq.2 ∈ S ∧ pq.1.1 < pq.2.1) (P.attach ×ˢ P.attach)) = Finset.card (Finset.powersetCard 2 S) := by
-            refine' Finset.card_bij ( fun pq hpq => { pq.1, pq.2 } ) _ _ _;
-            · grind;
-            · simp +contextual [ Finset.Subset.antisymm_iff, Finset.subset_iff ];
-              intros; omega;
-            · simp +decide [ Finset.mem_powersetCard ];
-              intro b hb hb'; rw [ Finset.card_eq_two ] at hb'; obtain ⟨ x, y, hxy ⟩ := hb'; simp_all +decide [ Finset.subset_iff ] ;
-              cases lt_or_gt_of_ne ( show x.1 ≠ y.1 from fun h => hxy.1 <| Subtype.ext h ) <;> [ exact ⟨ x.1, x.2, y.1, y.2, ⟨ hb.1, hb.2, by assumption ⟩, by aesop ⟩ ; exact ⟨ y.1, y.2, x.1, x.2, ⟨ hb.2, hb.1, by assumption ⟩, by aesop ⟩ ];
-          rw [ h_card_pairs, Finset.card_powersetCard, Nat.choose_two_right ];
-        convert h_card_filter ( Finset.filter ( fun p => a p = m ) P.attach ) using 1;
-        congr 1 with x ; simp +decide [ orderedPrimePairsA ];
-        tauto;
+        rw [card_filter_orderedPrimePairsA, Nat.choose_two_right]
       rcases c with ( _ | _ | c ) <;> norm_num at *;
       · exact Finset.sum_nonneg fun _ _ => by positivity;
       · exact Finset.sum_nonneg fun _ _ => by positivity;
@@ -122,18 +107,11 @@ lemma dominant_label_bound (X : ℕ) (hX : 16 ≤ X)
       refine le_trans hsigmaP2_le_N_N_minus_1_div_2X4 ?_;
       refine' le_trans ( Finset.sum_le_sum fun x hx => one_div_le_one_div_of_le ( by positivity ) <| show ( ( x.1.1 : ℝ ) * x.2.1 ) ^ 2 ≥ X ^ 4 by
                                                                                                       norm_cast;
-                                                                                                      rw [ show X ^ 4 = ( X ^ 2 ) ^ 2 by ring ] ; gcongr ; nlinarith only [ hP x.1 x.1.2, hP x.2 x.2.2 ] ; ) _ ; norm_num [ orderedPrimePairsA ];
-      rw [ show ( Finset.filter ( fun pq : P × P => pq.1 < pq.2 ) ( P.attach ×ˢ P.attach ) ).card = P.card * ( P.card - 1 ) / 2 from ?_ ];
+                                                                                                      rw [ show X ^ 4 = ( X ^ 2 ) ^ 2 by ring ] ; gcongr ; nlinarith only [ hP x.1 x.1.2, hP x.2 x.2.2 ] ; ) _ ; norm_num;
+      rw [show (orderedPrimePairsA P).card = P.card * (P.card - 1) / 2 by
+        rw [card_orderedPrimePairsA, Nat.choose_two_right]]
       · cases P using Finset.induction <;> norm_num [ Nat.dvd_iff_mod_eq_zero, Nat.mod_two_of_bodd ] at *;
         cases k : Finset.card ( insert ‹_› ‹_› ) <;> simp_all +decide [ Nat.dvd_iff_mod_eq_zero, Nat.mod_two_of_bodd ];
-      · have h_card : Finset.card (Finset.filter (fun pq : P × P => pq.1 < pq.2) (P.attach ×ˢ P.attach)) = Finset.card (Finset.powersetCard 2 P) := by
-          refine' Finset.card_bij ( fun pq hpq => { pq.1.val, pq.2.val } ) _ _ _ <;> simp +decide [ Finset.mem_powersetCard ];
-          · grind;
-          · simp +contextual [ Finset.Subset.antisymm_iff, Finset.subset_iff ];
-            intros; omega;
-          · intro b hb hb'; rw [ Finset.card_eq_two ] at hb'; obtain ⟨ x, y, hxy ⟩ := hb'; simp_all +decide [ Finset.subset_iff ] ;
-            cases lt_or_gt_of_ne hxy.1 <;> [ exact ⟨ x, hb.1, y, ⟨ hb.2, by linarith ⟩, rfl ⟩ ; exact ⟨ y, hb.2, x, ⟨ hb.1, by linarith ⟩, by rw [ Finset.pair_comm ] ⟩ ];
-        rw [ h_card, Finset.card_powersetCard, Nat.choose_two_right ];
     refine le_trans ?_ hS_ge_c_c_minus_1_div_16X4;
     refine le_trans ( mul_le_mul_of_nonneg_left hsigmaP2_le_N_N_minus_1_div_2X4 <| by positivity ) ?_;
     field_simp;
@@ -157,13 +135,7 @@ lemma block_deviation_lower_bound (X : ℕ) (hX : 1 ≤ X) (P : Finset ℕ) [∀
   refine' le_trans _ ( Finset.sum_le_sum fun x hx => one_div_le_one_div_of_le _ <| pow_le_pow_left₀ ( by positivity ) ( show ( x.1.1 * x.2.1 : ℝ ) ≤ 4 * X ^ 2 by norm_cast; nlinarith [ hP x.1.1 x.1.2, hP x.2.1 x.2.2 ] ) 2 ) ; norm_num;
   · -- Since $P$ has at least 2 elements, the number of pairs is at least $P.card * (P.card - 1) / 2$.
     have h_pairs : (orderedPrimePairsA P).card ≥ P.card * (P.card - 1) / 2 := by
-      have h_pairs : (orderedPrimePairsA P).card = Finset.card (Finset.powersetCard 2 P) := by
-        refine' Finset.card_bij ( fun x hx => { x.1.1, x.2.1 } ) _ _ _ <;> simp +decide [ orderedPrimePairsA ];
-        · grind;
-        · simp +contextual [ Finset.Subset.antisymm_iff, Finset.subset_iff ];
-          grind;
-        · intro b hb hb'; rw [ Finset.card_eq_two ] at hb'; obtain ⟨ a, b, hab, rfl ⟩ := hb'; cases lt_trichotomy a b <;> aesop;
-      simp_all +decide [ Nat.choose_two_right ];
+      rw [card_orderedPrimePairsA, Nat.choose_two_right]
     field_simp;
     norm_cast ; nlinarith [ Nat.div_mul_cancel ( show 2 ∣ #P * ( #P - 1 ) from even_iff_two_dvd.mp ( Nat.even_mul_pred_self _ ) ), Nat.sub_add_cancel ( by linarith : 1 ≤ #P ) ];
   · exact sq_pos_of_pos ( mul_pos ( Nat.cast_pos.mpr ( Nat.Prime.pos ( hP _ x.1.2 |>.1 ) ) ) ( Nat.cast_pos.mpr ( Nat.Prime.pos ( hP _ x.2.2 |>.1 ) ) ) )
