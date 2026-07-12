@@ -271,14 +271,14 @@ today spread over `BernoulliFourier`, `CircleMethodArcs`,
   R2BlockSystemCertificate T b ledger }` (`R2Certificates.lean:120-124`),
   not a flat duplicate of both stages' fields. Whatever earlier draft this
   entry described no longer matches the file; no action needed.
-  (ii) **still open, not yet re-verified** — "stage records should consume
-  the C-nodes' single entry points rather than reaching into adapter
-  files." `R2Certificates.lean` imports only `R2TopAssembly` and (already
-  the consolidated node) `Construction.MassBatchSupply`, which is
-  consistent with this, but confirming it properly requires tracing every
-  declaration the five certificate stages actually reference (766 lines) —
-  not done this pass. Left open rather than claimed done on the strength of
-  the import list alone.
+  (ii) **closed (2026-07-12, trace executed)** — the five certificate
+  stages consume C-node/mechanism entry points; the R2TopAssembly middle
+  layer between them and `Construction/MassPool` (`r2_getQ` →
+  `exists_r2_data_of_numerics_set` → `exists_r2_massBatch`) is a chain of
+  genuine side-condition discharges (k0-largeness, base-load budget,
+  forbidden-budget inequality), not pass-through adapters. Verdict: no
+  surgery; the residual inline inductions in `r2_getQ` are D2's scope. See
+  `docs/global-control-map.md`.
 - **A2 ✓ The interface.** `ArcConstruction` (`CircleMethodAssembly`) —
   already the single consumed record; `Erdos306Final` wires it through
   P6/`CannonBridge` (`exists_subset_of_fourier_arcs`, `repr_of_subset`).
