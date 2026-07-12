@@ -1,3 +1,4 @@
+import Mathlib.Tactic.IntervalCases
 import RequestProject.Core.LevelSetLaplace
 import RequestProject.LocalEnergy.DominantLabel
 import RequestProject.LocalEnergy.FingerprintLevelSet
