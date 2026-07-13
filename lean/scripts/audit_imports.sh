@@ -49,10 +49,16 @@ for file in "${files[@]}"; do
   if ! lake env lean "$tmp" >"$log" 2>&1; then
     cat "$log"
     status=1
-  elif grep -Eiq 'Found the following transitively redundant imports|unneeded import|missing imports' "$log"; then
+  # A transitively redundant edge can still document a genuine direct use.
+  # Only missing dependencies (or elaboration failure above) break the audit.
+  elif grep -Eiq 'missing imports' "$log"; then
     cat "$log"
     status=1
   else
+    if grep -Eiq 'Found the following transitively redundant imports|unneeded import' "$log"; then
+      echo "Transitive redundancy (informational; direct-use imports may remain explicit):"
+      grep -Ei -A 20 'Found the following transitively redundant imports|unneeded import' "$log" || true
+    fi
     echo "Minimal import suggestion:"
     grep -E '^(public )?import ' "$log" || true
   fi

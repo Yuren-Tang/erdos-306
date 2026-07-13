@@ -170,7 +170,7 @@ delegatable with this spec):**
       `exists_edge_square_load_supply`): wrap `hk0big`'s `1000·G + 1000·b + 100000`
       and `r2_getQ`'s inline `k0³·2 < 2^k0` inductions.
 - [ ] **D3** naming/file sweep remainder (delegatable, last).
-- [ ] **D4** import-audit policy fix (delegatable, independent): the audit currently
+- [x] **D4** import-audit policy fix: the audit previously
       fails on "transitively redundant imports". But an import line is a *direct-
       dependency statement*, not a hypothesis: if a file directly uses `Aesop`,
       `Mathlib.Tactic.LinearCombination.Lemmas`, or `ZMod` (the three currently
@@ -183,7 +183,10 @@ delegatable with this spec):**
       to report the redundant category as info without failing (keep failing on
       build breaks and on `missing imports`), then judge the 3 flagged files
       individually: direct-use imports stay; genuine leftovers (imports naming
-      modules the file does not use at all) go.
+      modules the file does not use at all) go.  Implemented in
+      `lean/scripts/audit_imports.sh`: transitive redundancy is informational;
+      elaboration failures and missing imports remain fatal.  The flagged `ZMod`,
+      `LinearCombination`, and local theorem imports were confirmed as direct uses.
 
 ## 4. Record: the Codex pass (2026-07-12, 28 commits d362ddb..9d3a697)
 

@@ -36,9 +36,12 @@ lemma levelset_card_le_pow (X : ℕ) (P : Finset ℕ) [∀ p : P, NeZero p.1]
       ≤ (2 * (X : ℝ)) ^ P.card := by
   refine' le_trans _ _
   exact (∏ p ∈ P, p : ℝ)
-  · refine' le_trans (Nat.cast_le.mpr <| Finset.card_filter_le _ _) _
-    simp +decide [Fintype.card_pi]
-    conv_rhs => rw [← Finset.prod_attach]
+  · have hcard :
+        (Finset.univ.filter (fun a : BlockAssignment P => QP P a ≤ R)).card ≤
+          ∏ p ∈ P, p :=
+      (Finset.card_filter_le _ _).trans_eq (blockAssignment_card P)
+    rw [← Nat.cast_prod]
+    exact_mod_cast hcard
   · exact le_trans
       (Finset.prod_le_prod (fun _ _ => Nat.cast_nonneg _)
         fun p hp => Nat.cast_le.mpr (hP p hp))

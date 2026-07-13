@@ -176,8 +176,8 @@ theorem sigmaP_pos_of_two (P : Finset ℕ)
 /-
 The cardinality of the block assignment space is ∏_{p ∈ P} p.
 -/
-theorem blockAssignment_card (P : Finset ℕ) (hP : ∀ p ∈ P, Nat.Prime p) :
-    haveI : ∀ p : P, NeZero p.1 := fun p => ⟨(hP p.1 p.2).ne_zero⟩
+/-- The assignment space has one independent residue modulo each element of `P`. -/
+theorem blockAssignment_card (P : Finset ℕ) [∀ p : P, NeZero p.1] :
     Fintype.card (BlockAssignment P) = ∏ p ∈ P, p := by
   convert Fintype.card_pi;
   refine' Finset.prod_bij ( fun p hp => ⟨ p, hp ⟩ ) _ _ _ _ <;> aesop

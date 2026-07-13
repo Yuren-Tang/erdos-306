@@ -96,15 +96,16 @@ carries the right doctrine in its docstring ("numerical choices belong only in i
 specialization"). `GlobalPeierlsBookkeeping` is the correct CRT-free abstract
 entropy engine. No structural surgery warranted.
 
-**G5. Residual duplication audit (delegatable, G-D1):** candidates spotted at
-skeleton level, each needs a consumer/content check before merging:
-`CRTModel.block_deviation_upper_bound` vs `HotBlockCount.
-block_deviation_reciprocal_bound`; `CRTModel.levelset_card_le_pow` vs
-`BlockCRTEnergy.blockAssignment_card`; `ScaleComparison.sigmaCtrl_le_sigmaP_k0`'s
-placement; `ColdBlockEstimates.cold_label_bound_div_64` vs
-`ColdRange.cold_label_bound` (/16) vs `LabelAdmissibility.coldLabel_abs_bound`
-(20/3) — the last three may be one lemma at three strengths, or three genuinely
-different couplings; judge by consumers.
+**G5. Residual duplication audit (G-D1, complete):** the two deviation estimates
+are genuinely different: `CRTModel.block_deviation_upper_bound` is an upper bound
+from a prime window, whereas `HotBlockCount.block_deviation_reciprocal_bound`
+combines the lower deviation estimate with block density.  The assignment-space
+duplication was real: `BlockCRTEnergy.blockAssignment_card` now assumes only
+nonzero moduli, and `CRTModel.levelset_card_le_pow` is a direct corollary.  The
+cross-scale theorem belongs in `ScaleComparison`.  Finally, the three cold-label
+bounds have distinct roles: `20/3` is the raw pointwise energy bound, while `/16`
+and `/64` are two downstream window specializations of the already shared
+`cold_label_bound_with_divisor`; all three have live consumers.
 
 **A1(ii) closed (trace executed, `docs/construction-redesign.md` updated):** the
 certificate stages do not reach into adapter internals; the R2TopAssembly middle
@@ -115,8 +116,7 @@ inductions) is exactly D2's scope.
 
 ## 3. Delegation queue for this stream
 
-- **G-D1**: the duplication audit of G5 (grep consumers, merge or justify each pair;
-  same discipline as the circle-method dead-ladder check). Sonnet 5.
+- **G-D1**: complete; see G5.
 - **G-D2**: role-note docstrings for the G3 constant family, citing this document.
   Sonnet 5, doc-only.
 - Existing D1/D2/D3/D4 (circle-method map §3) unchanged; D2 = the hk0mass bundle
