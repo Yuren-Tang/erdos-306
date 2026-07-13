@@ -162,9 +162,13 @@ delegatable with this spec):**
 - [x] **D1**: opaque-constant completion of V4.  Literal `100000` remains only in
       the private analytic witness proof among Taylor-remainder statements; equal
       numerals in the independent `k₀`/mass thresholds belong to D2.
-- [ ] **D2 = V7** hk0mass bundle (delegatable; pattern established twice — see
-      `exists_edge_square_load_supply`): wrap `hk0big`'s `1000·G + 1000·b + 100000`
-      and `r2_getQ`'s inline `k0³·2 < 2^k0` inductions.
+- [x] **D2 = V7** mass-batch scale bundle.  `exists_mass_batch_scale_threshold`
+      now supplies the two mathematical separations actually needed:
+      residual gadget mass fits below the dyadic capacity, and `2b < 2^k`.
+      The ledger carries only `k0mass` and its eventual fact; the block certificate
+      carries only `k0mass ≤ k0`.  The old decimal `hk0big` interface and the inline
+      `k0³·2 < 2^k0` induction are gone.  The independent square-load estimate's
+      crude decimal witnesses remain private inside `exists_edge_square_load_supply`.
 - [ ] **D3** naming/file sweep remainder (delegatable, last).
 - [x] **D4** import-audit policy fix: the audit previously
       fails on "transitively redundant imports". But an import line is a *direct-

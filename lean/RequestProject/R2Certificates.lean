@@ -67,6 +67,8 @@ structure R2NumericLedger (b : ℕ) where
   k0density : ℕ
   k0ctrl : ℕ
   k1 : ℕ
+  /-- threshold for the two residual mass-batch scale inequalities. -/
+  k0mass : ℕ
   /-- threshold for the `σ_ctrl` lower bound. -/
   k0sigma : ℕ
   /-- threshold for the main-arc window-growth domination. -/
@@ -106,6 +108,9 @@ structure R2NumericLedger (b : ℕ) where
       (G : ℝ) ≤ (2 : ℝ) ^ k / (2 * Real.log ((2 : ℝ) ^ k))
   hk0ctrl : ∀ BS' : BlockSystem, k0ctrl ≤ BS'.k0 →
       R2ConcreteData.recipLoad (ctrlEdges BS') ≤ 3 / (4 * (b : ℝ))
+  hk0massFact : ∀ k : ℕ, k0mass ≤ k →
+      2 * b * (b.primeFactors.card * G) < 3 * 2 ^ k ∧
+      2 * b < 2 ^ k
   hk0sigmaFact : ∀ BS' : BlockSystem, k0sigma ≤ BS'.k0 →
       (1 : ℝ) / (cSigma * (BS'.k0 : ℝ) * (2 : ℝ) ^ BS'.k0) ≤ sigmaCtrl BS'
   hk0windowFact : ∀ k : ℕ, k0window ≤ k →
@@ -142,7 +147,7 @@ structure R2BlockSystemCertificate (T : Finset ℕ) (b : ℕ) (L : R2NumericLedg
   hk0dens : L.k0density ≤ BS.k0
   hk0ctrlle : L.k0ctrl ≤ BS.k0
   hk1le : L.k1 ≤ BS.k0
-  hk0big : 1000 * L.G + 1000 * b + 100000 ≤ BS.k0
+  hk0mass : L.k0mass ≤ BS.k0
   hk0T : T.sup id + 1 ≤ BS.k0
   hk0sigma : L.k0sigma ≤ BS.k0
   hk0window : L.k0window ≤ BS.k0
@@ -210,6 +215,7 @@ lemma exists_r2_numeric_ledger (b : ℕ) (hb : 3 ≤ b) (hbsf : Squarefree b) :
   have hG : base_b ^ G ≤ Dmp :=
     le_trans (pow_le_pow_of_le_one hbb0 hbb1.le (le_max_right 1 G')) hG'
   obtain ⟨k0density, hk0density⟩ := r2_exists_k0_density G
+  obtain ⟨k0mass, hk0massFact⟩ := exists_mass_batch_scale_threshold G b
   obtain ⟨k1, hk15, hload⟩ := blockPrimes_product_load_ge
   obtain ⟨k0ctrl, hk0ctrl⟩ := exists_k0_controlLoad_lt (3 / (4 * (b : ℝ))) (by positivity)
   -- eventual polynomial ≪ exponential thresholds, at coefficients built from the
@@ -264,13 +270,14 @@ lemma exists_r2_numeric_ledger (b : ℕ) (hb : 3 ≤ b) (hbsf : Squarefree b) :
     c3 := c3, η := η, Ctail := Ctail, C := C, base_b := base_b, Dmp := Dmp, G := G,
     cSigma := cσ, Sload := S, K := K,
     k0minM := k0minM, k0density := k0density, k0ctrl := k0ctrl, k1 := k1,
+    k0mass := k0mass,
     k0sigma := k0sigma, k0window := max kw 1, k0cubic := k0cubic, k0load := k0load,
     hbpos := hbpos, hb3 := hb, hbsf := hbsf, hc3eq := hc3def, hc3pos := hc3pos,
     hηpos := hηpos, hCtail := hCtail,
     hcS1 := hcS1, hS1 := hS1, hK1 := hK1, hKS := hKS, hG1 := hG1,
     hSB := hSB, hCge3 := hCge3, hCge1 := hCge1,
     hbbdef := hbbdef, hG := hG, hDmppos := hDmppos, hbudget := hbudget,
-    hk0density := hk0density, hk0ctrl := hk0ctrl,
+    hk0density := hk0density, hk0ctrl := hk0ctrl, hk0massFact := hk0massFact,
     hk0sigmaFact := hk0sigmaFact, hk0windowFact := hk0windowFact,
     hk0cubicFact := hk0cubicFact, hk0loadFact := hk0loadFact,
     hk15 := hk15, hload := hload }⟩
@@ -282,7 +289,7 @@ lemma exists_r2_block_system_certificate (T : Finset ℕ) (b : ℕ) (hb : 3 ≤ 
     Nonempty (R2BlockSystemCertificate T b L) := by
   classical
   set k0min' : ℕ :=
-    L.k0minM + L.k0density + L.k1 + L.k0ctrl + T.sup id + 1000 * L.G + 1000 * b + 100000
+    L.k0minM + L.k0density + L.k1 + L.k0ctrl + (T.sup id + 1) + L.k0mass
       + L.k0sigma + L.k0window + L.k0cubic + L.k0load + Nat.ceil L.C
       with hk0mindef
   obtain ⟨BS, hk0, hk05, hadm, hsub, hcopB, hRp, hRdvd, hcovR, hRout, _h2kK, hdyadic2k⟩ :=
@@ -291,8 +298,7 @@ lemma exists_r2_block_system_certificate (T : Finset ℕ) (b : ℕ) (hb : 3 ≤ 
   have hk0dens : L.k0density ≤ BS.k0 := by have h := hk0; rw [hk0mindef] at h; omega
   have hk1le : L.k1 ≤ BS.k0 := by have h := hk0; rw [hk0mindef] at h; omega
   have hk0ctrlle : L.k0ctrl ≤ BS.k0 := by have h := hk0; rw [hk0mindef] at h; omega
-  have hk0big : 1000 * L.G + 1000 * b + 100000 ≤ BS.k0 := by
-    have h := hk0; rw [hk0mindef] at h; omega
+  have hk0mass : L.k0mass ≤ BS.k0 := by have h := hk0; rw [hk0mindef] at h; omega
   have hk0T : T.sup id + 1 ≤ BS.k0 := by have h := hk0; rw [hk0mindef] at h; omega
   have hk0sigma : L.k0sigma ≤ BS.k0 := by have h := hk0; rw [hk0mindef] at h; omega
   have hk0window : L.k0window ≤ BS.k0 := by have h := hk0; rw [hk0mindef] at h; omega
@@ -303,7 +309,7 @@ lemma exists_r2_block_system_certificate (T : Finset ℕ) (b : ℕ) (hb : 3 ≤ 
     BS := BS, hk05 := hk05, hadm := hadm, hsub := hsub, hcopB := hcopB,
     hRp := hRp, hRdvd := hRdvd, hcovR := hcovR, hRout := hRout, hdyadic2k := hdyadic2k,
     hk0minM := hk0minM, hk0dens := hk0dens, hk0ctrlle := hk0ctrlle, hk1le := hk1le,
-    hk0big := hk0big, hk0T := hk0T,
+    hk0mass := hk0mass, hk0T := hk0T,
     hk0sigma := hk0sigma, hk0window := hk0window, hk0cubic := hk0cubic,
     hk0load := hk0load, hk0C := hk0C }⟩
 
@@ -342,12 +348,12 @@ lemma exists_r2_concrete_certificate {T : Finset ℕ} {b : ℕ}
   have hbpos := F.ledger.hbpos
   have hk05 := F.bsCert.hk05
   have hk0dens := F.bsCert.hk0dens
-  have hk0big := F.bsCert.hk0big
+  have hmass := F.ledger.hk0massFact F.bsCert.BS.k0 F.bsCert.hk0mass
   obtain ⟨S, hSsub, hScard, hSprime, hSge⟩ :=
     exists_block_primes (2 * F.bsCert.BS.k0) (by omega) F.ledger.G
       (F.ledger.hk0density (2 * F.bsCert.BS.k0) (by omega))
   have hSblock : S ⊆ blockSupport F.bsCert.BS := fun s hs => F.bsCert.hdyadic2k (hSsub hs)
-  have hb2k0 : b < 2 ^ F.bsCert.BS.k0 := lt_of_le_of_lt (by omega) (Nat.lt_two_pow_self)
+  have hb2k0 : b < 2 ^ F.bsCert.BS.k0 := by omega
   have hRpos' : ∀ r ∈ b.primeFactors, 2 ≤ r := fun r hr => (F.bsCert.hRp r hr).two_le
   have hlt' : ∀ r ∈ b.primeFactors, ∀ s ∈ S, r < s := by
     intro r hr s hs
@@ -396,13 +402,16 @@ lemma exists_r2_mass_certificate {T : Finset ℕ} {b : ℕ}
     Nonempty (R2MassCertificate F Cc) := by
   classical
   have hbpos := F.ledger.hbpos
+  have hmass : 2 * b * (b.primeFactors.card * Cc.S.card) < 3 * 2 ^ F.bsCert.BS.k0 ∧
+      2 * b < 2 ^ F.bsCert.BS.k0 := by
+    simpa [Cc.hScard] using
+      F.ledger.hk0massFact F.bsCert.BS.k0 F.bsCert.hk0mass
   obtain ⟨Q, QB⟩ := r2_getQ F.ledger.hb3 F.bsCert.BS Cc.S F.bsCert.hsub Cc.hSge F.bsCert.hRout
     (F.ledger.hk0ctrl F.bsCert.BS F.bsCert.hk0ctrlle) F.ledger.k1 F.ledger.hk15 F.bsCert.hk1le F.ledger.hload
-    (by rw [Cc.hScard]; exact F.bsCert.hk0big) F.bsCert.hk0T
+    hmass F.bsCert.hk0T
   set D : R2ConcreteData T b := (⟨F.bsCert.BS, ∅, b.primeFactors, Cc.S⟩ : R2ConcreteData T b).withQ Q
     with hDdef
   set W : R2ConcreteData.Weights D := QB.weights hbpos with hWdef
-  have hk0bigD : 1000 * F.ledger.G + 1000 * b + 100000 ≤ D.BS.k0 := F.bsCert.hk0big
   have hScardD : D.S.card = F.ledger.G := Cc.hScard
   have hk0TD : T.sup id + 1 ≤ D.BS.k0 := F.bsCert.hk0T
   have hLeq : D.L = b * ∏ p ∈ blockSupport D.BS, p := rfl

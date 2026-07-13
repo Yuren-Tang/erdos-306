@@ -542,6 +542,8 @@ leaves in `R2TopAssembly.lean` (`exists_sigmaCtrl_lower_supply`,
 `n^d < 2^n` inductions collapsed to one lemma from Mathlib's polynomial ≪
 exponential asymptotics. `R2NumericConstants.lean` (a short-lived intermediate
 that named the witnesses as `def`s) was deleted: naming a witness is still a
-witness. Deferred, recorded in the design doc: the mass-layer `hk0big` bundle,
-and parametrizing the circle-method core's Taylor interface constants
-(`100000`, `1/10`), which appear only at the `r2_numericFields` junction.
+witness. The mass-layer `hk0big` bundle has since been replaced by the abstract
+`exists_mass_batch_scale_threshold` supply and a `k0mass` ledger threshold; its
+inline cubic-versus-exponential induction is gone. The Taylor interface constants
+have likewise been parameterized; see `docs/circle-method-map.md` for the completed
+D1–D2 record.

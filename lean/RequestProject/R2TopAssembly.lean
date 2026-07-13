@@ -384,6 +384,30 @@ lemma r2_numericFields {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
 Obtain the residual mass batch `Q` for the high-block gadget set `S`,
 discharging the `k0`-large side conditions (`hsum`/`hlarge`/`hTsmall`).
 -/
+/-- A common bottom-scale threshold makes both residual-mass inequalities hold.
+This is the only place where exponential growth is converted into the concrete
+natural-number bounds needed by the mass-batch construction. -/
+lemma exists_mass_batch_scale_threshold (G b : ℕ) :
+    ∃ k0mass : ℕ, ∀ k : ℕ, k0mass ≤ k →
+      2 * b * (b.primeFactors.card * G) < 3 * 2 ^ k ∧
+      2 * b < 2 ^ k := by
+  obtain ⟨K, hK⟩ := exists_threshold_mul_pow_le_two_pow
+    ((2 * b * (b.primeFactors.card * G) + 2 * b + 1 : ℕ) : ℝ) 0
+  refine ⟨max K 1, fun k hk => ?_⟩
+  have hkK : K ≤ k := (le_max_left K 1).trans hk
+  have hk1 : 1 ≤ k := (le_max_right K 1).trans hk
+  have hpow := hK k hkK
+  norm_num at hpow
+  have hpow_nat :
+      2 * b * (b.primeFactors.card * G) + 2 * b + 1 ≤ 2 ^ k := by
+    exact_mod_cast hpow
+  have hmass_lt : 2 * b * (b.primeFactors.card * G) < 2 ^ k := by omega
+  have hb_lt : 2 * b < 2 ^ k := by omega
+  have hpow_one : 1 ≤ 2 ^ k := one_le_pow₀ (by omega)
+  constructor
+  · exact hmass_lt.trans (by omega)
+  · exact hb_lt
+
 lemma r2_getQ {T : Finset ℕ} {b : ℕ} (hb : 3 ≤ b)
     (BS : BlockSystem) (S : Finset ℕ)
     (hsub : blockPrimes BS.k0 ⊆ blockSupport BS)
@@ -394,24 +418,22 @@ lemma r2_getQ {T : Finset ℕ} {b : ℕ} (hb : 3 ≤ b)
     (hload : ∀ k0 : ℕ, k1 ≤ k0 →
       (1 : ℝ) / 2 ≤ ∑ pq ∈ (blockPrimes k0).offDiag.filter (fun pq : ℕ × ℕ => pq.1 < pq.2),
         (1 : ℝ) / ((pq.1 : ℝ) * (pq.2 : ℝ)))
-    (hk0big : 1000 * S.card + 1000 * b + 100000 ≤ BS.k0)
+    (hmass : 2 * b * (b.primeFactors.card * S.card) < 3 * 2 ^ BS.k0 ∧
+      2 * b < 2 ^ BS.k0)
     (hk0T : T.sup id + 1 ≤ BS.k0) :
     ∃ Q : Finset ℕ,
       R2MassBatchSupply ((⟨BS, ∅, b.primeFactors, S⟩ : R2ConcreteData T b).withQ Q) := by
   convert exists_r2_data_of_numerics_set hb BS S hsub ( fun s hs => ?_ ) hRout hctrl ?_ k1 hk15 hk1le hload ?_ ?_ using 1;
   · exact le_trans ( pow_le_pow_right₀ ( by norm_num ) ( by linarith ) ) ( hSge s hs );
-  · rw [ div_add_div, div_lt_div_iff₀ ] <;> norm_cast <;> try positivity;
-    -- We'll use that $b \leq BS.k0$ and $S.card \leq BS.k0$ to bound the terms.
-    have h_bound : b ≤ BS.k0 ∧ S.card ≤ BS.k0 := by
-      grind;
-    -- We'll use that $b \leq BS.k0$ and $S.card \leq BS.k0$ to bound the terms and simplify the inequality.
-    have h_bound : b * #S * #b.primeFactors ≤ BS.k0 ^ 3 := by
-      exact le_trans ( Nat.mul_le_mul ( Nat.mul_le_mul h_bound.1 h_bound.2 ) ( show #b.primeFactors ≤ BS.k0 from le_trans ( Finset.card_le_card ( show b.primeFactors ⊆ Finset.Icc 1 b from fun x hx => Finset.mem_Icc.mpr ⟨ Nat.pos_of_mem_primeFactors hx, Nat.le_of_mem_primeFactors hx ⟩ ) ) ( by norm_num; linarith ) ) ) ( by nlinarith only [ h_bound ] );
-    have h_exp_growth : 2 ^ BS.k0 > BS.k0 ^ 3 * 2 := by
-      exact Nat.le_induction ( by norm_num ) ( fun n hn ih => by norm_num [ Nat.pow_succ' ] at * ; nlinarith only [ ih, hn ] ) _ ( show BS.k0 ≥ 30 by linarith );
-    nlinarith [ Nat.zero_le ( b * #S * #b.primeFactors ) ];
-  · nlinarith [ show 2 ^ BS.k0 > BS.k0 by exact Nat.recOn BS.k0 ( by norm_num ) fun n ihn => by rw [ pow_succ' ] ; linarith [ Nat.one_le_pow n 2 zero_lt_two ], Nat.zero_le ( #S ) ];
-  · intro e he; nlinarith [ show e ≤ T.sup id from Finset.le_sup ( f := id ) he, show 2 ^ BS.k0 > BS.k0 from Nat.recOn BS.k0 ( by norm_num ) fun n ihn => by rw [ pow_succ' ] ; linarith [ Nat.one_le_pow n 2 zero_lt_two ] ] ;
+  · rw [div_add_div, div_lt_div_iff₀] <;> norm_cast <;> try positivity
+    nlinarith [hmass.1]
+  · exact hmass.2.trans_le (by
+      have : 1 ≤ 2 ^ BS.k0 := one_le_pow₀ (by omega)
+      nlinarith [Nat.zero_le (2 ^ BS.k0)])
+  · intro e he
+    have heK : e < BS.k0 := lt_of_le_of_lt (Finset.le_sup (f := id) he) (by omega)
+    exact heK.trans (Nat.lt_two_pow_self.trans_le <|
+      Nat.le_mul_of_pos_right _ (pow_pos (by omega) _))
 
 /-
 The block-support reciprocal-square sum decays like `2^{-k0}/k0` (using the
@@ -447,7 +469,7 @@ lemma r2_blockSupport_inv_sq_le (BS : BlockSystem) (hk0 : 1 ≤ BS.k0) :
 /-- **Light extra edges.**  The mass-batch and gadget edges carry only a bounded
 multiple of the control deviation in reciprocal-square mass.  Combined with
 `sigmaCtrl_ge_strong`, this yields `σ_E ≤ K·σ_ctrl` with an explicit constant. -/
-lemma r2_extra_inv_sq_le {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
+private lemma r2_extra_inv_sq_le {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
     (hk0 : 14 ≤ D.BS.k0)
     (hk0big : 1000 * D.S.card + 1000 * b + 100000 ≤ D.BS.k0)
     (QB : R2MassBatchSupply D)
