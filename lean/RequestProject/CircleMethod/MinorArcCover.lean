@@ -1,5 +1,7 @@
 import RequestProject.Core.FiniteProducts
-import RequestProject.R2AssemblyFields
+import RequestProject.CircleMethodArcs
+import RequestProject.CircleMethod.MinorArcDecomposition
+import RequestProject.Spectral.BernoulliSum
 
 open Finset BigOperators
 
@@ -8,10 +10,10 @@ noncomputable section
 namespace CircleMethod
 
 /-!
-# R2 minor cover: Fourier-weight instantiation of the split bound
+# Fourier minor-arc covers
 
 The general finite-sum split over a disjointized two-set cover lives in
-`R2MinorAssembly` (`sum_le_of_minor_split_bounds`).  This file instantiates it
+`CircleMethod.MinorArcDecomposition` (`sum_le_of_minor_split_bounds`). This file instantiates it
 for the quantity the spectral-existence step actually consumes: the summed
 norms of the Fourier terms over the minor frequencies, split into a
 block-estimate part and an extra-estimate part.
@@ -24,8 +26,8 @@ single-factor control used by the extra lane and the multi-gadget damping are
 one-line instances (see `docs/construction-redesign.md`, nodes P2/B2).
 -/
 
-/-- Concrete frequency-cover data for the final R2 minor arc. -/
-structure R2MinorCoverData (Sm : Finset ℕ) where
+/-- A two-family cover of a finite set of minor frequencies. -/
+structure MinorArcCover (Sm : Finset ℕ) where
   Sblock : Finset ℕ
   Sextra : Finset ℕ
   hcover : Sm ⊆ Sblock ∪ Sextra
@@ -76,7 +78,7 @@ spectral-selection step (`exists_subset_sum_eq_of_fourier_gap`), which needs the
 sum of norms rather than the norm of the sum. -/
 theorem hminorSum_of_block_extra_norm_bounds
     (E : Finset ℕ) (theta : ℕ → ℝ) (q L : ℕ)
-    (Sm : Finset ℕ) (C : R2MinorCoverData Sm)
+    (Sm : Finset ℕ) (C : MinorArcCover Sm)
     (Bblock Bextra Bm : ℝ)
     (hblock :
       ∑ h ∈ blockMinorPart Sm C.Sblock,

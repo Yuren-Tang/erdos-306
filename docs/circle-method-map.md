@@ -47,6 +47,9 @@ LEVEL 2b — minor-arc analysis (couples to the GlobalControl CRT stream)
   ctrlEdges, QE_ge_Qctrl                      [Construction/ControlEdges.lean]
   minor_energy_sum_le_fiber_tail, minor_arc_bound_fiber_tail
     (the ONE live minor-arc ladder)           [ExtraEnergyMinorArc.lean]
+  block/extra frequency decomposition         [CircleMethod/MinorArcDecomposition.lean]
+  Fourier norm cover and split bound          [CircleMethod/MinorArcCover.lean]
+  block/extra analytic estimate interface     [CircleMethod/MinorArcEstimates.lean]
   ← global_control_partition                  [GlobalControl/Partition.lean]
     (the summit of the other stream: CRT energy ⇒ off-arc mass bound)
 

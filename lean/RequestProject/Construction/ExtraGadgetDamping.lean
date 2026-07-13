@@ -1,4 +1,7 @@
-import RequestProject.R2MinorCover
+import RequestProject.CircleMethod.MinorArcCover
+import RequestProject.Construction.Edges
+import RequestProject.ExtraMinorDamping
+import RequestProject.R2AssemblyFields
 
 open Finset BigOperators GlobalControl
 

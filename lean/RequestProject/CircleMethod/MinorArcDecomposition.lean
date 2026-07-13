@@ -1,12 +1,12 @@
-import RequestProject.ExtraEnergyMinorArc
-import RequestProject.ExtraMinorDamping
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib.Data.Real.Basic
 
 open Finset BigOperators
 
 namespace CircleMethod
 
 /-!
-# R2 minor-split assembly interface
+# Minor-arc decomposition
 
 This leaf isolates the finite-sum partition used by the final R2 `hminor`
 field.  The analytic estimates remain external hypotheses here: one bound for
@@ -63,7 +63,7 @@ lemma minorParts_union_eq_of_cover {Sm Sblock Sextra : Finset α}
       · exact False.elim (hxblock hxSblock)
       · exact mem_extraMinorPart.mpr ⟨hxSm, hxblock, hxSextra⟩
 
-/-- Pure finite-sum splitter for the final R2 minor arc.  The extra part is
+/-- Pure finite-sum splitter for a two-part minor arc. The extra part is
 disjointized away from the block part, so no inclusion-exclusion loss is needed. -/
 lemma sum_le_of_minor_split_bounds
     (Sm Sblock Sextra : Finset α) (F : α → ℝ) {A B : ℝ}

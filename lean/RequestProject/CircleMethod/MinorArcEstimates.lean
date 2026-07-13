@@ -1,4 +1,6 @@
-import RequestProject.R2MinorAssembly
+import RequestProject.CircleMethod.MinorArcDecomposition
+import RequestProject.ExtraEnergyMinorArc
+import RequestProject.ExtraMinorDamping
 
 open Finset BigOperators Classical Real
 
@@ -9,9 +11,9 @@ namespace CircleMethod
 open GlobalControl
 
 /-!
-# R2 minor estimate interface
+# Minor-arc estimate interface
 
-`R2MinorAssembly.lean` proved the *pure finite-sum splitter*
+`CircleMethod/MinorArcDecomposition.lean` proves the *pure finite-sum splitter*
 `sum_le_of_minor_split_bounds`: if `Sm ⊆ Sblock ∪ Sextra` and the two
 disjointized parts (`blockMinorPart`, `extraMinorPart`) are bounded by `A` and
 `B`, then the full minor sum over `Sm` is bounded by `A + B`.

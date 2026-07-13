@@ -53,7 +53,9 @@ smeared across adapter files and should be re-stated once.
 ### Level 0 — principles (no project types)
 
 - **P1 ✓ Finite-sum split over a disjointized cover.**
-  `sum_le_of_minor_split_bounds` (`R2MinorAssembly`). Generic `α`.
+  `sum_le_of_minor_split_bounds` (`CircleMethod/MinorArcDecomposition`). Generic `α`,
+  but retained at its circle-method ownership boundary because the two parts mean
+  "global-control" and "prime-reservoir damping".
 - **P2 ⊕ Subset domination for products of contractions.** If `‖F e‖ ≤ 1`
   on `E` and `‖F e‖ ≤ g e` on `S ⊆ E`, then `‖∏_E F‖ ≤ ∏_S g e`.
   *Replaces three separately-proved instances*:
@@ -190,7 +192,7 @@ today spread over `BernoulliFourier`, `CircleMethodArcs`,
   rather than executing mechanically.)
 - **C5 ✓ Block-minor estimate.** Fiber-tail reindex (P3 instantiation in
   `ArcConstruction`/`ExtraEnergyMinorArc`) + global-control partition ⇒
-  `block_part_bound` (`R2MinorEstimateInterface`) ⇒ the `Bblock` budget
+  `block_part_bound` (`CircleMethod/MinorArcEstimates`) ⇒ the `Bblock` budget
   (`R2BlockMinorLane`, 3 escalating theorems) ⇒ shared per-main-arc packaging
   `R2BlockFiberTailData` (`R2MinorEndgameLanes`). Read in full this pass;
   content is already a clean short chain, no smearing found. One node.
@@ -355,7 +357,8 @@ had no consumer outside itself. The live certificate chain calls the cleaner
 `R2FinalAssemblyRaw`, `R2ComponentBounds`, `R2ComponentNumeric`, and
 `R2ComponentNumericAssembly`, together with the five dead adapter theorems in
 `R2FinalAssembly`. `R2MinorSupportBudget` had imported the last file only as a
-relay; it now imports its actual mathematical dependency `R2MinorCover`.
+relay; it now imports its actual mathematical dependency
+`CircleMethod/MinorArcCover`.
 
 ## Execution order (few-build batches)
 

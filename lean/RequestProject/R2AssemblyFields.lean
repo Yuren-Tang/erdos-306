@@ -1,6 +1,6 @@
 import RequestProject.Construction.Edges
 import RequestProject.CircleMethod.MainArcPeriodicity
-import RequestProject.R2MinorEstimateInterface
+import RequestProject.CircleMethod.MinorArcEstimates
 import RequestProject.Spectral.BernoulliVariance
 
 open Finset BigOperators GlobalControl

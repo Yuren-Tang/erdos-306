@@ -292,8 +292,8 @@ be dead as well: `R2FinalAssemblyRaw`, `R2ComponentBounds`,
 chain ending in an uncalled theorem. The certificate mainline uses
 `exists_arcConstruction_of_mainArcParams` directly, so the four files and the
 five private-to-that-chain adapters in `R2FinalAssembly` were deleted.
-`R2MinorSupportBudget` now imports `R2MinorCover` directly instead of using the
-dead chain as an import relay.
+`R2MinorSupportBudget` now imports `CircleMethod/MinorArcCover` directly instead
+of using the dead chain as an import relay.
 
 ### Flagged, now resolved
 
@@ -411,7 +411,7 @@ the same standard or look more like the `R2*` shape.
   `R2DyadicBlockSupport`, `R2EventualScale`); 12 files/groups were reverted
   to their original (still redundant-per-CI, but load-bearing-as-is)
   imports rather than risk further hidden breakage: the
-  `R2MinorAssembly`/`R2MinorEstimateInterface`/`R2MinorCover` trio, the
+  then-current `R2MinorAssembly`/`R2MinorEstimateInterface`/`R2MinorCover` trio, the
   `GlobalControl`/`LocalEnergy` family (`Encoding/Fibers`,
   `LevelSetAssembly`, `ChargeAggregation`, `DominantLabel`, `LevelSet`,
   `CrossBlockEnergy`, `Encoding/HotBlockCount`, `LevelSetCover`),
