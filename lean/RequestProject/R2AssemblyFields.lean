@@ -1,4 +1,5 @@
 import RequestProject.Construction.Edges
+import RequestProject.CircleMethod.MainArcPeriodicity
 import RequestProject.R2MinorEstimateInterface
 import RequestProject.Spectral.BernoulliVariance
 

@@ -1,7 +1,8 @@
 import RequestProject.BlockMassPool
+import RequestProject.CircleMethod.PrimeSupportPeriod
 import RequestProject.ExtraEnergyMinorArc
 import RequestProject.ExtraMinorDamping
-import RequestProject.ArcConstructionSigma
+import RequestProject.CircleMethod.ControlVarianceComparison
 import RequestProject.CircleMethodAssembly
 
 open Finset BigOperators GlobalControl

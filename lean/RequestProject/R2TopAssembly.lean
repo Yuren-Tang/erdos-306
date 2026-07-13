@@ -1,6 +1,7 @@
 import RequestProject.Construction.BaseLoadBudget
+import RequestProject.Construction.ControlEdges
+import RequestProject.Core.ExponentialDomination
 import RequestProject.R2DyadicBlockSupport
-import RequestProject.R2LargeK0
 import RequestProject.R2MainArcClassification
 
 open Finset BigOperators GlobalControl
@@ -391,7 +392,7 @@ lemma exists_mass_batch_scale_threshold (G b : ℕ) :
     ∃ k0mass : ℕ, ∀ k : ℕ, k0mass ≤ k →
       2 * b * (b.primeFactors.card * G) < 3 * 2 ^ k ∧
       2 * b < 2 ^ k := by
-  obtain ⟨K, hK⟩ := exists_threshold_mul_pow_le_two_pow
+  obtain ⟨K, hK⟩ := RequestProject.exists_threshold_mul_pow_le_two_pow
     ((2 * b * (b.primeFactors.card * G) + 2 * b + 1 : ℕ) : ℝ) 0
   refine ⟨max K 1, fun k hk => ?_⟩
   have hkK : K ≤ k := (le_max_left K 1).trans hk

@@ -1,4 +1,4 @@
-import RequestProject.ArcConstruction
+import RequestProject.Construction.ControlEdges
 import RequestProject.FiberCount
 
 open Finset BigOperators Classical
@@ -10,11 +10,11 @@ namespace CircleMethod
 open GlobalControl
 
 /-!
-# Extra-prime support for the R2 construction
+# Prime-support periods and frequency fibers
 
-The current R2 obstruction is that mass/gadget edges may introduce primes outside
-`blockSupport BS`.  This file names the support split needed for the strengthened
-minor-arc interface sketched in note 46.
+The prime factors appearing in an edge set determine a natural period.  Separating
+them from a block system's support also identifies the frequency fibers relevant to
+the minor-arc estimate.
 -/
 
 /-- Prime support of the edge denominators, defined through prime factors.  For

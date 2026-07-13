@@ -1,4 +1,5 @@
 import RequestProject.Construction.MassPool
+import RequestProject.CircleMethod.PrimeSupportPeriod
 
 open Finset BigOperators GlobalControl
 

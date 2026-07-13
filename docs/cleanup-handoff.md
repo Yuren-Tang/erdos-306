@@ -132,7 +132,7 @@ in the file layout):
    `R2MinorEndgameMultiGadget` via `.toMultiGadget` (a real two-step
    refinement), both are live and consumed by `R2Certificates.lean`.
 4. Final numeric closure and assembly (~8 files: `R2NumericFields`,
-   `R2AssemblyFields`, `R2LargeK0`, `R2FinalAssembly*`, `R2TopAssembly`,
+   `R2AssemblyFields`, `Core/ExponentialDomination`, `R2FinalAssembly*`, `R2TopAssembly`,
    `R2Certificates`).
 
 ## Anchored findings
@@ -374,9 +374,9 @@ the same standard or look more like the `R2*` shape.
   pass this through." The failures did not surface locally in any
   predictable order; each fix uncovered the next only once its specific
   downstream consumer was rebuilt, requiring several rounds of bisection
-  (including one case — `R2ConcreteData.lean` — where the manual import
-  trace looked intact on paper, `ArcConstructionSigma.lean` genuinely does
-  import `ArcConstruction.lean`, and only a direct `lake env lean` test
+  (including one historical case — `R2ConcreteData.lean` — where the manual
+  import trace looked intact on paper, the then-current variance module did
+  import the then-current arc-construction module, and only a direct `lake env lean` test
   file with `#check @ArcConstruction` proved the transitive path was
   actually broken; the first two attempts at that test gave false
   negatives because they forgot to open the `CircleMethod` namespace
@@ -538,7 +538,7 @@ API or spine. Design record and constant-by-constant classification:
 (`100, 14, 1000001, 501, 2004, 250001, 1000000·(⌈C⌉+1)⁴, 256000000,
 500000000000000`) either vanished as cascade artifacts or moved into two supply
 leaves in `R2TopAssembly.lean` (`exists_sigmaCtrl_lower_supply`,
-`exists_edge_square_load_supply`). `R2LargeK0.lean`'s five hand-rolled
+`exists_edge_square_load_supply`). The former `R2LargeK0.lean`'s five hand-rolled
 `n^d < 2^n` inductions collapsed to one lemma from Mathlib's polynomial ≪
 exponential asymptotics. `R2NumericConstants.lean` (a short-lived intermediate
 that named the witnesses as `def`s) was deleted: naming a witness is still a

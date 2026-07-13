@@ -221,7 +221,8 @@ lemma exists_r2_numeric_ledger (b : ℕ) (hb : 3 ≤ b) (hbsf : Squarefree b) :
   -- eventual polynomial ≪ exponential thresholds, at coefficients built from the
   -- abstract constants
   have hcS0 : (0 : ℝ) < cσ := lt_of_lt_of_le one_pos hcS1
-  obtain ⟨kw, hkw⟩ := exists_threshold_mul_pow_le_two_pow (10 * (cσ + 1)) 2
+  obtain ⟨kw, hkw⟩ :=
+    RequestProject.exists_threshold_mul_pow_le_two_pow (10 * (cσ + 1)) 2
   have hk0windowFact : ∀ k : ℕ, max kw 1 ≤ k →
       10 * (cσ * (k : ℝ) ^ 2 * (2 : ℝ) ^ k + 1) ≤ (2 : ℝ) ^ (2 * k) := by
     intro k hk
@@ -237,7 +238,7 @@ lemma exists_r2_numeric_ledger (b : ℕ) (hb : 3 ≤ b) (hbsf : Squarefree b) :
       _ ≤ (2 : ℝ) ^ k * (2 : ℝ) ^ k := mul_le_mul_of_nonneg_right hkw' (by positivity)
       _ = (2 : ℝ) ^ (2 * k) := by rw [two_mul, pow_add]
   obtain ⟨k0cubic, hk0cubicFact⟩ :=
-    exists_threshold_mul_pow_le_two_pow
+    RequestProject.exists_threshold_mul_pow_le_two_pow
       (40 * bernoulliTaylorRemainderConstant * S * (cσ + 1)) 4
   obtain ⟨k0load, hk0loadFact⟩ := hSfam G b
   -- the single budget inequality (allocation: one quarter of `c3/K` per lane, one spare)

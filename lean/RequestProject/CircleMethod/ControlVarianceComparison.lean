@@ -1,4 +1,5 @@
-import RequestProject.ArcConstruction
+import RequestProject.Construction.ControlEdges
+import RequestProject.Spectral.BernoulliSum
 
 open Finset BigOperators GlobalControl
 
@@ -7,7 +8,7 @@ noncomputable section
 namespace CircleMethod
 
 /-!
-# R2: σ_E ≍ σ_ctrl comparison (the `hbeat` quantitative input)
+# Bernoulli variance comparison from control edges
 
 The minor-arc bound (`minor_arc_bound_fiber_tail`) is measured against `sigmaCtrl BS`,
 while the main term (`main_re_lower`) is measured against `√(sigmaE2 E θ) = σ_E`.  The

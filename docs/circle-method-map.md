@@ -35,7 +35,7 @@ LEVEL 2a — main-arc analysis (generic in E, θ, b; no BlockSystem)
     at the worst Gaussian value; π²/2 = 2π²σ²m² at σm ≤ 1/2)
                                               [CircleMethodArcs.lean]
   hterm periodicity core, exists_mainArc_bijection
-                                              [ArcConstruction.lean (file)]
+                                              [CircleMethod/MainArcPeriodicity.lean]
 
 LEVEL 2b — minor-arc analysis (couples to the GlobalControl CRT stream)
   product_charFun_bound (ALREADY parametric in θ₀: rate 2θ₀(1−θ₀))
@@ -44,7 +44,7 @@ LEVEL 2b — minor-arc analysis (couples to the GlobalControl CRT stream)
     8θ₀(1−θ₀); 16/9 = its value at θ₀ = 1/3, instantiated at the junctions)
   Qctrl_freq_eq (per-pair CRT identity ‖h/pq‖ = |crtRepr|/pq)
                                               [CircleMethodArcs.lean]
-  ctrlEdges, QE_ge_Qctrl                      [ArcConstruction.lean (file)]
+  ctrlEdges, QE_ge_Qctrl                      [Construction/ControlEdges.lean]
   minor_energy_sum_le_fiber_tail, minor_arc_bound_fiber_tail
     (the ONE live minor-arc ladder)           [ExtraEnergyMinorArc.lean]
   ← global_control_partition                  [GlobalControl/Partition.lean]
@@ -69,19 +69,20 @@ project types, no probability assumption, and one clean M>R interface. Do not to
 
 **V2. Dead ladder (grep-verified 2026-07-09, zero external consumers):**
 `minor_energy_sum_le` + `minor_arc_bound` (injective; CircleMethodArcs.lean) and
-`minor_energy_sum_le_mult` + `minor_arc_bound_mult` (M-to-1; ArcConstruction.lean file)
+`minor_energy_sum_le_mult` + `minor_arc_bound_mult` (M-to-1; former
+ArcConstruction file)
 are superseded by the fiber-tail pair (with `Qextra := QE − Qctrl ≥ 0`, `K := M` the
 fiber-tail recovers `_mult`; with injectivity it recovers the plain one). Delete all
 four; the fiber-tail pair is the single node. (Executed in this pass.)
 
 **V3. File organization (mechanical, delegatable):**
-- The `ArcConstruction` *record* lives in `CircleMethodAssembly.lean` while the *file*
-  `ArcConstruction.lean` holds ctrl-edge/CRT/periodicity material — misleading pair.
+- The `ArcConstruction` *record* lives in `CircleMethodAssembly.lean`; the former
+  namesake file mixed control-edge and periodicity material — a misleading pair.
 - `Spectral/Selection.lean` and `Spectral/CircleMethodBridge.lean` are self-declared
   temporary re-export stubs for `SpectralCannon`/`CannonBridge`.
 Plan: move content into the `Spectral/` names, retire the stubs and the old names;
-rename the `ArcConstruction.lean` file by its real content (control edges + CRT
-main-arc identities), leave the record where the assembly is. Pure moves, no proofs.
+split that former file by its two mathematical questions, leave the record where the
+assembly is. Pure moves, no proof changes.
 
 **V4. The Taylor interface CAN be made parametric (the real remaining abstraction).**
 All of `100000`, `1/10`, `0.8`, and `r2MinorMainCtrlConstant = 0.8·e^{−π²/2}/2` trace
@@ -169,7 +170,13 @@ delegatable with this spec):**
       carries only `k0mass ≤ k0`.  The old decimal `hk0big` interface and the inline
       `k0³·2 < 2^k0` induction are gone.  The independent square-load estimate's
       crude decimal witnesses remain private inside `exists_edge_square_load_supply`.
-- [ ] **D3** naming/file sweep remainder (delegatable, last).
+- [ ] **D3** naming/file sweep remainder. The former `ArcConstruction.lean` is now
+      split into `Construction/ControlEdges.lean` and
+      `CircleMethod/MainArcPeriodicity.lean`; the vague follow-up files are now
+      `CircleMethod/PrimeSupportPeriod.lean` and
+      `CircleMethod/ControlVarianceComparison.lean`. The general scale lemma moved
+      from `R2LargeK0.lean` to `Core/ExponentialDomination.lean`. The remaining D3
+      work is the wider `R2*` public vocabulary and folder sweep.
 - [x] **D4** import-audit policy fix: the audit previously
       fails on "transitively redundant imports". But an import line is a *direct-
       dependency statement*, not a hypothesis: if a file directly uses `Aesop`,

@@ -27,7 +27,8 @@ witness-elimination refactor of the R2 main-arc numeric chase, per the standing 
 
 ## The node structure
 
-1. **`R2LargeK0.lean`** → single leaf: `exists_threshold_mul_pow_le_two_pow (A : ℝ) (d : ℕ) :
+1. **`Core/ExponentialDomination.lean`** → single leaf:
+   `exists_threshold_mul_pow_le_two_pow (A : ℝ) (d : ℕ) :
    ∃ K₀, ∀ k ≥ K₀, A·k^d ≤ 2^k`, from Mathlib's polynomial≪exponential. No inductions, no bases.
 2. **`R2TopAssembly.lean`** gains two supply leaves wrapping the existing crude estimates:
    - `exists_sigmaCtrl_lower_supply : ∃ c ≥ 1, ∃ K₀, ∀ BS (K₀ ≤ k₀), 1/(c·k₀·2^k₀) ≤ σ_ctrl`

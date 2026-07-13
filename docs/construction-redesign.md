@@ -175,7 +175,7 @@ today spread over `BernoulliFourier`, `CircleMethodArcs`,
   three files in full before touching anything (per the standing
   discipline). They do not actually share a motivating question:
   `FiberCount`'s CRT fiber-cardinality bound (`mainArc_fiber_card_le`) has a
-  single, distinct consumer (`ArcConstructionExtra`) and no code overlap
+  single, distinct consumer (`CircleMethod/PrimeSupportPeriod`) and no code overlap
   with the other two beyond the shared theme of "frequency"; `MainArcFields`
   lives in `R2AssemblyFields` (already distributed into C7/A1) and doesn't
   belong here at all. More importantly, `R2MainArcClassification`
@@ -241,16 +241,17 @@ today spread over `BernoulliFourier`, `CircleMethodArcs`,
 - **C7 ✗ Main-arc numerics and σ-comparison — re-examined, merge declined.**
   Same re-examination as C4, same outcome. `R2NumericFields`
   (`MainArcNumericFields`, single consumer `R2FinalAssembly`),
-  `ArcConstructionSigma` (`σ_E ≤ σ_ctrl` from the extra-light bound, single
-  consumer `Construction/Edges`), and `R2LargeK0` (pure-`ℕ` exponential-vs-
+  `CircleMethod/ControlVarianceComparison` (`σ_E ≤ σ_ctrl` from the
+  extra-light bound, single consumer `Construction/Edges`), and
+  `Core/ExponentialDomination` (pure exponential-vs-
   polynomial lemmas, single consumer `R2TopAssembly`) are three genuinely
   separate motivating questions — a numeric-fields packaging record, a
   σ-comparison analytic fact, and general-purpose scale arithmetic —
   grouped only by the loose theme "numerics feeding the final assembly."
-  `R2LargeK0` additionally states its own reason to stay isolated (its
+  `Core/ExponentialDomination` additionally states its own reason to stay isolated (its
   docstring: pure `Mathlib` import, "fast to recompile," deliberately no
   project dependencies) — merging it into a heavy project file would
-  actively work against that. `ArcConstructionSigma`'s single consumer is
+  actively work against that. `ControlVarianceComparison`'s single consumer is
   `Construction/Edges` (C1), but its motivating question — a quantitative
   Gaussian-scale comparison — is not C1's (structural edge-set facts:
   semiprimality/avoidance/divisibility), so single-consumer alone doesn't
