@@ -1,4 +1,5 @@
-import RequestProject.R2AssemblyFields
+import RequestProject.CircleMethodMainArc
+import RequestProject.Spectral.BernoulliSum
 
 open Finset BigOperators
 
@@ -7,7 +8,7 @@ noncomputable section
 namespace CircleMethod
 
 /-!
-# R2 numeric / main-arc field helpers
+# Main-arc numeric bounds
 
 This leaf collects abstract, reusable helper lemmas for the large-window
 main-arc fields `hN`, `htw`, and `hsmall` of `ArcConstruction`.  They are
@@ -86,7 +87,7 @@ lemma hsmall_of_uniform_ratio_bound
   exact le_trans hsum hcard
 
 /-- Packaged numeric/main-arc fields for the `ArcConstruction` record. -/
-structure MainArcNumericFields (E : Finset ℕ) (theta : ℕ → ℝ) (N : ℤ) where
+structure MainArcNumericBounds (E : Finset ℕ) (theta : ℕ → ℝ) (N : ℤ) where
   hN : (1 : ℝ) / Real.sqrt (sigmaE2 E theta) ≤ (N : ℝ)
   hNnonneg : 0 ≤ N
   htw : ∀ m ∈ Finset.Icc (-N) N, ∀ e ∈ E,
@@ -95,9 +96,9 @@ structure MainArcNumericFields (E : Finset ℕ) (theta : ℕ → ℝ) (N : ℤ) 
     (∑ e ∈ E, bernoulliTaylorRemainderConstant * |(m : ℝ) / (e : ℝ)| ^ 3) ≤
       bernoulliMainTermRemainderBudget
 
-/-- Constructor for `MainArcNumericFields` from the scale hypothesis, a uniform
+/-- Constructor for `MainArcNumericBounds` from the scale hypothesis, a uniform
 edge lower bound, a uniform ratio bound, and a cubic-load cardinality bound. -/
-def mainArcNumericFields_of
+def mainArcNumericBounds_of
     (E : Finset ℕ) (theta : ℕ → ℝ) (N : ℤ) (ρ : ℝ)
     (hN : (1 : ℝ) / Real.sqrt (sigmaE2 E theta) ≤ (N : ℝ))
     (he0 : ∀ e ∈ E, 0 < e)
@@ -107,7 +108,7 @@ def mainArcNumericFields_of
       |(m : ℝ) / (e : ℝ)| ≤ ρ)
     (hcard : (E.card : ℝ) * bernoulliTaylorRemainderConstant * ρ ^ 3 ≤
       bernoulliMainTermRemainderBudget) :
-    MainArcNumericFields E theta N where
+    MainArcNumericBounds E theta N where
   hN := hN
   hNnonneg := mainArc_N_nonneg_of_inv_sqrt_le E theta N hN
   htw := htw_of_window_edge_lower E N

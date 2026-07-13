@@ -99,7 +99,7 @@ structural). Design:
     like the load windows; see V6).
   - Thread `cT` (abstract) through `sum_logphi_bound → term_label_re_lower →
     main_re_lower → main_sum_re_lower → ArcConstruction.hsmall →
-    MainArcNumericFields.hsmall → r2_numericFields → r2_close_numericFields →
+    MainArcNumericBounds.hsmall → r2_numericFields → r2_close_numericFields →
     R2NumericLedger.hk0cubicFact` (replacing the literal 100000·10 product there).
   - `0.8` becomes `1 − 2δ` with `δ` the budget field (kept at 1/10 by the ledger).
   This eliminates the last hard-coded analytic constants from all *statements* between

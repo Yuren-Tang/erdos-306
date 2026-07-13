@@ -1,7 +1,7 @@
 import RequestProject.R2TopAssembly
 import RequestProject.Construction.MassBatchSupply
 import RequestProject.R2FinalAssembly
-import RequestProject.R2NumericFields
+import RequestProject.CircleMethod.MainArcNumericBounds
 
 /-!
 # R2 construction certificates
@@ -506,7 +506,7 @@ lemma r2_main_arc_sigmaE_compare {T : Finset ℕ} {b : ℕ}
 /-- **Main-arc window certificate.**  The window parameter `N ≈ C/σ`, the
 two-sided `σ_E ↔ σ_ctrl` comparison, the window bounds (`N·σ`, `(2N+1)·σ`, and
 `2N < 2^{2k0}`), the period bound `2N+1 ≤ L`, and the Taylor/Gaussian numeric
-fields `MainArcNumericFields`.  The fields are stated so the minor-arc layer can
+fields `MainArcNumericBounds`. The fields are stated so the minor-arc layer can
 reuse the window facts (`hNlo`, `hN2`, `h2N1sigma`, `hsigmaE_ub`, `hsigmaEpos`)
 without re-deriving `N`. -/
 structure R2MainArcWindow {T : Finset ℕ} {b : ℕ}
@@ -522,7 +522,7 @@ structure R2MainArcWindow {T : Finset ℕ} {b : ℕ}
   h2N1sigma : (2 * (N : ℝ) + 1) * sigmaCtrl M.D.BS ≤ 2 * F.ledger.C + 3
   hsigmaE_ub : Real.sqrt (sigmaE2 M.D.E M.W.theta) ≤ F.ledger.K * sigmaCtrl M.D.BS
   hsigmaEpos : 0 < Real.sqrt (sigmaE2 M.D.E M.W.theta)
-  hNF : MainArcNumericFields M.D.E M.W.theta N
+  hNF : MainArcNumericBounds M.D.E M.W.theta N
 
 /-- **Main-arc window scale/period bounds.**  For `N` essentially `⌈C/σ_ctrl⌉`
 (`hNhi`), the window stays below the squared bottom scale (`2N < 2^{2k₀}`), fits
@@ -676,7 +676,7 @@ lemma exists_r2_main_arc_window {T : Finset ℕ} {b : ℕ}
     linarith [h1, hσle1]
   -- large-k0 window facts (named certificate: N-window scale/period ledger)
   obtain ⟨hN2, hNL, hNreal⟩ := r2_main_arc_window_scale_period F Cc M N hNhi
-  have hNF : MainArcNumericFields D.E W.theta N :=
+  have hNF : MainArcNumericBounds D.E W.theta N :=
     r2_close_numericFields D W N σ C F.ledger.cSigma F.ledger.Sload hσpos he0 QB hSgeD
       hRpos'D F.ledger.hcS1 F.ledger.hS1 hsumE hsigmaE_lb hNnonneg hCge3 hNlo hNsigma
       hk0pos hCk0 hwindow hcubic hNreal

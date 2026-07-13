@@ -1,5 +1,6 @@
 import RequestProject.Construction.BaseLoadBudget
 import RequestProject.Construction.ControlEdges
+import RequestProject.CircleMethod.MainArcNumericBounds
 import RequestProject.Core.ExponentialDomination
 import RequestProject.R2DyadicBlockSupport
 import RequestProject.R2MainArcClassification
@@ -324,7 +325,7 @@ lemma r2_numericFields {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
     (hsumsq : (N : ℝ) ^ 2 * (∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2) ≤ B)
     (hsmallN : (N : ℝ) / Emin ≤
       1 / (10 * bernoulliTaylorRemainderConstant * B)) :
-    MainArcNumericFields D.E W.theta N := by
+    MainArcNumericBounds D.E W.theta N := by
   refine' ⟨ hN, hNnonneg, _, _ ⟩;
   · intro m hm e he
     change |(m : ℝ) / (e : ℝ)| ≤ 1 / 10
@@ -766,7 +767,7 @@ lemma r2_close_numericFields {T : Finset ℕ} {b : ℕ}
     (hcubic : (40 * bernoulliTaylorRemainderConstant * S * (cS + 1)) *
       (D.BS.k0 : ℝ) ^ 4 ≤ (2 : ℝ) ^ D.BS.k0)
     (hNreal : (N : ℝ) ≤ cS * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0 + 1) :
-    MainArcNumericFields D.E W.theta N := by
+    MainArcNumericBounds D.E W.theta N := by
   have hS0 : (0 : ℝ) < S := lt_of_lt_of_le one_pos hS1
   have hcS0 : (0 : ℝ) < cS := lt_of_lt_of_le one_pos hcS1
   have hNpos : (0 : ℝ) < (N : ℝ) := lt_of_lt_of_le (by positivity) hNlo

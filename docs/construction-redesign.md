@@ -241,8 +241,8 @@ today spread over `BernoulliFourier`, `CircleMethodArcs`,
   batch 4, evidence the "map mechanisms before writing files" discipline
   works when applied from the start rather than as a correction.
 - **C7 ✗ Main-arc numerics and σ-comparison — re-examined, merge declined.**
-  Same re-examination as C4, same outcome. `R2NumericFields`
-  (`MainArcNumericFields`, single consumer `R2FinalAssembly`),
+  Same re-examination as C4, same outcome. `CircleMethod/MainArcNumericBounds`
+  (`MainArcNumericBounds`, consumed at the resonant-construction junction),
   `CircleMethod/ControlVarianceComparison` (`σ_E ≤ σ_ctrl` from the
   extra-light bound, single consumer `Construction/Edges`), and
   `Core/ExponentialDomination` (pure exponential-vs-

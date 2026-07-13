@@ -16,7 +16,7 @@ witness-elimination refactor of the R2 main-arc numeric chase, per the standing 
 | `2/9` | extremal value of `θ(1−θ)` on `[1/3, 2/3]` | structural — stays as literal at point of use |
 | `16/9`, `8/9` | Gaussian tail rate / gadget damping strength | structural mechanism constants — stay |
 | `4` in `(k+1)² ≤ 4k²`, `k+1 ≤ 2k` | clean algebraic bound for `k ≥ 1` | structural — stays inside proofs |
-| `100000`, `1/10` (`MainArcNumericFields`) | current Taylor interface of the circle-method core | core-interface constants; appear only at the junction `r2_numericFields`. Parametrizing the core itself is a separate, deferred node. |
+| `100000`, `1/10` (`MainArcNumericBounds`) | current Taylor interface of the circle-method core | core-interface constants; appear only at the junction `r2_numericFields`. Parametrizing the core itself is a separate, deferred node. |
 | `100` (σ_ctrl lower coeff), `14` (its threshold) | witnesses of "∃ c ≥ 1, threshold: σ_ctrl ≥ 1/(c·k₀·2^k₀)" | leaf only (`exists_sigmaCtrl_lower_supply`); ledger holds abstract `cSigma`, `k0sigma` |
 | `1000001` (square-load slack), `1000G+1000b+100000+14` | witnesses of "∃ S ≥ 1, threshold: ∑1/e² ≤ S·σ_ctrl²" | leaf only (`exists_edge_square_load_supply`); ledger holds abstract `Sload`, `k0load` |
 | `501`, `250001` | witness of the bridge constant K with `Sload ≤ 4K²` | gone entirely; ledger holds abstract `K` with `hK1`, `hKS`; constructor takes `K := max 1 √Sload` |
@@ -58,7 +58,7 @@ witness-elimination refactor of the R2 main-arc numeric chase, per the standing 
 - Mass-layer threshold bundle `hk0big` + `r2_getQ`'s inline inductions + the crude support-mass
   constant 8 (in `r2_blockSupport_inv_sq_le`): same treatment, next pass.
 - Parametrizing the circle-method core's Taylor constants (`100000`, `1/10` in
-  `MainArcNumericFields` / `ArcConstruction.hsmall/htw`): a genuine node of its own — would make
+  `MainArcNumericBounds` / `ArcConstruction.hsmall/htw`): a genuine node of its own — would make
   the whole chase work for any (coeff, target) pair; touches the core's Gaussian-approximation
   lemmas.
 - Sharpenable: the honest ratio in `exists_edge_square_load_supply` is ~(8·100)² from two crude
