@@ -52,7 +52,7 @@ LEVEL 2b — minor-arc analysis (couples to the GlobalControl CRT stream)
 
 LEVEL 3 — the interface record
   ArcConstruction (record)                    [CircleMethodAssembly.lean]
-  consumed by R2FinalAssemblyRaw/R2FinalAssembly/Erdos306Final via
+  consumed by R2FinalAssembly/R2Certificates/Erdos306Final via
   exists_subset_of_fourier_arcs + main_sum_re_lower.
 ```
 

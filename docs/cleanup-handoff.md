@@ -286,6 +286,15 @@ fragment the mechanical merge had hidden:
 dead — orphaned when `R2ComponentSupply.lean` was deleted in the batch-3
 sweep but not traced far enough at the time. Now removed.
 
+The same caller-first audit later found the larger downstream continuation to
+be dead as well: `R2FinalAssemblyRaw`, `R2ComponentBounds`,
+`R2ComponentNumeric`, and `R2ComponentNumericAssembly` formed a closed adapter
+chain ending in an uncalled theorem. The certificate mainline uses
+`exists_arcConstruction_of_mainArcParams` directly, so the four files and the
+five private-to-that-chain adapters in `R2FinalAssembly` were deleted.
+`R2MinorSupportBudget` now imports `R2MinorCover` directly instead of using the
+dead chain as an import relay.
+
 ### Flagged, now resolved
 
 - ~~`GlobalControl.BlockVarianceComparison` vs `GlobalControl.ControlVarianceBounds`~~

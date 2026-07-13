@@ -1,4 +1,4 @@
-import RequestProject.R2ComponentNumericAssembly
+import RequestProject.R2MinorCover
 
 open Finset BigOperators GlobalControl
 

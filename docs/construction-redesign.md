@@ -346,6 +346,17 @@ deleted file (`R2ComponentScaleCard`, `R2ComponentCoreSupply`,
 one `lake build RequestProject.Audit`, same discipline as the third
 cluster.
 
+**Sixth dead cluster found during the physical-tree pass** (the fifth was
+the short mass-batch endpoint fragment recorded under C2): the parallel final
+assembly ladder
+`component → light → load window → raw numerics → support sets → rho bounds`
+had no consumer outside itself. The live certificate chain calls the cleaner
+`exists_arcConstruction_of_mainArcParams` endpoint directly. Deleted
+`R2FinalAssemblyRaw`, `R2ComponentBounds`, `R2ComponentNumeric`, and
+`R2ComponentNumericAssembly`, together with the five dead adapter theorems in
+`R2FinalAssembly`. `R2MinorSupportBudget` had imported the last file only as a
+relay; it now imports its actual mathematical dependency `R2MinorCover`.
+
 ## Execution order (few-build batches)
 
 Each batch ends in exactly one `lake build RequestProject.Audit` (locally
