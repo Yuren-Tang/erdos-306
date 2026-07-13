@@ -61,7 +61,7 @@ theorem exists_arcConstruction_of_component_rho_numeric_minor_sets
     (hgadgetedge : ∀ e ∈ gadgetEdges D.R D.S, (N : ℝ) ≤ ρ * (e : ℝ))
     (hcomponentCard :
       ((ctrlEdges D.BS).card + D.Q.card + (gadgetEdges D.R D.S).card : ℝ) ≤ K)
-    (hK : K * 100000 * ρ ^ 3 ≤ 1 / 10)
+    (hK : K * bernoulliTaylorRemainderConstant * ρ ^ 3 ≤ 1 / 10)
     (hNL : 2 * N + 1 ≤ (D.L : ℤ))
     (hQsemi : ∀ e ∈ D.Q, IsSemiprime e)
     (hRprime : ∀ r ∈ D.R, Nat.Prime r)
@@ -94,7 +94,7 @@ theorem exists_arcConstruction_of_component_rho_numeric_minor_sets
       Bblock + Bextra <
         bernoulliMainTermConstant / sigmaCtrl D.BS) :
     Nonempty (ArcConstruction T b) := by
-  have hcard : (D.E.card : ℝ) * 100000 * ρ ^ 3 ≤ 1 / 10 :=
+  have hcard : (D.E.card : ℝ) * bernoulliTaylorRemainderConstant * ρ ^ 3 ≤ 1 / 10 :=
     D.cubic_card_bound_of_component_card_bound ρ K hρnonneg hcomponentCard hK
   exact exists_arcConstruction_of_component_numeric_minor_sets hb D W N Bblock Bextra ρ
     hadm hNscale

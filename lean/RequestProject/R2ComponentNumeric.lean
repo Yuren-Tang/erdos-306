@@ -123,20 +123,23 @@ lemma r2Edges_card_le_components_real (D : R2ConcreteData T b) :
   exact_mod_cast D.r2Edges_card_le_components
 
 /-- The cubic card condition transferred from the component card bound: if the
-sum of component cardinalities is `≤ K` and `K·100000·ρ³ ≤ 1/10`, then the same
+sum of component cardinalities is `≤ K` and
+`K·bernoulliTaylorRemainderConstant·ρ³ ≤ 1/10`, then the same
 cubic bound holds for `D.E.card`. -/
 lemma cubic_card_bound_of_component_card_bound (D : R2ConcreteData T b) (ρ K : ℝ)
     (hρnonneg : 0 ≤ ρ)
     (hcard :
       ((ctrlEdges D.BS).card + D.Q.card + (gadgetEdges D.R D.S).card : ℝ) ≤ K)
-    (hK : K * 100000 * ρ ^ 3 ≤ 1 / 10) :
-    (D.E.card : ℝ) * 100000 * ρ ^ 3 ≤ 1 / 10 := by
+    (hK : K * bernoulliTaylorRemainderConstant * ρ ^ 3 ≤ 1 / 10) :
+    (D.E.card : ℝ) * bernoulliTaylorRemainderConstant * ρ ^ 3 ≤ 1 / 10 := by
   have hcardE : (D.E.card : ℝ) ≤ K := D.r2Edges_card_le_components_real.trans hcard
-  have hfac : (0 : ℝ) ≤ 100000 * ρ ^ 3 := by positivity
-  calc (D.E.card : ℝ) * 100000 * ρ ^ 3
-      = (D.E.card : ℝ) * (100000 * ρ ^ 3) := by ring
-    _ ≤ K * (100000 * ρ ^ 3) := mul_le_mul_of_nonneg_right hcardE hfac
-    _ = K * 100000 * ρ ^ 3 := by ring
+  have hfac : (0 : ℝ) ≤ bernoulliTaylorRemainderConstant * ρ ^ 3 :=
+    mul_nonneg bernoulliTaylorRemainderConstant_nonneg (by positivity)
+  calc (D.E.card : ℝ) * bernoulliTaylorRemainderConstant * ρ ^ 3
+      = (D.E.card : ℝ) * (bernoulliTaylorRemainderConstant * ρ ^ 3) := by ring
+    _ ≤ K * (bernoulliTaylorRemainderConstant * ρ ^ 3) :=
+      mul_le_mul_of_nonneg_right hcardE hfac
+    _ = K * bernoulliTaylorRemainderConstant * ρ ^ 3 := by ring
     _ ≤ 1 / 10 := hK
 
 end R2ConcreteData

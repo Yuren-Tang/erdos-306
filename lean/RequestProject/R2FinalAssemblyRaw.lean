@@ -31,7 +31,7 @@ theorem exists_arcConstruction_of_componentData_raw_numeric_minor_window
     (hρnonneg : 0 ≤ ρ)
     (hratio : ∀ m ∈ Finset.Icc (-N) N, ∀ e ∈ D.E,
       |(m : ℝ) / (e : ℝ)| ≤ ρ)
-    (hcard : (D.E.card : ℝ) * 100000 * ρ ^ 3 ≤ 1 / 10)
+    (hcard : (D.E.card : ℝ) * bernoulliTaylorRemainderConstant * ρ ^ 3 ≤ 1 / 10)
     (hNL : 2 * N + 1 ≤ (D.L : ℤ))
     (hQsemi : ∀ e ∈ D.Q, IsSemiprime e)
     (hRprime : ∀ r ∈ D.R, Nat.Prime r)
@@ -88,7 +88,7 @@ theorem exists_arcConstruction_of_componentData_raw_numeric_minor_sets
     (hρnonneg : 0 ≤ ρ)
     (hratio : ∀ m ∈ Finset.Icc (-N) N, ∀ e ∈ D.E,
       |(m : ℝ) / (e : ℝ)| ≤ ρ)
-    (hcard : (D.E.card : ℝ) * 100000 * ρ ^ 3 ≤ 1 / 10)
+    (hcard : (D.E.card : ℝ) * bernoulliTaylorRemainderConstant * ρ ^ 3 ≤ 1 / 10)
     (hNL : 2 * N + 1 ≤ (D.L : ℤ))
     (hQsemi : ∀ e ∈ D.Q, IsSemiprime e)
     (hRprime : ∀ r ∈ D.R, Nat.Prime r)

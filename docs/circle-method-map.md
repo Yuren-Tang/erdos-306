@@ -141,18 +141,15 @@ delegatable with this spec):**
       `Spectral/CircleMethodBridge.exists_subset_of_fourier_arcs` now concludes
       `∑_S 1/e = q/L` for an arbitrary admissible residue `q`; the `ArcConstruction`
       record stays instantiated at `q := L/b` — the junction in the right place.
-- [x] V4 Taylor parametrization — done *up to one caveat* (Codex pass,
+- [x] V4 Taylor parametrization — complete (Codex passes,
       `86fbda3`..`d30ab88`): roles named in `Spectral/MainArcParameters.lean`
       (`bernoulliTaylorRadius`, `bernoulliMainTermRemainderBudget` — genuine design
       constants, correctly kept concrete; `bernoulliMainTermRetention = 1 − 2·budget`,
       `bernoulliMainTermConstant` — correctly derived) and threaded through the whole
-      spine (record fields, R2 chase, ledger). **Caveat = D1 below**:
-      `bernoulliTaylorRemainderConstant : ℝ := 100000` is a *witness named as a def* —
-      the halfway form the standing standard rejects. Terminal form: make it opaque via
-      the supply leaf (`Classical.choose` of `∃ cT, 0 ≤ cT ∧ ∀ θ ∈ [1/3,2/3], |t| ≤
-      radius → ‖log φ_θ(t) − (2πiθt − 2π²θ(1−θ)t²)‖ ≤ cT·|t|³`, proved by the existing
-      `bernoulli_log_taylor` with 100000 inside), export only the spec lemma +
-      nonnegativity, and re-route any proof that currently unfolds the def numerically.
+      spine (record fields, R2 chase, ledger). D1 completed the last caveat: the
+      explicit estimate is now private to `CircleMethodMainArc`; the public constant
+      is selected from the existence theorem with `Classical.choose`, and downstream
+      statements use only its nonnegativity and Taylor specification.
 - [x] V3 circle-method file moves — done (Codex pass): `SpectralCannon`/`CannonBridge`/
       `CircleMethod`/`BernoulliFourier` retired into `Spectral/{Selection,
       CircleMethodBridge, CyclicCharacter, BernoulliCyclicFourier, BernoulliSum,
@@ -162,10 +159,9 @@ delegatable with this spec):**
       unchanged — proof-structure pure gain). Remaining: the `ArcConstruction.lean`
       file-vs-record naming mismatch, and the `docs/architecture.md` vocabulary sweep
       over the `R2*` files (part of D3).
-- [ ] **D1** (delegatable, precise spec above): opaque-constant completion of V4.
-      Acceptance: `grep -rn "100000" lean/RequestProject/` hits only inside the supply
-      leaf's existence proof; full `lake build RequestProject.Audit` green; axiom set
-      unchanged.
+- [x] **D1**: opaque-constant completion of V4.  Literal `100000` remains only in
+      the private analytic witness proof among Taylor-remainder statements; equal
+      numerals in the independent `k₀`/mass thresholds belong to D2.
 - [ ] **D2 = V7** hk0mass bundle (delegatable; pattern established twice — see
       `exists_edge_square_load_supply`): wrap `hk0big`'s `1000·G + 1000·b + 100000`
       and `r2_getQ`'s inline `k0³·2 < 2^k0` inductions.

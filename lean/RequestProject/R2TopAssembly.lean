@@ -264,7 +264,7 @@ small enough that the fine main-arc cubic error `hsmall` decays.
 -/
 lemma sigmaCtrl_ge_strong (BS : BlockSystem) (hk0 : 14 ≤ BS.k0) :
     (1 : ℝ) / (100 * (BS.k0 : ℝ) * (2 : ℝ) ^ BS.k0) ≤ sigmaCtrl BS := by
-  refine Real.le_sqrt_of_sq_le ?_ ; norm_num [ sigmaCtrl ] ; ring;
+  refine Real.le_sqrt_of_sq_le ?_ ; norm_num [ sigmaCtrl ] ; ring_nf;
   refine' le_trans _ ( Finset.sum_le_sum_of_subset_of_nonneg ( show ctrlPairs BS ⊇ internalPairs BS BS.k0 from _ ) fun _ _ _ => by positivity ) <;> norm_num [ pow_mul' ];
   · refine' le_trans _ ( Finset.sum_le_sum fun x hx => show ( x.1 ^ 2 : ℝ ) ⁻¹ * ( x.2 ^ 2 : ℝ ) ⁻¹ ≥ ( 1 / ( 2 ^ ( BS.k0 + 1 ) ) ^ 2 ) ^ 2 from _ ) <;> norm_num [ pow_mul' ] at *;
     · -- Count the number of internal pairs in block `k0`.
@@ -321,7 +321,8 @@ lemma r2_numericFields {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
     (hNnonneg : 0 ≤ N)
     (h10N : 10 * (N : ℝ) ≤ Emin)
     (hsumsq : (N : ℝ) ^ 2 * (∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2) ≤ B)
-    (hsmallN : (N : ℝ) / Emin ≤ 1 / (1000000 * B)) :
+    (hsmallN : (N : ℝ) / Emin ≤
+      1 / (10 * bernoulliTaylorRemainderConstant * B)) :
     MainArcNumericFields D.E W.theta N := by
   refine' ⟨ hN, hNnonneg, _, _ ⟩;
   · intro m hm e he
@@ -329,7 +330,8 @@ lemma r2_numericFields {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
     rw [ abs_div, abs_of_nonneg ( by positivity : ( 0 : ℝ ) ≤ e ) ] ; rw [ div_le_iff₀ ( by norm_cast; linarith [ he0 e he ] ) ] ; ring_nf at *; norm_num at *;
     cases abs_cases ( m : ℝ ) <;> nlinarith [ show ( m : ℝ ) ≥ -N by exact_mod_cast hm.1, show ( m : ℝ ) ≤ N by exact_mod_cast hm.2, show ( e : ℝ ) ≥ Emin by exact_mod_cast hEmin e he ];
   · intro m hm
-    change (∑ e ∈ D.E, 100000 * |(m : ℝ) / (e : ℝ)| ^ 3) ≤ 1 / 10
+    change (∑ e ∈ D.E,
+      bernoulliTaylorRemainderConstant * |(m : ℝ) / (e : ℝ)| ^ 3) ≤ 1 / 10
     -- For each edge e, |(m:ℝ)/e|^3 ≤ N/Emin * (m^2 * 1/e^2).
     have h_edge_bound : ∀ e ∈ D.E, |(m : ℝ) / e| ^ 3 ≤ (N / Emin) * ((m : ℝ) ^ 2 * (1 / e ^ 2 : ℝ)) := by
       intros e he
@@ -344,9 +346,39 @@ lemma r2_numericFields {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
         _ = |(m : ℝ) / e| * ((m : ℝ) ^ 2 * (1 / e ^ 2 : ℝ)) := by rw [div_pow]; ring
         _ ≤ (N / Emin) * ((m : ℝ) ^ 2 * (1 / e ^ 2 : ℝ)) :=
           mul_le_mul_of_nonneg_right h_abs hnonneg
-    refine' le_trans ( Finset.sum_le_sum fun e he => mul_le_mul_of_nonneg_left ( h_edge_bound e he ) ( by norm_num ) ) _ ; norm_num [ ← Finset.mul_sum _ _ _, ← Finset.sum_mul ] at *;
-    refine' le_trans ( mul_le_mul_of_nonneg_left ( mul_le_mul_of_nonneg_left ( mul_le_mul_of_nonneg_right ( show ( m : ℝ ) ^ 2 ≤ N ^ 2 by norm_cast; nlinarith ) <| Finset.sum_nonneg fun _ _ => inv_nonneg.2 <| sq_nonneg _ ) <| by positivity ) <| by positivity ) _;
-    nlinarith [ mul_inv_cancel₀ ( ne_of_gt hB ), show ( 0 : ℝ ) ≤ N / Emin by positivity ]
+    refine' le_trans ( Finset.sum_le_sum fun e he => mul_le_mul_of_nonneg_left
+      (h_edge_bound e he) bernoulliTaylorRemainderConstant_nonneg ) _;
+    norm_num [← Finset.mul_sum _ _ _, ← Finset.sum_mul] at *;
+    refine' le_trans (mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left
+      (mul_le_mul_of_nonneg_right (show (m : ℝ) ^ 2 ≤ N ^ 2 by
+        norm_cast; nlinarith) <| Finset.sum_nonneg fun _ _ => inv_nonneg.2 <| sq_nonneg _)
+      (by positivity)) bernoulliTaylorRemainderConstant_nonneg) _
+    have hsmallN' : (N : ℝ) / Emin ≤
+        1 / (10 * bernoulliTaylorRemainderConstant * B) := by
+      simpa [div_eq_mul_inv, mul_assoc, mul_comm, mul_left_comm] using hsmallN
+    have hbudget_nonneg : (0 : ℝ) ≤
+        1 / (10 * bernoulliTaylorRemainderConstant * B) :=
+      one_div_nonneg.mpr <| mul_nonneg
+        (mul_nonneg (show (0 : ℝ) ≤ 10 by norm_num)
+          bernoulliTaylorRemainderConstant_nonneg) hB.le
+    have hprod : (N : ℝ) / Emin *
+        ((N : ℝ) ^ 2 * ∑ e ∈ D.E, ((e : ℝ) ^ 2)⁻¹) ≤
+        (1 / (10 * bernoulliTaylorRemainderConstant * B)) * B := by
+      calc
+        (N : ℝ) / Emin * ((N : ℝ) ^ 2 * ∑ e ∈ D.E, ((e : ℝ) ^ 2)⁻¹)
+            ≤ (1 / (10 * bernoulliTaylorRemainderConstant * B)) *
+                ((N : ℝ) ^ 2 * ∑ e ∈ D.E, ((e : ℝ) ^ 2)⁻¹) :=
+              mul_le_mul_of_nonneg_right hsmallN' (by positivity)
+        _ ≤ (1 / (10 * bernoulliTaylorRemainderConstant * B)) * B :=
+              mul_le_mul_of_nonneg_left hsumsq hbudget_nonneg
+    calc
+      bernoulliTaylorRemainderConstant *
+          ((N : ℝ) / Emin * ((N : ℝ) ^ 2 * ∑ e ∈ D.E, ((e : ℝ) ^ 2)⁻¹))
+          ≤ bernoulliTaylorRemainderConstant *
+              ((1 / (10 * bernoulliTaylorRemainderConstant * B)) * B) :=
+            mul_le_mul_of_nonneg_left hprod bernoulliTaylorRemainderConstant_nonneg
+      _ = 1 / 10 := by
+        field_simp [bernoulliTaylorRemainderConstant_pos.ne']
 
 /-
 Obtain the residual mass batch `Q` for the high-block gadget set `S`,
@@ -410,7 +442,7 @@ lemma r2_blockSupport_inv_sq_le (BS : BlockSystem) (hk0 : 1 ≤ BS.k0) :
   refine le_trans h_sum_le_card <| le_trans ( Finset.sum_le_sum h_card_bound ) ?_;
   erw [ Finset.sum_Ico_eq_sum_range ] ; norm_num [ div_eq_mul_inv, Finset.mul_sum _ _ _, mul_assoc, mul_comm, mul_left_comm, pow_add ] ; ring_nf ; norm_num;
   norm_num [ ← Finset.mul_sum _ _ _, ← Finset.sum_mul ];
-  rw [ geom_sum_eq ] <;> ring <;> norm_num
+  rw [ geom_sum_eq ] <;> ring_nf <;> norm_num
 
 /-- **Light extra edges.**  The mass-batch and gadget edges carry only a bounded
 multiple of the control deviation in reciprocal-square mass.  Combined with
@@ -434,7 +466,7 @@ lemma r2_extra_inv_sq_le {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
           · intros e he e' he' h_eq
             grind
         exact h_sum_Q_le.trans ( Finset.sum_le_sum_of_subset_of_nonneg ( Finset.image_subset_iff.mpr fun e he => Finset.mem_product.mpr ⟨ hp e he, hq e he ⟩ ) fun _ _ _ => by positivity )
-      convert h_sum_Q_le using 1 ; norm_num [ Finset.sum_product, mul_pow ] ; ring
+      convert h_sum_Q_le using 1 ; norm_num [ Finset.sum_product, mul_pow ] ; ring_nf
       simp +decide only [sq, ← Finset.mul_sum _ _ _, ← Finset.sum_mul]
     exact hQ.trans ( pow_le_pow_left₀ ( Finset.sum_nonneg fun _ _ => by positivity ) ( r2_blockSupport_inv_sq_le D.BS ( by linarith ) ) _ )
   have hgadget_mass : ∑ e ∈ gadgetEdges D.R D.S, (1 : ℝ) / e ^ 2 ≤ (D.R.card * D.S.card) * (2 : ℝ) ^ (-4 * D.BS.k0 : ℝ) := by
@@ -690,9 +722,9 @@ coefficient) and `S` (the edge square-load slack).  The two domination
 hypotheses `hwindow`/`hcubic` are instances at `k₀ = D.BS.k0` of the ledger's
 eventual polynomial≪exponential facts; no witness value of any constant or
 threshold is visible here.  The literals that do appear are structural:
-`100000`/`10`/`1000000 = 100000·10` are the circle-method core's current
-Taylor interface constants surfacing at the junction `r2_numericFields`, and
-the `4` is `(k₀+1)² ≤ (2k₀)²`. -/
+the Taylor coefficient and radius budget enter only through the supplied
+`bernoulliTaylorRemainderConstant`; the `40 = 4·10` below combines the budget
+factor with `(k₀+1)² ≤ (2k₀)²`. -/
 lemma r2_close_numericFields {T : Finset ℕ} {b : ℕ}
     (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ) (σ C cS S : ℝ)
     (hσpos : 0 < σ)
@@ -708,7 +740,8 @@ lemma r2_close_numericFields {T : Finset ℕ} {b : ℕ}
     (hk0pos : 1 ≤ D.BS.k0) (hCk0 : C ≤ (D.BS.k0 : ℝ))
     (hwindow : 10 * (cS * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0 + 1)
         ≤ (2 : ℝ) ^ (2 * D.BS.k0))
-    (hcubic : (4 * 1000000 * S * (cS + 1)) * (D.BS.k0 : ℝ) ^ 4 ≤ (2 : ℝ) ^ D.BS.k0)
+    (hcubic : (40 * bernoulliTaylorRemainderConstant * S * (cS + 1)) *
+      (D.BS.k0 : ℝ) ^ 4 ≤ (2 : ℝ) ^ D.BS.k0)
     (hNreal : (N : ℝ) ≤ cS * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0 + 1) :
     MainArcNumericFields D.E W.theta N := by
   have hS0 : (0 : ℝ) < S := lt_of_lt_of_le one_pos hS1
@@ -750,7 +783,8 @@ lemma r2_close_numericFields {T : Finset ℕ} {b : ℕ}
       ≤ (N : ℝ) ^ 2 * (S * σ ^ 2) :=
     mul_le_mul_of_nonneg_left hsumE (by positivity)
   have hsmallN : (N : ℝ) / (2 : ℝ) ^ (2 * D.BS.k0)
-      ≤ 1 / (1000000 * ((N : ℝ) ^ 2 * (S * σ ^ 2))) := by
+      ≤ 1 / (10 * bernoulliTaylorRemainderConstant *
+        ((N : ℝ) ^ 2 * (S * σ ^ 2))) := by
     have hk0R : (1 : ℝ) ≤ (D.BS.k0 : ℝ) := by exact_mod_cast hk0pos
     have htwo : (1 : ℝ) ≤ (2 : ℝ) ^ D.BS.k0 := one_le_pow₀ (by norm_num)
     have hNσ : (N : ℝ) * σ ≤ (D.BS.k0 : ℝ) + 1 := le_trans hNsigma (by linarith [hCk0])
@@ -762,14 +796,21 @@ lemma r2_close_numericFields {T : Finset ℕ} {b : ℕ}
         have hk2 : (1 : ℝ) ≤ (D.BS.k0 : ℝ) ^ 2 := one_le_pow₀ hk0R
         exact le_trans hk2 (le_mul_of_one_le_right (by positivity) htwo)
       nlinarith [hNreal, hone]
-    rw [div_le_div_iff₀ (by positivity) (by positivity), one_mul]
-    calc (N : ℝ) * (1000000 * ((N : ℝ) ^ 2 * (S * σ ^ 2)))
-        = 1000000 * S * ((N : ℝ) * ((N : ℝ) * σ) ^ 2) := by ring
-      _ ≤ 1000000 * S *
+    rw [div_le_div_iff₀ (by positivity)
+      (mul_pos (mul_pos (by norm_num) bernoulliTaylorRemainderConstant_pos)
+        (by positivity)), one_mul]
+    calc (N : ℝ) * (10 * bernoulliTaylorRemainderConstant *
+          ((N : ℝ) ^ 2 * (S * σ ^ 2)))
+        = 10 * bernoulliTaylorRemainderConstant * S *
+            ((N : ℝ) * ((N : ℝ) * σ) ^ 2) := by ring
+      _ ≤ 10 * bernoulliTaylorRemainderConstant * S *
             (((cS + 1) * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0) * (4 * (D.BS.k0 : ℝ) ^ 2)) := by
-          refine mul_le_mul_of_nonneg_left ?_ (by positivity)
+          refine mul_le_mul_of_nonneg_left ?_
+            (mul_nonneg (mul_nonneg (by norm_num) bernoulliTaylorRemainderConstant_nonneg)
+              (by positivity))
           exact mul_le_mul hNle hNσ2 (sq_nonneg _) (by positivity)
-      _ = (4 * 1000000 * S * (cS + 1)) * (D.BS.k0 : ℝ) ^ 4 * (2 : ℝ) ^ D.BS.k0 := by ring
+      _ = (40 * bernoulliTaylorRemainderConstant * S * (cS + 1)) *
+          (D.BS.k0 : ℝ) ^ 4 * (2 : ℝ) ^ D.BS.k0 := by ring
       _ ≤ (2 : ℝ) ^ D.BS.k0 * (2 : ℝ) ^ D.BS.k0 :=
           mul_le_mul_of_nonneg_right hcubic (by positivity)
       _ = (2 : ℝ) ^ (2 * D.BS.k0) := by rw [two_mul, pow_add]

@@ -48,13 +48,11 @@ lemma one_sub_two_norm_le_exp_re (δ : ℂ) (hδ : ‖δ‖ ≤ 1) :
 /-- **L1: per-edge Bernoulli Taylor** (note 44).  For `θ ∈ [1/3,2/3]` and
 `|t| ≤ 1/10`, `log φ_θ(t) = 2πiθt − 2π²θ(1−θ)t² + O(|t|³)` with an absolute
 constant.  Built from `log_one_sub_remainder` + `Complex.exp_bound`. -/
-lemma bernoulli_log_taylor (θ t : ℝ) (hθlb : 1/3 ≤ θ) (hθub : θ ≤ 2/3)
-    (ht : |t| ≤ bernoulliTaylorRadius) :
+private lemma bernoulli_log_taylor_explicit (θ t : ℝ) (hθlb : 1/3 ≤ θ) (hθub : θ ≤ 2/3)
+    (ht : |t| ≤ 1 / 10) :
     ‖Complex.log (bernoulliCharFun θ t) -
         (2*Real.pi*θ*t*Complex.I - 2*Real.pi^2*θ*(1-θ)*t^2)‖ ≤
-      bernoulliTaylorRemainderConstant * |t|^3 := by
-  change |t| ≤ 1 / 10 at ht
-  change _ ≤ 100000 * |t| ^ 3
+      100000 * |t|^3 := by
   have hθ0 : (0:ℝ) ≤ θ := le_trans (by norm_num) hθlb
   have hpi : (0:ℝ) < Real.pi := Real.pi_pos
   have ht0 : (0:ℝ) ≤ |t| := abs_nonneg t
@@ -164,6 +162,40 @@ lemma bernoulli_log_taylor (θ t : ℝ) (hθlb : 1/3 ≤ θ) (hθub : θ ≤ 2/3
           ‖(↑θ*s - (↑θ*s)^2/2) - T‖ := norm_add_le _ _
     _ ≤ 99000 * |t|^3 + 1000 * |t|^3 := add_le_add hAbnd hBnorm
     _ = 100000 * |t|^3 := by ring
+
+private lemma exists_bernoulli_taylor_remainder_constant :
+    ∃ C : ℝ, 0 < C ∧
+      ∀ θ t : ℝ, 1 / 3 ≤ θ → θ ≤ 2 / 3 → |t| ≤ bernoulliTaylorRadius →
+        ‖Complex.log (bernoulliCharFun θ t) -
+            (2 * Real.pi * θ * t * Complex.I -
+              2 * Real.pi ^ 2 * θ * (1 - θ) * t ^ 2)‖ ≤ C * |t| ^ 3 := by
+  refine ⟨100000, by norm_num, ?_⟩
+  intro θ t hθlb hθub ht
+  exact bernoulli_log_taylor_explicit θ t hθlb hθub (by simpa [bernoulliTaylorRadius] using ht)
+
+/-- A supplied cubic remainder coefficient for the Bernoulli logarithm estimate.
+Its numerical witness is confined to the analytic existence proof above. -/
+noncomputable def bernoulliTaylorRemainderConstant : ℝ :=
+  Classical.choose exists_bernoulli_taylor_remainder_constant
+
+lemma bernoulliTaylorRemainderConstant_pos :
+    0 < bernoulliTaylorRemainderConstant :=
+  (Classical.choose_spec exists_bernoulli_taylor_remainder_constant).1
+
+lemma bernoulliTaylorRemainderConstant_nonneg :
+    0 ≤ bernoulliTaylorRemainderConstant :=
+  bernoulliTaylorRemainderConstant_pos.le
+
+/-- **L1: per-edge Bernoulli Taylor** (note 44), stated only through the
+supplied remainder coefficient. -/
+lemma bernoulli_log_taylor (θ t : ℝ) (hθlb : 1 / 3 ≤ θ) (hθub : θ ≤ 2 / 3)
+    (ht : |t| ≤ bernoulliTaylorRadius) :
+    ‖Complex.log (bernoulliCharFun θ t) -
+        (2 * Real.pi * θ * t * Complex.I -
+          2 * Real.pi ^ 2 * θ * (1 - θ) * t ^ 2)‖ ≤
+      bernoulliTaylorRemainderConstant * |t| ^ 3 :=
+  (Classical.choose_spec exists_bernoulli_taylor_remainder_constant).2
+    θ t hθlb hθub ht
 
 /-- **L2 foundation** (no branch issue): a finite product of nonzero complex
 numbers equals `exp` of the sum of their `Complex.log`s. -/

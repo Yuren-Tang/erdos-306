@@ -1,5 +1,5 @@
 import RequestProject.Spectral.BernoulliSum
-import RequestProject.Spectral.MainArcParameters
+import RequestProject.CircleMethodMainArc
 import RequestProject.Core.Semiprime
 
 open Complex Finset BigOperators Real

@@ -324,7 +324,7 @@ lemma zero_label_dominant_of_large_class (X : ℕ) (hX : 1 ≤ X) (P : Finset �
     (disjunct 2). This is the structural heart of nondominant forcing; the final parameter
     chase plugs in `B = √(A²R)·X²/N`.
 -/
-set_option maxHeartbeats 500000 in
+set_option maxHeartbeats 400000 in
 lemma label_covering_energy_dichotomy
     (X : ℕ) (hX : 1 ≤ X) (P : Finset ℕ) [∀ p : P, NeZero p.1]
     (hP : ∀ p ∈ P, Nat.Prime p ∧ X ≤ p ∧ p ≤ 2*X) (hN : 2 ≤ P.card)

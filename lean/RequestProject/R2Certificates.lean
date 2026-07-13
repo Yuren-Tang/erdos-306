@@ -111,7 +111,8 @@ structure R2NumericLedger (b : ℕ) where
   hk0windowFact : ∀ k : ℕ, k0window ≤ k →
       10 * (cSigma * (k : ℝ) ^ 2 * (2 : ℝ) ^ k + 1) ≤ (2 : ℝ) ^ (2 * k)
   hk0cubicFact : ∀ k : ℕ, k0cubic ≤ k →
-      (4 * 1000000 * Sload * (cSigma + 1)) * (k : ℝ) ^ 4 ≤ (2 : ℝ) ^ k
+      (40 * bernoulliTaylorRemainderConstant * Sload * (cSigma + 1)) *
+        (k : ℝ) ^ 4 ≤ (2 : ℝ) ^ k
   hk0loadFact : ∀ {T' : Finset ℕ} (D : R2ConcreteData T' b), R2MassBatchSupply D →
       k0load ≤ D.BS.k0 → D.S.card = G →
       (∀ s ∈ D.S, 2 ^ (2 * D.BS.k0) ≤ s) → (∀ r ∈ D.R, 2 ≤ r) → D.R.card ≤ b →
@@ -230,7 +231,8 @@ lemma exists_r2_numeric_ledger (b : ℕ) (hb : 3 ≤ b) (hbsf : Squarefree b) :
       _ ≤ (2 : ℝ) ^ k * (2 : ℝ) ^ k := mul_le_mul_of_nonneg_right hkw' (by positivity)
       _ = (2 : ℝ) ^ (2 * k) := by rw [two_mul, pow_add]
   obtain ⟨k0cubic, hk0cubicFact⟩ :=
-    exists_threshold_mul_pow_le_two_pow (4 * 1000000 * S * (cσ + 1)) 4
+    exists_threshold_mul_pow_le_two_pow
+      (40 * bernoulliTaylorRemainderConstant * S * (cσ + 1)) 4
   obtain ⟨k0load, hk0loadFact⟩ := hSfam G b
   -- the single budget inequality (allocation: one quarter of `c3/K` per lane, one spare)
   have hbne : (b : ℝ) ≠ 0 := hbR.ne'
@@ -626,7 +628,8 @@ lemma exists_r2_main_arc_window {T : Finset ℕ} {b : ℕ}
       ≤ (2 : ℝ) ^ (2 * D.BS.k0) := by
     have hthr : F.ledger.k0window ≤ D.BS.k0 := by rw [hBS]; exact F.bsCert.hk0window
     exact F.ledger.hk0windowFact D.BS.k0 hthr
-  have hcubic : (4 * 1000000 * F.ledger.Sload * (F.ledger.cSigma + 1)) * (D.BS.k0 : ℝ) ^ 4
+  have hcubic : (40 * bernoulliTaylorRemainderConstant * F.ledger.Sload *
+      (F.ledger.cSigma + 1)) * (D.BS.k0 : ℝ) ^ 4
       ≤ (2 : ℝ) ^ D.BS.k0 := by
     have hthr : F.ledger.k0cubic ≤ D.BS.k0 := by rw [hBS]; exact F.bsCert.hk0cubic
     exact F.ledger.hk0cubicFact D.BS.k0 hthr

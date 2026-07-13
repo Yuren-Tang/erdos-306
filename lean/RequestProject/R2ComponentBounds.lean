@@ -75,7 +75,7 @@ theorem exists_arcConstruction_of_component_numeric_minor_sets
       |(m : ℝ) / (e : ℝ)| ≤ ρ)
     (hgadgetRatio : ∀ m ∈ Finset.Icc (-N) N, ∀ e ∈ gadgetEdges D.R D.S,
       |(m : ℝ) / (e : ℝ)| ≤ ρ)
-    (hcard : (D.E.card : ℝ) * 100000 * ρ ^ 3 ≤ 1 / 10)
+    (hcard : (D.E.card : ℝ) * bernoulliTaylorRemainderConstant * ρ ^ 3 ≤ 1 / 10)
     (hNL : 2 * N + 1 ≤ (D.L : ℤ))
     (hQsemi : ∀ e ∈ D.Q, IsSemiprime e)
     (hRprime : ∀ r ∈ D.R, Nat.Prime r)
