@@ -1,5 +1,6 @@
 import RequestProject.LocalEnergy.FingerprintDecoding
 import RequestProject.LocalEnergy.FingerprintEntropy
+import RequestProject.LocalEnergy.BlockEnergyBounds
 import RequestProject.Core.FiniteSums
 
 /-!
@@ -20,7 +21,7 @@ This section assembles `fingerprint_levelSet_bound` from
 of this file (`cold_residue_unique`, `cold_assignment_decoding_injective`, `hot_count_bound`,
 `entropy_inequality`) together with the deterministic dispersion engine of
 `LocalEnergy.ReciprocalDispersion`.  The `BlockAssignment`-level objects (`QP`,
-`BlockAssignment`) are exposed by `LocalEnergy.CRTModel`; the fingerprint machinery uses
+`BlockAssignment`) are exposed by `LocalEnergy.BlockEnergy`; the fingerprint machinery uses
 total functions `(p : ℕ) → ZMod p`, so we bridge via `extendAssign`. -/
 
 /-- Extend a block assignment `a : BlockAssignment P` to a total residue

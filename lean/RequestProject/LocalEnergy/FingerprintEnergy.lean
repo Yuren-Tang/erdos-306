@@ -1,7 +1,7 @@
 import Mathlib.Analysis.Complex.ExponentialBounds
 import Mathlib.Data.ZMod.Basic
 import RequestProject.Core.FiniteInterval
-import RequestProject.LocalEnergy.CRTModel
+import RequestProject.LocalEnergy.CRTRepresentation
 import RequestProject.LocalEnergy.ReciprocalDispersion
 
 /-!

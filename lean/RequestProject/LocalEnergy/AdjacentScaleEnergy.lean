@@ -3,7 +3,7 @@ import Mathlib.RingTheory.Int.Basic
 import RequestProject.Core.SmallBallEnergy
 import RequestProject.Core.ShortIntervalCongruence
 import RequestProject.Core.UnitCircleResidue
-import RequestProject.LocalEnergy.CRTModel
+import RequestProject.LocalEnergy.CRTRepresentation
 
 /-!
 # Adjacent-scale reciprocal dispersion

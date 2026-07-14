@@ -1,4 +1,4 @@
-import RequestProject.LocalEnergy.CRTModel
+import RequestProject.LocalEnergy.BlockEnergy
 
 /-! The dominant-label predicate for a finite prime block. -/
 
@@ -13,4 +13,3 @@ def HasDominantLabel (X : ℕ) (P : Finset ℕ) (a : BlockAssignment P) (rho : �
       ((P.attach.filter (fun p => a p = (m : ZMod (p : ℕ)))).card : ℝ)
 
 end LocalEnergy
-

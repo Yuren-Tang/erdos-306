@@ -59,4 +59,24 @@ theorem crtRepr_congr_right (p q : ℕ) (ap : ZMod p) (aq : ZMod q)
     _ = (ZMod.chineseRemainder hcop combined).2 := by rw [ZMod.coe_valMinAbs]
     _ = aq := by simp [combined]
 
+/-- An integer in the centered range is recovered from its two residue
+classes. -/
+theorem crtRepr_eq_of_eq_intCast (p q : ℕ) (hcop : Nat.Coprime p q)
+    (hp : 0 < p) (hq : 0 < q) (m : ℤ)
+    (hm : 2 * |m| < (p : ℤ) * q)
+    (ap : ZMod p) (aq : ZMod q)
+    (hap : ap = (m : ZMod p)) (haq : aq = (m : ZMod q)) :
+    crtRepr p q ap aq = m := by
+  unfold crtRepr
+  rw [dif_pos hcop]
+  letI : NeZero (p * q) := ⟨Nat.mul_ne_zero hp.ne' hq.ne'⟩
+  apply (ZMod.valMinAbs_spec _ _).2
+  constructor
+  · apply (ZMod.chineseRemainder hcop).injective
+    rw [(ZMod.chineseRemainder hcop).apply_symm_apply]
+    rw [map_intCast]
+    exact Prod.ext hap haq
+  · rw [Nat.cast_mul]
+    constructor <;> nlinarith [le_abs_self m, neg_le_abs m]
+
 end

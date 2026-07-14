@@ -1,6 +1,7 @@
 import RequestProject.Core.FiniteInterval
 import RequestProject.LocalEnergy.CrossLabelEnergy
-import RequestProject.LocalEnergy.CRTModel
+import RequestProject.LocalEnergy.BlockEnergyBounds
+import RequestProject.LocalEnergy.CRTRepresentation
 
 /-!
 # Energy forced by deviations from a dominant label
@@ -73,9 +74,10 @@ lemma dominant_label_bound (X : ℕ) (hX : 16 ≤ X)
         apply crtRepr_eq_of_eq_intCast;
         all_goals norm_num [ increasingPairs ] at hpq ⊢;
         any_goals tauto;
-        · exact hP _ pq.1.2 |>.1;
-        · exact hP _ pq.2.2 |>.1;
-        · exact ne_of_lt hpq.1;
+        · exact (Nat.coprime_primes (hP _ pq.1.2).1 (hP _ pq.2.2).1).mpr
+            (ne_of_lt hpq.1)
+        · exact (hP _ pq.1.2).1.pos
+        · exact (hP _ pq.2.2).1.pos
         · rw [ Int.le_ediv_iff_mul_le ] at hm <;> norm_cast at *;
           norm_num at *;
           nlinarith [ hP _ pq.1.2, hP _ pq.2.2, show ( pq.1 : ℕ ) < pq.2 from hpq.1 ];

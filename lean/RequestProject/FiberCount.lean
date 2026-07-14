@@ -1,6 +1,6 @@
 import RequestProject.GlobalControl.BlockSystem
-import RequestProject.LocalEnergy.CRTModel
 import Mathlib.Data.Nat.ChineseRemainder
+import Mathlib.Data.ZMod.Basic
 
 open Finset BigOperators Classical
 

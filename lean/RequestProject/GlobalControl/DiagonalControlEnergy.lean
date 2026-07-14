@@ -1,6 +1,7 @@
 import Lean.Elab.Tactic.Grind
 import RequestProject.GlobalControl.BlockRestriction
 import RequestProject.GlobalControl.ControlEnergy
+import RequestProject.LocalEnergy.CRTRepresentation
 
 /-!
 # Diagonal control energy
@@ -65,10 +66,14 @@ lemma diagonal_Qctrl (BS : BlockSystem) (a : GlobalAssignment BS) (m : ℤ)
   rw [Qctrl, sigmaCtrl, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => by positivity),
     Finset.mul_sum]
   refine Finset.sum_congr rfl fun pq hpq => ?_
-  rw [Hglob, LocalEnergy.crtRepr_eq_of_eq_intCast pq.1 pq.2
-    (blockSupport_prime BS (ctrlPairs_mem_blockSupport BS hpq).1)
-    (blockSupport_prime BS (ctrlPairs_mem_blockSupport BS hpq).2)
-    (ctrlPairs_ne BS hpq) m (hsmall pq hpq)]
+  rw [Hglob, crtRepr_eq_of_eq_intCast pq.1 pq.2
+    ((Nat.coprime_primes
+      (blockSupport_prime BS (ctrlPairs_mem_blockSupport BS hpq).1)
+      (blockSupport_prime BS (ctrlPairs_mem_blockSupport BS hpq).2)).mpr
+        (ctrlPairs_ne BS hpq))
+    (blockSupport_prime BS (ctrlPairs_mem_blockSupport BS hpq).1).pos
+    (blockSupport_prime BS (ctrlPairs_mem_blockSupport BS hpq).2).pos
+    m (hsmall pq hpq)]
   · ring
   · exact (if_pos (ctrlPairs_mem_blockSupport BS hpq).1).trans
       (hdiag ⟨pq.1, (ctrlPairs_mem_blockSupport BS hpq).1⟩)

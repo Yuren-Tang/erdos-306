@@ -1,6 +1,7 @@
 import Mathlib.Analysis.Complex.ExponentialBounds
 import RequestProject.Core.Asymptotics
 import RequestProject.Core.FiniteSums
+import RequestProject.LocalEnergy.BlockEnergyBounds
 import RequestProject.LocalEnergy.DominantLabel.Definition
 import RequestProject.LocalEnergy.DominantLabel.Energy
 

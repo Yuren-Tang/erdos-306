@@ -1,5 +1,6 @@
 import Mathlib.Tactic.IntervalCases
 import RequestProject.Core.LevelSetLaplace
+import RequestProject.LocalEnergy.BlockEnergyBounds
 import RequestProject.LocalEnergy.DominantLabel
 import RequestProject.LocalEnergy.FingerprintLevelSet
 
@@ -96,7 +97,8 @@ lemma block_level_set_bound (eps : ℝ) (hε0 : 0 < eps) (hε1 : eps < 1) :
     have hNsqrt : (P.card : ℝ) ≤ Real.sqrt R / sigmaP P := by
       have hNsqrt : (P.card : ℝ) ≤ Real.sqrt R / sigmaP P := by
         have hσub : sigmaP P ≤ (P.card : ℝ) / (X : ℝ)^2 := by
-          convert block_deviation_upper_bound X ( by linarith ) P hP using 1
+          convert block_deviation_upper_bound X (by linarith) P
+            (fun p hp => (hP p hp).2.1) using 1
         have hN2X : (P.card : ℝ) ≤ 2 * X := by
           exact_mod_cast RequestProject.card_le_upper_bound_of_pos P (2 * X)
             (fun p hp => (hP p hp).1.pos) (fun p hp => (hP p hp).2.2)
@@ -150,7 +152,8 @@ theorem single_block_partition_bound (c : ℝ) (hc : 0 < c) :
     haveI : ∀ p : P, NeZero p.1 := fun p => ⟨(hP p.1 p.2).ne_zero⟩
     have hX1nat : 1 ≤ X := hX0
     have hσpos : 0 < sigmaP P := sigmaP_pos_of_two P hP hcard2
-    have hσub : sigmaP P ≤ (P.card:ℝ)/(X:ℝ)^2 := block_deviation_upper_bound X hX1nat P hPrange
+    have hσub : sigmaP P ≤ (P.card:ℝ)/(X:ℝ)^2 :=
+      block_deviation_upper_bound X hX1nat P (fun p hp => (hPrange p hp).2.1)
     have hN2X : (P.card:ℝ) ≤ 2*X := by
       exact_mod_cast RequestProject.card_le_upper_bound_of_pos P (2 * X)
         (fun p hp => (hPrange p hp).1.pos) (fun p hp => (hPrange p hp).2.2)

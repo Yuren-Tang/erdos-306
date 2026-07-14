@@ -1,5 +1,5 @@
 import RequestProject.GlobalControl.GlobalAssignment
-import RequestProject.LocalEnergy.CRTModel
+import RequestProject.LocalEnergy.CRTRepresentation
 
 /-!
 # Global control energy
