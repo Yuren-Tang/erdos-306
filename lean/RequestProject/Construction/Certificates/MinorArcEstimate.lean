@@ -20,7 +20,7 @@ The minor-arc budget factors through explicitly named certificate steps:
   `MinorArcFrequencyLanes`, i.e. the block-lane fibre-tail estimate
   (`blockMinorFiberTailData`, with the bounded `b`-to-1 multiplicity), the extra
   frequency count bound (`extraMinor_card_le`, `≤ b(2N+1)`), and the per-frequency
-  gadget damping (`r2ExtraSiblingChoice_of_intLabelData`, the `G`-fold damping).
+  gadget damping (`extraSiblingChoice_of_integerLabelData`, the `G`-fold damping).
 * **support budget** — `minor_arc_support_budget` feeds those lanes through the
   abstract minor-support supply principle `F.ledger.hSB` to produce the
   `MinorArcSupportBudget` (the block/extra cover with its two budget fields).

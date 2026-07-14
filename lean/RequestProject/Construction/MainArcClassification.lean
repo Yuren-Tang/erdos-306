@@ -86,7 +86,7 @@ def intFrequencyLabelData_of_mainArcClassification
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (hlabelRange : ∀ {m : ℤ}, |(m : ℝ)| ≤ C / sigmaCtrl D.BS →
       m ∈ Finset.Icc (-N) N) :
-    R2ExtraIntFrequencyLabelData D W N MA
+    ExtraIntegerFrequencyLabelData D W N MA
       ((mainArcClassificationData D W N C).Sblock MA)
       ((mainArcClassificationData D W N C).Sextra MA) where
   mfun := mainArcWitnessLabel D C

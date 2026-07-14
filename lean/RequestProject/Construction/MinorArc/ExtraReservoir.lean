@@ -1,4 +1,4 @@
-import RequestProject.Construction.ExtraGadgetDamping
+import RequestProject.Construction.MinorArc.ExtraGadgetDamping
 
 open Finset BigOperators GlobalControl
 
@@ -7,26 +7,26 @@ noncomputable section
 namespace CircleMethod
 
 /-!
-# The multi-gadget reservoir (node C6, mechanism 2)
+# The multi-gadget reservoir
 
-Single motivating question: **once a denominator prime and gadget set have
-been chosen for every extra-minor frequency (`Construction.ExtraSiblingChoice`),
+Once a denominator prime and gadget set have
+been chosen for every extra-minor frequency (`Construction.MinorArc.ExtraSiblingChoice`),
 how are those per-frequency choices packaged into one object, and how is the
-per-frequency damping budget (`Construction.ExtraGadgetDamping`) discharged
-into a single finite sum bound?**  A generic reservoir record
-(`R2MultiGadgetReservoir`), its conversion into the abstract bound data from
+per-frequency damping budget (`Construction.MinorArc.ExtraGadgetDamping`) discharged
+into a single finite sum bound? A generic reservoir record
+(`MultiGadgetReservoir`), its conversion into the abstract bound data from
 `ExtraGadgetDamping`, and a division-free "prepared choice" bridge for the
 common case where the choices satisfy a uniform pointwise damping bound.
 
-This node is deliberately independent of *how* the per-frequency choices are
-produced (CRT sibling selection is `Construction.ExtraSiblingChoice`) — it
+This module is independent of *how* the per-frequency choices are
+produced (CRT sibling selection is `Construction.MinorArc.ExtraSiblingChoice`) — it
 only consumes raw choice data and produces the aggregate object.
 
 -/
 
 /-- Finite reservoir data sufficient to build the existing abstract
-`R2ExtraMinorMultiGadgetBoundData`. -/
-structure R2MultiGadgetReservoir
+`ExtraMinorMultiGadgetBound`. -/
+structure MultiGadgetReservoir
     {T : Finset ℕ} {b : ℕ}
     (D : R2ConcreteData T b)
     (W : R2ConcreteData.Weights D)
@@ -72,7 +72,7 @@ def multiGadgetBoundData_of_reservoir
     (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ) (Bextra : ℝ)
-    (X : R2MultiGadgetReservoir D W N MA Sblock Sextra Bextra)
+    (X : MultiGadgetReservoir D W N MA Sblock Sextra Bextra)
     (hRprime : ∀ r ∈ D.R, Nat.Prime r)
     (hSprime : ∀ s ∈ D.S, Nat.Prime s)
     (hlt : ∀ r ∈ D.R, ∀ s ∈ D.S, r < s)
@@ -81,7 +81,7 @@ def multiGadgetBoundData_of_reservoir
     (heL : ∀ e ∈ D.E, e ∣ D.L)
     (hepos : ∀ e ∈ D.E, 0 < e)
     (hL : 0 < D.L) :
-    R2ExtraMinorMultiGadgetBoundData D W N MA Sblock Sextra Bextra :=
+    ExtraMinorMultiGadgetBound D W N MA Sblock Sextra Bextra :=
   { rfun := X.rfun
     Gset := X.Gset
     mfun := X.mfun
@@ -106,7 +106,7 @@ This record deliberately contains only the choices and the arithmetic/budget
 facts that do not follow automatically from `D` and `W`.  The theorem below
 fills edge membership and theta bounds from `D.gadgetEdges_subset_E` and
 `W.hlb`/`W.hub`. -/
-structure R2ExtraPreparedReservoirChoice
+structure PreparedExtraReservoir
     {T : Finset ℕ} {b : ℕ}
     (D : R2ConcreteData T b)
     (W : R2ConcreteData.Weights D)
@@ -131,7 +131,7 @@ structure R2ExtraPreparedReservoirChoice
         ≤ Bextra
 
 /-- Prepared per-frequency data gives the concrete multi-gadget reservoir. -/
-def r2MultiGadgetReservoir_of_preparedChoice
+def multiGadgetReservoir_of_prepared
     {T : Finset ℕ} {b : ℕ}
     (D : R2ConcreteData T b)
     (W : R2ConcreteData.Weights D)
@@ -139,8 +139,8 @@ def r2MultiGadgetReservoir_of_preparedChoice
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ)
     (Bextra : ℝ)
-    (X : R2ExtraPreparedReservoirChoice D W N MA Sblock Sextra Bextra) :
-    R2MultiGadgetReservoir D W N MA Sblock Sextra Bextra := by
+    (X : PreparedExtraReservoir D W N MA Sblock Sextra Bextra) :
+    MultiGadgetReservoir D W N MA Sblock Sextra Bextra := by
   have hedge : ∀ h ∈ extraMinorPart MA.Sm Sblock Sextra, ∀ s ∈ X.Gset h,
       (X.rfun h) * s ∈ D.E := by
     intro h hh s hs
@@ -165,7 +165,7 @@ def r2MultiGadgetReservoir_of_preparedChoice
       htheta_ub := fun h hh s hs => W.hub _ (hedge h hh s hs) }
 
 /-- Division-free constructor for the `hbudget` field of
-`R2ExtraPreparedReservoirChoice`.
+`PreparedExtraReservoir`.
 
 This is useful when the selected gadget sets have been made uniformly large
 enough that every damped power is at most `C`. -/
@@ -187,7 +187,7 @@ theorem extraPreparedReservoirBudget_of_pointwise_bound
         ≤ Bextra :=
   sum_pow_le_of_pointwise_le_division_free hcard hpt
 
-/-- Uniform-budget constructor for `R2ExtraPreparedReservoirChoice`.
+/-- Uniform-budget constructor for `PreparedExtraReservoir`.
 
 Given the per-frequency choices together with the CRT sibling congruences and
 small-label bounds, plus a *uniform* pointwise damping bound `C` and the linear
@@ -215,7 +215,7 @@ def preparedChoice_of_pointwise_budget
       ((extraMinorPart MA.Sm Sblock Sextra).card : ℝ) * C ≤ Bextra)
     (hpt : ∀ h ∈ extraMinorPart MA.Sm Sblock Sextra,
       (Real.sqrt (1 - (8 / 9) / ((rfun h : ℝ) ^ 2))) ^ (Gset h).card ≤ C) :
-    R2ExtraPreparedReservoirChoice D W N MA Sblock Sextra Bextra :=
+    PreparedExtraReservoir D W N MA Sblock Sextra Bextra :=
   { rfun := rfun
     Gset := Gset
     mfun := mfun

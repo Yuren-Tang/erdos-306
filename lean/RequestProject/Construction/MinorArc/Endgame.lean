@@ -1,7 +1,7 @@
 import RequestProject.Construction.MinorArc.BlockEstimate
 import RequestProject.Construction.MinorArc.ControlGadgetScale
 import RequestProject.Construction.MinorArc.SupportBudget
-import RequestProject.Construction.ExtraSiblingChoice
+import RequestProject.Construction.MinorArc.ExtraSiblingChoice
 
 open Finset BigOperators GlobalControl
 
@@ -10,17 +10,17 @@ noncomputable section
 namespace CircleMethod
 
 /-!
-# Terminal minor-arc endgame assembly (node C6, mechanism 4)
+# Terminal minor-arc assembly
 
 Given the block-minor lane (`BlockMinorFiberTail`) and an extra-minor lane
 (a multi-gadget reservoir,
-`Construction.ExtraReservoir`), how do they combine into the final
+`Construction.MinorArc.ExtraReservoir`), how do they combine into the final
 minor-support budget consumed by the minor-arc certificate?
 
 Two lane shapes, not two competing strategies: `MinorArcMultiGadgetLanes`
-takes an already-assembled `R2MultiGadgetReservoir` directly; the frequency
+takes an already-assembled `MultiGadgetReservoir` directly; the frequency
 variant `MinorArcFrequencyLanes` instead takes raw CRT block-label data
-(`Construction.ExtraSiblingChoice`) and reduces to the multi-gadget shape via
+(`Construction.MinorArc.ExtraSiblingChoice`) and reduces to the multi-gadget shape via
 `.toMultiGadget` — a genuine two-step refinement (choose the gadgets from
 concrete label data, then feed the generic multi-gadget assembly), not a
 duplicated strategy. `MinorArcFrequencyLanes` is the one actually
@@ -38,7 +38,7 @@ structure MinorArcMultiGadgetLanes
   block : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
     BlockMinorFiberTail D W N MA (Cls.Sblock MA) Bblock η Ctail
   extra : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
-    R2MultiGadgetReservoir D W N MA (Cls.Sblock MA) (Cls.Sextra MA) Bextra
+    MultiGadgetReservoir D W N MA (Cls.Sblock MA) (Cls.Sextra MA) Bextra
 
 /-- The global-control block lane and multi-gadget extra lanes produce the final minor
 support-budget record. -/
@@ -67,7 +67,7 @@ theorem exists_minorArcSupportBudget_of_multiGadget_lanes
     exact hblockG7 D W N MA (Cls.Sblock MA) Bblock X.C X.K X.Qextra
       hk0 hadm X.hC X.hK X.heL X.he0 X.hL X.hQE X.hnotmain X.hfiber X.hbudget
   · intro MA
-    let X : R2ExtraMinorMultiGadgetBoundData D W N MA
+    let X : ExtraMinorMultiGadgetBound D W N MA
         (Cls.Sblock MA) (Cls.Sextra MA) Bextra :=
       multiGadgetBoundData_of_reservoir D W N MA
         (Cls.Sblock MA) (Cls.Sextra MA) Bextra (Lanes.extra MA)
@@ -81,12 +81,12 @@ theorem exists_minorArcSupportBudget_of_multiGadget_lanes
           norm_num at hle ⊢
           linarith)
         (Lanes.block MA).heL (Lanes.block MA).he0 (Lanes.block MA).hL
-    exact r2_extra_minor_budget_of_multiGadgetBoundData D W N MA
+    exact extraMinor_budget_of_multiGadgetBound D W N MA
       (Cls.Sblock MA) (Cls.Sextra MA) Bextra X
 
 /-- Endgame lanes where the extra-minor side is supplied by block-label data and
 gadget reservoirs, rather than by an already-assembled
-`R2MultiGadgetReservoir`. -/
+`MultiGadgetReservoir`. -/
 structure MinorArcFrequencyLanes
     {T : Finset ℕ} {b : ℕ}
     (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
@@ -100,7 +100,7 @@ structure MinorArcFrequencyLanes
   block : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
     BlockMinorFiberTail D W N MA (Cls.Sblock MA) Bblock η Ctail
   label : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
-    R2ExtraIntFrequencyLabelData D W N MA (Cls.Sblock MA) (Cls.Sextra MA)
+    ExtraIntegerFrequencyLabelData D W N MA (Cls.Sblock MA) (Cls.Sextra MA)
   Gset : (MainArcFields D.E W.theta (D.L / b) D.L N) → ℕ → Finset ℕ
   hSmem : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
     ∀ h ∈ extraMinorPart MA.Sm (Cls.Sblock MA) (Cls.Sextra MA),
@@ -115,7 +115,7 @@ structure MinorArcFrequencyLanes
   hpt : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
     ∀ h ∈ extraMinorPart MA.Sm (Cls.Sblock MA) (Cls.Sextra MA),
       (Real.sqrt (1 - (8 / 9) /
-        (((r2ExtraSiblingChoice_of_intLabelData D W N MA (Cls.Sblock MA)
+        (((extraSiblingChoice_of_integerLabelData D W N MA (Cls.Sblock MA)
           (Cls.Sextra MA) (label MA) hbpos
           hsqfree hcoverR hcopBlock).rfun h : ℝ) ^ 2))) ^
             (Gset MA h).card ≤ Cextra
@@ -132,7 +132,7 @@ def MinorArcFrequencyLanes.toMultiGadget
   block := L.block
   extra := by
     intro MA
-    exact r2MultiGadgetReservoir_of_intExtraFrequencyLabelData D W N MA
+    exact multiGadgetReservoir_of_integerLabelData D W N MA
       (Cls.Sblock MA) (Cls.Sextra MA) Cextra Bextra (L.label MA) (L.Gset MA)
       L.hbpos L.hsqfree L.hcoverR L.hcopBlock L.component.hSblock
       (L.hSmem MA) (L.hm_small MA) (L.hcard MA) (L.hpt MA)

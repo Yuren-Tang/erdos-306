@@ -10,18 +10,18 @@ noncomputable section
 namespace CircleMethod
 
 /-!
-# Multi-gadget Fourier damping (node C6, mechanism 1)
+# Multi-gadget Fourier damping
 
-Single motivating question: **given a fixed denominator prime `r` and a
+Given a fixed denominator prime `r` and a
 chosen set of block-side gadget primes `G`, how much does multiplying in
-their Fourier factors damp the Bernoulli summand?**  Two answers of
+their Fourier factors damp the Bernoulli summand? Two answers of
 increasing strength: a plain product bound (`fourierNormWeight_le_prod_norm_of_subset`
 instantiated at the gadget edges) and, when the gadget primes also witness a
 label mismatch, a genuine `< 1` per-factor decay
 (`gadget_charFun_damp`) raised to the gadget count.
 
-This node does not choose the gadgets or the denominator prime — that is
-`Construction.ExtraSiblingChoice`, a separate mechanism (choosing witnesses
+This estimate does not choose the gadgets or the denominator prime; that is
+`Construction.MinorArc.ExtraSiblingChoice`, a separate mechanism (choosing witnesses
 vs. bounding the damping once witnesses are fixed).
 
 -/
@@ -107,7 +107,7 @@ lemma fourierNormWeight_le_multi_gadget_damp
 /-- Multi-gadget extra-minor data after the pointwise product damping has been
 proved.  The field `Gset h` is the finite set of block-side gadget primes used
 for frequency `h`, while `damp h` is the per-frequency damping base. -/
-structure R2ExtraMinorMultiGadgetBoundData
+structure ExtraMinorMultiGadgetBound
     {T : Finset ℕ} {b : ℕ}
     (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
@@ -131,12 +131,12 @@ structure R2ExtraMinorMultiGadgetBoundData
     ∑ h ∈ extraMinorPart MA.Sm Sblock Sextra, damp h ^ (Gset h).card ≤ Bextra
 
 /-- Multi-gadget extra data gives the extra-minor norm-sum budget. -/
-theorem r2_extra_minor_budget_of_multiGadgetBoundData
+theorem extraMinor_budget_of_multiGadgetBound
     {T : Finset ℕ} {b : ℕ}
     (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ) (Bextra : ℝ)
-    (X : R2ExtraMinorMultiGadgetBoundData D W N MA Sblock Sextra Bextra) :
+    (X : ExtraMinorMultiGadgetBound D W N MA Sblock Sextra Bextra) :
     ∑ h ∈ extraMinorPart MA.Sm Sblock Sextra,
       fourierNormWeight D.E W.theta (D.L / b) D.L h ≤ Bextra := by
   exact le_trans (Finset.sum_le_sum X.hfactorMulti) X.hbudget

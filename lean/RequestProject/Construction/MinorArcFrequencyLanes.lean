@@ -87,13 +87,13 @@ lemma extraMinor_card_le {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
 /-- **Main-arc CRT label lane.** Every extra-minor frequency `h` lies on the main
 arc, hence carries an integer block-label `m = mainArcWitnessLabel D C h` with
 `|m| ≤ C/σ ≤ N`. This packages that label data as
-`R2ExtraIntFrequencyLabelData`, the input the gadget reservoir reads when damping
+`ExtraIntegerFrequencyLabelData`, the input the gadget reservoir reads when damping
 each extra frequency. -/
 def extraMinorIntegerLabels {T : Finset ℕ} {b : ℕ}
     (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ) (C : ℝ)
     (hCN : C / sigmaCtrl D.BS ≤ (N : ℝ)) :
     ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
-      R2ExtraIntFrequencyLabelData D W N MA
+      ExtraIntegerFrequencyLabelData D W N MA
         ((mainArcClassificationData D W N C).Sblock MA)
         ((mainArcClassificationData D W N C).Sextra MA) :=
   fun MA => intFrequencyLabelData_of_mainArcClassification D W N C MA (by
@@ -161,7 +161,7 @@ lemma gadgetDampingBound {T : Finset ℕ} {b : ℕ}
       ∀ h ∈ extraMinorPart MA.Sm ((mainArcClassificationData D W N C).Sblock MA)
           ((mainArcClassificationData D W N C).Sextra MA),
         (Real.sqrt (1 - (8 / 9) /
-          (((r2ExtraSiblingChoice_of_intLabelData D W N MA
+          (((extraSiblingChoice_of_integerLabelData D W N MA
             ((mainArcClassificationData D W N C).Sblock MA)
             ((mainArcClassificationData D W N C).Sextra MA)
             (extraMinorIntegerLabels D W N C hCN MA) hbpos hsqfree hcovR hcopB).rfun h : ℝ) ^ 2))) ^
@@ -170,8 +170,8 @@ lemma gadgetDampingBound {T : Finset ℕ} {b : ℕ}
     refine' le_trans _ hG
     rw [ hScard ]
     gcongr
-    · exact sq_pos_of_pos ( Nat.cast_pos.mpr ( Nat.Prime.pos ( by exact ( r2ExtraSiblingChoice_of_intLabelData D W N MA _ _ _ hbpos hsqfree hcovR hcopB ).hrprime h hh ) ) )
-    · exact Nat.le_of_dvd hbpos ( r2ExtraSiblingChoice_of_intLabelData D W N MA _ _ _ hbpos hsqfree hcovR hcopB |>.hrdvd h hh )
+    · exact sq_pos_of_pos ( Nat.cast_pos.mpr ( Nat.Prime.pos ( by exact ( extraSiblingChoice_of_integerLabelData D W N MA _ _ _ hbpos hsqfree hcovR hcopB ).hrprime h hh ) ) )
+    · exact Nat.le_of_dvd hbpos ( extraSiblingChoice_of_integerLabelData D W N MA _ _ _ hbpos hsqfree hcovR hcopB |>.hrdvd h hh )
 
 /-- **Small-label gap certificate.** Every extra-minor frequency carries a label
 `m` with `|m| ≤ C/σ ≤ N`, while each gadget prime `s ∈ S` satisfies
