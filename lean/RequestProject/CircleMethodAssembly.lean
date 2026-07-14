@@ -1,5 +1,6 @@
 import RequestProject.Spectral.BernoulliSum
 import RequestProject.CircleMethodMainArc
+import RequestProject.CircleMethod.MainArcPeriodicity
 import RequestProject.Core.Semiprime
 
 open Complex Finset BigOperators Real
@@ -11,12 +12,11 @@ namespace CircleMethod
 /-!
 # Circle-method construction data
 
-This file records the `ArcConstruction` interface: the bundle of circle-method
-construction data (semiprime edges, weights, period, the main-arc label
-bijection, the main-arc smallness conditions, and the **summed-norm** minor-arc
-bound) produced by the R2 construction.  It is consumed downstream by
-`egyptian_rep_ge3_R2`, which feeds it to the abstract spectral selection principle
-via `Spectral.CircleMethodBridge.exists_subset_sum_eq_of_fourier_gap`.
+This file records the three mathematical inputs of a complete
+`ArcConstruction`: an admissible weighted reciprocal family, a main-arc
+certificate, and a minor-arc spectral-gap certificate. The downstream theorem
+`ArcConstruction.exists_reciprocal_subset` combines the latter two through
+abstract spectral selection and interprets the result using the first.
 
 The earlier bespoke positivity glue (`wcount_pos_of_split`,
 `exists_pos_weighted_of_construction`) has been retired: the arc-separation
@@ -24,22 +24,12 @@ positivity, the finite Fourier identity, and the subset extraction are now all
 discharged by that principle.
 -/
 
-/-- The data of a
-block-aligned circle-method construction for `1/b`: semiprime edges `E` avoiding
-`T` with weights in `[1/3,2/3]` and exact mass, a common period `L`, a main-arc
-frequency set `SM` bijecting (via `lbl`) to the label window `[-N,N]` with the
-CRT/periodicity identity `fourierTerm = term_label`, the main-arc smallness
-conditions, and a (summed-norm) minor-arc bound `Bm` strictly beaten by the
-Gaussian main term `c₃/σ_E`. -/
-structure ArcConstruction (T : Finset ℕ) (b : ℕ) where
+/-- A weighted family of admissible reciprocal denominators with a common
+period and total expected mass `1 / b`. -/
+structure WeightedReciprocalFamily (T : Finset ℕ) (b : ℕ) where
   E : Finset ℕ
   theta : ℕ → ℝ
   L : ℕ
-  N : ℤ
-  SM : Finset ℕ
-  Sm : Finset ℕ
-  lbl : ℕ → ℤ
-  Bm : ℝ
   hsemi : ∀ e ∈ E, IsSemiprime e
   havoid : ∀ e ∈ E, e ∉ T
   hne : E.Nonempty
@@ -48,24 +38,37 @@ structure ArcConstruction (T : Finset ℕ) (b : ℕ) where
   heL : ∀ e ∈ E, e ∣ L
   he0 : ∀ e ∈ E, 0 < e
   hbound : (∑ e ∈ E, (L / e : ℕ)) < L
-  hlb : ∀ e ∈ E, 1/3 ≤ theta e
-  hub : ∀ e ∈ E, theta e ≤ 2/3
+  hlb : ∀ e ∈ E, 1 / 3 ≤ theta e
+  hub : ∀ e ∈ E, theta e ≤ 2 / 3
   hmass : (∑ e ∈ E, theta e / (e : ℝ)) = 1 / (b : ℝ)
-  hpart : Finset.range L = SM ∪ Sm
-  hdisj : Disjoint SM Sm
-  hN : (1:ℝ) / Real.sqrt (sigmaE2 E theta) ≤ (N:ℝ)
-  htw : ∀ m ∈ Finset.Icc (-N) N, ∀ e ∈ E,
+
+/-- Main-arc data and local estimates for a weighted reciprocal family. -/
+structure MainArcCertificate {T : Finset ℕ} {b : ℕ}
+    (F : WeightedReciprocalFamily T b) where
+  N : ℤ
+  fields : MainArcFields F.E F.theta (F.L / b) F.L N
+  hN : (1 : ℝ) / Real.sqrt (sigmaE2 F.E F.theta) ≤ (N : ℝ)
+  htw : ∀ m ∈ Finset.Icc (-N) N, ∀ e ∈ F.E,
     |(m : ℝ) / (e : ℝ)| ≤ bernoulliTaylorRadius
   hsmall : ∀ m ∈ Finset.Icc (-N) N,
-    (∑ e ∈ E, bernoulliTaylorRemainderConstant * |(m:ℝ)/(e:ℝ)|^3) ≤
+    (∑ e ∈ F.E, bernoulliTaylorRemainderConstant * |(m : ℝ) / (e : ℝ)| ^ 3) ≤
       bernoulliMainTermRemainderBudget
-  hmaps : ∀ h ∈ SM, lbl h ∈ Finset.Icc (-N) N
-  hinj : ∀ h₁ ∈ SM, ∀ h₂ ∈ SM, lbl h₁ = lbl h₂ → h₁ = h₂
-  hsurj : ∀ m ∈ Finset.Icc (-N) N, ∃ h ∈ SM, lbl h = m
-  hterm : ∀ h ∈ SM,
-    fourierTerm E theta (L / b) L h = term_label E theta (L / b) L (lbl h)
-  hminor : (∑ h ∈ Sm, ‖fourierTerm E theta (L / b) L h‖) ≤ Bm
-  hbeat : Bm < bernoulliMainTermConstant / Real.sqrt (sigmaE2 E theta)
+
+/-- Minor-arc norm budget and the strict spectral gap against the Gaussian
+main term. -/
+structure MinorArcCertificate {T : Finset ℕ} {b : ℕ}
+    (F : WeightedReciprocalFamily T b) (M : MainArcCertificate F) where
+  Bm : ℝ
+  hminor :
+    (∑ h ∈ M.fields.Sm, ‖fourierTerm F.E F.theta (F.L / b) F.L h‖) ≤ Bm
+  hbeat : Bm < bernoulliMainTermConstant / Real.sqrt (sigmaE2 F.E F.theta)
+
+/-- A complete circle-method construction is the convergence of an admissible
+weighted reciprocal family with compatible main- and minor-arc certificates. -/
+structure ArcConstruction (T : Finset ℕ) (b : ℕ) where
+  family : WeightedReciprocalFamily T b
+  main : MainArcCertificate family
+  minor : MinorArcCertificate family main
 
 
 end CircleMethod

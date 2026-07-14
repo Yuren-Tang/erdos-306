@@ -224,7 +224,7 @@ lemma exists_r2_numeric_ledger (b : ℕ) (hb : 3 ≤ b) (hbsf : Squarefree b) :
   -- abstract constants
   have hcS0 : (0 : ℝ) < cσ := lt_of_lt_of_le one_pos hcS1
   obtain ⟨kw, hkw⟩ :=
-    RequestProject.exists_threshold_mul_pow_le_two_pow (10 * (cσ + 1)) 2
+    RequestProject.exists_threshold_mul_pow_le_const_pow (10 * (cσ + 1)) 2 one_lt_two
   have hk0windowFact : ∀ k : ℕ, max kw 1 ≤ k →
       10 * (cσ * (k : ℝ) ^ 2 * (2 : ℝ) ^ k + 1) ≤ (2 : ℝ) ^ (2 * k) := by
     intro k hk
@@ -240,8 +240,8 @@ lemma exists_r2_numeric_ledger (b : ℕ) (hb : 3 ≤ b) (hbsf : Squarefree b) :
       _ ≤ (2 : ℝ) ^ k * (2 : ℝ) ^ k := mul_le_mul_of_nonneg_right hkw' (by positivity)
       _ = (2 : ℝ) ^ (2 * k) := by rw [two_mul, pow_add]
   obtain ⟨k0cubic, hk0cubicFact⟩ :=
-    RequestProject.exists_threshold_mul_pow_le_two_pow
-      (40 * bernoulliTaylorRemainderConstant * S * (cσ + 1)) 4
+    RequestProject.exists_threshold_mul_pow_le_const_pow
+      (40 * bernoulliTaylorRemainderConstant * S * (cσ + 1)) 4 one_lt_two
   obtain ⟨k0load, hk0loadFact⟩ := hSfam G b
   -- the single budget inequality (allocation: one quarter of `c3/K` per lane, one spare)
   have hbne : (b : ℝ) ≠ 0 := hbR.ne'
@@ -699,7 +699,8 @@ The minor-arc budget factors through explicitly named certificate steps:
   bound `≤ r2MinorBudget`.
 * **budget closure** — `r2_minor_budget_closure` proves the budget is dominated by
   the main-term floor at the actual `σ_E` (the ledger's single `hbudget` inequality +
-  `hbeat_of_sigma_le_sigmaCtrl`, parametric in the abstract bridge constant `K`).
+  monotonicity of division by the positive Gaussian scales, parametric in the
+  abstract bridge constant `K`).
 -/
 
 /-- **Minor-arc budget value.**  The block component
@@ -822,9 +823,9 @@ lemma r2_minor_budget_closure {T : Finset ℕ} {b : ℕ}
       _ = F.ledger.c3 / (F.ledger.K * sigmaCtrl M.D.BS) := div_div _ _ _
   have hc3eq : F.ledger.c3 = bernoulliMainTermConstant := F.ledger.hc3eq
   rw [← hc3eq]
-  exact hbeat_of_sigma_le_sigmaCtrl F.ledger.c3 (Real.sqrt (sigmaE2 M.D.E M.W.theta))
-    (F.ledger.K * sigmaCtrl M.D.BS) (r2MinorBudget F M A)
-    F.ledger.hc3pos A.hsigmaEpos (by positivity) A.hsigmaE_ub hlt
+  exact lt_of_lt_of_le hlt (by
+    rw [div_le_div_iff₀ (by positivity) A.hsigmaEpos]
+    nlinarith [F.ledger.hc3pos, A.hsigmaE_ub])
 
 /-- **Minor certificate.**  The minor-arc budget `Bm`, the per-`MainArcFields`
 minor-sum bound (assembled from the block lane and the gadget/extra lane via the

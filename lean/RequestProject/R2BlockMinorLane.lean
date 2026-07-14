@@ -1,4 +1,6 @@
 import RequestProject.R2MinorSupportBudget
+import RequestProject.CircleMethod.MinorArcEstimates
+import RequestProject.Spectral.BernoulliCyclicFourier
 
 open Finset BigOperators GlobalControl
 
@@ -43,7 +45,8 @@ lemma fourierNormWeight_le_exp_QE
           + (1 - theta e)))
         = ∏ e ∈ E, bernoulliCharFun (theta e) ((h : ℝ) / (e : ℝ)) := by
     refine Finset.prod_congr rfl (fun e he => ?_)
-    exact charfactor_eq (theta e) h e L (he0 e he) (heL e he) hL
+    exact periodizedBernoulliFactor_eq_charFun
+      (theta e) h e L (he0 e he) (heL e he) hL
   rw [hprod]
   have hbound := product_charFun_bound_QE (1 / 3) (by norm_num) (by norm_num)
     E theta hθ_lb (by

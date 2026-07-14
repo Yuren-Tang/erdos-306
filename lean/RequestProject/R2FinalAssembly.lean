@@ -1,4 +1,8 @@
-import RequestProject.R2AssemblyFields
+import RequestProject.Core.ReciprocalPeriod
+import RequestProject.CircleMethod.MainArcPeriodicity
+import RequestProject.CircleMethodAssembly
+import RequestProject.Construction.Edges
+import RequestProject.Spectral.BernoulliVariance
 
 open Finset BigOperators GlobalControl
 
@@ -40,37 +44,41 @@ structure R2FinalSupply (T : Finset ℕ) (b : ℕ) where
 /-- Assemble an `ArcConstruction` from the final supply package. -/
 def R2FinalSupply.toArcConstruction {T : Finset ℕ} {b : ℕ}
     (hb : 3 ≤ b) (S : R2FinalSupply T b) : ArcConstruction T b where
-  E := S.D.E
-  theta := S.W.theta
-  L := S.D.L
-  N := S.N
-  SM := S.MA.SM
-  Sm := S.MA.Sm
-  lbl := S.MA.lbl
-  Bm := S.Bm
-  hsemi := S.hsemi
-  havoid := S.havoid
-  hne := S.hne
-  hL := S.D.period_pos (Nat.lt_of_lt_of_le (by norm_num) hb)
-  hbL := S.D.base_dvd_period
-  heL := S.heL
-  he0 := S.he0
-  hbound := r2Concrete_hbound_of_recipLoad_window S.D hb
-    (S.D.period_pos (Nat.lt_of_lt_of_le (by norm_num) hb)) S.he0 S.heL S.hloadUpper
-  hlb := S.W.hlb
-  hub := S.W.hub
-  hmass := S.W.hmass
-  hpart := S.MA.hpart
-  hdisj := S.MA.hdisj
-  hN := S.hN
-  htw := S.htw
-  hsmall := S.hsmall
-  hmaps := S.MA.hmaps
-  hinj := S.MA.hinj
-  hsurj := S.MA.hsurj
-  hterm := S.MA.hterm
-  hminor := S.hminor
-  hbeat := S.hbeat
+  family := {
+    E := S.D.E
+    theta := S.W.theta
+    L := S.D.L
+    hsemi := S.hsemi
+    havoid := S.havoid
+    hne := S.hne
+    hL := S.D.period_pos (Nat.lt_of_lt_of_le (by norm_num) hb)
+    hbL := S.D.base_dvd_period
+    heL := S.heL
+    he0 := S.he0
+    hbound := ReciprocalPeriod.period_div_sum_lt_of_recip_sum_lt S.D.E S.D.L
+      (S.D.period_pos (Nat.lt_of_lt_of_le (by norm_num) hb)) S.he0 S.heL (by
+        have hbR : (3 : ℝ) ≤ (b : ℝ) := by exact_mod_cast hb
+        have hbpos : (0 : ℝ) < (b : ℝ) := by positivity
+        have hthree : 3 / (b : ℝ) ≤ 1 := by
+          rw [div_le_one hbpos]
+          exact hbR
+        exact lt_of_lt_of_le S.hloadUpper hthree)
+    hlb := S.W.hlb
+    hub := S.W.hub
+    hmass := S.W.hmass
+  }
+  main := {
+    N := S.N
+    fields := S.MA
+    hN := S.hN
+    htw := S.htw
+    hsmall := S.hsmall
+  }
+  minor := {
+    Bm := S.Bm
+    hminor := S.hminor
+    hbeat := S.hbeat
+  }
 
 /-- The final assembly theorem in hypothesis-heavy form. -/
 theorem exists_arcConstruction_of_R2FinalSupply

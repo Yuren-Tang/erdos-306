@@ -1,7 +1,7 @@
 import RequestProject.CircleMethod.MinorArcCover
 import RequestProject.Construction.Edges
 import RequestProject.ExtraMinorDamping
-import RequestProject.R2AssemblyFields
+import RequestProject.CircleMethod.MainArcPeriodicity
 
 open Finset BigOperators GlobalControl
 

@@ -10,6 +10,7 @@ import Mathlib.Algebra.BigOperators.Field
 import Mathlib.Algebra.Order.Ring.Star
 import Mathlib.Analysis.Normed.Field.Lemmas
 import Mathlib.Data.Int.Star
+import Mathlib.Data.Nat.Cast.Field
 
 open scoped BigOperators Classical
 open Finset
@@ -65,6 +66,35 @@ lemma reciprocal_sum_eq_of_integerized_sum_eq
     _ = (q : ℚ) / (L : ℚ) := by
       congr 1
       exact_mod_cast hsum
+
+/-- If every denominator divides a positive common period and the reciprocal
+load is less than one, then the corresponding integerized sum is smaller than
+the period. -/
+lemma period_div_sum_lt_of_recip_sum_lt
+    (E : Finset ℕ) (L : ℕ)
+    (hL : 0 < L)
+    (hepos : ∀ e ∈ E, 0 < e)
+    (heL : ∀ e ∈ E, e ∣ L)
+    (hload : ∑ e ∈ E, (1 : ℝ) / (e : ℝ) < 1) :
+    (∑ e ∈ E, (L / e : ℕ)) < L := by
+  have hcast :
+      ((∑ e ∈ E, (L / e : ℕ) : ℕ) : ℝ) =
+        ∑ e ∈ E, (L : ℝ) / (e : ℝ) := by
+    rw [Nat.cast_sum]
+    refine Finset.sum_congr rfl (fun e he => ?_)
+    rw [Nat.cast_div (heL e he) (by exact_mod_cast (hepos e he).ne')]
+  have hfactor :
+      (∑ e ∈ E, (L : ℝ) / (e : ℝ)) =
+        (L : ℝ) * ∑ e ∈ E, (1 : ℝ) / (e : ℝ) := by
+    rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl (fun e he => ?_)
+    field_simp [(by exact_mod_cast (hepos e he).ne' : (e : ℝ) ≠ 0)]
+  have hreal :
+      ((∑ e ∈ E, (L / e : ℕ) : ℕ) : ℝ) < (L : ℝ) := by
+    rw [hcast, hfactor]
+    have hLR : (0 : ℝ) < (L : ℝ) := by exact_mod_cast hL
+    nlinarith
+  exact_mod_cast hreal
 
 /-- **No-wraparound Fourier indicator.**  A subset of an `L`-divisor set has
 reciprocal mass `q / L` precisely when its integerized mass is congruent to

@@ -1,7 +1,6 @@
 import RequestProject.R2Certificates
-import RequestProject.CircleMethodMainTerm
+import RequestProject.CircleMethod.ReciprocalSelection
 import RequestProject.Core.UnitNumeratorReduction
-import RequestProject.Spectral.CircleMethodBridge
 
 /-!
 # Erdős 306 — unconditional, wired to the R2 construction
@@ -15,29 +14,12 @@ open scoped BigOperators
 
 namespace CircleMethod
 
-/-- `egyptian_rep_ge3` wired to the R2 construction through abstract spectral
-selection (`Spectral.CircleMethodBridge.exists_subset_sum_eq_of_fourier_gap`):
-the genuine R2 `ArcConstruction` supplies the spectral inputs (the low-frequency
-main term via `main_sum_re_lower`, the summed-norm high-frequency tail `c.hminor`,
-and the domination `c.hbeat`), and spectral selection yields a hitting subset. -/
+/-- The R2 construction supplies a circle-method certificate, whose abstract
+reciprocal-selection theorem gives the required avoiding representation. -/
 theorem egyptian_rep_ge3_R2 (T : Finset ℕ) (b : ℕ) (hb : 3 ≤ b) (hbsf : Squarefree b) :
     HasEgyptianSemiprimeReprAvoiding T ((1 : ℚ) / (b : ℚ)) := by
   obtain ⟨c⟩ := exists_arcConstruction_final T b hb hbsf
-  obtain ⟨S, hSE, hSsum⟩ :=
-    exists_subset_sum_eq_of_fourier_gap c.E c.theta (c.L / b) c.L c.SM c.Sm c.Bm
-      (bernoulliMainTermConstant / Real.sqrt (sigmaE2 c.E c.theta))
-      (Nat.div_lt_self c.hL (by omega)) c.hL c.heL c.hbound
-      (fun e he => by linarith [c.hlb e he])
-      (fun e he => by linarith [c.hub e he])
-      c.hpart c.hdisj
-      (main_sum_re_lower c.E c.theta (c.L / b) c.L c.N c.SM c.lbl c.hne c.he0 c.hlb c.hub
-        (c.hmass.trans (ReciprocalPeriod.one_div_eq_period_div_real
-          b c.L (by omega) c.hL c.hbL))
-        c.hN c.htw c.hsmall c.hmaps c.hinj c.hsurj c.hterm)
-      c.hminor c.hbeat
-  exact repr_of_subset T c.E b c.hsemi c.havoid S hSE
-    (hSsum.trans (ReciprocalPeriod.one_div_eq_period_div
-      b c.L (by omega) c.hL c.hbL).symm)
+  exact c.hasEgyptianSemiprimeReprAvoiding (by omega)
 
 /-- `egyptian_rep_eq2` (the `b = 2` reduction `1/2 = 1/3 + 1/6`) wired to the R2
 construction (its `1/3`, `1/6` sub-representations go through `egyptian_rep_ge3_R2`). -/

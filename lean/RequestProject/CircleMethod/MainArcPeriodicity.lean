@@ -1,5 +1,4 @@
-import RequestProject.Spectral.BernoulliSum
-import RequestProject.CircleMethodArcs
+import RequestProject.Spectral.BernoulliCyclicFourier
 
 open Finset BigOperators
 
@@ -52,7 +51,7 @@ lemma fourierTerm_eq_term_label_of_cong
   unfold fourierTerm term_label
   congr 1
   · refine Finset.prod_congr rfl (fun e he => ?_)
-    rw [charfactor_eq (θ e) h e L (he0 e he) (heL e he) hL]
+    rw [periodizedBernoulliFactor_eq_charFun (θ e) h e L (he0 e he) (heL e he) hL]
     exact bernoulliCharFun_cong (θ e) h m e (he0 e he) (hcong e he)
   · obtain ⟨kk, hkk⟩ := hmodL
     have hLC : (L : ℂ) ≠ 0 := by exact_mod_cast hL.ne'
@@ -148,6 +147,50 @@ lemma exists_mainArc_bijection (L : ℕ) (N : ℤ) (hN : 0 ≤ N) (hNL : 2 * N +
     simp only []
     rw [(key m hm.1 hm.2).2.1]
     exact (key m hm.1 hm.2).2.2
+
+/-- The finite main-arc data: a partition of the cyclic frequencies together
+with a bijective integer labeling of the main frequencies and the resulting
+Fourier-term identity. -/
+structure MainArcFields (E : Finset ℕ) (theta : ℕ → ℝ) (q L : ℕ) (N : ℤ) where
+  SM : Finset ℕ
+  Sm : Finset ℕ
+  lbl : ℕ → ℤ
+  hpart : Finset.range L = SM ∪ Sm
+  hdisj : Disjoint SM Sm
+  hmaps : ∀ h ∈ SM, lbl h ∈ Finset.Icc (-N) N
+  hinj : ∀ h₁ ∈ SM, ∀ h₂ ∈ SM, lbl h₁ = lbl h₂ → h₁ = h₂
+  hsurj : ∀ m ∈ Finset.Icc (-N) N, ∃ h ∈ SM, lbl h = m
+  hmod : ∀ h ∈ SM, (L : ℤ) ∣ ((h : ℤ) - lbl h)
+  hterm : ∀ h ∈ SM, fourierTerm E theta q L h = term_label E theta q L (lbl h)
+
+/-- Package the canonical bounded-label bijection; the minor arc is the
+complement of the main frequencies inside `Finset.range L`. -/
+lemma exists_mainArcFields
+    (E : Finset ℕ) (theta : ℕ → ℝ) (q L : ℕ) (N : ℤ)
+    (hL : 0 < L)
+    (he0 : ∀ e ∈ E, 0 < e) (heL : ∀ e ∈ E, e ∣ L)
+    (hN : 0 ≤ N) (hNL : 2 * N + 1 ≤ (L : ℤ)) :
+    Nonempty (MainArcFields E theta q L N) := by
+  classical
+  obtain ⟨SM, lbl, hsub, hmaps, hinj, hsurj, hmod⟩ :=
+    exists_mainArc_bijection L N hN hNL
+  refine ⟨{
+    SM := SM
+    Sm := Finset.range L \ SM
+    lbl := lbl
+    hpart := ?_
+    hdisj := ?_
+    hmaps := hmaps
+    hinj := hinj
+    hsurj := hsurj
+    hmod := hmod
+    hterm := ?_
+  }⟩
+  · exact (Finset.union_sdiff_of_subset hsub).symm
+  · exact Finset.sdiff_disjoint.symm
+  · intro h hh
+    exact fourierTerm_eq_term_label_of_modL E theta q L h (lbl h)
+      hL he0 heL (hmod h hh)
 
 end CircleMethod
 

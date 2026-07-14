@@ -1,4 +1,5 @@
 import RequestProject.Spectral.BernoulliCharacteristic
+import RequestProject.Spectral.BernoulliCyclicFourier
 import RequestProject.GlobalControl.Partition
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
 
@@ -90,22 +91,6 @@ theorem product_charFun_bound_QE (θ₀ : ℝ) (hθ₀ : 0 < θ₀) (hθ₀' : �
       _ = Real.sin (Real.pi * (h : ℝ) / (e : ℝ)) ^ 2 := by rw [mul_div_assoc]
   nlinarith [hsum, hc, mul_le_mul_of_nonneg_left hsum hc]
 
-/-- The Fourier-identity product factor equals the Bernoulli characteristic
-function at `h/e` (uses `e ∣ L` so `(L/e)/L = 1/e`). -/
-lemma charfactor_eq (th : ℝ) (h e L : ℕ) (he0 : 0 < e) (heL : e ∣ L) (hL : 0 < L) :
-    (th : ℂ) * Complex.exp (2 * Real.pi * Complex.I * (h : ℂ) * ((L / e : ℕ) : ℂ) / (L : ℂ))
-        + (1 - th)
-      = bernoulliCharFun th ((h : ℝ) / (e : ℝ)) := by
-  unfold bernoulliCharFun
-  have heC : (e : ℂ) ≠ 0 := by exact_mod_cast he0.ne'
-  have hLC : (L : ℂ) ≠ 0 := by exact_mod_cast hL.ne'
-  have hcast : ((L / e : ℕ) : ℂ) = (L : ℂ) / (e : ℂ) := by
-    rw [Nat.cast_div heL heC]
-  have harg : 2 * Real.pi * Complex.I * (h : ℂ) * ((L / e : ℕ) : ℂ) / (L : ℂ)
-      = 2 * (Real.pi : ℂ) * (((h : ℝ) / (e : ℝ) : ℝ) : ℂ) * Complex.I := by
-    rw [hcast]; push_cast; field_simp
-  rw [harg]; push_cast; ring
-
 /-- **C4 minor-arc norm bound.**  Over any frequency set `S`, the norm of the
 Fourier-identity sum is bounded by the energy sum `∑ exp(-c·Q_E(h))`.  This is the
 triangle-inequality half of the minor arc; the remaining step (bounding that
@@ -137,7 +122,8 @@ theorem minor_arc_norm_le (θ₀ : ℝ) (hθ₀ : 0 < θ₀) (hθ₀' : θ₀ �
         + (1 - theta e)))
       = ∏ e ∈ E, bernoulliCharFun (theta e) ((h : ℝ) / (e : ℝ)) := by
     refine Finset.prod_congr rfl (fun e he => ?_)
-    exact charfactor_eq (theta e) h e L (he0 e he) (heL e he) hL
+    exact periodizedBernoulliFactor_eq_charFun
+      (theta e) h e L (he0 e he) (heL e he) hL
   rw [hprod]
   exact product_charFun_bound_QE θ₀ hθ₀ hθ₀' E theta hθ_lb hθ_ub h
 

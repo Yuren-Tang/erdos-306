@@ -1,7 +1,6 @@
 import RequestProject.Core.FiniteProducts
-import RequestProject.CircleMethodArcs
 import RequestProject.CircleMethod.MinorArcDecomposition
-import RequestProject.Spectral.BernoulliSum
+import RequestProject.Spectral.BernoulliCyclicFourier
 
 open Finset BigOperators
 
@@ -66,7 +65,8 @@ lemma fourierNormWeight_le_prod_norm_of_subset
           Complex.exp (2 * Real.pi * Complex.I * (h : ℂ) * ((L / e : ℕ) : ℂ) / (L : ℂ))
         + (1 - theta e))
       = bernoulliCharFun (theta e) ((h : ℝ) / (e : ℝ)) :=
-    fun e he => charfactor_eq (theta e) h e L (hepos e he) (heL e he) hL
+    fun e he => periodizedBernoulliFactor_eq_charFun
+      (theta e) h e L (hepos e he) (heL e he) hL
   rw [Finset.prod_congr rfl hfac]
   exact RequestProject.norm_prod_le_prod_of_subset E S _ _ hSE
     (fun e he => bernoulliCharFun_norm_le_one (theta e) _ (hθ0 e he) (hθ1 e he))

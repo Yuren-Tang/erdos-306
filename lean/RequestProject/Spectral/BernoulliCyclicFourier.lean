@@ -39,6 +39,30 @@ lemma bernoulliSpectralFactor_eq (E : Finset ℕ) (theta : ℕ → ℝ) (L : ℕ
   norm_cast
   aesop
 
+/-- Periodizing a Bernoulli factor through a common multiple `L` recovers its
+characteristic function at the rational frequency `h / e`. -/
+lemma periodizedBernoulliFactor_eq_charFun
+    (theta : ℝ) (h e L : ℕ) (he0 : 0 < e) (heL : e ∣ L) (hL : 0 < L) :
+    (theta : ℂ) *
+          Complex.exp
+            (2 * Real.pi * Complex.I * (h : ℂ) * ((L / e : ℕ) : ℂ) / (L : ℂ)) +
+        (1 - theta) =
+      bernoulliCharFun theta ((h : ℝ) / (e : ℝ)) := by
+  unfold bernoulliCharFun
+  have heC : (e : ℂ) ≠ 0 := by exact_mod_cast he0.ne'
+  have hLC : (L : ℂ) ≠ 0 := by exact_mod_cast hL.ne'
+  have hcast : ((L / e : ℕ) : ℂ) = (L : ℂ) / (e : ℂ) := by
+    rw [Nat.cast_div heL heC]
+  have harg :
+      2 * Real.pi * Complex.I * (h : ℂ) * ((L / e : ℕ) : ℂ) / (L : ℂ) =
+        2 * (Real.pi : ℂ) * (((h : ℝ) / (e : ℝ) : ℝ) : ℂ) * Complex.I := by
+    rw [hcast]
+    push_cast
+    field_simp
+  rw [harg]
+  push_cast
+  ring
+
 lemma norm_bernoulliSpectralFactor_le_one (E : Finset ℕ) (theta : ℕ → ℝ) (L : ℕ)
     (j : {e // e ∈ E}) (ω : Fin L)
     (h0 : 0 ≤ theta j.1) (h1 : theta j.1 ≤ 1) :

@@ -393,8 +393,8 @@ lemma exists_mass_batch_scale_threshold (G b : ℕ) :
     ∃ k0mass : ℕ, ∀ k : ℕ, k0mass ≤ k →
       2 * b * (b.primeFactors.card * G) < 3 * 2 ^ k ∧
       2 * b < 2 ^ k := by
-  obtain ⟨K, hK⟩ := RequestProject.exists_threshold_mul_pow_le_two_pow
-    ((2 * b * (b.primeFactors.card * G) + 2 * b + 1 : ℕ) : ℝ) 0
+  obtain ⟨K, hK⟩ := RequestProject.exists_threshold_mul_pow_le_const_pow
+    ((2 * b * (b.primeFactors.card * G) + 2 * b + 1 : ℕ) : ℝ) 0 one_lt_two
   refine ⟨max K 1, fun k hk => ?_⟩
   have hkK : K ≤ k := (le_max_left K 1).trans hk
   have hk1 : 1 ≤ k := (le_max_right K 1).trans hk
