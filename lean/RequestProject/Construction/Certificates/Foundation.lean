@@ -1,5 +1,10 @@
-import RequestProject.R2TopAssembly
+import RequestProject.BlockMassPool
 import RequestProject.CircleMethod.MainArcNumericBounds
+import RequestProject.Construction.BaseLoadBudget
+import RequestProject.Construction.BlockSystemSelection
+import RequestProject.Construction.EdgeSquareLoad
+import RequestProject.Construction.MinorEndgame
+import RequestProject.Construction.ParameterSelection
 
 open Finset BigOperators GlobalControl
 open scoped Classical
@@ -30,9 +35,9 @@ structure ConstructionParameters (b : ℕ) where
   base_b : ℝ
   Dmp : ℝ
   G : ℕ
-  /-- abstract `σ_ctrl` lower-bound coefficient (`exists_sigmaCtrl_lower_supply`). -/
+  /-- abstract `σ_ctrl` lower-bound coefficient (`exists_sigmaCtrl_lower_bound`). -/
   cSigma : ℝ
-  /-- abstract edge square-load slack (`exists_edge_square_load_supply`). -/
+  /-- abstract edge square-load slack (`exists_edge_square_load_bound`). -/
   Sload : ℝ
   /-- abstract `σ_E ≤ K·σ_ctrl` bridge constant. -/
   K : ℝ
@@ -148,9 +153,9 @@ lemma exists_construction_parameters (b : ℕ) (hb : 3 ≤ b) (hbsf : Squarefree
   have hc3pos : 0 < bernoulliMainTermConstant := bernoulliMainTermConstant_pos
   set c3 := bernoulliMainTermConstant with hc3def
   -- abstract analytic constants from the supply leaves (all witnesses stay inside them)
-  obtain ⟨S, hS1, hSfam⟩ := exists_edge_square_load_supply
+  obtain ⟨S, hS1, hSfam⟩ := exists_edge_square_load_bound
   have hS0 : (0 : ℝ) < S := lt_of_lt_of_le one_pos hS1
-  obtain ⟨cσ, hcS1, k0sigma, hk0sigmaFact⟩ := exists_sigmaCtrl_lower_supply
+  obtain ⟨cσ, hcS1, k0sigma, hk0sigmaFact⟩ := exists_sigmaCtrl_lower_bound
   -- σ_E/σ_ctrl bridge constant: any K ≥ 1 with Sload ≤ 4K²
   set K : ℝ := max 1 (Real.sqrt S) with hKdef
   have hK1 : (1 : ℝ) ≤ K := le_max_left _ _
@@ -165,7 +170,7 @@ lemma exists_construction_parameters (b : ℕ) (hb : 3 ≤ b) (hbsf : Squarefree
   obtain ⟨k0minM, Ctail, hCtail, hSB⟩ :=
     exists_r2_minorSupportBudget_from_multiGadget_lanes η hηpos
   obtain ⟨C0, hC0one, hC0bd⟩ :=
-    r2_exists_C Ctail (c3 / K) b (by positivity)
+    exists_gaussian_tail_cutoff Ctail (c3 / K) b (by positivity)
   set C : ℝ := max C0 3 with hCdef
   have hCge3 : (3 : ℝ) ≤ C := le_max_right _ _
   have hCge1 : (1 : ℝ) ≤ C := le_trans (by norm_num) hCge3
@@ -182,12 +187,12 @@ lemma exists_construction_parameters (b : ℕ) (hb : 3 ≤ b) (hbsf : Squarefree
   set Dmp : ℝ := c3 / (4 * K * (b : ℝ) * (2 * C + 3)) with hDmpdef
   have hDmppos : 0 < Dmp := by
     rw [hDmpdef]; positivity
-  obtain ⟨G', hG'⟩ := r2_exists_pow_le base_b Dmp hbb1 hDmppos
+  obtain ⟨G', hG'⟩ := exists_pow_lt_of_lt_one hDmppos hbb1
   set G : ℕ := max 1 G' with hGdef
   have hG1 : 1 ≤ G := le_max_left _ _
   have hG : base_b ^ G ≤ Dmp :=
-    le_trans (pow_le_pow_of_le_one hbb0 hbb1.le (le_max_right 1 G')) hG'
-  obtain ⟨k0density, hk0density⟩ := r2_exists_k0_density G
+    le_trans (pow_le_pow_of_le_one hbb0 hbb1.le (le_max_right 1 G')) hG'.le
+  obtain ⟨k0density, hk0density⟩ := exists_dyadic_density_threshold G
   obtain ⟨k0mass, hk0massFact⟩ := exists_mass_batch_scale_threshold G b
   obtain ⟨k1, hk15, hload⟩ := blockPrimes_product_load_ge
   obtain ⟨k0ctrl, hk0ctrl⟩ := exists_k0_controlLoad_lt (3 / (4 * (b : ℝ))) (by positivity)
@@ -267,7 +272,7 @@ lemma exists_block_system_certificate (T : Finset ℕ) (b : ℕ) (hb : 3 ≤ b)
       + L.k0sigma + L.k0window + L.k0cubic + L.k0load + Nat.ceil L.C
       with hk0mindef
   obtain ⟨BS, hk0, hk05, hadm, hsub, hcopB, hRp, hRdvd, hcovR, hRout, _h2kK, hdyadic2k⟩ :=
-    exists_r2_foundation_dyadic b hb k0min'
+    exists_dyadic_blockSystem b hb k0min'
   have hk0minM : L.k0minM ≤ BS.k0 := by have h := hk0; rw [hk0mindef] at h; omega
   have hk0dens : L.k0density ≤ BS.k0 := by have h := hk0; rw [hk0mindef] at h; omega
   have hk1le : L.k1 ≤ BS.k0 := by have h := hk0; rw [hk0mindef] at h; omega
@@ -300,4 +305,3 @@ lemma exists_construction_foundation (T : Finset ℕ) (b : ℕ) (hb : 3 ≤ b)
 end CircleMethod
 
 end
-

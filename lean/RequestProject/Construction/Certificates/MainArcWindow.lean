@@ -1,4 +1,6 @@
 import RequestProject.Construction.Certificates.WeightedEdges
+import RequestProject.Construction.MainArcNumericClosure
+import RequestProject.CircleMethod.ControlVarianceComparison
 import RequestProject.CircleMethod.MainArcNumericBounds
 
 open Finset BigOperators GlobalControl
@@ -52,7 +54,10 @@ lemma main_arc_variance_comparison {T : Finset ℕ} {b : ℕ}
     rw [show Real.sqrt (2 / 9) * σ = Real.sqrt ((2 / 9) * σ ^ 2) by
       rw [Real.sqrt_mul (by norm_num), Real.sqrt_sq hσpos.le]]
     apply Real.sqrt_le_sqrt
-    have := sigmaE2_ge_ctrl D W; rw [show σ = sigmaCtrl D.BS from hσdef]; linarith
+    have hvariance := sigmaE2_ge_controlVariance D.BS D.E W.theta
+      D.ctrlEdges_subset_E W.hlb W.hub
+    rw [show σ = sigmaCtrl D.BS from hσdef]
+    linarith
   have hsigmaEpos : 0 < Real.sqrt (sigmaE2 D.E W.theta) :=
     lt_of_lt_of_le (by positivity) hsigmaE_lb
   exact ⟨hsigmaE_lb, hsigmaE_ub, hsigmaEpos⟩
@@ -232,7 +237,8 @@ lemma exists_main_arc_window_certificate {T : Finset ℕ} {b : ℕ}
   -- large-k0 window facts (named certificate: N-window scale/period ledger)
   obtain ⟨hN2, hNL, hNreal⟩ := main_arc_window_scale_period F Cc M N hNhi
   have hNF : MainArcNumericBounds D.E W.theta N :=
-    r2_close_numericFields D W N σ C F.ledger.cSigma F.ledger.Sload hσpos he0 QB hSgeD
+    mainArcNumericBounds_of_constructionScales D W N σ C F.ledger.cSigma
+      F.ledger.Sload hσpos he0 QB hSgeD
       hRpos'D F.ledger.hcS1 F.ledger.hS1 hsumE hsigmaE_lb hNnonneg hCge3 hNlo hNsigma
       hk0pos hCk0 hwindow hcubic hNreal
   exact ⟨⟨N, hNnonneg, hNlo, hN2, hNL, hσpos, h2N1sigma, hsigmaE_ub, hsigmaEpos, hNF⟩⟩
@@ -241,4 +247,3 @@ lemma exists_main_arc_window_certificate {T : Finset ℕ} {b : ℕ}
 end CircleMethod
 
 end
-

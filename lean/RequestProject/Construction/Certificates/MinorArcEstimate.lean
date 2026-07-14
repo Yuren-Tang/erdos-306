@@ -1,5 +1,5 @@
 import RequestProject.Construction.Certificates.MainArcWindow
-import RequestProject.R2TopAssembly
+import RequestProject.Construction.MinorArcFrequencyLanes
 
 open Finset BigOperators GlobalControl
 open scoped Classical
@@ -16,10 +16,10 @@ namespace CircleMethod
 
 The minor-arc budget factors through explicitly named certificate steps:
 
-* **classification + lanes** — `r2_buildFreqLanes` builds the
+* **classification + lanes** — `minorArcFrequencyLanes` builds the
   `R2MinorEndgameFrequencyLanes`, i.e. the block-lane fibre-tail estimate
-  (`r2_blockFiberTail`, with the bounded `b`-to-1 multiplicity), the extra
-  frequency count bound (`r2_extra_count_le`, `≤ b(2N+1)`), and the per-frequency
+  (`blockMinorFiberTailData`, with the bounded `b`-to-1 multiplicity), the extra
+  frequency count bound (`extraMinor_card_le`, `≤ b(2N+1)`), and the per-frequency
   gadget damping (`r2ExtraSiblingChoice_of_intLabelData`, the `G`-fold damping).
 * **support budget** — `minor_arc_support_budget` feeds those lanes through the
   abstract minor-support supply principle `F.ledger.hSB` to produce the
@@ -44,7 +44,7 @@ def minorArcBudget {T : Finset ℕ} {b : ℕ}
     + (b : ℝ) * (2 * (A.N : ℝ) + 1) * F.ledger.Dmp
 
 /-- **Minor classification + support-budget certificate.**  Build the block,
-extra-count, and gadget-damping frequency lanes (`r2_buildFreqLanes`) and feed
+extra-count, and gadget-damping frequency lanes (`minorArcFrequencyLanes`) and feed
 them through the abstract minor-support supply principle `F.ledger.hSB` to obtain the
 `R2MinorSupportBudgetData`: the block/extra cover of the minor frequencies with
 its block budget `(b·(η + Ctail·e^{…}))/σ_ctrl` and extra budget `b·(2N+1)·Dmp`. -/
@@ -76,7 +76,8 @@ lemma minor_arc_support_budget {T : Finset ℕ} {b : ℕ}
   have hadmD : admissibleGlobalRange D.BS := by rw [hBS]; exact F.bsCert.hadm
   have hCge1 : (1 : ℝ) ≤ F.ledger.C := F.ledger.hCge1
   -- classification + block/extra/gadget lanes
-  obtain ⟨Ln⟩ := r2_buildFreqLanes D W N F.ledger.C F.ledger.η F.ledger.Ctail F.ledger.Dmp F.ledger.G hbpos F.ledger.hbsf
+  obtain ⟨Ln⟩ := minorArcFrequencyLanes D W N F.ledger.C F.ledger.η F.ledger.Ctail
+    F.ledger.Dmp F.ledger.G hbpos F.ledger.hbsf
     hcovRD hcopBD hRpD hSprimeD hRdvdD hSblockD hlt'D M.hctrlAvoid M.hgadgetAvoid
     M.heL M.he0 M.hL M.hLeq hCge1 A.hNnonneg hSgeD hScardD A.hNlo A.hN2
     (le_of_lt F.ledger.hDmppos) (F.ledger.hbbdef ▸ F.ledger.hG)
@@ -185,4 +186,3 @@ lemma exists_minor_arc_estimate_certificate {T : Finset ℕ} {b : ℕ}
 end CircleMethod
 
 end
-

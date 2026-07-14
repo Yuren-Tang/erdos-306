@@ -1,4 +1,5 @@
 import RequestProject.Construction.Certificates.GadgetEdges
+import RequestProject.Construction.MassBatchCompletion
 import RequestProject.Construction.MassBatchSupply
 
 open Finset BigOperators GlobalControl
@@ -55,7 +56,8 @@ lemma exists_weighted_edge_certificate {T : Finset ℕ} {b : ℕ}
       2 * b < 2 ^ F.bsCert.BS.k0 := by
     simpa [Cc.hScard] using
       F.ledger.hk0massFact F.bsCert.BS.k0 F.bsCert.hk0mass
-  obtain ⟨Q, QB⟩ := r2_getQ F.ledger.hb3 F.bsCert.BS Cc.S F.bsCert.hsub Cc.hSge F.bsCert.hRout
+  obtain ⟨Q, QB⟩ := exists_massBatch_at_large_scale F.ledger.hb3 F.bsCert.BS Cc.S
+    F.bsCert.hsub Cc.hSge F.bsCert.hRout
     (F.ledger.hk0ctrl F.bsCert.BS F.bsCert.hk0ctrlle) F.ledger.k1 F.ledger.hk15 F.bsCert.hk1le F.ledger.hload
     hmass F.bsCert.hk0T
   set D : R2ConcreteData T b := (⟨F.bsCert.BS, ∅, b.primeFactors, Cc.S⟩ : R2ConcreteData T b).withQ Q
@@ -107,4 +109,3 @@ lemma exists_weighted_edge_certificate {T : Finset ℕ} {b : ℕ}
 end CircleMethod
 
 end
-

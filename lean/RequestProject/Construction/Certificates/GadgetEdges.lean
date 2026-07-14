@@ -1,4 +1,5 @@
 import RequestProject.Construction.Certificates.Foundation
+import RequestProject.Construction.BlockSystemSelection
 
 open Finset BigOperators GlobalControl
 open scoped Classical
@@ -39,7 +40,7 @@ lemma exists_gadget_edge_certificate {T : Finset ℕ} {b : ℕ}
   have hk0dens := F.bsCert.hk0dens
   have hmass := F.ledger.hk0massFact F.bsCert.BS.k0 F.bsCert.hk0mass
   obtain ⟨S, hSsub, hScard, hSprime, hSge⟩ :=
-    exists_block_primes (2 * F.bsCert.BS.k0) (by omega) F.ledger.G
+    exists_primes_in_dyadicBlock (2 * F.bsCert.BS.k0) (by omega) F.ledger.G
       (F.ledger.hk0density (2 * F.bsCert.BS.k0) (by omega))
   have hSblock : S ⊆ blockSupport F.bsCert.BS := fun s hs => F.bsCert.hdyadic2k (hSsub hs)
   have hb2k0 : b < 2 ^ F.bsCert.BS.k0 := by omega
@@ -56,4 +57,3 @@ lemma exists_gadget_edge_certificate {T : Finset ℕ} {b : ℕ}
 end CircleMethod
 
 end
-

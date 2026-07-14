@@ -1,4 +1,5 @@
 import RequestProject.Construction.ExtraReservoir
+import RequestProject.Construction.BlockSupportCompatibility
 
 open Finset BigOperators GlobalControl
 
@@ -29,14 +30,6 @@ only the sibling-choice existence/packaging is shared between the two labels.
 
 See `docs/construction-redesign.md` node C6.
 -/
-
-/-- `R` contains every prime divisor of `b`. -/
-def CoversPrimeDivisors (R : Finset ℕ) (b : ℕ) : Prop :=
-  ∀ r, Nat.Prime r → r ∣ b → r ∈ R
-
-/-- The block-support primes are coprime to the denominator `b`. -/
-def BlockSupportCoprimeWith (BS : BlockSystem) (b : ℕ) : Prop :=
-  ∀ s ∈ blockSupport BS, Nat.Coprime s b
 
 /-- For a squarefree modulus `b`, congruence modulo every prime divisor of `b`
 implies congruence modulo `b`.  This is the squarefree prime-divisor-to-`b`
