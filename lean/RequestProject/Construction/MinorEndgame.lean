@@ -16,8 +16,8 @@ Single motivating question: **given the block-minor lane
 (`R2BlockFiberTailData`, `Construction.BaseLoadBudget`'s sibling node
 `R2MinorEndgameLanes`) and an extra-minor lane (a multi-gadget reservoir,
 `Construction.ExtraReservoir`), how do they combine into the final
-minor-support-budget / minor-ready record consumed by
-`R2Certificates`/`R2TopAssembly`?**
+minor-support-budget / minor-ready record consumed by the minor-arc
+certificate?**
 
 Two lane shapes, not two competing strategies: `R2MinorEndgameMultiGadgetLanes`
 takes an already-assembled `R2MultiGadgetReservoir` directly; the frequency

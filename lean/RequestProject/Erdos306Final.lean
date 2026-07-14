@@ -1,4 +1,4 @@
-import RequestProject.R2Certificates
+import RequestProject.Construction.Certificates.Assembly
 import RequestProject.CircleMethod.ReciprocalSelection
 import RequestProject.Core.UnitNumeratorReduction
 
@@ -6,7 +6,7 @@ import RequestProject.Core.UnitNumeratorReduction
 # Reciprocal semiprime representations from the circle method
 
 This leaf closes the circle-method chain with the concrete construction theorem
-`exists_arcConstruction_final`, including the small-denominator reductions and
+`exists_arcConstruction`, including the small-denominator reductions and
 the reduction from a general numerator to the unit-numerator case.
 -/
 
@@ -14,12 +14,12 @@ open scoped BigOperators
 
 namespace CircleMethod
 
-/-- The R2 construction supplies a circle-method certificate, whose abstract
+/-- The semiprime construction supplies a circle-method certificate, whose abstract
 reciprocal-selection theorem gives the required avoiding representation. -/
 theorem hasEgyptianSemiprimeReprAvoiding_one_div_of_three_le
     (T : Finset ℕ) (b : ℕ) (hb : 3 ≤ b) (hbsf : Squarefree b) :
     HasEgyptianSemiprimeReprAvoiding T ((1 : ℚ) / (b : ℚ)) := by
-  obtain ⟨c⟩ := exists_arcConstruction_final T b hb hbsf
+  obtain ⟨c⟩ := exists_arcConstruction T b hb hbsf
   exact c.hasEgyptianSemiprimeReprAvoiding (by omega)
 
 /-- The case `b = 2`, using `1/2 = 1/3 + 1/6`. -/

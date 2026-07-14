@@ -17,8 +17,7 @@ the canonical uniform `Weights` package generated from the load window
 (node C3 — folded in here rather than kept as its own file, since its sole
 consumer is `weights` below and its own motivating question, "build the
 weight package once the reciprocal-load window is known," is the same
-question this file already answers), consumed directly by
-`R2Certificates.lean`.
+question this file already answers), consumed by the weighted-edge certificate.
 
 See `docs/construction-redesign.md` nodes C2, C3.
 -/
