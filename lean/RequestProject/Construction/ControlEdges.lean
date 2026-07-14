@@ -1,4 +1,5 @@
-import RequestProject.CircleMethodArcs
+import RequestProject.CircleMethod.FrequencyControlEnergy
+import RequestProject.CircleMethod.QuadraticEnergy
 import RequestProject.Core.Semiprime
 
 open Finset BigOperators GlobalControl
@@ -11,7 +12,7 @@ namespace CircleMethod
 # Control edges and their CRT energy
 
 Control edges `ctrlEdges BS = {p·q : (p,q) ∈ ctrlPairs BS}` are squarefree
-semiprimes. Any edge set containing them satisfies `QE E h ≥ Qctrl BS (a(h))`,
+semiprimes. Any edge set containing them satisfies `quadraticEnergy E h ≥ Qctrl BS (a(h))`,
 the energy hypothesis used by the fiber-tail minor-arc estimate.
 -/
 
@@ -34,7 +35,7 @@ lemma ctrlEdges_semiprime (BS : BlockSystem) {e : ℕ} (he : e ∈ ctrlEdges BS)
     IsSemiprime e := by
   rw [ctrlEdges, Finset.mem_image] at he
   obtain ⟨pq, hpq, rfl⟩ := he
-  obtain ⟨hp1, hp2, _⟩ := ctrlPairs_distinct_primes BS hpq
+  obtain ⟨hp1, hp2, _⟩ := controlPairs_distinct_primes BS hpq
   exact ⟨pq.1, pq.2, hp1, hp2, ctrlPairs_lt BS hpq, rfl⟩
 
 /-- The product map `(p,q) ↦ p·q` is injective on control pairs. -/
@@ -42,8 +43,8 @@ lemma ctrlPairs_prod_injOn (BS : BlockSystem) :
     Set.InjOn (fun pq : ℕ × ℕ => pq.1 * pq.2) (ctrlPairs BS) := by
   intro a ha b hb hab
   simp only at hab
-  obtain ⟨ha1, ha2, _⟩ := ctrlPairs_distinct_primes BS ha
-  obtain ⟨hb1, hb2, _⟩ := ctrlPairs_distinct_primes BS hb
+  obtain ⟨ha1, ha2, _⟩ := controlPairs_distinct_primes BS ha
+  obtain ⟨hb1, hb2, _⟩ := controlPairs_distinct_primes BS hb
   have halt := ctrlPairs_lt BS ha
   have hblt := ctrlPairs_lt BS hb
   have hdvd : a.1 ∣ b.1 * b.2 := ⟨a.2, by rw [← hab]⟩
@@ -68,9 +69,9 @@ lemma ctrlPairs_prod_injOn (BS : BlockSystem) :
 
 /-- If `E` contains all control edges, then its circle energy dominates the
 control-pair CRT energy. -/
-lemma QE_ge_Qctrl (BS : BlockSystem) (E : Finset ℕ) (hsub : ctrlEdges BS ⊆ E) (h : ℕ) :
-    Qctrl BS (fun p => ((h : ZMod p.1))) ≤ QE E h := by
-  rw [Qctrl_freq_eq]
+lemma controlEnergy_le_quadraticEnergy (BS : BlockSystem) (E : Finset ℕ) (hsub : ctrlEdges BS ⊆ E) (h : ℕ) :
+    Qctrl BS (fun p => ((h : ZMod p.1))) ≤ quadraticEnergy E h := by
+  rw [controlEnergy_frequency_eq]
   calc
     ∑ pq ∈ ctrlPairs BS,
         ((norm ∘ ((↑) : ℝ → UnitAddCircle)) ((h : ℝ) / ((pq.1 : ℝ) * (pq.2 : ℝ)))) ^ 2
@@ -80,8 +81,8 @@ lemma QE_ge_Qctrl (BS : BlockSystem) (E : Finset ℕ) (hsub : ctrlEdges BS ⊆ E
             (fun a ha b hb hab => ctrlPairs_prod_injOn BS ha hb hab)]
           refine Finset.sum_congr rfl (fun pq _ => ?_)
           norm_num [Nat.cast_mul]
-    _ ≤ QE E h := by
-      unfold QE
+    _ ≤ quadraticEnergy E h := by
+      unfold quadraticEnergy
       exact Finset.sum_le_sum_of_subset_of_nonneg hsub (fun e _ _ => by positivity)
 
 end CircleMethod

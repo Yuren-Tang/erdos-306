@@ -1,4 +1,5 @@
-import RequestProject.CircleMethodArcs
+import RequestProject.CircleMethod.FrequencyControlEnergy
+import RequestProject.CircleMethod.QuadraticEnergy
 
 open Finset BigOperators
 

@@ -1,4 +1,4 @@
-import RequestProject.CircleMethodArcs
+import RequestProject.Core.GaussianIntegerSum
 import RequestProject.CircleMethodMainArc
 import RequestProject.Spectral.BernoulliVariance
 
@@ -13,7 +13,7 @@ namespace CircleMethod
 
 Builds the positive real main term of the circle method from the per-edge Taylor
 expansion `bernoulli_log_taylor` and the diagonal Gaussian lower bound
-`main_arc_gaussian_lower`.  Everything here is self-contained over an edge
+`RequestProject.gaussian_interval_sum_lower`.  Everything here is self-contained over an edge
 set `E : Finset ℕ` (edge value `val(e) = e`), weights `θ`, and a rational
 Fourier target `q/L`, with mass identity `∑_e θ_e/e = q/L`; no `BlockSystem`
 is needed.  The final theorem `main_sum_re_lower` reindexes this label sum as
@@ -182,7 +182,7 @@ lemma main_re_lower (E : Finset ℕ) (θ : ℕ → ℝ) (q L : ℕ) (N : ℤ)
       = (4 / 5 : ℝ) * (Real.exp (-(Real.pi^2/2)) / 2 / σ) := by ring
     _ ≤ (4 / 5 : ℝ) * (∑ m ∈ Finset.Icc (-N) N, Real.exp (-(2*Real.pi^2*σ^2)*(m:ℝ)^2)) := by
         apply mul_le_mul_of_nonneg_left _ (by norm_num)
-        exact main_arc_gaussian_lower σ hσpos N hN
+        exact RequestProject.gaussian_interval_sum_lower σ hσpos N hN
     _ = ∑ m ∈ Finset.Icc (-N) N, (4 / 5 : ℝ) * Real.exp (-(2*Real.pi^2*σ^2)*(m:ℝ)^2) := by
         rw [Finset.mul_sum]
     _ ≤ ∑ m ∈ Finset.Icc (-N) N, (term_label E θ q L m).re := by

@@ -1,4 +1,6 @@
-import RequestProject.CircleMethod.PrimeSupportPeriod
+import RequestProject.CircleMethod.QuadraticEnergy
+import RequestProject.Core.FiniteSums
+import RequestProject.GlobalControl.Partition
 
 open Finset BigOperators Classical Real
 
@@ -18,28 +20,28 @@ strictly contains the cardinality and bounded-multiplicity cases as special
 instances.
 -/
 
-/-- **Fiber-tail minor energy reindex.**  If `QE ≥ Qctrl + Qextra` and the
+/-- **Fiber-tail minor energy reindex.**  If `quadraticEnergy ≥ Qctrl + Qextra` and the
 extra-energy fiber tails are bounded by `K`, the energy sum is `≤ K` times the
 off-main-arc control sum. -/
 lemma minor_energy_sum_le_fiber_tail
     (BS : BlockSystem) (E : Finset ℕ) (c C K : ℝ) (Sm : Finset ℕ)
     (Qextra : ℕ → ℝ) (hc : 0 ≤ c)
     (hQE : ∀ h ∈ Sm,
-      Qctrl BS (fun p => ((h : ZMod p.1))) + Qextra h ≤ QE E h)
+      Qctrl BS (fun p => ((h : ZMod p.1))) + Qextra h ≤ quadraticEnergy E h)
     (hnotmain : ∀ h ∈ Sm,
       (fun p => ((h : ZMod p.1)) : GlobalAssignment BS) ∉ mainArc BS C)
     (hfiber : ∀ a : GlobalAssignment BS,
       ∑ h ∈ Sm.filter
         (fun h => (fun p => ((h : ZMod p.1)) : GlobalAssignment BS) = a),
         Real.exp (-c * Qextra h) ≤ K) :
-    ∑ h ∈ Sm, Real.exp (-c * QE E h) ≤
+    ∑ h ∈ Sm, Real.exp (-c * quadraticEnergy E h) ≤
       K * ∑' a : {a : GlobalAssignment BS // a ∉ mainArc BS C},
         Real.exp (-c * Qctrl BS a.1) := by
   classical
   set af : ℕ → GlobalAssignment BS := fun h => (fun p => ((h : ZMod p.1))) with haf
   rw [RequestProject.fintype_subtype_tsum_eq (fun a => a ∉ mainArc BS C)
     (fun a => Real.exp (-c * Qctrl BS a))]
-  have step1 : ∑ h ∈ Sm, Real.exp (-c * QE E h)
+  have step1 : ∑ h ∈ Sm, Real.exp (-c * quadraticEnergy E h)
       ≤ ∑ h ∈ Sm, Real.exp (-c * Qctrl BS (af h)) * Real.exp (-c * Qextra h) := by
     refine Finset.sum_le_sum (fun h hh => ?_)
     rw [← Real.exp_add]
@@ -67,7 +69,7 @@ theorem minor_arc_bound_fiber_tail :
       0 ≤ K →
       (∀ e ∈ E, (1 / 3 : ℝ) ≤ theta e) → (∀ e ∈ E, theta e ≤ 2 / 3) →
       (∀ e ∈ E, e ∣ L) → (∀ e ∈ E, 0 < e) → 0 < L →
-      (∀ h ∈ Sm, Qctrl BS (fun p => ((h : ZMod p.1))) + Qextra h ≤ QE E h) →
+      (∀ h ∈ Sm, Qctrl BS (fun p => ((h : ZMod p.1))) + Qextra h ≤ quadraticEnergy E h) →
       (∀ h ∈ Sm, (fun p => ((h : ZMod p.1)) : GlobalAssignment BS) ∉ mainArc BS C) →
       (∀ a : GlobalAssignment BS,
         ∑ h ∈ Sm.filter
@@ -90,10 +92,10 @@ theorem minor_arc_bound_fiber_tail :
               Complex.exp (2 * Real.pi * Complex.I * (h : ℂ) * ((L / e : ℕ) : ℂ) / (L : ℂ))
               + (1 - theta e)))
           * Complex.exp (-(2 * Real.pi * Complex.I * (h : ℂ) * ((L / b : ℕ) : ℂ) / (L : ℂ)))‖
-      ≤ ∑ h ∈ Sm, Real.exp (-(8 * (1 / 3 : ℝ) * (1 - 1 / 3)) * QE E h) :=
+      ≤ ∑ h ∈ Sm, Real.exp (-(8 * (1 / 3 : ℝ) * (1 - 1 / 3)) * quadraticEnergy E h) :=
         minor_arc_norm_le (1 / 3) (by norm_num) (by norm_num) E theta b L
           hlb (by intro e he; have := hub e he; linarith) heL he0 hL Sm
-    _ = ∑ h ∈ Sm, Real.exp (-(16 / 9 : ℝ) * QE E h) := by rw [hconst]
+    _ = ∑ h ∈ Sm, Real.exp (-(16 / 9 : ℝ) * quadraticEnergy E h) := by rw [hconst]
     _ ≤ K * ∑' a : {a : GlobalAssignment BS // a ∉ mainArc BS C},
           Real.exp (-(16 / 9 : ℝ) * Qctrl BS a.1) :=
         minor_energy_sum_le_fiber_tail BS E (16 / 9) C K Sm Qextra (by norm_num)

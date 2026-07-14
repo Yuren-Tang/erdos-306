@@ -1,5 +1,6 @@
 import RequestProject.Construction.BaseLoadBudget
 import RequestProject.Construction.ControlEdges
+import RequestProject.CircleMethod.QuadraticEnergy
 import RequestProject.CircleMethod.MainArcNumericBounds
 import RequestProject.Core.ExponentialDomination
 import RequestProject.R2DyadicBlockSupport
@@ -84,7 +85,7 @@ lemma exists_r2_data_of_numerics_set {T : Finset ℕ} {b : ℕ} (hb : 3 ≤ b)
   have hdisj := r2Concrete_ctrl_gadget_disjoint_of_R_outside_blockSupport D0 hRprime hRout'
   exact exists_r2_massBatch hb D0 hbase hlarge hTsmall hdisj hsub k1 hk1le hload
 
-/-- Block-minor lane: the block-fiber-tail data, with `K = b` and `Qextra = QE − Qctrl`
+/-- Block-minor lane: the block-fiber-tail data, with `K = b` and `Qextra = quadraticEnergy − Qctrl`
 (so `hQE` is an equality and `Qextra ≥ 0`, making `hfiber` the `b`-to-1 fiber count). -/
 def r2_blockFiberTail {T : Finset ℕ} {b : ℕ}
     (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
@@ -100,7 +101,7 @@ def r2_blockFiberTail {T : Finset ℕ} {b : ℕ}
     R2BlockFiberTailData D W N MA Sblock Bblock η Ctail where
   C := C
   K := b
-  Qextra := fun h => QE D.E h - Qctrl D.BS (fun p => ((h : ZMod p.1)))
+  Qextra := fun h => quadraticEnergy D.E h - Qctrl D.BS (fun p => ((h : ZMod p.1)))
   hC := hC
   hK := by positivity
   heL := heL
@@ -120,8 +121,8 @@ def r2_blockFiberTail {T : Finset ℕ} {b : ℕ}
     refine le_trans (Finset.sum_le_card_nsmul _ _ 1 ?_) ?_
     · intro h _
       refine Real.exp_le_one_iff.mpr ?_
-      have hnn : 0 ≤ QE D.E h - Qctrl D.BS (fun p => ((h : ZMod p.1))) :=
-        sub_nonneg.mpr (QE_ge_Qctrl D.BS D.E D.ctrlEdges_subset_E h)
+      have hnn : 0 ≤ quadraticEnergy D.E h - Qctrl D.BS (fun p => ((h : ZMod p.1))) :=
+        sub_nonneg.mpr (controlEnergy_le_quadraticEnergy D.BS D.E D.ctrlEdges_subset_E h)
       nlinarith [hnn]
     · simp only [nsmul_eq_mul, mul_one]
       exact_mod_cast le_trans (Finset.card_le_card hsubset)

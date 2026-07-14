@@ -1,5 +1,6 @@
 import RequestProject.R2BlockMinorLane
 import RequestProject.R2MinorSupportPipeline
+import RequestProject.CircleMethod.QuadraticEnergy
 
 open Finset BigOperators GlobalControl
 
@@ -30,7 +31,7 @@ structure R2BlockFiberTailData
   he0 : ∀ e ∈ D.E, 0 < e
   hL : 0 < D.L
   hQE : ∀ h ∈ blockMinorPart MA.Sm Sblock,
-    Qctrl D.BS (fun p => ((h : ZMod p.1))) + Qextra h ≤ QE D.E h
+    Qctrl D.BS (fun p => ((h : ZMod p.1))) + Qextra h ≤ quadraticEnergy D.E h
   hnotmain : ∀ h ∈ blockMinorPart MA.Sm Sblock,
     (fun p => ((h : ZMod p.1)) : GlobalAssignment D.BS) ∉ mainArc D.BS C
   hfiber : ∀ a : GlobalAssignment D.BS,

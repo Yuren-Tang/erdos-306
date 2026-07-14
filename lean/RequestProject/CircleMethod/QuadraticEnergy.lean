@@ -1,0 +1,130 @@
+import RequestProject.Spectral.BernoulliCharacteristic
+import RequestProject.Spectral.BernoulliCyclicFourier
+import Mathlib.Analysis.Normed.Group.AddCircle
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
+
+open Finset BigOperators Classical Real
+
+noncomputable section
+
+namespace CircleMethod
+
+/-!
+# Quadratic Fourier energy
+
+`product_charFun_bound` bounds the character product by
+`exp(-c · ∑_e sin²(π h/e))`.  The minor-arc analysis needs this in terms of the
+**quadratic CRT energy** `quadraticEnergy E h = ∑_{e∈E} ‖h/e‖²` (nearest-integer distance),
+because that is what couples to the global control energy through the frequency
+assignment. The bridge is the elementary pointwise inequality
+`sin²(π x) ≥ 4 ‖x‖²` (Jordan), giving `∑ sin² ≥ 4 quadratic energy`.
+
+`(norm ∘ ((↑) : ℝ → UnitAddCircle)) x = |x - round x| = ‖x‖` is reused as the nearest-integer
+distance.
+-/
+
+/-- The quadratic circle energy
+`quadraticEnergy E h = ∑_{e∈E} ‖h/e‖²`, measured by nearest-integer distance. -/
+def quadraticEnergy (E : Finset ℕ) (h : ℕ) : ℝ :=
+  ∑ e ∈ E, ((norm ∘ ((↑) : ℝ → UnitAddCircle)) ((h : ℝ) / (e : ℝ))) ^ 2
+
+/-- **Jordan bridge (per term).**  `sin²(π x) ≥ 4 ‖x‖²` where `‖x‖ = |x - round x|`. -/
+lemma sin_sq_pi_ge_four_unitCircleNorm_sq (x : ℝ) :
+    4 * ((norm ∘ ((↑) : ℝ → UnitAddCircle)) x) ^ 2 ≤ Real.sin (Real.pi * x) ^ 2 := by
+  set n := round x with hn
+  set d := x - (n : ℝ) with hd
+  have hdabs : |d| ≤ 1 / 2 := by rw [hd, hn]; exact abs_sub_round x
+  -- (norm ∘ ((↑) : ℝ → UnitAddCircle)) x = |d|
+  have hnd : (norm ∘ ((↑) : ℝ → UnitAddCircle)) x = |d| := by
+    rw [Function.comp_apply, UnitAddCircle.norm_eq, hd, hn]
+  -- period: sin²(πx) = sin²(πd)
+  have hper : Real.sin (Real.pi * x) ^ 2 = Real.sin (Real.pi * d) ^ 2 := by
+    have key : ∀ θ : ℝ, 2 * Real.sin θ ^ 2 = 1 - Real.cos (2 * θ) := by
+      intro θ; rw [Real.cos_two_mul]; nlinarith [Real.sin_sq_add_cos_sq θ]
+    have hcos : Real.cos (2 * (Real.pi * x)) = Real.cos (2 * (Real.pi * d)) := by
+      have hxd : 2 * (Real.pi * x) = 2 * (Real.pi * d) + (n : ℝ) * (2 * Real.pi) := by
+        rw [hd]; ring
+      rw [hxd, Real.cos_add_int_mul_two_pi]
+    have e1 := key (Real.pi * x)
+    have e2 := key (Real.pi * d)
+    linarith [e1, e2, hcos]
+  -- 4|d|² ≤ sin²(πd): from 2|d| ≤ |sin(πd)| (Jordan on |d| ∈ [0,1/2])
+  have hsin_nonneg : 0 ≤ Real.sin (Real.pi * |d|) :=
+    Real.sin_nonneg_of_nonneg_of_le_pi (by positivity) (by nlinarith [Real.pi_pos, hdabs])
+  have hjbase : 2 * |d| ≤ Real.sin (Real.pi * |d|) := by
+    have htpos : (0 : ℝ) ≤ Real.pi * |d| := by positivity
+    have htle : Real.pi * |d| ≤ Real.pi / 2 := by nlinarith [Real.pi_pos, hdabs]
+    have hb := Real.mul_le_sin htpos htle
+    have hsimp : (2 / Real.pi) * (Real.pi * |d|) = 2 * |d| := by field_simp
+    rwa [hsimp] at hb
+  have heq : Real.sin (Real.pi * |d|) = |Real.sin (Real.pi * d)| := by
+    rcases abs_cases d with ⟨h1, _⟩ | ⟨h1, _⟩
+    · rw [h1, abs_of_nonneg (h1 ▸ hsin_nonneg)]
+    · rw [h1]
+      have hneg : Real.pi * -d = -(Real.pi * d) := by ring
+      have hle0 : Real.sin (Real.pi * d) ≤ 0 := by
+        have h0 := hsin_nonneg; rw [h1, hneg, Real.sin_neg] at h0; linarith
+      rw [hneg, Real.sin_neg, abs_of_nonpos hle0]
+  have hjord : 2 * |d| ≤ |Real.sin (Real.pi * d)| := heq ▸ hjbase
+  have hsabs : (Real.sin (Real.pi * d)) ^ 2 = |Real.sin (Real.pi * d)| ^ 2 := (sq_abs _).symm
+  rw [hper, hnd, hsabs]
+  nlinarith [hjord, abs_nonneg d, abs_nonneg (Real.sin (Real.pi * d))]
+
+/-- **Bernoulli product decay in quadratic-energy form.**  The Bernoulli character product decays as
+`exp(-8 θ₀(1-θ₀) · quadratic energy(h))`. -/
+theorem product_charFun_bound_quadraticEnergy (θ₀ : ℝ) (hθ₀ : 0 < θ₀) (hθ₀' : θ₀ ≤ 1 / 2)
+    (E : Finset ℕ) (θ : ℕ → ℝ)
+    (hθ_lb : ∀ e ∈ E, θ₀ ≤ θ e) (hθ_ub : ∀ e ∈ E, θ e ≤ 1 - θ₀) (h : ℕ) :
+    ‖∏ e ∈ E, bernoulliCharFun (θ e) (h / (e : ℝ))‖ ≤
+      Real.exp (-(8 * θ₀ * (1 - θ₀)) * quadraticEnergy E h) := by
+  refine le_trans (product_charFun_bound θ₀ hθ₀ hθ₀' E θ hθ_lb hθ_ub h) ?_
+  apply Real.exp_le_exp.mpr
+  have hc : 0 ≤ 2 * θ₀ * (1 - θ₀) := by nlinarith
+  -- ∑ sin² ≥ 4 quadratic energy  ⇒  -(2c)∑sin² ≤ -(8c) quadratic energy
+  have hsum : 4 * quadraticEnergy E h ≤ ∑ e ∈ E, Real.sin (Real.pi * (h : ℝ) / (e : ℝ)) ^ 2 := by
+    rw [quadraticEnergy, Finset.mul_sum]
+    refine Finset.sum_le_sum (fun e _ => ?_)
+    have := sin_sq_pi_ge_four_unitCircleNorm_sq ((h : ℝ) / (e : ℝ))
+    calc 4 * ((norm ∘ ((↑) : ℝ → UnitAddCircle)) ((h : ℝ) / (e : ℝ))) ^ 2
+        ≤ Real.sin (Real.pi * ((h : ℝ) / (e : ℝ))) ^ 2 := this
+      _ = Real.sin (Real.pi * (h : ℝ) / (e : ℝ)) ^ 2 := by rw [mul_div_assoc]
+  nlinarith [hsum, hc, mul_le_mul_of_nonneg_left hsum hc]
+
+/-- **Minor-arc norm bound.**  Over any frequency set `S`, the norm of the
+Fourier-identity sum is bounded by the energy sum `∑ exp(-c·quadratic energy(h))`.  This is the
+triangle-inequality half of the minor arc; the remaining arithmetic step bounds
+that energy sum through the frequency assignment and the global control energy. -/
+theorem minor_arc_norm_le (θ₀ : ℝ) (hθ₀ : 0 < θ₀) (hθ₀' : θ₀ ≤ 1 / 2)
+    (E : Finset ℕ) (theta : ℕ → ℝ) (b L : ℕ)
+    (hθ_lb : ∀ e ∈ E, θ₀ ≤ theta e) (hθ_ub : ∀ e ∈ E, theta e ≤ 1 - θ₀)
+    (heL : ∀ e ∈ E, e ∣ L) (he0 : ∀ e ∈ E, 0 < e) (hL : 0 < L) (S : Finset ℕ) :
+    ‖∑ h ∈ S,
+        (∏ e ∈ E, ((theta e : ℂ) *
+            Complex.exp (2 * Real.pi * Complex.I * (h : ℂ) * ((L / e : ℕ) : ℂ) / (L : ℂ))
+            + (1 - theta e)))
+        * Complex.exp (-(2 * Real.pi * Complex.I * (h : ℂ) * ((L / b : ℕ) : ℂ) / (L : ℂ)))‖
+      ≤ ∑ h ∈ S, Real.exp (-(8 * θ₀ * (1 - θ₀)) * quadraticEnergy E h) := by
+  refine le_trans (norm_sum_le _ _) ?_
+  refine Finset.sum_le_sum (fun h _ => ?_)
+  rw [norm_mul]
+  -- the target phase has norm 1 (purely imaginary exponent)
+  have hphase : ‖Complex.exp (-(2 * Real.pi * Complex.I * (h : ℂ) * ((L / b : ℕ) : ℂ) / (L : ℂ)))‖ = 1 := by
+    rw [Complex.norm_exp]
+    have hre : (-(2 * Real.pi * Complex.I * (h : ℂ) * ((L / b : ℕ) : ℂ) / (L : ℂ))).re = 0 := by
+      simp [Complex.div_re, Complex.mul_re, Complex.mul_im, Complex.I_re, Complex.I_im]
+    rw [hre, Real.exp_zero]
+  rw [hphase, mul_one]
+  -- rewrite the product factors as bernoulliCharFun, then apply the quadraticEnergy bound
+  have hprod : (∏ e ∈ E, ((theta e : ℂ) *
+        Complex.exp (2 * Real.pi * Complex.I * (h : ℂ) * ((L / e : ℕ) : ℂ) / (L : ℂ))
+        + (1 - theta e)))
+      = ∏ e ∈ E, bernoulliCharFun (theta e) ((h : ℝ) / (e : ℝ)) := by
+    refine Finset.prod_congr rfl (fun e he => ?_)
+    exact periodizedBernoulliFactor_eq_charFun
+      (theta e) h e L (he0 e he) (heL e he) hL
+  rw [hprod]
+  exact product_charFun_bound_quadraticEnergy θ₀ hθ₀ hθ₀' E theta hθ_lb hθ_ub h
+
+end CircleMethod
+
+end

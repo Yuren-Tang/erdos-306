@@ -1,5 +1,6 @@
 import RequestProject.R2MinorSupportBudget
 import RequestProject.CircleMethod.MinorArcEstimates
+import RequestProject.CircleMethod.QuadraticEnergy
 import RequestProject.Spectral.BernoulliCyclicFourier
 
 open Finset BigOperators GlobalControl
@@ -16,17 +17,17 @@ be developed as one coherent lane, not as scattered wrapper lemmas.
 
 The key point is that the final `R2MinorSupportBudgetData` asks for a sum of
 `fourierNormWeight`, while the global-control estimates are naturally stated in
-`QE`-energy language.  The first lemmas below bridge those two formulations.
+`quadraticEnergy`-energy language.  The first lemmas below bridge those two formulations.
 -/
 
-/-- Pointwise C2/QE bridge at the constant used by the final minor arc. -/
+/-- Pointwise C2/quadraticEnergy bridge at the constant used by the final minor arc. -/
 lemma fourierNormWeight_le_exp_QE
     (E : Finset ℕ) (theta : ℕ → ℝ) (q L : ℕ)
     (hθ_lb : ∀ e ∈ E, (1 / 3 : ℝ) ≤ theta e)
     (hθ_ub : ∀ e ∈ E, theta e ≤ 2 / 3)
     (heL : ∀ e ∈ E, e ∣ L) (he0 : ∀ e ∈ E, 0 < e) (hL : 0 < L)
     (h : ℕ) :
-    fourierNormWeight E theta q L h ≤ Real.exp (-(16 / 9 : ℝ) * QE E h) := by
+    fourierNormWeight E theta q L h ≤ Real.exp (-(16 / 9 : ℝ) * quadraticEnergy E h) := by
   unfold fourierNormWeight fourierTerm
   rw [norm_mul]
   have hphase :
@@ -48,7 +49,7 @@ lemma fourierNormWeight_le_exp_QE
     exact periodizedBernoulliFactor_eq_charFun
       (theta e) h e L (he0 e he) (heL e he) hL
   rw [hprod]
-  have hbound := product_charFun_bound_QE (1 / 3) (by norm_num) (by norm_num)
+  have hbound := product_charFun_bound_quadraticEnergy (1 / 3) (by norm_num) (by norm_num)
     E theta hθ_lb (by
       intro e he
       have := hθ_ub e he
@@ -65,11 +66,11 @@ lemma sum_fourierNormWeight_le_exp_QE
     (hθ_ub : ∀ e ∈ E, theta e ≤ 2 / 3)
     (heL : ∀ e ∈ E, e ∣ L) (he0 : ∀ e ∈ E, 0 < e) (hL : 0 < L) :
     ∑ h ∈ S, fourierNormWeight E theta q L h
-      ≤ ∑ h ∈ S, Real.exp (-(16 / 9 : ℝ) * QE E h) := by
+      ≤ ∑ h ∈ S, Real.exp (-(16 / 9 : ℝ) * quadraticEnergy E h) := by
   exact Finset.sum_le_sum (fun h _ =>
     fourierNormWeight_le_exp_QE E theta q L hθ_lb hθ_ub heL he0 hL h)
 
-/-- Block-minor budget from a `QE`-energy budget over the block part. -/
+/-- Block-minor budget from a `quadraticEnergy`-energy budget over the block part. -/
 theorem r2_block_minor_budget_from_exp_QE
     {T : Finset ℕ} {b : ℕ}
     (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
@@ -80,7 +81,7 @@ theorem r2_block_minor_budget_from_exp_QE
     (hL : 0 < D.L)
     (hExp :
       ∑ h ∈ blockMinorPart MA.Sm Sblock,
-        Real.exp (-(16 / 9 : ℝ) * QE D.E h) ≤ Bblock) :
+        Real.exp (-(16 / 9 : ℝ) * quadraticEnergy D.E h) ≤ Bblock) :
     ∑ h ∈ blockMinorPart MA.Sm Sblock,
       fourierNormWeight D.E W.theta (D.L / b) D.L h ≤ Bblock := by
   exact le_trans
@@ -103,7 +104,7 @@ theorem r2_block_minor_budget_from_fiber_tail
     (he0 : ∀ e ∈ D.E, 0 < e)
     (hL : 0 < D.L)
     (hQE : ∀ h ∈ blockMinorPart MA.Sm Sblock,
-      Qctrl D.BS (fun p => ((h : ZMod p.1))) + Qextra h ≤ QE D.E h)
+      Qctrl D.BS (fun p => ((h : ZMod p.1))) + Qextra h ≤ quadraticEnergy D.E h)
     (hnotmain : ∀ h ∈ blockMinorPart MA.Sm Sblock,
       (fun p => ((h : ZMod p.1)) : GlobalAssignment D.BS) ∉ mainArc D.BS C)
     (hfiber : ∀ a : GlobalAssignment D.BS,
@@ -140,7 +141,7 @@ theorem exists_r2_block_minor_budget_from_fiber_tail_g7
       (∀ e ∈ D.E, e ∣ D.L) →
       (∀ e ∈ D.E, 0 < e) → 0 < D.L →
       (∀ h ∈ blockMinorPart MA.Sm Sblock,
-        Qctrl D.BS (fun p => ((h : ZMod p.1))) + Qextra h ≤ QE D.E h) →
+        Qctrl D.BS (fun p => ((h : ZMod p.1))) + Qextra h ≤ quadraticEnergy D.E h) →
       (∀ h ∈ blockMinorPart MA.Sm Sblock,
         (fun p => ((h : ZMod p.1)) : GlobalAssignment D.BS) ∉ mainArc D.BS C) →
       (∀ a : GlobalAssignment D.BS,

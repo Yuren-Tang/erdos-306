@@ -1,4 +1,5 @@
 import RequestProject.Construction.ControlEdges
+import RequestProject.CircleMethod.FrequencyControlEnergy
 import RequestProject.FiberCount
 
 open Finset BigOperators Classical
@@ -104,7 +105,7 @@ lemma edgePrimeSupport_ctrlEdges_subset_blockSupport (BS : BlockSystem) :
   obtain ⟨pq, hpq, rfl⟩ := he
   have hrprime : Nat.Prime r := Nat.prime_of_mem_primeFactors hr
   have hrdvd : r ∣ pq.1 * pq.2 := Nat.dvd_of_mem_primeFactors hr
-  obtain ⟨hp1, hp2, _hne⟩ := ctrlPairs_distinct_primes BS hpq
+  obtain ⟨hp1, hp2, _hne⟩ := controlPairs_distinct_primes BS hpq
   obtain ⟨hmem1, hmem2⟩ := ctrlPairs_mem_blockSupport BS hpq
   rcases (Nat.Prime.dvd_mul hrprime).mp hrdvd with hdiv | hdiv
   · have hr_eq : r = pq.1 := (Nat.prime_dvd_prime_iff_eq hrprime hp1).mp hdiv
