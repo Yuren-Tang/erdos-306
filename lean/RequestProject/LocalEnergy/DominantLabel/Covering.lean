@@ -26,39 +26,39 @@ private lemma large_crt_pair_count
     (hP : ∀ p ∈ P, Nat.Prime p ∧ X ≤ p ∧ p ≤ 2*X)
     (a : BlockAssignment P) (R : ℝ) (hQ : QP P a ≤ R)
     (B : ℝ) (hB : 0 < B) :
-    (((orderedPrimePairsA P).filter (fun pq =>
+    (((increasingPairs P).filter (fun pq =>
         B < |(crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2) : ℝ)|)).card : ℝ)
       ≤ 16 * R * (X:ℝ)^4 / B^2 := by
   rw [ le_div_iff₀ ( by positivity ) ];
-  have h_card_bound : ∀ pq ∈ orderedPrimePairsA P, B < |(crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2):ℝ)| → ((crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2):ℝ)/((pq.1.1:ℝ)*pq.2.1))^2 ≥ B^2/(16*X^4) := by
+  have h_card_bound : ∀ pq ∈ increasingPairs P, B < |(crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2):ℝ)| → ((crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2):ℝ)/((pq.1.1:ℝ)*pq.2.1))^2 ≥ B^2/(16*X^4) := by
     intros pq hpq hBpq
     have h_bound : (pq.1.1 : ℝ) * (pq.2.1 : ℝ) ≤ 4 * (X : ℝ) ^ 2 := by
       exact_mod_cast by nlinarith [ hP _ pq.1.2, hP _ pq.2.2 ] ;
     rw [ div_pow, ge_iff_le, div_le_div_iff₀ ] <;> try positivity;
     · exact le_trans ( mul_le_mul_of_nonneg_left ( pow_le_pow_left₀ ( by positivity ) h_bound 2 ) ( by positivity ) ) ( by nlinarith [ show ( |↑ ( crtRepr ( pq.1 : ℕ ) ( pq.2 : ℕ ) ( a pq.1 ) ( a pq.2 ) )| : ℝ ) ^ 2 = ( ↑ ( crtRepr ( pq.1 : ℕ ) ( pq.2 : ℕ ) ( a pq.1 ) ( a pq.2 ) ) : ℝ ) ^ 2 by rw [ sq_abs ], abs_mul_abs_self ( ( crtRepr ( pq.1 : ℕ ) ( pq.2 : ℕ ) ( a pq.1 ) ( a pq.2 ) : ℤ ) : ℝ ), pow_le_pow_left₀ ( by positivity ) hBpq.le 2 ] );
     · exact sq_pos_of_pos ( mul_pos ( Nat.cast_pos.mpr ( Nat.Prime.pos ( hP _ pq.1.2 |>.1 ) ) ) ( Nat.cast_pos.mpr ( Nat.Prime.pos ( hP _ pq.2.2 |>.1 ) ) ) );
-  have h_sum_bound : ∑ pq ∈ orderedPrimePairsA P, ((crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2):ℝ)/((pq.1.1:ℝ)*pq.2.1))^2 ≥ ∑ pq ∈ orderedPrimePairsA P, if B < |(crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2):ℝ)| then B^2/(16*X^4) else 0 := by
+  have h_sum_bound : ∑ pq ∈ increasingPairs P, ((crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2):ℝ)/((pq.1.1:ℝ)*pq.2.1))^2 ≥ ∑ pq ∈ increasingPairs P, if B < |(crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2):ℝ)| then B^2/(16*X^4) else 0 := by
     exact Finset.sum_le_sum fun x hx => by split_ifs <;> [ exact h_card_bound x hx ‹_›; exact by positivity ] ;
   have h_indicator :
-      (∑ pq ∈ orderedPrimePairsA P,
+      (∑ pq ∈ increasingPairs P,
           if B < |(crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2) : ℝ)|
           then B ^ 2 / (16 * X ^ 4) else 0) =
-        (((orderedPrimePairsA P).filter (fun pq =>
+        (((increasingPairs P).filter (fun pq =>
           B < |(crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2) : ℝ)|)).card : ℝ) *
             (B ^ 2 / (16 * X ^ 4)) := by
     rw [← Finset.sum_filter]
     simp
   have h_count_energy :
-      (((orderedPrimePairsA P).filter (fun pq =>
+      (((increasingPairs P).filter (fun pq =>
         B < |(crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2) : ℝ)|)).card : ℝ) *
           (B ^ 2 / (16 * X ^ 4)) ≤ R := by
     rw [← h_indicator]
     exact h_sum_bound.trans (by simpa [QP] using hQ)
   have hscale_pos : 0 < (16 : ℝ) * X ^ 4 := by positivity
   calc
-    (((orderedPrimePairsA P).filter (fun pq =>
+    (((increasingPairs P).filter (fun pq =>
         B < |(crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2) : ℝ)|)).card : ℝ) * B ^ 2 =
-      ((((orderedPrimePairsA P).filter (fun pq =>
+      ((((increasingPairs P).filter (fun pq =>
           B < |(crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2) : ℝ)|)).card : ℝ) *
           (B ^ 2 / (16 * X ^ 4))) * (16 * X ^ 4) := by
         field_simp
@@ -76,20 +76,20 @@ private lemma large_crt_basepoint_sum
     (a : BlockAssignment P) (B : ℝ) :
     (∑ p0 ∈ P.attach, (P.attach.filter (fun q => q ≠ p0 ∧
         B < |(crtRepr p0.1 q.1 (a p0) (a q) : ℝ)|)).card)
-      = 2 * ((orderedPrimePairsA P).filter (fun pq =>
+      = 2 * ((increasingPairs P).filter (fun pq =>
           B < |(crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2) : ℝ)|)).card := by
   have h_sum_eq : ∑ p0 ∈ P.attach, (Finset.filter (fun q => q ≠ p0 ∧ B < |(crtRepr p0.1 q.1 (a p0) (a q) : ℝ)|) P.attach).card = (Finset.filter (fun pq => pq.1 ≠ pq.2 ∧ B < |(crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2) : ℝ)|) (P.attach ×ˢ P.attach)).card := by
     simp +decide only [card_filter];
     erw [Finset.sum_product] ; simp +decide;
     simp +decide only [eq_comm];
-  have h_symm : Finset.filter (fun pq => pq.1 ≠ pq.2 ∧ B < |(crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2) : ℝ)|) (P.attach ×ˢ P.attach) = Finset.image (fun pq => (pq.2, pq.1)) (Finset.filter (fun pq => B < |(crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2) : ℝ)|) (orderedPrimePairsA P)) ∪ Finset.filter (fun pq => B < |(crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2) : ℝ)|) (orderedPrimePairsA P) := by
-    ext ⟨p, q⟩; simp [orderedPrimePairsA];
+  have h_symm : Finset.filter (fun pq => pq.1 ≠ pq.2 ∧ B < |(crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2) : ℝ)|) (P.attach ×ˢ P.attach) = Finset.image (fun pq => (pq.2, pq.1)) (Finset.filter (fun pq => B < |(crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2) : ℝ)|) (increasingPairs P)) ∪ Finset.filter (fun pq => B < |(crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2) : ℝ)|) (increasingPairs P) := by
+    ext ⟨p, q⟩; simp [increasingPairs];
     constructor <;> intro h;
     · cases lt_or_gt_of_ne h.1 <;> [ exact Or.inr ⟨ by assumption, h.2 ⟩ ; exact Or.inl ⟨ q, q.2, p, p.2, ⟨ by assumption, by simpa only [ crtRepr_symm _ _ ( hP _ p.2 ) ( hP _ q.2 ) ( by aesop ) ] using h.2 ⟩, rfl, rfl ⟩ ];
     · grind +suggestions;
   rw [ h_sum_eq, h_symm, Finset.card_union_of_disjoint ];
   · rw [ two_mul, Finset.card_image_of_injective ] ; norm_num [ Function.Injective ];
-  · simp +contextual [ Finset.disjoint_left, orderedPrimePairsA ];
+  · simp +contextual [ Finset.disjoint_left, increasingPairs ];
     lia
 
 /-
@@ -108,7 +108,7 @@ lemma exists_sparse_crt_basepoint
           B < |(crtRepr p0.1 q.1 (a p0) (a q) : ℝ)|)).card : ℝ)
         ≤ 32 * R * (X:ℝ)^4 / (B^2 * P.card) := by
   have h_avg : (∑ p0 ∈ P.attach, (P.attach.filter (fun q => q ≠ p0 ∧ B < |(crtRepr p0.1 q.1 (a p0) (a q) : ℝ)|)).card : ℝ) ≤ 2 * (16 * R * (X:ℝ)^4 / B^2) := by
-    have h_avg : (∑ p0 ∈ P.attach, (P.attach.filter (fun q => q ≠ p0 ∧ B < |(crtRepr p0.1 q.1 (a p0) (a q) : ℝ)|)).card : ℝ) = 2 * ((orderedPrimePairsA P).filter (fun pq => B < |(crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2) : ℝ)|)).card := by
+    have h_avg : (∑ p0 ∈ P.attach, (P.attach.filter (fun q => q ≠ p0 ∧ B < |(crtRepr p0.1 q.1 (a p0) (a q) : ℝ)|)).card : ℝ) = 2 * ((increasingPairs P).filter (fun pq => B < |(crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2) : ℝ)|)).card := by
       convert congr_arg ( ( ↑ ) : ℕ → ℝ ) ( large_crt_basepoint_sum P ( fun p hp => ( hP p hp ).1 ) a B ) using 1; all_goals norm_cast;
     exact h_avg.symm ▸ mul_le_mul_of_nonneg_left ( mod_cast large_crt_pair_count X hX P hP a R hQ B hB ) zero_le_two;
   contrapose! h_avg;
@@ -204,7 +204,7 @@ private lemma crossLabel_energy_sum_le
     have h_cross_le_2QP : (∑ p ∈ P.attach, ∑ q ∈ P.attach, if p ≠ q then ((crtRepr p q (a p) (a q) : ℝ) / ((p:ℝ) * (q:ℝ)))^2 else 0) = 2 * QP P a := by
       have h_cross_le_2QP : (∑ p ∈ P.attach, ∑ q ∈ P.attach, if p < q then ((crtRepr p q (a p) (a q) : ℝ) / ((p:ℝ) * (q:ℝ)))^2 else 0) = QP P a := by
         unfold QP; simp +decide [ Finset.sum_ite ] ;
-        simp +decide [ Finset.sum_filter, Finset.sum_product, orderedPrimePairsA ];
+        simp +decide [ Finset.sum_filter, Finset.sum_product, increasingPairs ];
       have h_cross_le_2QP : (∑ p ∈ P.attach, ∑ q ∈ P.attach, if p > q then ((crtRepr p q (a p) (a q) : ℝ) / ((p:ℝ) * (q:ℝ)))^2 else 0) = QP P a := by
         rw [ ← h_cross_le_2QP, Finset.sum_comm ];
         refine' Finset.sum_congr rfl fun p hp => Finset.sum_congr rfl fun q hq => _;
@@ -307,9 +307,9 @@ lemma zero_label_dominant_of_large_class (X : ℕ) (hX : 1 ≤ X) (P : Finset �
     have h_cross : ∀ q ∈ P.attach, q ≠ p → crtRepr (p.1) (q.1) (a p) (a q) = 0 := by
       intro q hq hqp
       have h_cross : ((crtRepr (p.1) (q.1) (a p) (a q) : ℝ) / ((p.1 : ℝ) * (q.1 : ℝ)))^2 = 0 := by
-        have h_cross : ∀ pq ∈ orderedPrimePairsA P, ((crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2) : ℝ) / ((pq.1.1 : ℝ) * (pq.2.1 : ℝ)))^2 = 0 := by
+        have h_cross : ∀ pq ∈ increasingPairs P, ((crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2) : ℝ) / ((pq.1.1 : ℝ) * (pq.2.1 : ℝ)))^2 = 0 := by
           exact fun pq hpq => by rw [ QP ] at hQ0; exact Finset.sum_eq_zero_iff_of_nonneg ( fun _ _ => sq_nonneg _ ) |>.1 hQ0 pq hpq;
-        cases lt_or_gt_of_ne hqp <;> simp_all +decide [ orderedPrimePairsA ];
+        cases lt_or_gt_of_ne hqp <;> simp_all +decide [ increasingPairs ];
         grind +suggestions;
       simp_all +decide [ div_eq_iff, NeZero.ne ];
     obtain ⟨q, hq⟩ : ∃ q ∈ P.attach, q ≠ p := by

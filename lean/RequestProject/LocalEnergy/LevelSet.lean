@@ -44,7 +44,7 @@ def SingleBlockPartitionBound (c : ℝ) : Prop :=
   ∃ C : ℝ, 0 < C ∧
     ∀ (P : Finset ℕ) (hP : ∀ p ∈ P, Nat.Prime p),
       IsDensePrimeBlock P → 2 ≤ P.card →
-        blockPartFun P hP c ≤ C / sigmaP P
+        blockPartitionFunction P hP c ≤ C / sigmaP P
 
 /-
 **Mesh `R_C ≤ R_w` (asymptotic).**  For `X` large the fingerprint threshold
@@ -159,20 +159,20 @@ theorem single_block_partition_bound (c : ℝ) (hc : 0 < c) :
     by_cases hXbig : X1 ≤ (X:ℝ);
     · have hlevel : ∀ R:ℝ, 1≤R → ((Finset.univ.filter (fun a:BlockAssignment P => QP P a ≤ R)).card:ℝ) ≤ C0*Real.exp (eps*R)*(1+Real.sqrt R/sigmaP P) := fun R hR => Huni X hXbig P hPrange hNbound R hR;
       have hser := RequestProject.partition_function_bound_of_level_sets (fun a:BlockAssignment P => QP P a) (fun a => QP_nonneg P a) c eps C0 (sigmaP P) hc (by positivity) (lt_of_le_of_lt (min_le_left _ _) (by linarith)) hC0.le hσpos hlevel;
-      have hKge : blockPartFun P hP c ≤ K * (1 + 1 / sigmaP P) := by
-        unfold blockPartFun
+      have hKge : blockPartitionFunction P hP c ≤ K * (1 + 1 / sigmaP P) := by
+        unfold blockPartitionFunction
         rw [hK_def]
         convert hser using 1
       rw [ le_div_iff₀ hσpos ];
       refine le_trans ?_ ( le_max_left _ _ );
       nlinarith [ mul_div_cancel₀ 1 hσpos.ne', show 0 ≤ K by exact div_nonneg ( mul_nonneg hC0.le ( Real.exp_nonneg _ ) ) ( sq_nonneg _ ) ];
-    · have hbpf_le : blockPartFun P hP c ≤ (2*(X:ℝ))^P.card := by
+    · have hbpf_le : blockPartitionFunction P hP c ≤ (2*(X:ℝ))^P.card := by
         refine' le_trans ( Finset.sum_le_sum fun a _ => Real.exp_le_one_iff.mpr _ ) _ <;> norm_num;
         · exact mul_nonneg hc.le ( QP_nonneg P a );
         · exact le_trans ( Finset.prod_le_prod ( fun _ _ => Nat.cast_nonneg _ ) fun _ _ => show ( _ : ℝ ) ≤ 2 * X from mod_cast hPrange _ ( Subtype.mem _ ) |>.2.2 ) ( by norm_num );
       have hXM : X ≤ M := by
         exact Nat.le_of_lt_succ ( by rw [ ← @Nat.cast_lt ℝ ] ; push_cast; linarith [ Nat.le_ceil X1 ] );
-      have hb : blockPartFun P hP c ≤ (2*(M:ℝ))^(2*M) := by
+      have hb : blockPartitionFunction P hP c ≤ (2*(M:ℝ))^(2*M) := by
         refine le_trans hbpf_le ?_;
         exact le_trans ( pow_le_pow_left₀ ( by positivity ) ( mul_le_mul_of_nonneg_left ( Nat.cast_le.mpr hXM ) zero_le_two ) _ ) ( pow_le_pow_right₀ ( by linarith [ show ( M : ℝ ) ≥ 1 by exact Nat.one_le_cast.mpr ( Nat.ceil_pos.mpr hX1 ) ] ) ( by linarith [ show ( P.card : ℕ ) ≤ 2 * X by exact_mod_cast hN2X ] ) );
       rw [ le_div_iff₀ hσpos ];

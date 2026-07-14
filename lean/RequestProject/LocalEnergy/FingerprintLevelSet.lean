@@ -84,7 +84,7 @@ lemma energy_relation (P F : Finset ℕ) [∀ p : P, NeZero p.1]
       · grind;
       · unfold extendAssign; aesop;
     · intro x hx y hy; aesop;
-  · simp +decide [ Finset.subset_iff, orderedPrimePairsA ];
+  · simp +decide [ Finset.subset_iff, increasingPairs ];
     aesop;
   · exact fun _ _ _ => sq_nonneg _
 

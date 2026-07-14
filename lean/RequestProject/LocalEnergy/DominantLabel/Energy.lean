@@ -66,12 +66,12 @@ lemma dominant_label_bound (X : ℕ) (hX : 16 ≤ X)
   have hc : (1 - ρ) * (P.card : ℝ) ≤ c := by
     exact hclass;
   -- From $hQ$, we have $R \ge m^2 \cdot S$ where $S = \sum_{pq \in Sset} W pq$.
-  have hR_ge_m2S : R ≥ (m : ℝ) ^ 2 * (∑ pq ∈ (orderedPrimePairsA P).filter (fun pq => pq.1 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ))) ∧ pq.2 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ)))), (1 : ℝ) / ((pq.1.1 : ℝ) * (pq.2.1 : ℝ)) ^ 2) := by
-    have hR_ge_m2S : ∀ pq ∈ (orderedPrimePairsA P).filter (fun pq => pq.1 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ))) ∧ pq.2 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ)))), ((crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2) : ℝ) / ((pq.1.1 : ℝ) * (pq.2.1 : ℝ))) ^ 2 = (m : ℝ) ^ 2 * (1 : ℝ) / ((pq.1.1 : ℝ) * (pq.2.1 : ℝ)) ^ 2 := by
+  have hR_ge_m2S : R ≥ (m : ℝ) ^ 2 * (∑ pq ∈ (increasingPairs P).filter (fun pq => pq.1 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ))) ∧ pq.2 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ)))), (1 : ℝ) / ((pq.1.1 : ℝ) * (pq.2.1 : ℝ)) ^ 2) := by
+    have hR_ge_m2S : ∀ pq ∈ (increasingPairs P).filter (fun pq => pq.1 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ))) ∧ pq.2 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ)))), ((crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2) : ℝ) / ((pq.1.1 : ℝ) * (pq.2.1 : ℝ))) ^ 2 = (m : ℝ) ^ 2 * (1 : ℝ) / ((pq.1.1 : ℝ) * (pq.2.1 : ℝ)) ^ 2 := by
       intros pq hpq
       have h_crt : crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2) = m := by
         apply crtRepr_eq_of_eq_intCast;
-        all_goals norm_num [ orderedPrimePairsA ] at hpq ⊢;
+        all_goals norm_num [ increasingPairs ] at hpq ⊢;
         any_goals tauto;
         · exact hP _ pq.1.2 |>.1;
         · exact hP _ pq.2.2 |>.1;
@@ -80,20 +80,20 @@ lemma dominant_label_bound (X : ℕ) (hX : 16 ≤ X)
           norm_num at *;
           nlinarith [ hP _ pq.1.2, hP _ pq.2.2, show ( pq.1 : ℕ ) < pq.2 from hpq.1 ];
       rw [ h_crt ] ; ring;
-    have hR_ge_m2S : ∑ pq ∈ (orderedPrimePairsA P).filter (fun pq => pq.1 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ))) ∧ pq.2 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ)))), ((crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2) : ℝ) / ((pq.1.1 : ℝ) * (pq.2.1 : ℝ))) ^ 2 ≤ R := by
+    have hR_ge_m2S : ∑ pq ∈ (increasingPairs P).filter (fun pq => pq.1 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ))) ∧ pq.2 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ)))), ((crtRepr pq.1.1 pq.2.1 (a pq.1) (a pq.2) : ℝ) / ((pq.1.1 : ℝ) * (pq.2.1 : ℝ))) ^ 2 ≤ R := by
       refine' le_trans _ hQ;
       exact Finset.sum_le_sum_of_subset_of_nonneg ( Finset.filter_subset _ _ ) fun _ _ _ => sq_nonneg _;
     rw [ Finset.mul_sum _ _ _ ] ; exact hR_ge_m2S.trans' ( Finset.sum_le_sum fun x hx => by aesop ) ;
   -- We need to show that $S \ge \frac{(1-\rho)^2}{25} \sigma_P^2$.
-  have hS_ge_sigmaP2 : (∑ pq ∈ (orderedPrimePairsA P).filter (fun pq => pq.1 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ))) ∧ pq.2 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ)))), (1 : ℝ) / ((pq.1.1 : ℝ) * (pq.2.1 : ℝ)) ^ 2) ≥ (1 - ρ) ^ 2 / 25 * (sigmaP P) ^ 2 := by
+  have hS_ge_sigmaP2 : (∑ pq ∈ (increasingPairs P).filter (fun pq => pq.1 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ))) ∧ pq.2 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ)))), (1 : ℝ) / ((pq.1.1 : ℝ) * (pq.2.1 : ℝ)) ^ 2) ≥ (1 - ρ) ^ 2 / 25 * (sigmaP P) ^ 2 := by
     -- We need to show that $S \ge \frac{c(c-1)}{2} \cdot \frac{1}{16X^4}$.
-    have hS_ge_c_c_minus_1_div_16X4 : (∑ pq ∈ (orderedPrimePairsA P).filter (fun pq => pq.1 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ))) ∧ pq.2 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ)))), (1 : ℝ) / ((pq.1.1 : ℝ) * (pq.2.1 : ℝ)) ^ 2) ≥ (c * (c - 1) / 2 : ℝ) * (1 / (16 * X ^ 4 : ℝ)) := by
-      have hS_ge_c_c_minus_1_div_16X4 : (∑ pq ∈ (orderedPrimePairsA P).filter (fun pq => pq.1 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ))) ∧ pq.2 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ)))), (1 : ℝ) / ((pq.1.1 : ℝ) * (pq.2.1 : ℝ)) ^ 2) ≥ (∑ pq ∈ (orderedPrimePairsA P).filter (fun pq => pq.1 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ))) ∧ pq.2 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ)))), (1 : ℝ) / (16 * X ^ 4 : ℝ)) := by
+    have hS_ge_c_c_minus_1_div_16X4 : (∑ pq ∈ (increasingPairs P).filter (fun pq => pq.1 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ))) ∧ pq.2 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ)))), (1 : ℝ) / ((pq.1.1 : ℝ) * (pq.2.1 : ℝ)) ^ 2) ≥ (c * (c - 1) / 2 : ℝ) * (1 / (16 * X ^ 4 : ℝ)) := by
+      have hS_ge_c_c_minus_1_div_16X4 : (∑ pq ∈ (increasingPairs P).filter (fun pq => pq.1 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ))) ∧ pq.2 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ)))), (1 : ℝ) / ((pq.1.1 : ℝ) * (pq.2.1 : ℝ)) ^ 2) ≥ (∑ pq ∈ (increasingPairs P).filter (fun pq => pq.1 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ))) ∧ pq.2 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ)))), (1 : ℝ) / (16 * X ^ 4 : ℝ)) := by
         refine Finset.sum_le_sum fun pq hpq => one_div_le_one_div_of_le ?_ ?_ <;> norm_cast <;> norm_num at *;
         · exact pow_pos ( mul_pos ( Nat.cast_pos.mpr ( Nat.Prime.pos ( hP _ pq.1.2 |>.1 ) ) ) ( Nat.cast_pos.mpr ( Nat.Prime.pos ( hP _ pq.2.2 |>.1 ) ) ) ) _;
         · exact le_trans ( Nat.pow_le_pow_left ( Nat.mul_le_mul ( hP _ pq.1.2 |>.2.2 ) ( hP _ pq.2.2 |>.2.2 ) ) 2 ) ( by ring_nf; norm_num );
-      have h_card_filter : (Finset.filter (fun pq => pq.1 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ))) ∧ pq.2 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ)))) (orderedPrimePairsA P)).card = c * (c - 1) / 2 := by
-        rw [card_filter_orderedPrimePairsA, Nat.choose_two_right]
+      have h_card_filter : (Finset.filter (fun pq => pq.1 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ))) ∧ pq.2 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ)))) (increasingPairs P)).card = c * (c - 1) / 2 := by
+        rw [card_filter_increasingPairs, Nat.choose_two_right]
       rcases c with ( _ | _ | c ) <;> norm_num at *;
       · exact Finset.sum_nonneg fun _ _ => by positivity;
       · exact Finset.sum_nonneg fun _ _ => by positivity;
@@ -101,15 +101,15 @@ lemma dominant_label_bound (X : ℕ) (hX : 16 ≤ X)
         exact Or.inl ( by rw [ Nat.cast_div ( show 2 ∣ 2 + c * 3 + c ^ 2 from even_iff_two_dvd.mp ( by simp +arith +decide [ parity_simps ] ) ) ( by norm_num ) ] ; push_cast ; ring );
     -- We need to show that $\sigma_P^2 \le \frac{N(N-1)}{2} \cdot \frac{1}{X^4}$.
     have hsigmaP2_le_N_N_minus_1_div_2X4 : (sigmaP P) ^ 2 ≤ (P.card * (P.card - 1) / 2 : ℝ) * (1 / (X ^ 4 : ℝ)) := by
-      have hsigmaP2_le_N_N_minus_1_div_2X4 : (sigmaP P) ^ 2 ≤ (∑ pq ∈ orderedPrimePairsA P, (1 : ℝ) / ((pq.1.1 : ℝ) * (pq.2.1 : ℝ)) ^ 2) := by
+      have hsigmaP2_le_N_N_minus_1_div_2X4 : (sigmaP P) ^ 2 ≤ (∑ pq ∈ increasingPairs P, (1 : ℝ) / ((pq.1.1 : ℝ) * (pq.2.1 : ℝ)) ^ 2) := by
         unfold sigmaP; norm_num;
         rw [ Real.sq_sqrt ( Finset.sum_nonneg fun _ _ => by positivity ) ];
       refine le_trans hsigmaP2_le_N_N_minus_1_div_2X4 ?_;
       refine' le_trans ( Finset.sum_le_sum fun x hx => one_div_le_one_div_of_le ( by positivity ) <| show ( ( x.1.1 : ℝ ) * x.2.1 ) ^ 2 ≥ X ^ 4 by
                                                                                                       norm_cast;
                                                                                                       rw [ show X ^ 4 = ( X ^ 2 ) ^ 2 by ring ] ; gcongr ; nlinarith only [ hP x.1 x.1.2, hP x.2 x.2.2 ] ; ) _ ; norm_num;
-      rw [show (orderedPrimePairsA P).card = P.card * (P.card - 1) / 2 by
-        rw [card_orderedPrimePairsA, Nat.choose_two_right]]
+      rw [show (increasingPairs P).card = P.card * (P.card - 1) / 2 by
+        rw [card_increasingPairs, Nat.choose_two_right]]
       · cases P using Finset.induction <;> norm_num [ Nat.dvd_iff_mod_eq_zero, Nat.mod_two_of_bodd ] at *;
         cases k : Finset.card ( insert ‹_› ‹_› ) <;> simp_all +decide [ Nat.dvd_iff_mod_eq_zero, Nat.mod_two_of_bodd ];
     refine le_trans ?_ hS_ge_c_c_minus_1_div_16X4;
@@ -134,8 +134,8 @@ lemma block_deviation_lower_bound (X : ℕ) (hX : 1 ≤ X) (P : Finset ℕ) [∀
   refine' Real.le_sqrt_of_sq_le _;
   refine' le_trans _ ( Finset.sum_le_sum fun x hx => one_div_le_one_div_of_le _ <| pow_le_pow_left₀ ( by positivity ) ( show ( x.1.1 * x.2.1 : ℝ ) ≤ 4 * X ^ 2 by norm_cast; nlinarith [ hP x.1.1 x.1.2, hP x.2.1 x.2.2 ] ) 2 ) ; norm_num;
   · -- Since $P$ has at least 2 elements, the number of pairs is at least $P.card * (P.card - 1) / 2$.
-    have h_pairs : (orderedPrimePairsA P).card ≥ P.card * (P.card - 1) / 2 := by
-      rw [card_orderedPrimePairsA, Nat.choose_two_right]
+    have h_pairs : (increasingPairs P).card ≥ P.card * (P.card - 1) / 2 := by
+      rw [card_increasingPairs, Nat.choose_two_right]
     field_simp;
     norm_cast ; nlinarith [ Nat.div_mul_cancel ( show 2 ∣ #P * ( #P - 1 ) from even_iff_two_dvd.mp ( Nat.even_mul_pred_self _ ) ), Nat.sub_add_cancel ( by linarith : 1 ≤ #P ) ];
   · exact sq_pos_of_pos ( mul_pos ( Nat.cast_pos.mpr ( Nat.Prime.pos ( hP _ x.1.2 |>.1 ) ) ) ( Nat.cast_pos.mpr ( Nat.Prime.pos ( hP _ x.2.2 |>.1 ) ) ) )
@@ -164,7 +164,7 @@ private lemma exception_subsum_le_QP (P : Finset ℕ) [∀ p : P, NeZero p.1] (a
       · rw [ if_neg ( by exact not_lt_of_ge ‹_› ) ];
     · intro x hx y hy; simp_all +decide [ Finset.disjoint_left ] ;
       grind +revert;
-  · intro x hx; simp_all +decide [orderedPrimePairsA] ;
+  · intro x hx; simp_all +decide [increasingPairs] ;
     rcases hx with ⟨ a, ha, b, hb, ⟨ haE, hbC ⟩, rfl ⟩ ; split_ifs <;> simp_all +decide [ Finset.disjoint_left ] ;
     grind;
   · exact fun _ _ _ => sq_nonneg _

@@ -1,4 +1,4 @@
-import RequestProject.BlockCRTEnergy
+import RequestProject.LocalEnergy.BlockEnergy
 import RequestProject.LocalEnergy.ReciprocalDispersion
 
 /-!

@@ -1,4 +1,4 @@
-import RequestProject.BlockCRTEnergy
+import RequestProject.LocalEnergy.BlockEnergy
 
 /-! Finite CRT assignments, centered representatives, quadratic block energy,
 and the associated deviation scale. -/

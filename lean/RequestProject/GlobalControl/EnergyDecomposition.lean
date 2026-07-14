@@ -20,9 +20,9 @@ lemma QP_restrict_eq_internal (BS : BlockSystem) (a : GlobalAssignment BS) (k : 
       = ∑ pq ∈ internalPairs BS k,
           ((Hglob (toPlain BS a) pq.1 pq.2 : ℝ) / ((pq.1 : ℝ) * pq.2)) ^ 2 := by
   refine' Finset.sum_bij ( fun pq hpq => ( pq.1.1, pq.2.1 ) ) _ _ _ _ <;> simp +decide;
-  · unfold orderedPrimePairsA internalPairs; aesop;
+  · unfold increasingPairs internalPairs; aesop;
   · aesop;
-  · unfold internalPairs orderedPrimePairsA; aesop;
+  · unfold internalPairs increasingPairs; aesop;
   · unfold restrict toPlain Hglob; aesop;
 
 /-- Internal block energies together with consecutive bipartite energies form
