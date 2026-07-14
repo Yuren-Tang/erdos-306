@@ -86,7 +86,7 @@ lemma sigmaE2_ge_controlVariance (BS : BlockSystem) (E : Finset ℕ) (θ : ℕ �
 
 /-- The control deviation has its natural dyadic lower scale
 `1 / (k₀ 2^k₀)`, uniformly over sufficiently large block systems. -/
-lemma sigmaCtrl_lower_bound (BS : BlockSystem) (hk0 : 14 ≤ BS.k0) :
+private lemma sigmaCtrl_lower_bound (BS : BlockSystem) (hk0 : 14 ≤ BS.k0) :
     (1 : ℝ) / (100 * (BS.k0 : ℝ) * (2 : ℝ) ^ BS.k0) ≤ sigmaCtrl BS := by
   refine Real.le_sqrt_of_sq_le ?_
   norm_num [sigmaCtrl]

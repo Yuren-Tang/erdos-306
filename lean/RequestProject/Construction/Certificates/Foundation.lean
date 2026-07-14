@@ -19,7 +19,7 @@ namespace CircleMethod
 
 /-! ## Foundation / scale layer -/
 
-/-- **Numeric ledger.**  The scale-parameter / constant slice of the foundation: the
+/-- **Construction parameters.** The scale-parameter and constant slice of the foundation: the
 budget quantities (`c3, η, Ctail, C, base_b, Dmp, G`), the abstract analytic constants
 (`cSigma, Sload, K` — supplied existentially by leaf lemmas; no witness value is visible
 at this level), the bottom-scale thresholds, and all the facts *independent of the chosen
@@ -105,8 +105,8 @@ structure ConstructionParameters (b : ℕ) where
       (1 : ℝ) / 2 ≤ ∑ pq ∈ (blockPrimes k0).offDiag.filter (fun pq : ℕ × ℕ => pq.1 < pq.2),
         (1 : ℝ) / ((pq.1 : ℝ) * (pq.2 : ℝ))
 
-/-- **Block-system / prime-factor certificate.**  Given the numeric ledger `L`,
-construct a block system `BS` whose bottom scale dominates every ledger threshold
+/-- **Block-system / prime-factor certificate.** Given construction parameters `L`,
+construct a block system `BS` whose bottom scale dominates every parameter threshold
 (so all the later `k0`-largeness side conditions hold), together with the
 prime-factor / support facts of `b` relative to `BS` (`hRp, hRdvd, hcovR, hRout`,
 the block-support coprimality `hcopB`, and `hsub, hdyadic2k`). -/
@@ -133,17 +133,17 @@ structure BlockSystemCertificate (T : Finset ℕ) (b : ℕ) (L : ConstructionPar
   hk0load : L.k0load ≤ BS.k0
   hk0C : Nat.ceil L.C ≤ BS.k0
 
-/-- **Foundation certificate.**  The join of the two foundation stages: the
-numeric ledger of constants and thresholds (chosen first, independently of any
+/-- **Foundation certificate.** The join of the two foundation stages: the
+construction parameters and thresholds (chosen first, independently of any
 block system) and the block-system / prime-factor certificate at a bottom
-scale dominating every ledger threshold. -/
+scale dominating every parameter threshold. -/
 structure ConstructionFoundation (T : Finset ℕ) (b : ℕ) where
   /-- the scale-parameter / constant stage. -/
-  ledger : ConstructionParameters b
-  /-- the block-system stage, at a scale dominating the ledger thresholds. -/
-  bsCert : BlockSystemCertificate T b ledger
+  parameters : ConstructionParameters b
+  /-- the block-system stage, at a scale dominating the parameter thresholds. -/
+  bsCert : BlockSystemCertificate T b parameters
 
-/-- Choose the numeric ledger of constants and bottom-scale thresholds.  This is
+/-- Choose the construction constants and bottom-scale thresholds. This is
 the scale-parameter slice of the foundation; no block system is constructed. -/
 lemma exists_construction_parameters (b : ℕ) (hb : 3 ≤ b) (hbsf : Squarefree b) :
     Nonempty (ConstructionParameters b) := by
@@ -262,7 +262,7 @@ lemma exists_construction_parameters (b : ℕ) (hb : 3 ≤ b) (hbsf : Squarefree
     hk15 := hk15, hload := hload }⟩
 
 /-- Build the block-system / prime-factor certificate at a bottom scale large
-enough to dominate every threshold of the ledger `L`. -/
+enough to dominate every threshold in `L`. -/
 lemma exists_block_system_certificate (T : Finset ℕ) (b : ℕ) (hb : 3 ≤ b)
     (L : ConstructionParameters b) :
     Nonempty (BlockSystemCertificate T b L) := by

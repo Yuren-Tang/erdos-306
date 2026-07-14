@@ -1,5 +1,5 @@
-import RequestProject.GlobalControl.LevelSetParameters
-import RequestProject.GlobalPeierlsBookkeeping
+import RequestProject.GlobalControl.BlockSystem
+import RequestProject.GlobalControl.FiniteEntropyBounds
 
 /-!
 # Entropy bound for charged subsets
@@ -27,7 +27,7 @@ lemma sum_subset_charge_le (BS : BlockSystem) (w : ℕ → ℝ) (R eps : ℝ)
   have hcb : ∀ j ∈ Finset.Icc BS.k0 BS.K,
       Real.exp (eps * w j) ≤ Real.exp (4 * eps * w j / 4) :=
     fun j _ => le_of_eq (by congr 1; ring)
-  have hwse := GlobalPeierls.weighted_subset_entropy (Finset.Icc BS.k0 BS.K) w
+  have hwse := weighted_subset_entropy (Finset.Icc BS.k0 BS.K) w
     (fun j => Real.exp (eps * w j)) (4 * eps) R (by linarith)
     (fun _ _ => Real.exp_nonneg _) hcb
   refine le_trans hwse ?_
@@ -44,4 +44,3 @@ lemma sum_subset_charge_le (BS : BlockSystem) (w : ℕ → ℝ) (R eps : ℝ)
 end GlobalControl
 
 end
-

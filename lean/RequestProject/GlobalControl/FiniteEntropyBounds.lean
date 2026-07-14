@@ -1,27 +1,25 @@
 /-
-# Global Peierls bookkeeping — abstract finite combinatorics (note 37 §3)
+# Finite entropy bounds
 
-This file isolates the *pure finite combinatorics* used by the global level-set
-theorem (G5) of note 34, free of any CRT / prime-number content.  It is the
-"weighted subset entropy" / "energy shell" / "segment encoder" layer the note 37
-blueprint asks to prove first, before instantiating with the SBEE single-block
-data.
+This file isolates the finite combinatorics used by the global level-set bound,
+free of any CRT or prime-number content. It controls weighted subsets and
+finite energy-shell vectors before those bounds are instantiated with local
+block data.
 
-The headline lemma `weighted_subset_entropy` is the entropy bound used twice in
-G5 (for the hot set with weights `Rw_k`, and for the mismatch boundary set with
-weights `Π_k`): the number of admissible subsets, weighted by a per-element
+The lemma `weighted_subset_entropy` is used for both hot sets and mismatch
+boundary sets: the number of admissible subsets, weighted by a per-element
 cost, is dominated by `exp(εR/2) · exp(∑ exp(-ε w/4))`.
 -/
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 open Finset BigOperators
 
-namespace GlobalPeierls
+namespace GlobalControl
 
 noncomputable section
 
 /-
-**Weighted subset entropy** (note 37 §3.2).  Let `I` be a finite index set
+**Weighted subset entropy.** Let `I` be a finite index set
 with nonnegative weights `w` and nonnegative costs `cost` such that
 `cost i ≤ exp(ε·w i/4)`.  Then the total cost summed over all subsets whose
 weight is `≤ R` is bounded by `exp(εR/2)·exp(∑_i exp(-ε·w i/4))`.
@@ -61,11 +59,12 @@ lemma weighted_subset_entropy {ι : Type*} (I : Finset ι) (w cost : ι → ℝ)
   exact h_sum_bound.trans ( mul_le_mul_of_nonneg_left ( h_prod_add.symm ▸ le_trans ( Finset.prod_le_prod ( fun _ _ => add_nonneg zero_le_one ( mul_nonneg ( hcost _ ‹_› ) ( Real.exp_nonneg _ ) ) ) h_exp_bound ) ( by rw [ ← Real.exp_sum ] ) ) ( Real.exp_nonneg _ ) )
 
 /-
-**Shell-sum lemma** (note 38 §1, Lemma SH).  Enumerating shell vectors
+**Shell-sum lemma.** Enumerating shell vectors
 `v : ι → ℕ` with `∑ v ≤ R`, the sum of products of per-block counts `c k (v k)`
 (each `≤ exp(α(n+1))`) is dominated by `exp((α+β)R)·exp(|ι|·(α+log(1/(1-e^{-β}))))`.
 The geometric discount in `β` makes the (unconstrained) enumeration of shell
-vectors converge.  This is the energy-shell bookkeeping used by G5.
+vectors converge. This is the finite entropy mechanism for the global
+energy-shell count.
 -/
 lemma shell_sum_bound {ι : Type*} [Fintype ι] [DecidableEq ι] (c : ι → ℕ → ℝ)
     (alpha beta R : ℝ) (halpha : 0 < alpha) (hbeta : 0 < beta) (_hR : 0 ≤ R)
@@ -118,4 +117,4 @@ lemma shell_sum_bound {ι : Type*} [Fintype ι] [DecidableEq ι] (c : ι → ℕ
 
 end
 
-end GlobalPeierls
+end GlobalControl

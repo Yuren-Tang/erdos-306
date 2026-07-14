@@ -29,13 +29,13 @@ def arcConstructionOfCertificates {T : Finset ℕ} {b : ℕ}
     hsemi := M.hsemi
     havoid := M.havoid
     hne := M.hne
-    hL := M.D.period_pos F.ledger.hbpos
+    hL := M.D.period_pos F.parameters.hbpos
     hbL := M.D.base_dvd_period
     heL := M.heL
     he0 := M.he0
     hbound := ReciprocalPeriod.period_div_sum_lt_of_recip_sum_lt M.D.E M.D.L
-      (M.D.period_pos F.ledger.hbpos) M.he0 M.heL (by
-        have hbR : (3 : ℝ) ≤ (b : ℝ) := by exact_mod_cast F.ledger.hb3
+      (M.D.period_pos F.parameters.hbpos) M.he0 M.heL (by
+        have hbR : (3 : ℝ) ≤ (b : ℝ) := by exact_mod_cast F.parameters.hb3
         have hbpos : (0 : ℝ) < (b : ℝ) := by positivity
         have hthree : 3 / (b : ℝ) ≤ 1 := by
           rw [div_le_one hbpos]
@@ -48,7 +48,7 @@ def arcConstructionOfCertificates {T : Finset ℕ} {b : ℕ}
   main := {
     N := A.N
     fields := Classical.choice <| exists_mainArcFields M.D.E M.W.theta
-      (M.D.L / b) M.D.L A.N (M.D.period_pos F.ledger.hbpos)
+      (M.D.L / b) M.D.L A.N (M.D.period_pos F.parameters.hbpos)
       M.he0 M.heL A.hNnonneg A.hNL
     hN := A.hNF.hN
     htw := A.hNF.htw

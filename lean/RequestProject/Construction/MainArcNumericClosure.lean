@@ -96,7 +96,7 @@ blow-up) and it gets its own elaboration budget.
 
 Parametric in the abstract analytic constants: `cS` (the `σ_ctrl` lower-bound
 coefficient) and `S` (the edge square-load slack).  The two domination
-hypotheses `hwindow`/`hcubic` are instances at `k₀ = D.BS.k0` of the ledger's
+hypotheses `hwindow`/`hcubic` are instances at `k₀ = D.BS.k0` of the parameters'
 eventual polynomial≪exponential facts; no witness value of any constant or
 threshold is visible here.  The literals that do appear are structural:
 the Taylor coefficient and radius budget enter only through the supplied

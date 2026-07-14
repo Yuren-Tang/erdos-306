@@ -22,7 +22,7 @@ structure GadgetEdgeCertificate {T : Finset ℕ} {b : ℕ}
     (F : ConstructionFoundation T b) where
   /-- the gadget primes. -/
   S : Finset ℕ
-  hScard : S.card = F.ledger.G
+  hScard : S.card = F.parameters.G
   hSprime : ∀ s ∈ S, Nat.Prime s
   hSge : ∀ s ∈ S, 2 ^ (2 * F.bsCert.BS.k0) ≤ s
   hSblock : S ⊆ blockSupport F.bsCert.BS
@@ -35,13 +35,13 @@ lemma exists_gadget_edge_certificate {T : Finset ℕ} {b : ℕ}
     (F : ConstructionFoundation T b) :
     Nonempty (GadgetEdgeCertificate F) := by
   classical
-  have hbpos := F.ledger.hbpos
+  have hbpos := F.parameters.hbpos
   have hk05 := F.bsCert.hk05
   have hk0dens := F.bsCert.hk0dens
-  have hmass := F.ledger.hk0massFact F.bsCert.BS.k0 F.bsCert.hk0mass
+  have hmass := F.parameters.hk0massFact F.bsCert.BS.k0 F.bsCert.hk0mass
   obtain ⟨S, hSsub, hScard, hSprime, hSge⟩ :=
-    exists_primes_in_dyadicBlock (2 * F.bsCert.BS.k0) (by omega) F.ledger.G
-      (F.ledger.hk0density (2 * F.bsCert.BS.k0) (by omega))
+    exists_primes_in_dyadicBlock (2 * F.bsCert.BS.k0) (by omega) F.parameters.G
+      (F.parameters.hk0density (2 * F.bsCert.BS.k0) (by omega))
   have hSblock : S ⊆ blockSupport F.bsCert.BS := fun s hs => F.bsCert.hdyadic2k (hSsub hs)
   have hb2k0 : b < 2 ^ F.bsCert.BS.k0 := by omega
   have hRpos' : ∀ r ∈ b.primeFactors, 2 ≤ r := fun r hr => (F.bsCert.hRp r hr).two_le

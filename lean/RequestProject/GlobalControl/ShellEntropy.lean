@@ -1,6 +1,6 @@
 import RequestProject.GlobalControl.Encoding.Fibers
 import RequestProject.GlobalControl.LevelSetParameters
-import RequestProject.GlobalPeierlsBookkeeping
+import RequestProject.GlobalControl.FiniteEntropyBounds
 
 /-!
 # Entropy of admissible energy shells
@@ -31,7 +31,7 @@ lemma shell_sum_le (BS : BlockSystem) (c2 R eps : ℝ)
     fun _ n => Real.exp (2 * eps * ((n : ℝ) + 1)) with hc
   have hcard : Fintype.card {x // x ∈ Finset.Icc BS.k0 BS.K} = numBlocks BS := by
     simp only [Fintype.card_coe, Nat.card_Icc, numBlocks]
-  have hshell := GlobalPeierls.shell_sum_bound c (2 * eps) eps R (by linarith) heps hR0
+  have hshell := shell_sum_bound c (2 * eps) eps R (by linarith) heps hR0
     (fun _ _ => Real.exp_nonneg _) (fun _ _ => le_of_eq (by simp only [hc]))
   rw [hcard] at hshell
   refine le_trans ?_ hshell

@@ -20,36 +20,36 @@ namespace CircleMethod
 two-sidedly comparable with the control deviation `σ_ctrl`: it is at least
 `√(2/9)·σ_ctrl` (the `2/9` is the extremal value of `θ(1−θ)` on the weight window
 `[1/3, 2/3]`, so this is a structural constant) and at most `K·σ_ctrl` for the
-ledger's abstract bridge constant `K`.  The upper bound uses only the square-load
+parameters' abstract bridge constant `K`. The upper bound uses only the square-load
 certificate `M.hsumE` and `Sload ≤ 4K²`; no witness value of either constant
 appears anywhere in this chain. -/
 lemma main_arc_variance_comparison {T : Finset ℕ} {b : ℕ}
     (F : ConstructionFoundation T b) (Cc : GadgetEdgeCertificate F)
     (M : WeightedEdgeCertificate F Cc) :
     Real.sqrt (2 / 9) * sigmaCtrl M.D.BS ≤ Real.sqrt (sigmaE2 M.D.E M.W.theta)
-      ∧ Real.sqrt (sigmaE2 M.D.E M.W.theta) ≤ F.ledger.K * sigmaCtrl M.D.BS
+      ∧ Real.sqrt (sigmaE2 M.D.E M.W.theta) ≤ F.parameters.K * sigmaCtrl M.D.BS
       ∧ 0 < Real.sqrt (sigmaE2 M.D.E M.W.theta) := by
   classical
   set D : ConstructionData T b := M.D with hDeq
   set W : ConstructionData.Weights D := M.W with hWeq
   have hBS : D.BS = F.bsCert.BS := by simp only [hDeq, M.hDdef, ConstructionData.withQ_BS]
   have hadmD : admissibleGlobalRange D.BS := by rw [hBS]; exact F.bsCert.hadm
-  have hK0 : (0 : ℝ) < F.ledger.K := lt_of_lt_of_le one_pos F.ledger.hK1
+  have hK0 : (0 : ℝ) < F.parameters.K := lt_of_lt_of_le one_pos F.parameters.hK1
   have hsumE : ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2
-      ≤ F.ledger.Sload * (sigmaCtrl D.BS) ^ 2 := M.hsumE
+      ≤ F.parameters.Sload * (sigmaCtrl D.BS) ^ 2 := M.hsumE
   set σ : ℝ := sigmaCtrl D.BS with hσdef
   have hσpos : 0 < σ := by
     rw [hσdef]
     exact sigmaCtrl_pos_of_admissible_range D.BS hadmD
-  have hsigmaE2_le : sigmaE2 D.E W.theta ≤ F.ledger.K ^ 2 * σ ^ 2 := by
+  have hsigmaE2_le : sigmaE2 D.E W.theta ≤ F.parameters.K ^ 2 * σ ^ 2 := by
     have h := sigmaE2_le_quarter_sum_inv_sq D.E W.theta
-    nlinarith [h, hsumE, mul_nonneg (sub_nonneg.mpr F.ledger.hKS) (sq_nonneg σ)]
-  have hsigmaE_ub : Real.sqrt (sigmaE2 D.E W.theta) ≤ F.ledger.K * σ := by
-    rw [show F.ledger.K * σ = Real.sqrt ((F.ledger.K * σ) ^ 2) by
+    nlinarith [h, hsumE, mul_nonneg (sub_nonneg.mpr F.parameters.hKS) (sq_nonneg σ)]
+  have hsigmaE_ub : Real.sqrt (sigmaE2 D.E W.theta) ≤ F.parameters.K * σ := by
+    rw [show F.parameters.K * σ = Real.sqrt ((F.parameters.K * σ) ^ 2) by
       rw [Real.sqrt_sq (by positivity)]]
     apply Real.sqrt_le_sqrt
-    calc sigmaE2 D.E W.theta ≤ F.ledger.K ^ 2 * σ ^ 2 := hsigmaE2_le
-      _ = (F.ledger.K * σ) ^ 2 := by ring
+    calc sigmaE2 D.E W.theta ≤ F.parameters.K ^ 2 * σ ^ 2 := hsigmaE2_le
+      _ = (F.parameters.K * σ) ^ 2 := by ring
   have hsigmaE_lb : Real.sqrt (2 / 9) * σ ≤ Real.sqrt (sigmaE2 D.E W.theta) := by
     rw [show Real.sqrt (2 / 9) * σ = Real.sqrt ((2 / 9) * σ ^ 2) by
       rw [Real.sqrt_mul (by norm_num), Real.sqrt_sq hσpos.le]]
@@ -75,12 +75,12 @@ structure MainArcWindowCertificate {T : Finset ℕ} {b : ℕ}
   /-- the main-arc window parameter. -/
   N : ℤ
   hNnonneg : 0 ≤ N
-  hNlo : F.ledger.C / sigmaCtrl M.D.BS ≤ (N : ℝ)
+  hNlo : F.parameters.C / sigmaCtrl M.D.BS ≤ (N : ℝ)
   hN2 : 2 * N < (2 : ℤ) ^ (2 * M.D.BS.k0)
   hNL : 2 * N + 1 ≤ (M.D.L : ℤ)
   hsigmapos : 0 < sigmaCtrl M.D.BS
-  h2N1sigma : (2 * (N : ℝ) + 1) * sigmaCtrl M.D.BS ≤ 2 * F.ledger.C + 3
-  hsigmaE_ub : Real.sqrt (sigmaE2 M.D.E M.W.theta) ≤ F.ledger.K * sigmaCtrl M.D.BS
+  h2N1sigma : (2 * (N : ℝ) + 1) * sigmaCtrl M.D.BS ≤ 2 * F.parameters.C + 3
+  hsigmaE_ub : Real.sqrt (sigmaE2 M.D.E M.W.theta) ≤ F.parameters.K * sigmaCtrl M.D.BS
   hsigmaEpos : 0 < Real.sqrt (sigmaE2 M.D.E M.W.theta)
   hNF : MainArcNumericBounds M.D.E M.W.theta N
 
@@ -88,41 +88,41 @@ structure MainArcWindowCertificate {T : Finset ℕ} {b : ℕ}
 (`hNhi`), the window stays below the squared bottom scale (`2N < 2^{2k₀}`), fits
 inside the common period (`2N+1 ≤ L`), and obeys the explicit growth bound
 `N ≤ 100·k₀²·2^{k₀}+1` consumed by the Taylor numeric fields.  This boxes the
-constant-chasing "N-window" ledger out of the main-arc assembly. -/
+constant-chasing `N`-window estimate out of the main-arc assembly. -/
 lemma main_arc_window_scale_period {T : Finset ℕ} {b : ℕ}
     (F : ConstructionFoundation T b) (Cc : GadgetEdgeCertificate F)
     (M : WeightedEdgeCertificate F Cc) (N : ℤ)
-    (hNhi : (N : ℝ) ≤ F.ledger.C / sigmaCtrl M.D.BS + 1) :
+    (hNhi : (N : ℝ) ≤ F.parameters.C / sigmaCtrl M.D.BS + 1) :
     2 * N < (2 : ℤ) ^ (2 * M.D.BS.k0)
       ∧ 2 * N + 1 ≤ (M.D.L : ℤ)
-      ∧ (N : ℝ) ≤ F.ledger.cSigma * (M.D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ M.D.BS.k0 + 1 := by
+      ∧ (N : ℝ) ≤ F.parameters.cSigma * (M.D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ M.D.BS.k0 + 1 := by
   classical
-  have hbpos := F.ledger.hbpos
+  have hbpos := F.parameters.hbpos
   set D : ConstructionData T b := M.D with hDeq
-  set C : ℝ := F.ledger.C with hCeq
-  set cS : ℝ := F.ledger.cSigma with hcSeq
-  have hcS1 : (1 : ℝ) ≤ cS := F.ledger.hcS1
+  set C : ℝ := F.parameters.C with hCeq
+  set cS : ℝ := F.parameters.cSigma with hcSeq
+  have hcS1 : (1 : ℝ) ≤ cS := F.parameters.hcS1
   have hcS0 : (0 : ℝ) < cS := lt_of_lt_of_le one_pos hcS1
   have hBS : D.BS = F.bsCert.BS := by simp only [hDeq, M.hDdef, ConstructionData.withQ_BS]
   have hS : D.S = Cc.S := by simp only [hDeq, M.hDdef, ConstructionData.withQ_S]
   have hLeq : D.L = b * ∏ p ∈ blockSupport D.BS, p := M.hLeq
   have hadmD : admissibleGlobalRange D.BS := by rw [hBS]; exact F.bsCert.hadm
-  have hCge3 : (3 : ℝ) ≤ C := F.ledger.hCge3
-  have hbr : (3 : ℝ) ≤ (b : ℝ) := by exact_mod_cast F.ledger.hb3
+  have hCge3 : (3 : ℝ) ≤ C := F.parameters.hCge3
+  have hbr : (3 : ℝ) ≤ (b : ℝ) := by exact_mod_cast F.parameters.hb3
   have hSgeD : ∀ s ∈ D.S, 2 ^ (2 * D.BS.k0) ≤ s := by rw [hS, hBS]; exact Cc.hSge
   have hSblockD : D.S ⊆ blockSupport D.BS := by rw [hS, hBS]; exact Cc.hSblock
-  have hScardD : D.S.card = F.ledger.G := by rw [hS]; exact Cc.hScard
+  have hScardD : D.S.card = F.parameters.G := by rw [hS]; exact Cc.hScard
   set σ : ℝ := sigmaCtrl D.BS with hσdef
   have hσpos : 0 < σ := by
     rw [hσdef]
     exact sigmaCtrl_pos_of_admissible_range D.BS hadmD
   have hσstrong : (1 : ℝ) / (cS * (D.BS.k0 : ℝ) * (2 : ℝ) ^ D.BS.k0) ≤ σ := by
-    have hthr : F.ledger.k0sigma ≤ D.BS.k0 := by rw [hBS]; exact F.bsCert.hk0sigma
-    rw [hσdef, hcSeq]; exact F.ledger.hk0sigmaFact D.BS hthr
+    have hthr : F.parameters.k0sigma ≤ D.BS.k0 := by rw [hBS]; exact F.bsCert.hk0sigma
+    rw [hσdef, hcSeq]; exact F.parameters.hk0sigmaFact D.BS hthr
   have hwindow : 10 * (cS * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0 + 1)
       ≤ (2 : ℝ) ^ (2 * D.BS.k0) := by
-    have hthr : F.ledger.k0window ≤ D.BS.k0 := by rw [hBS]; exact F.bsCert.hk0window
-    rw [hcSeq]; exact F.ledger.hk0windowFact D.BS.k0 hthr
+    have hthr : F.parameters.k0window ≤ D.BS.k0 := by rw [hBS]; exact F.bsCert.hk0window
+    rw [hcSeq]; exact F.parameters.hk0windowFact D.BS.k0 hthr
   have hNreal : (N : ℝ) ≤ cS * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0 + 1 := by
     have hk05 : 5 ≤ D.BS.k0 := by rw [hBS]; exact F.bsCert.hk05
     have hk0cast : (0 : ℝ) < (D.BS.k0 : ℝ) := by
@@ -153,7 +153,7 @@ lemma main_arc_window_scale_period {T : Finset ℕ} {b : ℕ}
       linarith [hR]
     exact_mod_cast hcast
   have hNL : 2 * N + 1 ≤ (D.L : ℤ) := by
-    have hG1 : 1 ≤ F.ledger.G := F.ledger.hG1
+    have hG1 : 1 ≤ F.parameters.G := F.parameters.hG1
     have hSne : D.S.Nonempty := by rw [← Finset.card_pos, hScardD]; omega
     obtain ⟨s, hs⟩ := hSne
     have hprodpos : 0 < ∏ p ∈ blockSupport D.BS, p :=
@@ -176,11 +176,11 @@ lemma exists_main_arc_window_certificate {T : Finset ℕ} {b : ℕ}
     (M : WeightedEdgeCertificate F Cc) :
     Nonempty (MainArcWindowCertificate F Cc M) := by
   classical
-  have hbpos := F.ledger.hbpos
+  have hbpos := F.parameters.hbpos
   set D : ConstructionData T b := M.D with hDeq
   set W : ConstructionData.Weights D := M.W with hWeq
   set QB : MassBatchSupply D := M.QB with hQBeq
-  set C : ℝ := F.ledger.C with hCeq
+  set C : ℝ := F.parameters.C with hCeq
   -- bridge the opaque mass-batch data back to the foundation/concrete witnesses
   have hBS : D.BS = F.bsCert.BS := by simp only [hDeq, M.hDdef, ConstructionData.withQ_BS]
   have hS : D.S = Cc.S := by simp only [hDeq, M.hDdef, ConstructionData.withQ_S]
@@ -188,23 +188,23 @@ lemma exists_main_arc_window_certificate {T : Finset ℕ} {b : ℕ}
   have he0 : ∀ e ∈ D.E, 0 < e := M.he0
   have hLeq : D.L = b * ∏ p ∈ blockSupport D.BS, p := M.hLeq
   have hsumE : ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2
-      ≤ F.ledger.Sload * (sigmaCtrl D.BS) ^ 2 := M.hsumE
+      ≤ F.parameters.Sload * (sigmaCtrl D.BS) ^ 2 := M.hsumE
   have hk05 : 5 ≤ D.BS.k0 := by rw [hBS]; exact F.bsCert.hk05
-  have hCge3 : (3 : ℝ) ≤ C := F.ledger.hCge3
+  have hCge3 : (3 : ℝ) ≤ C := F.parameters.hCge3
   have hk0pos : 1 ≤ D.BS.k0 := by omega
   have hCk0 : C ≤ (D.BS.k0 : ℝ) := by
     have hnat : Nat.ceil C ≤ D.BS.k0 := by rw [hBS]; exact F.bsCert.hk0C
     calc C ≤ (Nat.ceil C : ℝ) := Nat.le_ceil C
       _ ≤ (D.BS.k0 : ℝ) := by exact_mod_cast hnat
-  have hwindow : 10 * (F.ledger.cSigma * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0 + 1)
+  have hwindow : 10 * (F.parameters.cSigma * (D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ D.BS.k0 + 1)
       ≤ (2 : ℝ) ^ (2 * D.BS.k0) := by
-    have hthr : F.ledger.k0window ≤ D.BS.k0 := by rw [hBS]; exact F.bsCert.hk0window
-    exact F.ledger.hk0windowFact D.BS.k0 hthr
-  have hcubic : (40 * bernoulliTaylorRemainderConstant * F.ledger.Sload *
-      (F.ledger.cSigma + 1)) * (D.BS.k0 : ℝ) ^ 4
+    have hthr : F.parameters.k0window ≤ D.BS.k0 := by rw [hBS]; exact F.bsCert.hk0window
+    exact F.parameters.hk0windowFact D.BS.k0 hthr
+  have hcubic : (40 * bernoulliTaylorRemainderConstant * F.parameters.Sload *
+      (F.parameters.cSigma + 1)) * (D.BS.k0 : ℝ) ^ 4
       ≤ (2 : ℝ) ^ D.BS.k0 := by
-    have hthr : F.ledger.k0cubic ≤ D.BS.k0 := by rw [hBS]; exact F.bsCert.hk0cubic
-    exact F.ledger.hk0cubicFact D.BS.k0 hthr
+    have hthr : F.parameters.k0cubic ≤ D.BS.k0 := by rw [hBS]; exact F.bsCert.hk0cubic
+    exact F.parameters.hk0cubicFact D.BS.k0 hthr
   have hadmD : admissibleGlobalRange D.BS := by rw [hBS]; exact F.bsCert.hadm
   have hSgeD : ∀ s ∈ D.S, 2 ^ (2 * D.BS.k0) ≤ s := by rw [hS, hBS]; exact Cc.hSge
   have hRpos'D : ∀ r ∈ D.R, 2 ≤ r := by rw [hR]; exact Cc.hRpos'
@@ -234,12 +234,12 @@ lemma exists_main_arc_window_certificate {T : Finset ℕ} {b : ℕ}
       have hσne : σ ≠ 0 := ne_of_gt hσpos; field_simp; ring
     rw [h2] at h1
     linarith [h1, hσle1]
-  -- large-k0 window facts (named certificate: N-window scale/period ledger)
+  -- large-k0 window facts supplied by the scale and period certificate
   obtain ⟨hN2, hNL, hNreal⟩ := main_arc_window_scale_period F Cc M N hNhi
   have hNF : MainArcNumericBounds D.E W.theta N :=
-    mainArcNumericBounds_of_constructionScales D W N σ C F.ledger.cSigma
-      F.ledger.Sload hσpos he0 QB hSgeD
-      hRpos'D F.ledger.hcS1 F.ledger.hS1 hsumE hsigmaE_lb hNnonneg hCge3 hNlo hNsigma
+    mainArcNumericBounds_of_constructionScales D W N σ C F.parameters.cSigma
+      F.parameters.Sload hσpos he0 QB hSgeD
+      hRpos'D F.parameters.hcS1 F.parameters.hS1 hsumE hsigmaE_lb hNnonneg hCge3 hNlo hNsigma
       hk0pos hCk0 hwindow hcubic hNreal
   exact ⟨⟨N, hNnonneg, hNlo, hN2, hNL, hσpos, h2N1sigma, hsigmaE_ub, hsigmaEpos, hNF⟩⟩
 

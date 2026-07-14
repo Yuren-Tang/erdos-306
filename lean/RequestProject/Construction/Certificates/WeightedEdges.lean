@@ -43,7 +43,7 @@ structure WeightedEdgeCertificate {T : Finset ℕ} {b : ℕ}
   hgadgetAvoid : ∀ e ∈ gadgetEdges D.R D.S, e ∉ T
   havoid : ∀ e ∈ D.E, e ∉ T
   hloadUpper : ConstructionData.recipLoad D.E < 3 / (b : ℝ)
-  hsumE : ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2 ≤ F.ledger.Sload * (sigmaCtrl D.BS) ^ 2
+  hsumE : ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2 ≤ F.parameters.Sload * (sigmaCtrl D.BS) ^ 2
 
 /-- Produce the mass-batch certificate: choose the residual batch `Q`, assemble
 `D` and `W`, and discharge the edge structural facts. -/
@@ -51,19 +51,19 @@ lemma exists_weighted_edge_certificate {T : Finset ℕ} {b : ℕ}
     (F : ConstructionFoundation T b) (Cc : GadgetEdgeCertificate F) :
     Nonempty (WeightedEdgeCertificate F Cc) := by
   classical
-  have hbpos := F.ledger.hbpos
+  have hbpos := F.parameters.hbpos
   have hmass : 2 * b * (b.primeFactors.card * Cc.S.card) < 3 * 2 ^ F.bsCert.BS.k0 ∧
       2 * b < 2 ^ F.bsCert.BS.k0 := by
     simpa [Cc.hScard] using
-      F.ledger.hk0massFact F.bsCert.BS.k0 F.bsCert.hk0mass
-  obtain ⟨Q, QB⟩ := exists_massBatch_at_large_scale F.ledger.hb3 F.bsCert.BS Cc.S
+      F.parameters.hk0massFact F.bsCert.BS.k0 F.bsCert.hk0mass
+  obtain ⟨Q, QB⟩ := exists_massBatch_at_large_scale F.parameters.hb3 F.bsCert.BS Cc.S
     F.bsCert.hsub Cc.hSge F.bsCert.hRout
-    (F.ledger.hk0ctrl F.bsCert.BS F.bsCert.hk0ctrlle) F.ledger.k1 F.ledger.hk15 F.bsCert.hk1le F.ledger.hload
+    (F.parameters.hk0ctrl F.bsCert.BS F.bsCert.hk0ctrlle) F.parameters.k1 F.parameters.hk15 F.bsCert.hk1le F.parameters.hload
     hmass F.bsCert.hk0T
   set D : ConstructionData T b := (⟨F.bsCert.BS, ∅, b.primeFactors, Cc.S⟩ : ConstructionData T b).withQ Q
     with hDdef
   set W : ConstructionData.Weights D := QB.weights hbpos with hWdef
-  have hScardD : D.S.card = F.ledger.G := Cc.hScard
+  have hScardD : D.S.card = F.parameters.G := Cc.hScard
   have hk0TD : T.sup id + 1 ≤ D.BS.k0 := F.bsCert.hk0T
   have hLeq : D.L = b * ∏ p ∈ blockSupport D.BS, p := rfl
   have hL : 0 < D.L := D.period_pos hbpos
@@ -100,8 +100,8 @@ lemma exists_weighted_edge_certificate {T : Finset ℕ} {b : ℕ}
       ⟨Nat.pos_of_mem_primeFactors hx, Nat.le_of_mem_primeFactors hx⟩))
       (by rw [Nat.card_Icc]; omega)
   have hsumE : ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2
-      ≤ F.ledger.Sload * (sigmaCtrl D.BS) ^ 2 :=
-    F.ledger.hk0loadFact D QB F.bsCert.hk0load hScardD Cc.hSge Cc.hRpos' hRcard
+      ≤ F.parameters.Sload * (sigmaCtrl D.BS) ^ 2 :=
+    F.parameters.hk0loadFact D QB F.bsCert.hk0load hScardD Cc.hSge Cc.hRpos' hRcard
   exact ⟨⟨Q, D, W, QB, hDdef, hLeq, hL, hsemi, he0, heL, hne, hctrlAvoid,
     hgadgetAvoid, havoid, hloadUpper, hsumE⟩⟩
 

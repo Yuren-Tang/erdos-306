@@ -1,6 +1,7 @@
 import RequestProject.Construction.MassPool
 import RequestProject.Construction.BaseLoadBudget
 import RequestProject.CircleMethod.ControlVarianceComparison
+import RequestProject.Core.ExponentialDomination
 import RequestProject.DyadicBlockUpper
 
 open Finset BigOperators GlobalControl
@@ -70,15 +71,18 @@ lemma blockSupport_inv_sq_le (BS : BlockSystem) (hk0 : 1 ≤ BS.k0) :
 
 /-- The non-control edges have bounded reciprocal-square mass relative to the
 control variance once their scale is sufficiently large. -/
-private lemma extraEdges_inv_sq_le {T : Finset ℕ} {b : ℕ}
+private lemma extraEdges_inv_sq_le {T : Finset ℕ} {b : ℕ} (c : ℝ) (hc : 1 ≤ c)
     (D : ConstructionData T b)
-    (hk0 : 14 ≤ D.BS.k0)
-    (hk0big : 1000 * D.S.card + 1000 * b + 100000 ≤ D.BS.k0)
+    (hk0 : 1 ≤ D.BS.k0)
+    (hsigma : (1 : ℝ) / (c * (D.BS.k0 : ℝ) * (2 : ℝ) ^ D.BS.k0) ≤
+      sigmaCtrl D.BS)
+    (hgrowth : ((b * D.S.card : ℕ) : ℝ) * c ^ 2 * (D.BS.k0 : ℝ) ^ 2 ≤
+      (4 : ℝ) ^ D.BS.k0)
     (QB : MassBatchSupply D)
     (hSge : ∀ s ∈ D.S, 2 ^ (2 * D.BS.k0) ≤ s)
     (hRpos : ∀ r ∈ D.R, 2 ≤ r) (hRcard : D.R.card ≤ b) :
     ∑ e ∈ D.E \ ctrlEdges D.BS, (1 : ℝ) / (e : ℝ) ^ 2
-      ≤ 1000000 * (sigmaCtrl D.BS) ^ 2 := by
+      ≤ ((8 * c) ^ 2 + 1) * (sigmaCtrl D.BS) ^ 2 := by
   have hQ_mass : ∑ e ∈ D.Q, (1 : ℝ) / e ^ 2 ≤
       (8 / ((D.BS.k0 : ℝ) * (2 : ℝ) ^ D.BS.k0)) ^ 2 := by
     have hQ : (∑ e ∈ D.Q, (1 : ℝ) / (e : ℝ) ^ 2) ≤
@@ -103,7 +107,7 @@ private lemma extraEdges_inv_sq_le {T : Finset ℕ} {b : ℕ}
       simp +decide only [sq, ← Finset.mul_sum, ← Finset.sum_mul]
     exact hQ.trans <| pow_le_pow_left₀
       (Finset.sum_nonneg fun _ _ => by positivity)
-      (blockSupport_inv_sq_le D.BS (by linarith)) _
+      (blockSupport_inv_sq_le D.BS hk0) _
   have hgadget_mass : ∑ e ∈ gadgetEdges D.R D.S, (1 : ℝ) / e ^ 2 ≤
       (D.R.card * D.S.card) * (2 : ℝ) ^ (-4 * D.BS.k0 : ℝ) := by
     refine' le_trans (Finset.sum_le_sum fun e he =>
@@ -149,47 +153,40 @@ private lemma extraEdges_inv_sq_le {T : Finset ℕ} {b : ℕ}
       (2 : ℝ) ^ (-4 * D.BS.k0 : ℝ) ≤ (sigmaCtrl D.BS) ^ 2 := by
     have h_second_term : (b * D.S.card : ℝ) *
         (2 : ℝ) ^ (-4 * D.BS.k0 : ℝ) ≤
-          (1 / (100 * (D.BS.k0 : ℝ) * (2 : ℝ) ^ D.BS.k0)) ^ 2 := by
+          (1 / (c * (D.BS.k0 : ℝ) * (2 : ℝ) ^ D.BS.k0)) ^ 2 := by
       rw [Real.rpow_mul] <;> norm_num
-      ring_nf
-      norm_num at *
-      rw [pow_mul']
-      norm_num
-      ring_nf
-      norm_num at *
-      field_simp
-      refine' le_trans (mul_le_mul_of_nonneg_right
-        (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right
-          (show (b : ℝ) * #D.S ≤ (D.BS.k0 : ℝ) ^ 2 / 1000000 by
-            rw [le_div_iff₀] <;> norm_cast
-            nlinarith only [hk0big, sq (D.BS.k0 - 1000 : ℤ)])
-          (by positivity)) (by positivity)) (by positivity)) _
-      ring_nf
-      norm_num at *
-      refine' Nat.le_induction _ _ D.BS.k0 hk0 <;> norm_num [pow_succ'] at *
-      intro n hn ih
-      ring_nf at *
-      norm_num at *
-      nlinarith [show (n : ℝ) ≥ 14 by norm_cast,
-        pow_pos (by positivity : 0 < (n : ℝ)) 2,
-        pow_pos (by positivity : 0 < (n : ℝ)) 3,
-        pow_pos (by positivity : 0 < (n : ℝ)) 4,
-        pow_pos (by positivity : 0 < (1 / 16 : ℝ)) n,
-        pow_pos (by positivity : 0 < (1 / 4 : ℝ)) n]
+      rw [one_div_pow, one_div]
+      have hc0 : 0 < c := lt_of_lt_of_le zero_lt_one hc
+      have hk0' : (0 : ℝ) < D.BS.k0 := by exact_mod_cast (lt_of_lt_of_le Nat.zero_lt_one hk0)
+      have hden : 0 < c ^ 2 * (D.BS.k0 : ℝ) ^ 2 * (16 : ℝ) ^ D.BS.k0 := by
+        positivity
+      calc
+        (b * D.S.card : ℝ) * ((16 : ℝ) ^ D.BS.k0)⁻¹ =
+            ((b * D.S.card : ℝ) * c ^ 2 * (D.BS.k0 : ℝ) ^ 2) /
+              (c ^ 2 * (D.BS.k0 : ℝ) ^ 2 * (16 : ℝ) ^ D.BS.k0) := by
+                field_simp
+        _ ≤ (4 : ℝ) ^ D.BS.k0 /
+              (c ^ 2 * (D.BS.k0 : ℝ) ^ 2 * (16 : ℝ) ^ D.BS.k0) :=
+          div_le_div_of_nonneg_right
+            (by simpa [Nat.cast_mul, mul_assoc] using hgrowth) hden.le
+        _ = ((2 ^ D.BS.k0)⁻¹ * ((D.BS.k0 : ℝ)⁻¹ * c⁻¹)) ^ 2 := by
+          rw [show (16 : ℝ) = 4 ^ 2 by norm_num, ← pow_mul, Nat.mul_comm, pow_mul]
+          field_simp
+          rw [show (4 : ℝ) = 2 ^ 2 by norm_num, ← pow_mul, Nat.mul_comm, pow_mul]
     exact h_second_term.trans <|
-      pow_le_pow_left₀ (by positivity) (sigmaCtrl_lower_bound D.BS hk0) 2
+      pow_le_pow_left₀ (by positivity) hsigma 2
   refine le_trans h_combined <| le_trans
     (add_le_add
       (show (8 / (D.BS.k0 * 2 ^ D.BS.k0 : ℝ)) ^ 2 ≤
-          999999 * sigmaCtrl D.BS ^ 2 from ?_)
+          (8 * c) ^ 2 * sigmaCtrl D.BS ^ 2 from ?_)
       h_second_term) ?_
   · refine le_trans ?_ (mul_le_mul_of_nonneg_left
-      (pow_le_pow_left₀ (by positivity) (sigmaCtrl_lower_bound D.BS hk0) 2)
+      (pow_le_pow_left₀ (by positivity) hsigma 2)
       (by positivity))
-    · ring_nf
+    · field_simp [show c ≠ 0 by positivity]
       norm_num
-      exact mul_le_mul_of_nonneg_left (by norm_num) (by positivity)
-  · linarith
+  · ring_nf
+    exact le_rfl
 
 /-- Some universal slack bounds the reciprocal-square load of the complete
 edge set once the block scale dominates the numbers of gadget and denominator
@@ -202,21 +199,27 @@ lemma exists_edge_square_load_bound :
       (∀ r ∈ D.R, 2 ≤ r) → D.R.card ≤ b →
       ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2 ≤
         S * (sigmaCtrl D.BS) ^ 2 := by
-  refine ⟨1000001, by norm_num,
-    fun G b => ⟨1000 * G + 1000 * b + 100000 + 14, ?_⟩⟩
+  obtain ⟨c, hc, Ksigma, hsigma⟩ := exists_sigmaCtrl_lower_bound
+  refine ⟨(8 * c) ^ 2 + 2, by nlinarith [sq_nonneg (8 * c)], fun G b => ?_⟩
+  obtain ⟨Kgrowth, hgrowth⟩ := RequestProject.exists_threshold_mul_pow_le_const_pow
+    (((b * G : ℕ) : ℝ) * c ^ 2) 2 (show (1 : ℝ) < 4 by norm_num)
+  refine ⟨max (max Ksigma Kgrowth) 1, ?_⟩
   intro T D QB hthr hcard hSge hRpos hRcard
-  have h14 : 14 ≤ D.BS.k0 := by omega
-  have hbig : 1000 * D.S.card + 1000 * b + 100000 ≤ D.BS.k0 := by
-    rw [hcard]
-    omega
-  have hextra := extraEdges_inv_sq_le D h14 hbig QB hSge hRpos hRcard
+  have hscale : max Ksigma Kgrowth ≤ D.BS.k0 :=
+    (le_max_left _ _).trans hthr
+  have hk0 : 1 ≤ D.BS.k0 := (le_max_right _ _).trans hthr
+  have hsigma' := hsigma D.BS ((le_max_left _ _).trans hscale)
+  have hgrowth' := hgrowth D.BS.k0 ((le_max_right _ _).trans hscale)
+  have hgrowth'' : ((b * D.S.card : ℕ) : ℝ) * c ^ 2 * (D.BS.k0 : ℝ) ^ 2 ≤
+      (4 : ℝ) ^ D.BS.k0 := by simpa [hcard] using hgrowth'
+  have hextra := extraEdges_inv_sq_le c hc D hk0 hsigma' hgrowth'' QB hSge hRpos hRcard
   have hsplit : ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2 =
       (∑ e ∈ ctrlEdges D.BS, (1 : ℝ) / (e : ℝ) ^ 2) +
         ∑ e ∈ D.E \ ctrlEdges D.BS, (1 : ℝ) / (e : ℝ) ^ 2 := by
     rw [← Finset.sum_sdiff D.ctrlEdges_subset_E]
     ring
   rw [hsplit, sum_inv_sq_ctrlEdges_eq_sigmaCtrl_sq]
-  linarith [hextra]
+  nlinarith [hextra, sq_nonneg (sigmaCtrl D.BS)]
 
 end CircleMethod
 
