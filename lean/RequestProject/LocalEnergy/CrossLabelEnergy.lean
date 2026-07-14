@@ -1,4 +1,5 @@
 import RequestProject.LocalEnergy.BlockEnergy
+import RequestProject.Core.LinearCongruenceCounting
 import RequestProject.LocalEnergy.ReciprocalDispersion
 
 /-!
@@ -48,8 +49,9 @@ lemma crtRepr_symm (p q : ℕ) (hp : Nat.Prime p) (hq : Nat.Prime q) (hpq : p �
 open LocalEnergy in
 /-- Fix a prime `q ∈ [X,2X]` carrying residue
     `n'`, with `q ∤ (n'-n)`.  The primes `p ∈ C` (residue `n`) whose cross
-    representative `H_{pq}` is `δ`-small inject into `linearCongruencePairs X q U (n'-n)` via
-    `p ↦ (u, p)` with `H_{pq} - n = u·p`; hence by `linearCongruence_pair_count` their number is
+    representative `H_{pq}` is `δ`-small inject into the bounded linear-congruence
+    pairs with residue `n'-n` via
+    `p ↦ (u, p)` with `H_{pq} - n = u·p`; hence by the bounded pair count their number is
     `≤ 2·(2·U+1) ≤ 2·(2·(2δX + B/X) + 1)`.
 
     Here `H_{pq} ≡ n (mod p)` (so `p ∣ H-n`, giving the integer `u`), and
@@ -99,7 +101,20 @@ lemma crossLabel_close_fiber_bound (X : ℕ) (P : Finset ℕ) [∀ p : P, NeZero
     rwa [ Finset.card_image_of_injective _ fun x y hxy => by aesop ] at h_card;
   refine' le_trans ( Nat.cast_le.mpr h_card ) _;
   refine' le_trans _ ( mul_le_mul_of_nonneg_left ( show ( 2 * ⌊2 * δ * X + B / X⌋₊ + 1 : ℝ ) ≤ 2 * ( 2 * δ * X + B / X ) + 1 by linarith [ Nat.floor_le ( show 0 ≤ 2 * δ * X + B / X by positivity ) ] ) zero_le_two );
-  exact_mod_cast LocalEnergy.linearCongruence_pair_count X q ⌊2 * δ * X + B / X⌋₊ hq hXq ( n' - n ) hqd
+  have hsubset :
+      Finset.filter
+          (fun up => Nat.Prime up.2 ∧
+            (q : ℤ) ∣ up.1 * (up.2 : ℤ) - (n' - n))
+          (Finset.Icc (-Nat.floor (2 * δ * X + B / X) : ℤ)
+              (Nat.floor (2 * δ * X + B / X)) ×ˢ Finset.Icc X (2 * X)) ⊆
+        RequestProject.boundedLinearCongruencePairs X q
+          ⌊2 * δ * X + B / X⌋₊ (n' - n) := by
+    intro up hup
+    rw [RequestProject.boundedLinearCongruencePairs, Finset.mem_filter]
+    exact ⟨(Finset.mem_filter.mp hup).1, (Finset.mem_filter.mp hup).2.2⟩
+  exact_mod_cast (Finset.card_le_card hsubset).trans
+    (RequestProject.boundedLinearCongruencePairs_card_le X q
+      ⌊2 * δ * X + B / X⌋₊ hq hXq (n' - n) hqd)
 
 open LocalEnergy in
 /-- The number of cross pairs `(p,q) ∈ C×C'`
@@ -151,7 +166,8 @@ For distinct integer labels `n ≠ n'` with
     `|C'| ≥ 8`:
     `∑_{p∈C, q∈C'} (H_{pq}/pq)² ≥ c·|C|³|C'|/X²` for an absolute `c > 0`.
 
-    Reduce to `LocalEnergy.linearCongruence_pair_count` with `w = n'-n`; at most `2`
+    Reduce to `RequestProject.boundedLinearCongruencePairs_card_le` with
+    `w = n'-n`; at most `2`
     primes divide `d = n'-n`; for the rest, `≤ 8δX+4B/X+2` cross pairs are close,
     so `≥ |C||C'|/2` pairs carry energy `≥ δ²`.
 
