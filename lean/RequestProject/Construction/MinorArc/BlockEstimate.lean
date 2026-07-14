@@ -1,5 +1,6 @@
 import RequestProject.CircleMethod.MinorArcCover
 import RequestProject.CircleMethod.MinorArcEstimates
+import RequestProject.CircleMethod.MainArcPeriodicity
 import RequestProject.CircleMethod.QuadraticEnergy
 import RequestProject.Construction.Edges
 import RequestProject.Spectral.BernoulliCyclicFourier

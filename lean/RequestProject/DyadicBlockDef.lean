@@ -9,7 +9,7 @@ namespace GlobalControl
 This minimal, axiom-free base file isolates the dyadic prime block `dyadicBlock`
 so that downstream elementary developments can depend on the definition without
 pulling in the classical analytic axioms (`dyadic_prime_density`,
-`dyadic_mertens_cumulative`), which are re-exported by `DyadicPrimes` from `AnalyticInputs`.
+`dyadic_mertens_cumulative`) supplied by `AnalyticInputs`.
 -/
 
 /-- The dyadic block of primes in `[2ᵏ, 2ᵏ⁺¹)`. -/

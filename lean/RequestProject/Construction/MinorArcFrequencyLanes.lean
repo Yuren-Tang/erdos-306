@@ -1,4 +1,5 @@
 import RequestProject.CircleMethod.QuadraticEnergy
+import RequestProject.CircleMethod.MainArcPeriodicity
 import RequestProject.Construction.ControlEdges
 import RequestProject.Construction.MainArcClassification
 

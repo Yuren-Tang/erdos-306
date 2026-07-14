@@ -1,9 +1,6 @@
-import RequestProject.BlockMassPool
+import RequestProject.Core.FiniteWeightSelection
 import RequestProject.CircleMethod.PrimeSupportPeriod
-import RequestProject.ExtraEnergyMinorArc
-import RequestProject.ExtraMinorDamping
 import RequestProject.CircleMethod.ControlVarianceComparison
-import RequestProject.CircleMethodAssembly
 
 open Finset BigOperators GlobalControl
 
@@ -288,7 +285,8 @@ lemma exists_residual_subset_recip_window
     field_simp [hbR]
     ring
   obtain ⟨Q, hQsub, hQlb, hQub⟩ :=
-    exists_subset_recip_residual_window P base (3 / (2 * (b : ℝ))) (3 / (b : ℝ))
+    RequestProject.exists_subset_sum_in_residual_window P
+      (fun e => (1 : ℝ) / (e : ℝ)) base (3 / (2 * (b : ℝ))) (3 / (b : ℝ))
       (3 / (2 * (b : ℝ))) (le_of_lt hbase) hgap_eq hgap_pos hsmall
       (by simpa [recipLoad] using hsum)
   exact ⟨Q, hQsub, hQlb, by simpa [recipLoad] using hQub⟩

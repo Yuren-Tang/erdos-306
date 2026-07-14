@@ -2,6 +2,7 @@ import RequestProject.Construction.MinorArc.BlockEstimate
 import RequestProject.Construction.MinorArc.ControlGadgetScale
 import RequestProject.Construction.MinorArc.SupportBudget
 import RequestProject.Construction.MinorArc.ExtraSiblingChoice
+import RequestProject.CircleMethod.MainArcPeriodicity
 
 open Finset BigOperators GlobalControl
 

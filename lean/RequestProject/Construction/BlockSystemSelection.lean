@@ -1,4 +1,4 @@
-import RequestProject.BlockMassPool
+import RequestProject.Construction.BlockPrimePool
 import RequestProject.Construction.BlockSupportCompatibility
 import RequestProject.GlobalControl.BlockSystem
 

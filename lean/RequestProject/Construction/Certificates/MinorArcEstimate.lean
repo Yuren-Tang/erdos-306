@@ -1,5 +1,6 @@
 import RequestProject.Construction.Certificates.MainArcWindow
 import RequestProject.Construction.MinorArcFrequencyLanes
+import RequestProject.CircleMethod.MainArcPeriodicity
 
 open Finset BigOperators GlobalControl
 open scoped Classical

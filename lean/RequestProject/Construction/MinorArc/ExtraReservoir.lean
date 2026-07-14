@@ -1,4 +1,5 @@
 import RequestProject.Construction.MinorArc.ExtraGadgetDamping
+import RequestProject.CircleMethod.MainArcPeriodicity
 
 open Finset BigOperators GlobalControl
 
