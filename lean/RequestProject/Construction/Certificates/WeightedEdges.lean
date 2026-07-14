@@ -16,7 +16,7 @@ namespace CircleMethod
 /-! ## Mass batch layer (residual batch `Q`, edge data, load window) -/
 
 /-- **Mass certificate.**  The residual mass batch `Q` (packaged as a
-`R2MassBatchSupply`, which records the reciprocal-load window
+`MassBatchSupply`, which records the reciprocal-load window
 `3/(2b) ≤ baseLoad + recipLoad Q < 3/b`), the assembled concrete edge data `D`
 and weights `W`, and the structural facts of the edge set: every edge is a
 semiprime, positive, divides the period `L`, avoids `T`; the set is nonempty;
@@ -27,12 +27,12 @@ structure WeightedEdgeCertificate {T : Finset ℕ} {b : ℕ}
   /-- the residual mass batch. -/
   Q : Finset ℕ
   /-- the assembled concrete edge data. -/
-  D : R2ConcreteData T b
+  D : ConstructionData T b
   /-- the edge weights. -/
-  W : R2ConcreteData.Weights D
+  W : ConstructionData.Weights D
   /-- the mass-batch supply (encodes the load window). -/
-  QB : R2MassBatchSupply D
-  hDdef : D = (⟨F.bsCert.BS, ∅, b.primeFactors, Cc.S⟩ : R2ConcreteData T b).withQ Q
+  QB : MassBatchSupply D
+  hDdef : D = (⟨F.bsCert.BS, ∅, b.primeFactors, Cc.S⟩ : ConstructionData T b).withQ Q
   hLeq : D.L = b * ∏ p ∈ blockSupport D.BS, p
   hL : 0 < D.L
   hsemi : ∀ e ∈ D.E, IsSemiprime e
@@ -42,7 +42,7 @@ structure WeightedEdgeCertificate {T : Finset ℕ} {b : ℕ}
   hctrlAvoid : ∀ e ∈ ctrlEdges D.BS, e ∉ T
   hgadgetAvoid : ∀ e ∈ gadgetEdges D.R D.S, e ∉ T
   havoid : ∀ e ∈ D.E, e ∉ T
-  hloadUpper : R2ConcreteData.recipLoad D.E < 3 / (b : ℝ)
+  hloadUpper : ConstructionData.recipLoad D.E < 3 / (b : ℝ)
   hsumE : ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2 ≤ F.ledger.Sload * (sigmaCtrl D.BS) ^ 2
 
 /-- Produce the mass-batch certificate: choose the residual batch `Q`, assemble
@@ -60,9 +60,9 @@ lemma exists_weighted_edge_certificate {T : Finset ℕ} {b : ℕ}
     F.bsCert.hsub Cc.hSge F.bsCert.hRout
     (F.ledger.hk0ctrl F.bsCert.BS F.bsCert.hk0ctrlle) F.ledger.k1 F.ledger.hk15 F.bsCert.hk1le F.ledger.hload
     hmass F.bsCert.hk0T
-  set D : R2ConcreteData T b := (⟨F.bsCert.BS, ∅, b.primeFactors, Cc.S⟩ : R2ConcreteData T b).withQ Q
+  set D : ConstructionData T b := (⟨F.bsCert.BS, ∅, b.primeFactors, Cc.S⟩ : ConstructionData T b).withQ Q
     with hDdef
-  set W : R2ConcreteData.Weights D := QB.weights hbpos with hWdef
+  set W : ConstructionData.Weights D := QB.weights hbpos with hWdef
   have hScardD : D.S.card = F.ledger.G := Cc.hScard
   have hk0TD : T.sup id + 1 ≤ D.BS.k0 := F.bsCert.hk0T
   have hLeq : D.L = b * ∏ p ∈ blockSupport D.BS, p := rfl
@@ -93,7 +93,7 @@ lemma exists_weighted_edge_certificate {T : Finset ℕ} {b : ℕ}
     omega
   have havoid : ∀ e ∈ D.E, e ∉ T :=
     D.avoid hctrlAvoid QB.hQavoid hgadgetAvoid
-  have hloadUpper : R2ConcreteData.recipLoad D.E < 3 / (b : ℝ) :=
+  have hloadUpper : ConstructionData.recipLoad D.E < 3 / (b : ℝ) :=
     (D.total_recipLoad_window_of_residual QB.hloadDisj QB.hloadLower QB.hloadUpper).2
   have hRcard : D.R.card ≤ b :=
     le_trans (Finset.card_le_card (fun x hx => Finset.mem_Icc.mpr

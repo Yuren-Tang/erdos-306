@@ -20,7 +20,7 @@ support-budget interface consumed by the final minor-arc estimate.
 minor frequency set supplied by `MainArcFields`. -/
 structure MinorArcClassification
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ) where
+    (D : ConstructionData T b) (W : ConstructionData.Weights D) (N : ℤ) where
   Sblock : MainArcFields D.E W.theta (D.L / b) D.L N → Finset ℕ
   Sextra : MainArcFields D.E W.theta (D.L / b) D.L N → Finset ℕ
   hcover : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
@@ -29,7 +29,7 @@ structure MinorArcClassification
 /-- Analytic budget lanes for a fixed classification. -/
 structure MinorArcBudgetLanes
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
+    (D : ConstructionData T b) (W : ConstructionData.Weights D) (N : ℤ)
     (C : MinorArcClassification D W N)
     (Bblock Bextra : ℝ) where
   hblock : ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
@@ -39,10 +39,10 @@ structure MinorArcBudgetLanes
     ∑ h ∈ extraMinorPart MA.Sm (C.Sblock MA) (C.Sextra MA),
       fourierNormWeight D.E W.theta (D.L / b) D.L h ≤ Bextra
 
-/-- Packaged minor support and norm-sum budgets for a fixed concrete R2 setup. -/
+/-- Packaged minor support and norm-sum budgets for fixed construction data. -/
 structure MinorArcSupportBudget
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
+    (D : ConstructionData T b) (W : ConstructionData.Weights D) (N : ℤ)
     (Bblock Bextra : ℝ) where
   Sblock : MainArcFields D.E W.theta (D.L / b) D.L N → Finset ℕ
   Sextra : MainArcFields D.E W.theta (D.L / b) D.L N → Finset ℕ
@@ -58,8 +58,8 @@ structure MinorArcSupportBudget
 and analytic budget lanes. -/
 def minorArcSupportBudget_of_classification_and_lanes
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b)
-    (W : R2ConcreteData.Weights D)
+    (D : ConstructionData T b)
+    (W : ConstructionData.Weights D)
     (N : ℤ)
     (Bblock Bextra : ℝ)
     (C : MinorArcClassification D W N)
@@ -74,4 +74,3 @@ def minorArcSupportBudget_of_classification_and_lanes
 end CircleMethod
 
 end
-

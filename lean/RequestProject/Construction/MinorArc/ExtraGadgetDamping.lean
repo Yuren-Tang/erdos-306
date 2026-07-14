@@ -109,7 +109,7 @@ proved.  The field `Gset h` is the finite set of block-side gadget primes used
 for frequency `h`, while `damp h` is the per-frequency damping base. -/
 structure ExtraMinorMultiGadgetBound
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
+    (D : ConstructionData T b) (W : ConstructionData.Weights D) (N : ℤ)
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ)
     (Bextra : ℝ) where
@@ -133,7 +133,7 @@ structure ExtraMinorMultiGadgetBound
 /-- Multi-gadget extra data gives the extra-minor norm-sum budget. -/
 theorem extraMinor_budget_of_multiGadgetBound
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
+    (D : ConstructionData T b) (W : ConstructionData.Weights D) (N : ℤ)
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ) (Bextra : ℝ)
     (X : ExtraMinorMultiGadgetBound D W N MA Sblock Sextra Bextra) :

@@ -31,7 +31,7 @@ consumed by `Construction.MainArcClassification`.
 reservoir for every main arc. -/
 structure MinorArcMultiGadgetLanes
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
+    (D : ConstructionData T b) (W : ConstructionData.Weights D) (N : ℤ)
     (Bblock Bextra η Ctail ρ : ℝ)
     (Cls : MinorArcClassification D W N) where
   component : ControlGadgetScaleData D N ρ
@@ -46,7 +46,7 @@ theorem exists_minorArcSupportBudget_of_multiGadget_lanes
     (η : ℝ) (hη : 0 < η) :
     ∃ (k0min : ℕ) (Ctail : ℝ), 0 < Ctail ∧
       ∀ {T : Finset ℕ} {b : ℕ}
-      (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
+      (D : ConstructionData T b) (W : ConstructionData.Weights D) (N : ℤ)
       (Bblock Bextra ρ : ℝ)
       (Cls : MinorArcClassification D W N),
       k0min ≤ D.BS.k0 → admissibleGlobalRange D.BS →
@@ -89,7 +89,7 @@ gadget reservoirs, rather than by an already-assembled
 `MultiGadgetReservoir`. -/
 structure MinorArcFrequencyLanes
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
+    (D : ConstructionData T b) (W : ConstructionData.Weights D) (N : ℤ)
     (Bblock Bextra η Ctail ρ Cextra : ℝ)
     (Cls : MinorArcClassification D W N) where
   component : ControlGadgetScaleData D N ρ
@@ -123,7 +123,7 @@ structure MinorArcFrequencyLanes
 /-- Frequency-label lanes produce the already-built multi-gadget lane package. -/
 def MinorArcFrequencyLanes.toMultiGadget
     {T : Finset ℕ} {b : ℕ}
-    {D : R2ConcreteData T b} {W : R2ConcreteData.Weights D} {N : ℤ}
+    {D : ConstructionData T b} {W : ConstructionData.Weights D} {N : ℤ}
     {Bblock Bextra η Ctail ρ Cextra : ℝ}
     {Cls : MinorArcClassification D W N}
     (L : MinorArcFrequencyLanes D W N Bblock Bextra η Ctail ρ Cextra Cls) :

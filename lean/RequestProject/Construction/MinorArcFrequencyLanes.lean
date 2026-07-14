@@ -20,7 +20,7 @@ by the minor-arc endgame.
 /-- Block-minor lane: the block-fiber-tail data, with `K = b` and `Qextra = quadraticEnergy − Qctrl`
 (so `hQE` is an equality and `Qextra ≥ 0`, making `hfiber` the `b`-to-1 fiber count). -/
 def blockMinorFiberTailData {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
+    (D : ConstructionData T b) (W : ConstructionData.Weights D) (N : ℤ)
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock : Finset ℕ) (C η Ctail Bblock : ℝ) (hC : 1 ≤ C)
     (heL : ∀ e ∈ D.E, e ∣ D.L) (he0 : ∀ e ∈ D.E, 0 < e) (hL : 0 < D.L)
@@ -65,8 +65,8 @@ Count bound for the extra-minor frequencies: a main-arc frequency is a CRT
 constant assignment `a_m` for a single label `m` with `|m| ≤ C/σ ≤ N`, and each
 label-fiber has `≤ b` frequencies in `range L`.  Hence at most `b·(2N+1)`.
 -/
-lemma extraMinor_card_le {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
-    (W : R2ConcreteData.Weights D) (N : ℤ) (C : ℝ)
+lemma extraMinor_card_le {T : Finset ℕ} {b : ℕ} (D : ConstructionData T b)
+    (W : ConstructionData.Weights D) (N : ℤ) (C : ℝ)
     (hN : 0 ≤ N)
     (hCN : C / sigmaCtrl D.BS ≤ (N : ℝ))
     (hLeq : D.L = b * ∏ p ∈ blockSupport D.BS, p)
@@ -90,7 +90,7 @@ arc, hence carries an integer block-label `m = mainArcWitnessLabel D C h` with
 `ExtraIntegerFrequencyLabelData`, the input the gadget reservoir reads when damping
 each extra frequency. -/
 def extraMinorIntegerLabels {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ) (C : ℝ)
+    (D : ConstructionData T b) (W : ConstructionData.Weights D) (N : ℤ) (C : ℝ)
     (hCN : C / sigmaCtrl D.BS ≤ (N : ℝ)) :
     ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
       ExtraIntegerFrequencyLabelData D W N MA
@@ -108,7 +108,7 @@ period `L = b · ∏ blockSupport`), so the block fibre tail is controlled by
 `Bblock = b · (η + Ctail·exp(-8C²/9))/σ_ctrl`.  This is the block lane of the
 frequency endgame, produced for every main-arc field `MA`. -/
 def blockMinorFrequencyLane {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
+    (D : ConstructionData T b) (W : ConstructionData.Weights D) (N : ℤ)
     (C η Ctail : ℝ) (hC : 1 ≤ C)
     (heL : ∀ e ∈ D.E, e ∣ D.L) (he0 : ∀ e ∈ D.E, 0 < e) (hL : 0 < D.L)
     (hLeq : D.L = b * ∏ p ∈ blockSupport D.BS, p) :
@@ -131,7 +131,7 @@ has at most `b` frequencies in `range L`; hence at most `b·(2N+1)` extra
 frequencies.  Multiplying by the per-frequency damping budget `Dmp` gives the
 uniform extra-count budget `Bextra = b·(2N+1)·Dmp`. -/
 lemma extraMinorCountBound {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
+    (D : ConstructionData T b) (W : ConstructionData.Weights D) (N : ℤ)
     (C Dmp : ℝ) (hNnonneg : 0 ≤ N) (hDmpnn : 0 ≤ Dmp)
     (hCN : C / sigmaCtrl D.BS ≤ (N : ℝ))
     (hLeq : D.L = b * ∏ p ∈ blockSupport D.BS, p) :
@@ -150,7 +150,7 @@ the `G = |S|` gadget primes drives the per-frequency factor
 the gadget lane of the frequency endgame, using the labels from
 `extraMinorIntegerLabels`. -/
 lemma gadgetDampingBound {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
+    (D : ConstructionData T b) (W : ConstructionData.Weights D) (N : ℤ)
     (C Dmp : ℝ) (G : ℕ)
     (hbpos : 0 < b) (hsqfree : Squarefree b)
     (hcovR : CoversPrimeDivisors D.R b) (hcopB : BlockSupportCoprimeWith D.BS b)
@@ -178,7 +178,7 @@ lemma gadgetDampingBound {T : Finset ℕ} {b : ℕ}
 `2^{2k₀} ≤ s`; combined with `2N < 2^{2k₀}` this gives the gap `2|m| < s` the
 gadget reservoir needs to read each label modulo `s`. -/
 lemma extraMinorLabelGap {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ) (C : ℝ)
+    (D : ConstructionData T b) (W : ConstructionData.Weights D) (N : ℤ) (C : ℝ)
     (hCN : C / sigmaCtrl D.BS ≤ (N : ℝ))
     (hN2 : 2 * N < (2 : ℤ) ^ (2 * D.BS.k0))
     (hSge : ∀ s ∈ D.S, 2 ^ (2 * D.BS.k0) ≤ s) :
@@ -216,7 +216,7 @@ small-label gap (`extraMinorLabelGap`), the extra-frequency count budget
 (`gadgetDampingBound`).
 -/
 lemma minorArcFrequencyLanes {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
+    (D : ConstructionData T b) (W : ConstructionData.Weights D) (N : ℤ)
     (C η Ctail Dmp : ℝ) (G : ℕ)
     (hbpos : 0 < b) (hsqfree : Squarefree b)
     (hcovR : CoversPrimeDivisors D.R b) (hcopB : BlockSupportCoprimeWith D.BS b)

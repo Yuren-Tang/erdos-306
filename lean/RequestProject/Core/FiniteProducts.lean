@@ -11,7 +11,7 @@ simply be discarded.
 This single mechanism drives all three product estimates in the circle-method
 construction: full-product decay (bound every factor, `S = E`), single-factor
 control (keep one factor, `S = {e₀}`), and multi-gadget damping (keep the
-gadget factors, constant bound). See `docs/construction-redesign.md`, node P2.
+gadget factors, and a constant bound).
 -/
 
 open Finset BigOperators

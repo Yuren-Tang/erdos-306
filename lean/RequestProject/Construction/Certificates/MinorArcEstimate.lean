@@ -56,13 +56,13 @@ lemma minor_arc_support_budget {T : Finset ℕ} {b : ℕ}
       ((b : ℝ) * (2 * (A.N : ℝ) + 1) * F.ledger.Dmp)) := by
   classical
   have hbpos := F.ledger.hbpos
-  set D : R2ConcreteData T b := M.D with hDeq
-  set W : R2ConcreteData.Weights D := M.W with hWeq
+  set D : ConstructionData T b := M.D with hDeq
+  set W : ConstructionData.Weights D := M.W with hWeq
   set N : ℤ := A.N with hNeq
   -- bridge the opaque mass-batch data back to the foundation/concrete witnesses
-  have hBS : D.BS = F.bsCert.BS := by simp only [hDeq, M.hDdef, R2ConcreteData.withQ_BS]
-  have hS : D.S = Cc.S := by simp only [hDeq, M.hDdef, R2ConcreteData.withQ_S]
-  have hR : D.R = b.primeFactors := by simp only [hDeq, M.hDdef, R2ConcreteData.withQ_R]
+  have hBS : D.BS = F.bsCert.BS := by simp only [hDeq, M.hDdef, ConstructionData.withQ_BS]
+  have hS : D.S = Cc.S := by simp only [hDeq, M.hDdef, ConstructionData.withQ_S]
+  have hR : D.R = b.primeFactors := by simp only [hDeq, M.hDdef, ConstructionData.withQ_R]
   have hcovRD : CoversPrimeDivisors D.R b := by rw [hR]; exact F.bsCert.hcovR
   have hcopBD : BlockSupportCoprimeWith D.BS b := by rw [hBS]; exact F.bsCert.hcopB
   have hRpD : ∀ r ∈ D.R, Nat.Prime r := by rw [hR]; exact F.bsCert.hRp

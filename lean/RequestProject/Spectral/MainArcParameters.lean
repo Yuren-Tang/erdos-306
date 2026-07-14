@@ -5,7 +5,7 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 
 These definitions name the distinct analytic roles played by the current
 explicit Taylor estimate.  Their numerical values are witnesses supplied by
-the analytic leaf, not structural parameters of the R2 construction.
+the analytic leaf, not structural parameters of the construction.
 -/
 
 namespace CircleMethod

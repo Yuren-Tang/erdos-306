@@ -30,9 +30,9 @@ lemma main_arc_variance_comparison {T : Finset ℕ} {b : ℕ}
       ∧ Real.sqrt (sigmaE2 M.D.E M.W.theta) ≤ F.ledger.K * sigmaCtrl M.D.BS
       ∧ 0 < Real.sqrt (sigmaE2 M.D.E M.W.theta) := by
   classical
-  set D : R2ConcreteData T b := M.D with hDeq
-  set W : R2ConcreteData.Weights D := M.W with hWeq
-  have hBS : D.BS = F.bsCert.BS := by simp only [hDeq, M.hDdef, R2ConcreteData.withQ_BS]
+  set D : ConstructionData T b := M.D with hDeq
+  set W : ConstructionData.Weights D := M.W with hWeq
+  have hBS : D.BS = F.bsCert.BS := by simp only [hDeq, M.hDdef, ConstructionData.withQ_BS]
   have hadmD : admissibleGlobalRange D.BS := by rw [hBS]; exact F.bsCert.hadm
   have hK0 : (0 : ℝ) < F.ledger.K := lt_of_lt_of_le one_pos F.ledger.hK1
   have hsumE : ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2
@@ -98,13 +98,13 @@ lemma main_arc_window_scale_period {T : Finset ℕ} {b : ℕ}
       ∧ (N : ℝ) ≤ F.ledger.cSigma * (M.D.BS.k0 : ℝ) ^ 2 * (2 : ℝ) ^ M.D.BS.k0 + 1 := by
   classical
   have hbpos := F.ledger.hbpos
-  set D : R2ConcreteData T b := M.D with hDeq
+  set D : ConstructionData T b := M.D with hDeq
   set C : ℝ := F.ledger.C with hCeq
   set cS : ℝ := F.ledger.cSigma with hcSeq
   have hcS1 : (1 : ℝ) ≤ cS := F.ledger.hcS1
   have hcS0 : (0 : ℝ) < cS := lt_of_lt_of_le one_pos hcS1
-  have hBS : D.BS = F.bsCert.BS := by simp only [hDeq, M.hDdef, R2ConcreteData.withQ_BS]
-  have hS : D.S = Cc.S := by simp only [hDeq, M.hDdef, R2ConcreteData.withQ_S]
+  have hBS : D.BS = F.bsCert.BS := by simp only [hDeq, M.hDdef, ConstructionData.withQ_BS]
+  have hS : D.S = Cc.S := by simp only [hDeq, M.hDdef, ConstructionData.withQ_S]
   have hLeq : D.L = b * ∏ p ∈ blockSupport D.BS, p := M.hLeq
   have hadmD : admissibleGlobalRange D.BS := by rw [hBS]; exact F.bsCert.hadm
   have hCge3 : (3 : ℝ) ≤ C := F.ledger.hCge3
@@ -177,14 +177,14 @@ lemma exists_main_arc_window_certificate {T : Finset ℕ} {b : ℕ}
     Nonempty (MainArcWindowCertificate F Cc M) := by
   classical
   have hbpos := F.ledger.hbpos
-  set D : R2ConcreteData T b := M.D with hDeq
-  set W : R2ConcreteData.Weights D := M.W with hWeq
-  set QB : R2MassBatchSupply D := M.QB with hQBeq
+  set D : ConstructionData T b := M.D with hDeq
+  set W : ConstructionData.Weights D := M.W with hWeq
+  set QB : MassBatchSupply D := M.QB with hQBeq
   set C : ℝ := F.ledger.C with hCeq
   -- bridge the opaque mass-batch data back to the foundation/concrete witnesses
-  have hBS : D.BS = F.bsCert.BS := by simp only [hDeq, M.hDdef, R2ConcreteData.withQ_BS]
-  have hS : D.S = Cc.S := by simp only [hDeq, M.hDdef, R2ConcreteData.withQ_S]
-  have hR : D.R = b.primeFactors := by simp only [hDeq, M.hDdef, R2ConcreteData.withQ_R]
+  have hBS : D.BS = F.bsCert.BS := by simp only [hDeq, M.hDdef, ConstructionData.withQ_BS]
+  have hS : D.S = Cc.S := by simp only [hDeq, M.hDdef, ConstructionData.withQ_S]
+  have hR : D.R = b.primeFactors := by simp only [hDeq, M.hDdef, ConstructionData.withQ_R]
   have he0 : ∀ e ∈ D.E, 0 < e := M.he0
   have hLeq : D.L = b * ∏ p ∈ blockSupport D.BS, p := M.hLeq
   have hsumE : ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2

@@ -28,8 +28,8 @@ only consumes raw choice data and produces the aggregate object.
 `ExtraMinorMultiGadgetBound`. -/
 structure MultiGadgetReservoir
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b)
-    (W : R2ConcreteData.Weights D)
+    (D : ConstructionData T b)
+    (W : ConstructionData.Weights D)
     (N : ℤ)
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ)
@@ -69,7 +69,7 @@ extra-minor bound data.  The key proof field is obtained from
 `fourierNormWeight_le_multi_gadget_damp`. -/
 def multiGadgetBoundData_of_reservoir
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
+    (D : ConstructionData T b) (W : ConstructionData.Weights D) (N : ℤ)
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ) (Bextra : ℝ)
     (X : MultiGadgetReservoir D W N MA Sblock Sextra Bextra)
@@ -108,8 +108,8 @@ fills edge membership and theta bounds from `D.gadgetEdges_subset_E` and
 `W.hlb`/`W.hub`. -/
 structure PreparedExtraReservoir
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b)
-    (W : R2ConcreteData.Weights D)
+    (D : ConstructionData T b)
+    (W : ConstructionData.Weights D)
     (N : ℤ)
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ)
@@ -133,8 +133,8 @@ structure PreparedExtraReservoir
 /-- Prepared per-frequency data gives the concrete multi-gadget reservoir. -/
 def multiGadgetReservoir_of_prepared
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b)
-    (W : R2ConcreteData.Weights D)
+    (D : ConstructionData T b)
+    (W : ConstructionData.Weights D)
     (N : ℤ)
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ)
@@ -171,8 +171,8 @@ This is useful when the selected gadget sets have been made uniformly large
 enough that every damped power is at most `C`. -/
 theorem extraPreparedReservoirBudget_of_pointwise_bound
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b)
-    (W : R2ConcreteData.Weights D)
+    (D : ConstructionData T b)
+    (W : ConstructionData.Weights D)
     (N : ℤ)
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ)
@@ -196,8 +196,8 @@ record.  The finite budget field is discharged by
 `extraPreparedReservoirBudget_of_pointwise_bound`. -/
 def preparedChoice_of_pointwise_budget
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b)
-    (W : R2ConcreteData.Weights D)
+    (D : ConstructionData T b)
+    (W : ConstructionData.Weights D)
     (N : ℤ)
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ)

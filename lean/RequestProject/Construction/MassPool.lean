@@ -7,16 +7,16 @@ noncomputable section
 namespace CircleMethod
 
 /-!
-# The residual mass-batch pool and its selection (node C2, mechanism 1)
+# The residual mass-batch pool and its selection
 
 Single motivating question: **how is the residual mass batch `D.Q` chosen?**
 A canonical candidate pool (products of two ordered block-support primes,
 after removing the obstruction set and the already-fixed control/gadget
 edges) is selected via the generic greedy-window reduction
-(`R2ConcreteData.exists_residual_subset_recip_window`); this file supplies
+(`ConstructionData.exists_residual_subset_recip_window`); this file supplies
 the pool-specific facts the selector needs (structural membership,
 individual smallness, remaining reciprocal mass) and packages the result as
-`R2MassBatchSupply`.
+`MassBatchSupply`.
 
 This node does *not* include bounding the control/gadget edges' own load —
 that is a separate mechanism, independent of how `Q` is chosen, in
@@ -26,21 +26,21 @@ that is a separate mechanism, independent of how `Q` is chosen, in
 
 /-- Reciprocal load is monotone under finite-set inclusion. -/
 lemma recipLoad_mono {A B : Finset ℕ} (hAB : A ⊆ B) :
-    R2ConcreteData.recipLoad A ≤ R2ConcreteData.recipLoad B := by
-  unfold R2ConcreteData.recipLoad
+    ConstructionData.recipLoad A ≤ ConstructionData.recipLoad B := by
+  unfold ConstructionData.recipLoad
   exact Finset.sum_le_sum_of_subset_of_nonneg hAB
     (by intro x _hxB _hxA; positivity)
 
 /-- The product image of `blockPrimes k0` ordered pairs has the expected
 reciprocal load. -/
 lemma blockPrimes_pairImage_recipLoad_eq (k0 : ℕ) :
-    R2ConcreteData.recipLoad
+    ConstructionData.recipLoad
         (((blockPrimes k0).offDiag.filter (fun pq : ℕ × ℕ => pq.1 < pq.2)).image
           (fun pq : ℕ × ℕ => pq.1 * pq.2))
       =
         ∑ pq ∈ (blockPrimes k0).offDiag.filter (fun pq : ℕ × ℕ => pq.1 < pq.2),
           (1 : ℝ) / ((pq.1 : ℝ) * (pq.2 : ℝ)) := by
-  unfold R2ConcreteData.recipLoad
+  unfold ConstructionData.recipLoad
   rw [Finset.sum_image]
   · exact Finset.sum_congr rfl fun pq _hpq => by
       simp [Nat.cast_mul]
@@ -53,13 +53,13 @@ def blockSupportPairPool (BS : BlockSystem) : Finset ℕ :=
 
 /-- Edges forbidden for the residual mass batch: the obstruction set plus the
 already-fixed control/gadget products. -/
-def residualForbidden {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b) :
+def residualForbidden {T : Finset ℕ} {b : ℕ} (D : ConstructionData T b) :
     Finset ℕ :=
   T ∪ (ctrlEdges D.BS ∪ gadgetEdges D.R D.S)
 
 /-- The residual mass-batch pool after deleting the obstruction set and the
 already-fixed control/gadget edge products. -/
-def residualPairPool {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b) :
+def residualPairPool {T : Finset ℕ} {b : ℕ} (D : ConstructionData T b) :
     Finset ℕ :=
   blockSupportPairPool D.BS \ residualForbidden D
 
@@ -96,17 +96,17 @@ theorem blockSupportPairPool_load_ge_of_blockPrimes_subset
       (1 : ℝ) / 2 ≤
         ∑ pq ∈ (blockPrimes k0).offDiag.filter (fun pq : ℕ × ℕ => pq.1 < pq.2),
           (1 : ℝ) / ((pq.1 : ℝ) * (pq.2 : ℝ))) :
-    (1 : ℝ) / 2 ≤ R2ConcreteData.recipLoad (blockSupportPairPool BS) := by
+    (1 : ℝ) / 2 ≤ ConstructionData.recipLoad (blockSupportPairPool BS) := by
   let P :=
     ((blockPrimes k0).offDiag.filter (fun pq : ℕ × ℕ => pq.1 < pq.2)).image
       (fun pq : ℕ × ℕ => pq.1 * pq.2)
   have hPsub : P ⊆ blockSupportPairPool BS :=
     blockPrimes_pairImage_subset_blockSupportPairPool BS k0 hsub
-  have hmono : R2ConcreteData.recipLoad P ≤
-      R2ConcreteData.recipLoad (blockSupportPairPool BS) :=
+  have hmono : ConstructionData.recipLoad P ≤
+      ConstructionData.recipLoad (blockSupportPairPool BS) :=
     recipLoad_mono hPsub
   have hPeq :
-      R2ConcreteData.recipLoad P =
+      ConstructionData.recipLoad P =
         ∑ pq ∈ (blockPrimes k0).offDiag.filter (fun pq : ℕ × ℕ => pq.1 < pq.2),
           (1 : ℝ) / ((pq.1 : ℝ) * (pq.2 : ℝ)) := by
     exact blockPrimes_pairImage_recipLoad_eq k0
@@ -122,7 +122,7 @@ theorem blockSupportPairPool_load_ge_half_of_contains_large_blockPrimes
       (1 : ℝ) / 2 ≤
         ∑ pq ∈ (blockPrimes k0).offDiag.filter (fun pq : ℕ × ℕ => pq.1 < pq.2),
           (1 : ℝ) / ((pq.1 : ℝ) * (pq.2 : ℝ))) :
-    (1 : ℝ) / 2 ≤ R2ConcreteData.recipLoad (blockSupportPairPool BS) := by
+    (1 : ℝ) / 2 ≤ ConstructionData.recipLoad (blockSupportPairPool BS) := by
   exact blockSupportPairPool_load_ge_of_blockPrimes_subset BS BS.k0 hsub
     (hload BS.k0 hlarge)
 
@@ -131,27 +131,27 @@ theorem exists_k1_blockSupportPairPool_load_ge_half
     (BS : BlockSystem)
     (hsub : blockPrimes BS.k0 ⊆ blockSupport BS) :
     ∃ k1 : ℕ, 5 ≤ k1 ∧ (k1 ≤ BS.k0 →
-      (1 : ℝ) / 2 ≤ R2ConcreteData.recipLoad (blockSupportPairPool BS)) := by
+      (1 : ℝ) / 2 ≤ ConstructionData.recipLoad (blockSupportPairPool BS)) := by
   obtain ⟨k1, hk15, hload⟩ := blockPrimes_product_load_ge
   exact ⟨k1, hk15, fun hlarge =>
     blockSupportPairPool_load_ge_half_of_contains_large_blockPrimes BS k1
       hlarge hsub hload⟩
 
 lemma residualPairPool_pair {T : Finset ℕ} {b e : ℕ}
-    (D : R2ConcreteData T b) (he : e ∈ residualPairPool D) :
+    (D : ConstructionData T b) (he : e ∈ residualPairPool D) :
     ∃ p q, p ∈ blockSupport D.BS ∧ q ∈ blockSupport D.BS ∧ p < q ∧ e = p * q := by
   rw [residualPairPool, Finset.mem_sdiff] at he
   exact blockSupportPairPool_pair he.1
 
 lemma residualPairPool_avoid {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) :
+    (D : ConstructionData T b) :
     ∀ e ∈ residualPairPool D, e ∉ T := by
   intro e he hT
   rw [residualPairPool, Finset.mem_sdiff] at he
   exact he.2 (by simp [residualForbidden, hT])
 
 lemma residualPairPool_disjoint_fixed {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) :
+    (D : ConstructionData T b) :
     Disjoint (residualPairPool D) (ctrlEdges D.BS ∪ gadgetEdges D.R D.S) := by
   rw [Finset.disjoint_left]
   intro e he hfixed
@@ -160,9 +160,9 @@ lemma residualPairPool_disjoint_fixed {T : Finset ℕ} {b : ℕ}
 
 /-- Reciprocal load splits into the part outside `B` and the part inside `B`. -/
 lemma recipLoad_eq_sdiff_add_inter (A B : Finset ℕ) :
-    R2ConcreteData.recipLoad A =
-      R2ConcreteData.recipLoad (A \ B) +
-        R2ConcreteData.recipLoad (A ∩ B) := by
+    ConstructionData.recipLoad A =
+      ConstructionData.recipLoad (A \ B) +
+        ConstructionData.recipLoad (A ∩ B) := by
   have hdisj : Disjoint (A \ B) (A ∩ B) := by
     rw [Finset.disjoint_left]
     intro x hx hxint
@@ -175,24 +175,24 @@ lemma recipLoad_eq_sdiff_add_inter (A B : Finset ℕ) :
     · by_cases hxB : x ∈ B <;> simp [hxA, hxB]
     · simp [hxA]
   calc
-    R2ConcreteData.recipLoad A =
-        R2ConcreteData.recipLoad ((A \ B) ∪ (A ∩ B)) := by rw [hunion]
-    _ = R2ConcreteData.recipLoad (A \ B) +
-          R2ConcreteData.recipLoad (A ∩ B) := by
-        unfold R2ConcreteData.recipLoad
+    ConstructionData.recipLoad A =
+        ConstructionData.recipLoad ((A \ B) ∪ (A ∩ B)) := by rw [hunion]
+    _ = ConstructionData.recipLoad (A \ B) +
+          ConstructionData.recipLoad (A ∩ B) := by
+        unfold ConstructionData.recipLoad
         rw [Finset.sum_union hdisj]
 
 /-- If the full block-support pair pool beats the target plus the forbidden
 budget, then the residual pool beats the target. -/
 lemma residualPairPool_load_lower_of_forbidden_budget
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (target : ℝ)
+    (D : ConstructionData T b) (target : ℝ)
     (hbudget :
       target +
-          R2ConcreteData.recipLoad
+          ConstructionData.recipLoad
             (blockSupportPairPool D.BS ∩ residualForbidden D)
-        ≤ R2ConcreteData.recipLoad (blockSupportPairPool D.BS)) :
-    target ≤ R2ConcreteData.recipLoad (residualPairPool D) := by
+        ≤ ConstructionData.recipLoad (blockSupportPairPool D.BS)) :
+    target ≤ ConstructionData.recipLoad (residualPairPool D) := by
   have hsplit :=
     recipLoad_eq_sdiff_add_inter (blockSupportPairPool D.BS) (residualForbidden D)
   rw [residualPairPool] at *
@@ -210,7 +210,7 @@ lemma blockSupport_ge_k0 {BS : BlockSystem} {p : ℕ}
 
 /-- Every residual pair-pool edge is at least `(2^k₀)^2`. -/
 lemma residualPairPool_edge_ge_k0_square {T : Finset ℕ} {b e : ℕ}
-    (D : R2ConcreteData T b) (he : e ∈ residualPairPool D) :
+    (D : ConstructionData T b) (he : e ∈ residualPairPool D) :
     2 ^ D.BS.k0 * 2 ^ D.BS.k0 ≤ e := by
   obtain ⟨p, q, hp, hq, _hpq, rfl⟩ := residualPairPool_pair D he
   exact Nat.mul_le_mul (blockSupport_ge_k0 hp) (blockSupport_ge_k0 hq)
@@ -230,7 +230,7 @@ lemma one_div_nat_lt_three_div_two_mul
 enough for the greedy residual-window selector. -/
 lemma residualPairPool_small_of_k0_square
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b)
+    (D : ConstructionData T b)
     (hb : 0 < b)
     (hlarge : 2 * b < 3 * (2 ^ D.BS.k0 * 2 ^ D.BS.k0)) :
     ∀ e ∈ residualPairPool D,
@@ -241,43 +241,43 @@ lemma residualPairPool_small_of_k0_square
   exact one_div_nat_lt_three_div_two_mul hb hepos
     (lt_of_lt_of_le hlarge (Nat.mul_le_mul_left 3 hedge))
 
-/-- Replace only the residual mass batch of an `R2ConcreteData` record. -/
-def R2ConcreteData.withQ {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (Q : Finset ℕ) : R2ConcreteData T b :=
+/-- Replace only the residual mass batch of an `ConstructionData` record. -/
+def ConstructionData.withQ {T : Finset ℕ} {b : ℕ}
+    (D : ConstructionData T b) (Q : Finset ℕ) : ConstructionData T b :=
   { BS := D.BS, Q := Q, R := D.R, S := D.S }
 
-@[simp] lemma R2ConcreteData.withQ_BS {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (Q : Finset ℕ) :
+@[simp] lemma ConstructionData.withQ_BS {T : Finset ℕ} {b : ℕ}
+    (D : ConstructionData T b) (Q : Finset ℕ) :
     (D.withQ Q).BS = D.BS := rfl
 
-@[simp] lemma R2ConcreteData.withQ_Q {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (Q : Finset ℕ) :
+@[simp] lemma ConstructionData.withQ_Q {T : Finset ℕ} {b : ℕ}
+    (D : ConstructionData T b) (Q : Finset ℕ) :
     (D.withQ Q).Q = Q := rfl
 
-@[simp] lemma R2ConcreteData.withQ_R {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (Q : Finset ℕ) :
+@[simp] lemma ConstructionData.withQ_R {T : Finset ℕ} {b : ℕ}
+    (D : ConstructionData T b) (Q : Finset ℕ) :
     (D.withQ Q).R = D.R := rfl
 
-@[simp] lemma R2ConcreteData.withQ_S {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (Q : Finset ℕ) :
+@[simp] lemma ConstructionData.withQ_S {T : Finset ℕ} {b : ℕ}
+    (D : ConstructionData T b) (Q : Finset ℕ) :
     (D.withQ Q).S = D.S := rfl
 
-@[simp] lemma R2ConcreteData.withQ_baseLoad {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (Q : Finset ℕ) :
+@[simp] lemma ConstructionData.withQ_baseLoad {T : Finset ℕ} {b : ℕ}
+    (D : ConstructionData T b) (Q : Finset ℕ) :
     (D.withQ Q).baseLoad = D.baseLoad := rfl
 
 /-- Structural and load-window supply for the residual mass batch `D.Q`. -/
-structure R2MassBatchSupply
-    {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b) where
+structure MassBatchSupply
+    {T : Finset ℕ} {b : ℕ} (D : ConstructionData T b) where
   hQpair : ∀ e ∈ D.Q, ∃ p q,
     p ∈ blockSupport D.BS ∧ q ∈ blockSupport D.BS ∧ p < q ∧ e = p * q
   hQavoid : ∀ e ∈ D.Q, e ∉ T
   hQne : D.Q.Nonempty
   hloadDisj : Disjoint D.Q (ctrlEdges D.BS ∪ gadgetEdges D.R D.S)
   hloadLower :
-    3 / (2 * (b : ℝ)) ≤ D.baseLoad + R2ConcreteData.recipLoad D.Q
+    3 / (2 * (b : ℝ)) ≤ D.baseLoad + ConstructionData.recipLoad D.Q
   hloadUpper :
-    D.baseLoad + R2ConcreteData.recipLoad D.Q < 3 / (b : ℝ)
+    D.baseLoad + ConstructionData.recipLoad D.Q < 3 / (b : ℝ)
 
 /-- A candidate residual pool supplies a valid mass-batch subset.
 
@@ -289,7 +289,7 @@ gap below `3/(2b)`.
 -/
 theorem exists_massBatchSupply_of_pool
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (P : Finset ℕ)
+    (D : ConstructionData T b) (P : Finset ℕ)
     (hb : 0 < b)
     (hbase : D.baseLoad < 3 / (2 * (b : ℝ)))
     (hpair : ∀ e ∈ P, ∃ p q,
@@ -297,17 +297,17 @@ theorem exists_massBatchSupply_of_pool
     (havoid : ∀ e ∈ P, e ∉ T)
     (hdisj : Disjoint P (ctrlEdges D.BS ∪ gadgetEdges D.R D.S))
     (hsmall : ∀ e ∈ P, (1 : ℝ) / (e : ℝ) < 3 / (2 * (b : ℝ)))
-    (hsum : 3 / (2 * (b : ℝ)) - D.baseLoad ≤ R2ConcreteData.recipLoad P) :
-    ∃ Q : Finset ℕ, R2MassBatchSupply (D.withQ Q) := by
+    (hsum : 3 / (2 * (b : ℝ)) - D.baseLoad ≤ ConstructionData.recipLoad P) :
+    ∃ Q : Finset ℕ, MassBatchSupply (D.withQ Q) := by
   obtain ⟨Q, hQsub, hQlower, hQupper⟩ :=
-    R2ConcreteData.exists_residual_subset_recip_window P D.baseLoad b hb
+    ConstructionData.exists_residual_subset_recip_window P D.baseLoad b hb
       hbase hsmall hsum
   refine ⟨Q, ?_⟩
   have hQne : Q.Nonempty := by
     rw [Finset.nonempty_iff_ne_empty]
     intro hQempty
     have htarget_le_base : 3 / (2 * (b : ℝ)) ≤ D.baseLoad := by
-      simpa [R2ConcreteData.recipLoad, hQempty] using hQlower
+      simpa [ConstructionData.recipLoad, hQempty] using hQlower
     exact not_lt_of_ge htarget_le_base hbase
   refine
     { hQpair := ?_
@@ -320,30 +320,30 @@ theorem exists_massBatchSupply_of_pool
     simpa using hpair e (hQsub he)
   · intro e he
     exact havoid e (hQsub he)
-  · simpa [R2ConcreteData.withQ] using hdisj.mono_left hQsub
-  · simpa [R2ConcreteData.withQ_baseLoad] using hQlower
-  · simpa [R2ConcreteData.withQ_baseLoad] using hQupper
+  · simpa [ConstructionData.withQ] using hdisj.mono_left hQsub
+  · simpa [ConstructionData.withQ_baseLoad] using hQlower
+  · simpa [ConstructionData.withQ_baseLoad] using hQupper
 
 /-- The canonical residual pair pool supplies a valid mass-batch subset once its
 remaining reciprocal mass is large enough. -/
 theorem exists_massBatchSupply_of_residualPairPool
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b)
+    (D : ConstructionData T b)
     (hb : 0 < b)
     (hbase : D.baseLoad < 3 / (2 * (b : ℝ)))
     (hsmall : ∀ e ∈ residualPairPool D,
       (1 : ℝ) / (e : ℝ) < 3 / (2 * (b : ℝ)))
     (hsum : 3 / (2 * (b : ℝ)) - D.baseLoad
-      ≤ R2ConcreteData.recipLoad (residualPairPool D)) :
-    ∃ Q : Finset ℕ, R2MassBatchSupply (D.withQ Q) := by
+      ≤ ConstructionData.recipLoad (residualPairPool D)) :
+    ∃ Q : Finset ℕ, MassBatchSupply (D.withQ Q) := by
   exact exists_massBatchSupply_of_pool D (residualPairPool D) hb hbase
     (fun e he => residualPairPool_pair D he) (residualPairPool_avoid D)
     (residualPairPool_disjoint_fixed D) hsmall hsum
 
 /-- Reciprocal load of a union is at most the sum of reciprocal loads. -/
 lemma recipLoad_union_le (A B : Finset ℕ) :
-    R2ConcreteData.recipLoad (A ∪ B)
-      ≤ R2ConcreteData.recipLoad A + R2ConcreteData.recipLoad B := by
+    ConstructionData.recipLoad (A ∪ B)
+      ≤ ConstructionData.recipLoad A + ConstructionData.recipLoad B := by
   have hdisj : Disjoint A (B \ A) := by
     rw [Finset.disjoint_left]
     intro x hxA hxBA
@@ -354,20 +354,20 @@ lemma recipLoad_union_le (A B : Finset ℕ) :
     · simp [hxA]
     · by_cases hxB : x ∈ B <;> simp [hxA, hxB]
   calc
-    R2ConcreteData.recipLoad (A ∪ B) =
-        R2ConcreteData.recipLoad (A ∪ (B \ A)) := by rw [hunion]
-    _ = R2ConcreteData.recipLoad A + R2ConcreteData.recipLoad (B \ A) := by
-        unfold R2ConcreteData.recipLoad
+    ConstructionData.recipLoad (A ∪ B) =
+        ConstructionData.recipLoad (A ∪ (B \ A)) := by rw [hunion]
+    _ = ConstructionData.recipLoad A + ConstructionData.recipLoad (B \ A) := by
+        unfold ConstructionData.recipLoad
         rw [Finset.sum_union hdisj]
-    _ ≤ R2ConcreteData.recipLoad A + R2ConcreteData.recipLoad B := by
+    _ ≤ ConstructionData.recipLoad A + ConstructionData.recipLoad B := by
         exact add_le_add_right (recipLoad_mono (Finset.sdiff_subset)) _
 
 /-- Intersection with a union has reciprocal load bounded by the two
 intersection loads. -/
 lemma recipLoad_inter_union_le (A B C : Finset ℕ) :
-    R2ConcreteData.recipLoad (A ∩ (B ∪ C))
-      ≤ R2ConcreteData.recipLoad (A ∩ B)
-        + R2ConcreteData.recipLoad (A ∩ C) := by
+    ConstructionData.recipLoad (A ∩ (B ∪ C))
+      ≤ ConstructionData.recipLoad (A ∩ B)
+        + ConstructionData.recipLoad (A ∩ C) := by
   have hsub : A ∩ (B ∪ C) ⊆ (A ∩ B) ∪ (A ∩ C) := by
     intro x hx
     rw [Finset.mem_inter, Finset.mem_union] at hx
@@ -379,49 +379,49 @@ lemma recipLoad_inter_union_le (A B C : Finset ℕ) :
 /-- Decompose the forbidden residual pair-pool load into obstruction, control,
 and gadget pieces. -/
 theorem residualForbidden_recipLoad_le_components
-    {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b) :
-    R2ConcreteData.recipLoad
+    {T : Finset ℕ} {b : ℕ} (D : ConstructionData T b) :
+    ConstructionData.recipLoad
         (blockSupportPairPool D.BS ∩ residualForbidden D)
-      ≤ R2ConcreteData.recipLoad (blockSupportPairPool D.BS ∩ T)
-        + R2ConcreteData.recipLoad
+      ≤ ConstructionData.recipLoad (blockSupportPairPool D.BS ∩ T)
+        + ConstructionData.recipLoad
             (blockSupportPairPool D.BS ∩ ctrlEdges D.BS)
-        + R2ConcreteData.recipLoad
+        + ConstructionData.recipLoad
             (blockSupportPairPool D.BS ∩ gadgetEdges D.R D.S) := by
   let A := blockSupportPairPool D.BS
   let C := ctrlEdges D.BS
   let G := gadgetEdges D.R D.S
-  have h1 : R2ConcreteData.recipLoad (A ∩ (T ∪ (C ∪ G)))
-      ≤ R2ConcreteData.recipLoad (A ∩ T) +
-        R2ConcreteData.recipLoad (A ∩ (C ∪ G)) :=
+  have h1 : ConstructionData.recipLoad (A ∩ (T ∪ (C ∪ G)))
+      ≤ ConstructionData.recipLoad (A ∩ T) +
+        ConstructionData.recipLoad (A ∩ (C ∪ G)) :=
     recipLoad_inter_union_le A T (C ∪ G)
-  have h2 : R2ConcreteData.recipLoad (A ∩ (C ∪ G))
-      ≤ R2ConcreteData.recipLoad (A ∩ C) +
-        R2ConcreteData.recipLoad (A ∩ G) :=
+  have h2 : ConstructionData.recipLoad (A ∩ (C ∪ G))
+      ≤ ConstructionData.recipLoad (A ∩ C) +
+        ConstructionData.recipLoad (A ∩ G) :=
     recipLoad_inter_union_le A C G
   dsimp [A, C, G] at h1 h2 ⊢
   rw [residualForbidden]
   linarith
 
 /-- Separate numeric budgets for the three forbidden pieces. -/
-structure R2ForbiddenBudget
-    {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b) where
+structure ForbiddenEdgeBudget
+    {T : Finset ℕ} {b : ℕ} (D : ConstructionData T b) where
   FT : ℝ
   Fctrl : ℝ
   Fgadget : ℝ
   hT :
-    R2ConcreteData.recipLoad (blockSupportPairPool D.BS ∩ T) ≤ FT
+    ConstructionData.recipLoad (blockSupportPairPool D.BS ∩ T) ≤ FT
   hctrl :
-    R2ConcreteData.recipLoad
+    ConstructionData.recipLoad
       (blockSupportPairPool D.BS ∩ ctrlEdges D.BS) ≤ Fctrl
   hgadget :
-    R2ConcreteData.recipLoad
+    ConstructionData.recipLoad
       (blockSupportPairPool D.BS ∩ gadgetEdges D.R D.S) ≤ Fgadget
 
 /-- The three-piece forbidden budget bounds the full forbidden load. -/
 theorem residualForbidden_recipLoad_le_budget
-    {T : Finset ℕ} {b : ℕ} {D : R2ConcreteData T b}
-    (B : R2ForbiddenBudget D) :
-    R2ConcreteData.recipLoad
+    {T : Finset ℕ} {b : ℕ} {D : ConstructionData T b}
+    (B : ForbiddenEdgeBudget D) :
+    ConstructionData.recipLoad
         (blockSupportPairPool D.BS ∩ residualForbidden D)
       ≤ B.FT + B.Fctrl + B.Fgadget := by
   have hparts := residualForbidden_recipLoad_le_components D
@@ -431,16 +431,16 @@ theorem residualForbidden_recipLoad_le_budget
 bound for the full block-support pair pool after budgeting the forbidden edges. -/
 theorem exists_massBatchSupply_of_pairPool_forbidden_budget
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b)
+    (D : ConstructionData T b)
     (hb : 0 < b)
     (hbase : D.baseLoad < 3 / (2 * (b : ℝ)))
     (hlarge : 2 * b < 3 * (2 ^ D.BS.k0 * 2 ^ D.BS.k0))
     (hbudget :
       (3 / (2 * (b : ℝ)) - D.baseLoad) +
-          R2ConcreteData.recipLoad
+          ConstructionData.recipLoad
             (blockSupportPairPool D.BS ∩ residualForbidden D)
-        ≤ R2ConcreteData.recipLoad (blockSupportPairPool D.BS)) :
-    ∃ Q : Finset ℕ, R2MassBatchSupply (D.withQ Q) := by
+        ≤ ConstructionData.recipLoad (blockSupportPairPool D.BS)) :
+    ∃ Q : Finset ℕ, MassBatchSupply (D.withQ Q) := by
   refine exists_massBatchSupply_of_residualPairPool D hb hbase ?_ ?_
   · exact residualPairPool_small_of_k0_square D hb hlarge
   · exact residualPairPool_load_lower_of_forbidden_budget D
@@ -450,17 +450,17 @@ theorem exists_massBatchSupply_of_pairPool_forbidden_budget
 as separate estimates.  This is the preferred interface for parallel work. -/
 theorem exists_massBatchSupply_of_pairPool_separate_bounds
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b)
+    (D : ConstructionData T b)
     (hb : 0 < b)
     (hbase : D.baseLoad < 3 / (2 * (b : ℝ)))
     (hlarge : 2 * b < 3 * (2 ^ D.BS.k0 * 2 ^ D.BS.k0))
     (M F : ℝ)
-    (hfull : M ≤ R2ConcreteData.recipLoad (blockSupportPairPool D.BS))
+    (hfull : M ≤ ConstructionData.recipLoad (blockSupportPairPool D.BS))
     (hforbidden :
-      R2ConcreteData.recipLoad
+      ConstructionData.recipLoad
           (blockSupportPairPool D.BS ∩ residualForbidden D) ≤ F)
     (hbudget : (3 / (2 * (b : ℝ)) - D.baseLoad) + F ≤ M) :
-    ∃ Q : Finset ℕ, R2MassBatchSupply (D.withQ Q) := by
+    ∃ Q : Finset ℕ, MassBatchSupply (D.withQ Q) := by
   refine exists_massBatchSupply_of_pairPool_forbidden_budget D hb hbase hlarge ?_
   linarith
 
@@ -469,17 +469,17 @@ plus the three forbidden budgets is at most `1/2`, then the residual mass batch
 exists. -/
 theorem exists_massBatchSupply_of_half_fullPool_forbiddenBudget
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b)
+    (D : ConstructionData T b)
     (hb : 0 < b)
     (hbase : D.baseLoad < 3 / (2 * (b : ℝ)))
     (hlarge : 2 * b < 3 * (2 ^ D.BS.k0 * 2 ^ D.BS.k0))
-    (B : R2ForbiddenBudget D)
+    (B : ForbiddenEdgeBudget D)
     (hfull :
-      (1 : ℝ) / 2 ≤ R2ConcreteData.recipLoad (blockSupportPairPool D.BS))
+      (1 : ℝ) / 2 ≤ ConstructionData.recipLoad (blockSupportPairPool D.BS))
     (hbudget :
       (3 / (2 * (b : ℝ)) - D.baseLoad) + (B.FT + B.Fctrl + B.Fgadget)
         ≤ (1 : ℝ) / 2) :
-    ∃ Q : Finset ℕ, R2MassBatchSupply (D.withQ Q) := by
+    ∃ Q : Finset ℕ, MassBatchSupply (D.withQ Q) := by
   refine exists_massBatchSupply_of_pairPool_separate_bounds D hb hbase hlarge
     ((1 : ℝ) / 2) (B.FT + B.Fctrl + B.Fgadget) hfull ?_ hbudget
   exact residualForbidden_recipLoad_le_budget B
@@ -488,11 +488,11 @@ theorem exists_massBatchSupply_of_half_fullPool_forbiddenBudget
 proved full-pool bridge. -/
 theorem exists_massBatchSupply_of_blockPrimes_forbiddenBudget
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b)
+    (D : ConstructionData T b)
     (hb : 0 < b)
     (hbase : D.baseLoad < 3 / (2 * (b : ℝ)))
     (hlarge : 2 * b < 3 * (2 ^ D.BS.k0 * 2 ^ D.BS.k0))
-    (B : R2ForbiddenBudget D)
+    (B : ForbiddenEdgeBudget D)
     (k1 : ℕ)
     (hklarge : k1 ≤ D.BS.k0)
     (hsub : blockPrimes D.BS.k0 ⊆ blockSupport D.BS)
@@ -503,9 +503,9 @@ theorem exists_massBatchSupply_of_blockPrimes_forbiddenBudget
     (hbudget :
       (3 / (2 * (b : ℝ)) - D.baseLoad) + (B.FT + B.Fctrl + B.Fgadget)
         ≤ (1 : ℝ) / 2) :
-    ∃ Q : Finset ℕ, R2MassBatchSupply (D.withQ Q) := by
+    ∃ Q : Finset ℕ, MassBatchSupply (D.withQ Q) := by
   have hfull :
-      (1 : ℝ) / 2 ≤ R2ConcreteData.recipLoad (blockSupportPairPool D.BS) :=
+      (1 : ℝ) / 2 ≤ ConstructionData.recipLoad (blockSupportPairPool D.BS) :=
     blockSupportPairPool_load_ge_half_of_contains_large_blockPrimes D.BS k1
       hklarge hsub hload
   exact exists_massBatchSupply_of_half_fullPool_forbiddenBudget D hb hbase hlarge

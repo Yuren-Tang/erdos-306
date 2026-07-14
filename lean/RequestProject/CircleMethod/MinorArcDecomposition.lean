@@ -8,7 +8,7 @@ namespace CircleMethod
 /-!
 # Minor-arc decomposition
 
-This leaf isolates the finite-sum partition used by the final R2 `hminor`
+This leaf isolates the finite-sum partition used by the final `hminor`
 field.  The analytic estimates remain external hypotheses here: one bound for
 the block-minor part and one bound for the extra-minor part.
 -/

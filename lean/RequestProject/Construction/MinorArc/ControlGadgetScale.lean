@@ -12,7 +12,7 @@ namespace CircleMethod
 
 /-- Component data stable under replacing only `D.Q`. -/
 structure ControlGadgetScaleData
-    {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b) (N : ℤ) (ρ : ℝ) where
+    {T : Finset ℕ} {b : ℕ} (D : ConstructionData T b) (N : ℤ) (ρ : ℝ) where
   hρ : 0 ≤ ρ
   hctrlScale : (N : ℝ) ≤ ρ * ((2 ^ D.BS.k0 * 2 ^ D.BS.k0 : ℕ) : ℝ)
   hctrlAvoid : ∀ e ∈ ctrlEdges D.BS, e ∉ T

@@ -21,8 +21,8 @@ Fine main-arc numeric fields for the concrete edge set: with all edges
 reciprocal-square control `N^2 · ∑ 1/e^2 ≤ 18`, the Taylor conditions `htw`/`hsmall`
 hold via the *actual* per-edge sum (not the lossy `card·ρ^3` bound).
 -/
-lemma mainArcNumericBounds_of_edgeScale {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
-    (W : R2ConcreteData.Weights D) (N : ℤ) (Emin B : ℝ)
+lemma mainArcNumericBounds_of_edgeScale {T : Finset ℕ} {b : ℕ} (D : ConstructionData T b)
+    (W : ConstructionData.Weights D) (N : ℤ) (Emin B : ℝ)
     (hB : 0 < B)
     (he0 : ∀ e ∈ D.E, 0 < e)
     (hEmin0 : 0 < Emin)
@@ -103,10 +103,10 @@ the Taylor coefficient and radius budget enter only through the supplied
 `bernoulliTaylorRemainderConstant`; the `40 = 4·10` below combines the budget
 factor with `(k₀+1)² ≤ (2k₀)²`. -/
 lemma mainArcNumericBounds_of_constructionScales {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ) (σ C cS S : ℝ)
+    (D : ConstructionData T b) (W : ConstructionData.Weights D) (N : ℤ) (σ C cS S : ℝ)
     (hσpos : 0 < σ)
     (he0 : ∀ e ∈ D.E, 0 < e)
-    (QB : R2MassBatchSupply D)
+    (QB : MassBatchSupply D)
     (hSge : ∀ s ∈ D.S, 2 ^ (2 * D.BS.k0) ≤ s)
     (hRpos' : ∀ r ∈ D.R, 2 ≤ r)
     (hcS1 : 1 ≤ cS) (hS1 : 1 ≤ S)
@@ -126,7 +126,7 @@ lemma mainArcNumericBounds_of_constructionScales {T : Finset ℕ} {b : ℕ}
   have hNpos : (0 : ℝ) < (N : ℝ) := lt_of_lt_of_le (by positivity) hNlo
   have hEminN : ∀ e ∈ D.E, 2 ^ (2 * D.BS.k0) ≤ e := by
     intro e he
-    rw [R2ConcreteData.E, r2Edges] at he
+    rw [ConstructionData.E, constructionEdges] at he
     have hpoweq : (2 : ℕ) ^ (2 * D.BS.k0) = 2 ^ D.BS.k0 * 2 ^ D.BS.k0 := by rw [two_mul, pow_add]
     rcases Finset.mem_union.mp he with hcQ | hg
     · rcases Finset.mem_union.mp hcQ with hc | hq
@@ -198,4 +198,3 @@ lemma mainArcNumericBounds_of_constructionScales {T : Finset ℕ} {b : ℕ}
 end CircleMethod
 
 end
-

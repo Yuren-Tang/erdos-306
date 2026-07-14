@@ -20,7 +20,7 @@ fiber-tail estimate supplies the block-minor budget.
 /-- Per-main-arc data for the global-control fiber-tail budget. -/
 structure BlockMinorFiberTail
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
+    (D : ConstructionData T b) (W : ConstructionData.Weights D) (N : ℤ)
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock : Finset ℕ) (Bblock η Ctail : ℝ) where
   C : ℝ
@@ -95,7 +95,7 @@ lemma sum_fourierNormWeight_le_exp_QE
 /-- Block-minor budget from a `quadraticEnergy`-energy budget over the block part. -/
 theorem blockMinor_budget_of_quadraticEnergy
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
+    (D : ConstructionData T b) (W : ConstructionData.Weights D) (N : ℤ)
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock : Finset ℕ) (Bblock : ℝ)
     (heL : ∀ e ∈ D.E, e ∣ D.L)
@@ -118,7 +118,7 @@ work is exactly to provide `hQE`, `hnotmain`, and `hfiber` for the chosen
 `Sblock`. -/
 theorem blockMinor_budget_of_fiber_tail
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
+    (D : ConstructionData T b) (W : ConstructionData.Weights D) (N : ℤ)
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock : Finset ℕ) (Bblock : ℝ)
     (C K : ℝ) (Qextra : ℕ → ℝ)
@@ -155,7 +155,7 @@ theorem exists_blockMinor_budget_of_fiber_tail
     (η : ℝ) (hη : 0 < η) :
     ∃ (k0min : ℕ) (Ctail : ℝ), 0 < Ctail ∧
       ∀ {T : Finset ℕ} {b : ℕ}
-      (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
+      (D : ConstructionData T b) (W : ConstructionData.Weights D) (N : ℤ)
       (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
       (Sblock : Finset ℕ) (Bblock C K : ℝ) (Qextra : ℕ → ℝ),
       k0min ≤ D.BS.k0 → admissibleGlobalRange D.BS →

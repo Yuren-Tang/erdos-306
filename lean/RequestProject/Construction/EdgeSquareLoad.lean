@@ -71,10 +71,10 @@ lemma blockSupport_inv_sq_le (BS : BlockSystem) (hk0 : 1 ≤ BS.k0) :
 /-- The non-control edges have bounded reciprocal-square mass relative to the
 control variance once their scale is sufficiently large. -/
 private lemma extraEdges_inv_sq_le {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b)
+    (D : ConstructionData T b)
     (hk0 : 14 ≤ D.BS.k0)
     (hk0big : 1000 * D.S.card + 1000 * b + 100000 ≤ D.BS.k0)
-    (QB : R2MassBatchSupply D)
+    (QB : MassBatchSupply D)
     (hSge : ∀ s ∈ D.S, 2 ^ (2 * D.BS.k0) ≤ s)
     (hRpos : ∀ r ∈ D.R, 2 ≤ r) (hRcard : D.R.card ≤ b) :
     ∑ e ∈ D.E \ ctrlEdges D.BS, (1 : ℝ) / (e : ℝ) ^ 2
@@ -130,7 +130,7 @@ private lemma extraEdges_inv_sq_le {T : Finset ℕ} {b : ℕ}
       rw [Finset.mem_sdiff] at he
       have heE := he.1
       have henc := he.2
-      rw [R2ConcreteData.E, r2Edges] at heE
+      rw [ConstructionData.E, constructionEdges] at heE
       rw [Finset.mem_union]
       rcases Finset.mem_union.mp heE with h | h
       · rcases Finset.mem_union.mp h with h' | h'
@@ -196,7 +196,7 @@ edge set once the block scale dominates the numbers of gadget and denominator
 primes. -/
 lemma exists_edge_square_load_bound :
     ∃ S : ℝ, 1 ≤ S ∧ ∀ G b : ℕ, ∃ K0 : ℕ, ∀ {T : Finset ℕ}
-      (D : R2ConcreteData T b), R2MassBatchSupply D →
+      (D : ConstructionData T b), MassBatchSupply D →
       K0 ≤ D.BS.k0 → D.S.card = G →
       (∀ s ∈ D.S, 2 ^ (2 * D.BS.k0) ≤ s) →
       (∀ r ∈ D.R, 2 ≤ r) → D.R.card ≤ b →

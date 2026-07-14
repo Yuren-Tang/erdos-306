@@ -9,7 +9,7 @@ noncomputable section
 namespace CircleMethod
 
 /-!
-# R2-mass: the block-prime product-load lower bound
+# Block-prime product-load lower bound
 
 The block-aligned mass batch draws from products `p·q` of two distinct block
 primes.  Its available reciprocal load is `∑_{p<q} 1/(pq) = (S² − S₂)/2` where
@@ -304,9 +304,9 @@ lemma blockPrimes_product_load_ge :
 /-- **T3.**  For squarefree `b ≥ 3` and a finite obstruction set `T`, there is a
 block scale `k₀` and a finite batch `Q` of products of two distinct block primes,
 avoiding `T`, whose reciprocal load lands in the common-θ window `[3/(2b), 3/b]`.
-This is the `R2-mass` input to the R2 arc construction.
+This is the mass input to the arc construction.
 
-(The `Squarefree b` hypothesis is requested by the R2 interface; the load
+(The `Squarefree b` hypothesis is requested by the construction interface; the load
 bookkeeping uses only `b ≥ 3`.) -/
 lemma exists_blockAligned_mass_batch (b : ℕ) (hb : 3 ≤ b) (_hbsf : Squarefree b)
     (T : Finset ℕ) :

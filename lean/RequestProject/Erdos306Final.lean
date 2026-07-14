@@ -51,7 +51,7 @@ theorem hasEgyptianSemiprimeReprAvoiding_one_div_of_two_le
   · exact hasEgyptianSemiprimeReprAvoiding_one_div_of_three_le T b hb3 hbsf
 
 /-- `exists_semiprime_egyptian_one` (`1 = 1/2 + 1/3 + 1/6` with semiprimes) wired
-to the R2 construction. -/
+to the circle-method construction. -/
 theorem exists_semiprime_reciprocal_sum_one_avoiding (T : Finset ℕ) :
     ∃ G : Finset ℕ, (∀ e ∈ G, IsSemiprime e) ∧ (∀ e ∈ G, e ∉ T) ∧
       (∑ e ∈ G, (1 : ℚ) / (e : ℚ)) = 1 := by

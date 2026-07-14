@@ -9,25 +9,25 @@ namespace CircleMethod
 
 /-- Frequency `h` as a faithful block-support assignment. -/
 def freqAssignmentOf {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (h : ℕ) : GlobalAssignment D.BS :=
+    (D : ConstructionData T b) (h : ℕ) : GlobalAssignment D.BS :=
   fun p => (h : ZMod p.1)
 
 /-- Frequencies not lying over a global-control main arc go to the block lane. -/
 def mainArcBlockSet {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
+    (D : ConstructionData T b) (W : ConstructionData.Weights D) (N : ℤ)
     (C : ℝ) (MA : MainArcFields D.E W.theta (D.L / b) D.L N) : Finset ℕ :=
   MA.Sm.filter (fun h => freqAssignmentOf D h ∉ mainArc D.BS C)
 
 /-- Frequencies lying over a global-control main arc go to the extra lane. -/
 def mainArcExtraSet {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
+    (D : ConstructionData T b) (W : ConstructionData.Weights D) (N : ℤ)
     (C : ℝ) (MA : MainArcFields D.E W.theta (D.L / b) D.L N) : Finset ℕ :=
   MA.Sm.filter (fun h => freqAssignmentOf D h ∈ mainArc D.BS C)
 
 /-- The block/extra split defined by global-control main-arc membership covers
 all minor frequencies. -/
 def mainArcClassificationData {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
+    (D : ConstructionData T b) (W : ConstructionData.Weights D) (N : ℤ)
     (C : ℝ) : MinorArcClassification D W N where
   Sblock := mainArcBlockSet D W N C
   Sextra := mainArcExtraSet D W N C
@@ -40,7 +40,7 @@ def mainArcClassificationData {T : Finset ℕ} {b : ℕ}
 /-- Label selected from the global-control main-arc witness, with fallback `0`
 off the extra lane. -/
 def mainArcWitnessLabel {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (C : ℝ) (h : ℕ) : ℤ :=
+    (D : ConstructionData T b) (C : ℝ) (h : ℕ) : ℤ :=
   if hmain : freqAssignmentOf D h ∈ mainArc D.BS C then
     Classical.choose hmain
   else 0
@@ -80,8 +80,8 @@ lemma zmod_eq_label_of_mainArcFields_hmod
 block-label data needed by the multi-gadget extra-minor reservoir. -/
 def intFrequencyLabelData_of_mainArcClassification
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b)
-    (W : R2ConcreteData.Weights D)
+    (D : ConstructionData T b)
+    (W : ConstructionData.Weights D)
     (N : ℤ) (C : ℝ)
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (hlabelRange : ∀ {m : ℤ}, |(m : ℝ)| ≤ C / sigmaCtrl D.BS →

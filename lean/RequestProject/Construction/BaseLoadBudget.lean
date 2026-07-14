@@ -8,7 +8,7 @@ noncomputable section
 namespace CircleMethod
 
 /-!
-# The base-load budget on the control and gadget edges (node C2, mechanism 2)
+# The base-load budget on the control and gadget edges
 
 Single motivating question: **before the residual mass batch `D.Q` is even
 chosen, how much of the total load window does the *fixed* base load (the
@@ -18,8 +18,8 @@ sets.  Three ingredients: control/gadget disjointness (so the base load
 splits additively), a dyadic analytic estimate that the control load is
 eventually negligible, and a finite cardinality bound on the gadget load.
 
-The forbidden-budget bridge (`R2ForbiddenBudget.of_basePieces`) discharges
-`Construction.MassPool`'s `R2ForbiddenBudget` using exactly this base-load
+The forbidden-budget bridge (`ForbiddenEdgeBudget.of_basePieces`) discharges
+`Construction.MassPool`'s `ForbiddenEdgeBudget` using exactly this base-load
 split, which is why this file imports that one rather than the reverse.
 
 -/
@@ -57,11 +57,11 @@ theorem ctrlEdges_disjoint_gadgetEdges_of_R_outside_blockSupport
   · have : r = q := (Nat.prime_dvd_prime_iff_eq hrp hqp).mp hrq'
     exact hRout r hr (this ▸ hq)
 
-/-- Record-facing wrapper: the control/gadget components of an `R2ConcreteData`
+/-- Record-facing wrapper: the control/gadget components of an `ConstructionData`
 record are disjoint as soon as its denominator primes are kept outside the block
 support. -/
-theorem r2Concrete_ctrl_gadget_disjoint_of_R_outside_blockSupport
-    {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
+theorem ctrlEdges_disjoint_gadgetEdges_of_denominator_primes_outside_blockSupport
+    {T : Finset ℕ} {b : ℕ} (D : ConstructionData T b)
     (hRprime : ∀ r ∈ D.R, Nat.Prime r)
     (hRout : ∀ r ∈ D.R, r ∉ blockSupport D.BS) :
     Disjoint (ctrlEdges D.BS) (gadgetEdges D.R D.S) :=
@@ -69,32 +69,32 @@ theorem r2Concrete_ctrl_gadget_disjoint_of_R_outside_blockSupport
 
 /-- The fixed base load splits over disjoint control and gadget components. -/
 lemma baseLoad_eq_ctrl_add_gadget_of_disjoint
-    {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
+    {T : Finset ℕ} {b : ℕ} (D : ConstructionData T b)
     (hdisj : Disjoint (ctrlEdges D.BS) (gadgetEdges D.R D.S)) :
     D.baseLoad =
-      R2ConcreteData.recipLoad (ctrlEdges D.BS) +
-        R2ConcreteData.recipLoad (gadgetEdges D.R D.S) := by
-  unfold R2ConcreteData.baseLoad R2ConcreteData.recipLoad
+      ConstructionData.recipLoad (ctrlEdges D.BS) +
+        ConstructionData.recipLoad (gadgetEdges D.R D.S) := by
+  unfold ConstructionData.baseLoad ConstructionData.recipLoad
   rw [Finset.sum_union hdisj]
 
 /-- Concrete forbidden budget using zero obstruction overlap and the full
 control/gadget reciprocal loads as component budgets. -/
-def R2ForbiddenBudget.of_basePieces
-    {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
+def ForbiddenEdgeBudget.of_basePieces
+    {T : Finset ℕ} {b : ℕ} (D : ConstructionData T b)
     (hTsmall : ∀ e ∈ T, e < 2 ^ D.BS.k0 * 2 ^ D.BS.k0) :
-    R2ForbiddenBudget D where
+    ForbiddenEdgeBudget D where
   FT := 0
-  Fctrl := R2ConcreteData.recipLoad (ctrlEdges D.BS)
-  Fgadget := R2ConcreteData.recipLoad (gadgetEdges D.R D.S)
+  Fctrl := ConstructionData.recipLoad (ctrlEdges D.BS)
+  Fgadget := ConstructionData.recipLoad (gadgetEdges D.R D.S)
   hT := by
     rw [blockSupportPairPool_inter_T_eq_empty_of_lt_k0_square hTsmall]
-    simp [R2ConcreteData.recipLoad]
+    simp [ConstructionData.recipLoad]
   hctrl := by
     exact recipLoad_mono (Finset.inter_subset_right)
   hgadget := by
     exact recipLoad_mono (Finset.inter_subset_right)
 
-/-- For `b ≥ 3`, the common R2 target obeys `3/(2b) ≤ 1/2`. -/
+/-- For `b ≥ 3`, the target load obeys `3/(2b) ≤ 1/2`. -/
 lemma three_div_two_mul_le_half_of_three_le {b : ℕ} (hb : 3 ≤ b) :
     3 / (2 * (b : ℝ)) ≤ (1 : ℝ) / 2 := by
   have hbR : (3 : ℝ) ≤ (b : ℝ) := by exact_mod_cast hb
@@ -105,47 +105,47 @@ lemma three_div_two_mul_le_half_of_three_le {b : ℕ} (hb : 3 ≤ b) :
 /-- With zero obstruction overlap and disjoint fixed components, the final
 forbidden-budget inequality follows from `b ≥ 3`. -/
 theorem basePieces_forbiddenBudget_final_ineq
-    {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
+    {T : Finset ℕ} {b : ℕ} (D : ConstructionData T b)
     (hb : 3 ≤ b)
     (hTsmall : ∀ e ∈ T, e < 2 ^ D.BS.k0 * 2 ^ D.BS.k0)
     (hdisj : Disjoint (ctrlEdges D.BS) (gadgetEdges D.R D.S)) :
-    let B := R2ForbiddenBudget.of_basePieces D hTsmall
+    let B := ForbiddenEdgeBudget.of_basePieces D hTsmall
     (3 / (2 * (b : ℝ)) - D.baseLoad) + (B.FT + B.Fctrl + B.Fgadget)
       ≤ (1 : ℝ) / 2 := by
   intro B
   have hbase := baseLoad_eq_ctrl_add_gadget_of_disjoint D hdisj
   have htarget := three_div_two_mul_le_half_of_three_le hb
-  dsimp [B, R2ForbiddenBudget.of_basePieces]
+  dsimp [B, ForbiddenEdgeBudget.of_basePieces]
   rw [hbase]
   linarith
 
 /-- The fixed base load splits exactly into control and gadget reciprocal
 loads, if every gadget denominator prime lies outside the block support. -/
 theorem baseLoad_eq_ctrl_add_gadget_of_R_outside
-    {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
+    {T : Finset ℕ} {b : ℕ} (D : ConstructionData T b)
     (hRprime : ∀ r ∈ D.R, Nat.Prime r)
     (hRout : ∀ r ∈ D.R, r ∉ blockSupport D.BS) :
     D.baseLoad =
-      R2ConcreteData.recipLoad (ctrlEdges D.BS) +
-        R2ConcreteData.recipLoad (gadgetEdges D.R D.S) := by
+      ConstructionData.recipLoad (ctrlEdges D.BS) +
+        ConstructionData.recipLoad (gadgetEdges D.R D.S) := by
   exact baseLoad_eq_ctrl_add_gadget_of_disjoint D
-    (r2Concrete_ctrl_gadget_disjoint_of_R_outside_blockSupport D hRprime hRout)
+    (ctrlEdges_disjoint_gadgetEdges_of_denominator_primes_outside_blockSupport D hRprime hRout)
 
-/-- Separate control/gadget budgets for the R2 base-load upper condition. -/
-structure R2BaseLoadBudget
-    {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b) where
+/-- Separate control/gadget budgets for the base-load upper condition. -/
+structure BaseLoadBudget
+    {T : Finset ℕ} {b : ℕ} (D : ConstructionData T b) where
   Cctrl : ℝ
   Cgadget : ℝ
-  hctrl : R2ConcreteData.recipLoad (ctrlEdges D.BS) ≤ Cctrl
-  hgadget : R2ConcreteData.recipLoad (gadgetEdges D.R D.S) ≤ Cgadget
+  hctrl : ConstructionData.recipLoad (ctrlEdges D.BS) ≤ Cctrl
+  hgadget : ConstructionData.recipLoad (gadgetEdges D.R D.S) ≤ Cgadget
   hsum : Cctrl + Cgadget < 3 / (2 * (b : ℝ))
 
 /-- Component budgets imply the requested strict base-load upper bound. -/
 theorem baseLoad_lt_of_budget
-    {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
+    {T : Finset ℕ} {b : ℕ} (D : ConstructionData T b)
     (hRprime : ∀ r ∈ D.R, Nat.Prime r)
     (hRout : ∀ r ∈ D.R, r ∉ blockSupport D.BS)
-    (B : R2BaseLoadBudget D) :
+    (B : BaseLoadBudget D) :
     D.baseLoad < 3 / (2 * (b : ℝ)) := by
   rw [baseLoad_eq_ctrl_add_gadget_of_R_outside D hRprime hRout]
   exact lt_of_le_of_lt (add_le_add B.hctrl B.hgadget) B.hsum
@@ -225,11 +225,11 @@ lemma inv_sq_sum_Icc_le (k0 K : ℕ) (hk0 : 2 ≤ k0) :
 
 /-- Elementary dyadic control-load bound. -/
 lemma ctrl_recipLoad_le_tail (BS : BlockSystem) (hk0 : 2 ≤ BS.k0) :
-    R2ConcreteData.recipLoad (ctrlEdges BS) ≤ 512 / ((BS.k0 : ℝ) - 1) := by
+    ConstructionData.recipLoad (ctrlEdges BS) ≤ 512 / ((BS.k0 : ℝ) - 1) := by
   let f : ℕ × ℕ → ℝ := fun pq => (1 : ℝ) / ((pq.1 : ℝ) * pq.2)
   have hsum_ctrl :
-      R2ConcreteData.recipLoad (ctrlEdges BS) = ∑ pq ∈ ctrlPairs BS, f pq := by
-    unfold R2ConcreteData.recipLoad ctrlEdges f
+      ConstructionData.recipLoad (ctrlEdges BS) = ∑ pq ∈ ctrlPairs BS, f pq := by
+    unfold ConstructionData.recipLoad ctrlEdges f
     rw [Finset.sum_image (fun a ha b hb hab => ctrlPairs_prod_injOn BS ha hb hab)]
     simp only [Nat.cast_mul]
   have hpair :
@@ -335,7 +335,7 @@ this upper bound. -/
 theorem dyadic_control_recipLoad_eventually_small :
   ∀ ε : ℝ, 0 < ε →
     ∃ k0min : ℕ, ∀ BS : BlockSystem, k0min ≤ BS.k0 →
-      R2ConcreteData.recipLoad (ctrlEdges BS) ≤ ε :=
+      ConstructionData.recipLoad (ctrlEdges BS) ≤ ε :=
 by
   intro ε hε
   obtain ⟨N, hN⟩ : ∃ N : ℕ, 2 ≤ N ∧ 512 / ((N : ℝ) - 1) ≤ ε := by
@@ -371,7 +371,7 @@ by
 theorem exists_k0_controlLoad_lt
     (ε : ℝ) (hε : 0 < ε) :
     ∃ k0min : ℕ, ∀ BS : BlockSystem, k0min ≤ BS.k0 →
-      R2ConcreteData.recipLoad (ctrlEdges BS) ≤ ε :=
+      ConstructionData.recipLoad (ctrlEdges BS) ≤ ε :=
   dyadic_control_recipLoad_eventually_small ε hε
 
 lemma gadgetEdges_ge_mul
@@ -408,7 +408,7 @@ theorem gadget_recipLoad_le_card_div
     (hr0 : 0 < r0) (hs0 : 0 < s0)
     (hRlow : ∀ r ∈ R, r0 ≤ r)
     (hSlow : ∀ s ∈ S, s0 ≤ s) :
-    R2ConcreteData.recipLoad (gadgetEdges R S)
+    ConstructionData.recipLoad (gadgetEdges R S)
       ≤ ((R.card * S.card : ℕ) : ℝ) / ((r0 * s0 : ℕ) : ℝ) := by
   have hpos : (0 : ℝ) < ((r0 * s0 : ℕ) : ℝ) := by
     exact_mod_cast Nat.mul_pos hr0 hs0
@@ -416,7 +416,7 @@ theorem gadget_recipLoad_le_card_div
       ((gadgetEdges R S).card : ℝ) ≤ ((R.card * S.card : ℕ) : ℝ) := by
     exact_mod_cast gadgetEdges_card_le_product R S
   calc
-    R2ConcreteData.recipLoad (gadgetEdges R S)
+    ConstructionData.recipLoad (gadgetEdges R S)
         ≤ ∑ _e ∈ gadgetEdges R S, (1 : ℝ) / ((r0 * s0 : ℕ) : ℝ) := by
           refine Finset.sum_le_sum (fun e he => ?_)
           exact gadget_recip_le_of_lower_bounds hr0 hs0 hRlow hSlow he
@@ -427,13 +427,13 @@ theorem gadget_recipLoad_le_card_div
     _ = ((R.card * S.card : ℕ) : ℝ) / ((r0 * s0 : ℕ) : ℝ) := by
           ring
 
-def r2BaseLoadBudget_of_component_bounds
-    {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
+def baseLoadBudget_of_component_bounds
+    {T : Finset ℕ} {b : ℕ} (D : ConstructionData T b)
     (Cctrl Cgadget : ℝ)
-    (hctrl : R2ConcreteData.recipLoad (ctrlEdges D.BS) ≤ Cctrl)
-    (hgadget : R2ConcreteData.recipLoad (gadgetEdges D.R D.S) ≤ Cgadget)
+    (hctrl : ConstructionData.recipLoad (ctrlEdges D.BS) ≤ Cctrl)
+    (hgadget : ConstructionData.recipLoad (gadgetEdges D.R D.S) ≤ Cgadget)
     (hsum : Cctrl + Cgadget < 3 / (2 * (b : ℝ))) :
-    R2BaseLoadBudget D where
+    BaseLoadBudget D where
   Cctrl := Cctrl
   Cgadget := Cgadget
   hctrl := hctrl
@@ -441,25 +441,25 @@ def r2BaseLoadBudget_of_component_bounds
   hsum := hsum
 
 def baseLoadBudget_of_control_and_gadget
-    {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
+    {T : Finset ℕ} {b : ℕ} (D : ConstructionData T b)
     (Cctrl Cgadget : ℝ)
-    (hctrl : R2ConcreteData.recipLoad (ctrlEdges D.BS) ≤ Cctrl)
-    (hgadget : R2ConcreteData.recipLoad (gadgetEdges D.R D.S) ≤ Cgadget)
+    (hctrl : ConstructionData.recipLoad (ctrlEdges D.BS) ≤ Cctrl)
+    (hgadget : ConstructionData.recipLoad (gadgetEdges D.R D.S) ≤ Cgadget)
     (hsum : Cctrl + Cgadget < 3 / (2 * (b : ℝ))) :
-    R2BaseLoadBudget D :=
-  r2BaseLoadBudget_of_component_bounds D Cctrl Cgadget hctrl hgadget hsum
+    BaseLoadBudget D :=
+  baseLoadBudget_of_component_bounds D Cctrl Cgadget hctrl hgadget hsum
 
 theorem exists_k0_baseLoadBudget_of_gadget_bound
     {T : Finset ℕ} {b : ℕ}
-    (D0 : R2ConcreteData T b)
+    (D0 : ConstructionData T b)
     (Cgadget : ℝ)
     (hgap : Cgadget < 3 / (2 * (b : ℝ)))
-    (hgadget_bound : ∀ D : R2ConcreteData T b,
+    (hgadget_bound : ∀ D : ConstructionData T b,
       D.R = D0.R → D.S = D0.S →
-      R2ConcreteData.recipLoad (gadgetEdges D.R D.S) ≤ Cgadget) :
-    ∃ k0min : ℕ, ∀ D : R2ConcreteData T b, k0min ≤ D.BS.k0 →
+      ConstructionData.recipLoad (gadgetEdges D.R D.S) ≤ Cgadget) :
+    ∃ k0min : ℕ, ∀ D : ConstructionData T b, k0min ≤ D.BS.k0 →
       D.R = D0.R → D.S = D0.S →
-      Nonempty (R2BaseLoadBudget D) := by
+      Nonempty (BaseLoadBudget D) := by
   let target : ℝ := 3 / (2 * (b : ℝ))
   let ε : ℝ := (target - Cgadget) / 2
   have hε : 0 < ε := by
@@ -468,23 +468,23 @@ theorem exists_k0_baseLoadBudget_of_gadget_bound
   obtain ⟨k0min, hctrl⟩ := exists_k0_controlLoad_lt ε hε
   refine ⟨k0min, ?_⟩
   intro D hk0 hR hS
-  refine ⟨r2BaseLoadBudget_of_component_bounds D ε Cgadget (hctrl D.BS hk0)
+  refine ⟨baseLoadBudget_of_component_bounds D ε Cgadget (hctrl D.BS hk0)
     (hgadget_bound D hR hS) ?_⟩
   · dsimp [ε, target]
     nlinarith
 
 def baseLoadBudget_of_control_epsilon_and_gadget_scale
-    {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b)
+    {T : Finset ℕ} {b : ℕ} (D : ConstructionData T b)
     (ε : ℝ) (r0 s0 : ℕ)
     (hr0 : 0 < r0) (hs0 : 0 < s0)
-    (hctrl : R2ConcreteData.recipLoad (ctrlEdges D.BS) ≤ ε)
+    (hctrl : ConstructionData.recipLoad (ctrlEdges D.BS) ≤ ε)
     (hRlow : ∀ r ∈ D.R, r0 ≤ r)
     (hSlow : ∀ s ∈ D.S, s0 ≤ s)
     (hsum :
       ε + ((D.R.card * D.S.card : ℕ) : ℝ) / ((r0 * s0 : ℕ) : ℝ)
         < 3 / (2 * (b : ℝ))) :
-    R2BaseLoadBudget D :=
-  r2BaseLoadBudget_of_component_bounds D ε
+    BaseLoadBudget D :=
+  baseLoadBudget_of_component_bounds D ε
     (((D.R.card * D.S.card : ℕ) : ℝ) / ((r0 * s0 : ℕ) : ℝ))
     hctrl
     (gadget_recipLoad_le_card_div r0 s0 hr0 hs0 hRlow hSlow)

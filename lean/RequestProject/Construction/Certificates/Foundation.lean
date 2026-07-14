@@ -68,7 +68,7 @@ structure ConstructionParameters (b : ℕ) where
   hKS : Sload ≤ 4 * K ^ 2
   hG1 : 1 ≤ G
   hSB : ∀ {T' : Finset ℕ} {b' : ℕ}
-      (D : R2ConcreteData T' b') (W : R2ConcreteData.Weights D) (N : ℤ)
+      (D : ConstructionData T' b') (W : ConstructionData.Weights D) (N : ℤ)
       (Bblock Bextra ρ : ℝ) (Cls : MinorArcClassification D W N),
       k0minM ≤ D.BS.k0 → admissibleGlobalRange D.BS →
       MinorArcMultiGadgetLanes D W N Bblock Bextra η Ctail ρ Cls →
@@ -85,7 +85,7 @@ structure ConstructionParameters (b : ℕ) where
   hk0density : ∀ k : ℕ, k0density ≤ k →
       (G : ℝ) ≤ (2 : ℝ) ^ k / (2 * Real.log ((2 : ℝ) ^ k))
   hk0ctrl : ∀ BS' : BlockSystem, k0ctrl ≤ BS'.k0 →
-      R2ConcreteData.recipLoad (ctrlEdges BS') ≤ 3 / (4 * (b : ℝ))
+      ConstructionData.recipLoad (ctrlEdges BS') ≤ 3 / (4 * (b : ℝ))
   hk0massFact : ∀ k : ℕ, k0mass ≤ k →
       2 * b * (b.primeFactors.card * G) < 3 * 2 ^ k ∧
       2 * b < 2 ^ k
@@ -96,7 +96,7 @@ structure ConstructionParameters (b : ℕ) where
   hk0cubicFact : ∀ k : ℕ, k0cubic ≤ k →
       (40 * bernoulliTaylorRemainderConstant * Sload * (cSigma + 1)) *
         (k : ℝ) ^ 4 ≤ (2 : ℝ) ^ k
-  hk0loadFact : ∀ {T' : Finset ℕ} (D : R2ConcreteData T' b), R2MassBatchSupply D →
+  hk0loadFact : ∀ {T' : Finset ℕ} (D : ConstructionData T' b), MassBatchSupply D →
       k0load ≤ D.BS.k0 → D.S.card = G →
       (∀ s ∈ D.S, 2 ^ (2 * D.BS.k0) ≤ s) → (∀ r ∈ D.R, 2 ≤ r) → D.R.card ≤ b →
       ∑ e ∈ D.E, (1 : ℝ) / (e : ℝ) ^ 2 ≤ Sload * (sigmaCtrl D.BS) ^ 2

@@ -8,7 +8,7 @@ noncomputable section
 namespace CircleMethod
 
 /-!
-# R2-extra-minor: per-gadget sibling damping (note 50 §4, arithmetic core)
+# Per-gadget sibling damping for extra-minor frequencies
 
 The b-fiber siblings of a main-arc frequency share its block residues but differ
 modulo a prime `r ∣ b`.  A gadget edge `r·s` (with `s` a block prime, so the

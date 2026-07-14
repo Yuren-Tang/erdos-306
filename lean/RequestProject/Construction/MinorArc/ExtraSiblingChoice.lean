@@ -91,8 +91,8 @@ theorem extra_sibling_card_le_pred_b
 /-- Block-label data for the extra-minor frequencies. -/
 structure ExtraFrequencyLabelData
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b)
-    (W : R2ConcreteData.Weights D)
+    (D : ConstructionData T b)
+    (W : ConstructionData.Weights D)
     (N : ℤ)
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ) where
@@ -106,8 +106,8 @@ structure ExtraFrequencyLabelData
 the global congruence fails. -/
 theorem exists_r_sibling_of_extraFrequencyLabelData
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b)
-    (W : R2ConcreteData.Weights D)
+    (D : ConstructionData T b)
+    (W : ConstructionData.Weights D)
     (N : ℤ)
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ)
@@ -127,8 +127,8 @@ theorem exists_r_sibling_of_extraFrequencyLabelData
 membership and mismatch certificates. -/
 structure ExtraSiblingChoice
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b)
-    (W : R2ConcreteData.Weights D)
+    (D : ConstructionData T b)
+    (W : ConstructionData.Weights D)
     (N : ℤ)
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ)
@@ -143,8 +143,8 @@ structure ExtraSiblingChoice
 /-- Choose an `R`-prime sibling for every extra frequency. -/
 def extraSiblingChoice_of_labelData
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b)
-    (W : R2ConcreteData.Weights D)
+    (D : ConstructionData T b)
+    (W : ConstructionData.Weights D)
     (N : ℤ)
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ)
@@ -190,16 +190,16 @@ def extraSiblingChoice_of_labelData
     exact hchoose.2.2.2
 
 lemma constructionPeriod_pos {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b) (hbpos : 0 < b) : 0 < D.L := by
-  rw [R2ConcreteData.L]
+    (D : ConstructionData T b) (hbpos : 0 < b) : 0 < D.L := by
+  rw [ConstructionData.L]
   refine Nat.mul_pos hbpos ?_
   exact Finset.prod_pos (fun s hs => (blockSupport_prime D.BS hs).pos)
 
 /-- Integer block-label data for the extra-minor frequencies. -/
 structure ExtraIntegerFrequencyLabelData
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b)
-    (W : R2ConcreteData.Weights D)
+    (D : ConstructionData T b)
+    (W : ConstructionData.Weights D)
     (N : ℤ)
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ) where
@@ -214,8 +214,8 @@ This lets us reuse the already-proved natural-number CRT sibling lemma, while
 preserving all congruences needed downstream. -/
 def integerLabelDataToNat
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b)
-    (W : R2ConcreteData.Weights D)
+    (D : ConstructionData T b)
+    (W : ConstructionData.Weights D)
     (N : ℤ)
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ)
@@ -229,7 +229,7 @@ def integerLabelDataToNat
     have hsdvd : (s : ℤ) ∣ (D.L : ℤ) := by
       have hsprod : s ∣ ∏ t ∈ blockSupport D.BS, t := Finset.dvd_prod_of_mem id hs
       have hsL : s ∣ D.L := by
-        rw [R2ConcreteData.L]
+        rw [ConstructionData.L]
         exact dvd_mul_of_dvd_right hsprod b
       exact_mod_cast hsL
     have hLpos : 0 < D.L := by
@@ -269,8 +269,8 @@ def integerLabelDataToNat
 /-- Choose an `R`-prime sibling for every integer-labelled extra frequency. -/
 def extraSiblingChoice_of_integerLabelData
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b)
-    (W : R2ConcreteData.Weights D)
+    (D : ConstructionData T b)
+    (W : ConstructionData.Weights D)
     (N : ℤ)
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ)
@@ -289,8 +289,8 @@ def extraSiblingChoice_of_integerLabelData
 prepared reservoir choice. -/
 def preparedReservoir_of_integerLabelData
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b)
-    (W : R2ConcreteData.Weights D)
+    (D : ConstructionData T b)
+    (W : ConstructionData.Weights D)
     (N : ℤ)
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ)
@@ -324,7 +324,7 @@ def preparedReservoir_of_integerLabelData
     have hNat := Sibling.hm_r h hh
     apply hNat
     have hrdvdL : Sibling.rfun h ∣ D.L := by
-      rw [R2ConcreteData.L]
+      rw [ConstructionData.L]
       exact dvd_mul_of_dvd_left (Sibling.hrdvd h hh) (∏ s ∈ blockSupport D.BS, s)
     have hrdvdLZ : (Sibling.rfun h : ℤ) ∣ (D.L : ℤ) := by exact_mod_cast hrdvdL
     have hLpos : 0 < D.L := by
@@ -351,8 +351,8 @@ def preparedReservoir_of_integerLabelData
 data. -/
 def multiGadgetReservoir_of_integerLabelData
     {T : Finset ℕ} {b : ℕ}
-    (D : R2ConcreteData T b)
-    (W : R2ConcreteData.Weights D)
+    (D : ConstructionData T b)
+    (W : ConstructionData.Weights D)
     (N : ℤ)
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
     (Sblock Sextra : Finset ℕ)
