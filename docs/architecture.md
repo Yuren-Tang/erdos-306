@@ -128,8 +128,8 @@ renaming proceed one mathematical node at a time.
 
 ### Global-control proof graph
 
-The first mathematical decomposition of the former monolithic
-`GlobalControl.lean` is now:
+The global-control proof is exposed only through its mathematical submodules;
+the former aggregate file has been removed. Its principal dependency spine is:
 
 ```text
 GlobalControl.BlockSystem

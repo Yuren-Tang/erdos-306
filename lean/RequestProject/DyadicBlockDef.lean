@@ -1,8 +1,5 @@
-import Mathlib
-
-open Finset BigOperators
-
-noncomputable section
+import Mathlib.Data.Nat.Prime.Defs
+import Mathlib.Order.Interval.Finset.Nat
 
 namespace GlobalControl
 
@@ -19,5 +16,3 @@ pulling in the classical analytic axioms (`dyadic_prime_density`,
 def dyadicBlock (k : ℕ) : Finset ℕ := (Finset.Ico (2 ^ k) (2 ^ (k + 1))).filter Nat.Prime
 
 end GlobalControl
-
-end

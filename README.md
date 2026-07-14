@@ -18,17 +18,20 @@ Erdős Problem 306 ([erdosproblems.com/306](https://www.erdosproblems.com/306)):
 > $1 < n_1 < \cdots < n_k$, each the product of two distinct primes, such that
 > $$\frac{a}{b} = \frac{1}{n_1} + \cdots + \frac{1}{n_k}\,?$$
 
-This repository proves the answer is **yes**, as the theorem `erdos_306` (in
-[`lean/RequestProject/Erdos306FormalConjectures.lean`](lean/RequestProject/Erdos306FormalConjectures.lean)),
-whose formal statement is taken verbatim from the Formal Conjectures project
-(cited below), where it is left open with `sorry`:
+This repository proves the answer is **yes**. The proposition is isolated in
+[`lean/RequestProject/Statement/Erdos306.lean`](lean/RequestProject/Statement/Erdos306.lean),
+and [`lean/RequestProject/Erdos306.lean`](lean/RequestProject/Erdos306.lean)
+provides the proof `Erdos306.erdos_306`:
 
 ```lean
-theorem erdos_306 :
+def Erdos306 : Prop :=
     ∀ (q : ℚ), 0 < q → Squarefree q.den →
       ∃ k : ℕ, ∃ (n : Fin (k + 1) → ℕ), n 0 = 1 ∧ StrictMono n ∧
         (∀ i ∈ Finset.Icc 1 (Fin.last k), ω (n i) = 2 ∧ Ω (n i) = 2) ∧
         q = ∑ i ∈ Finset.Icc 1 (Fin.last k), (1 : ℚ) / (n i)
+
+theorem Erdos306.erdos_306 : Erdos306 := by
+  -- complete proof
 ```
 
 Reading the Lean against the problem: `q` is the rational $a/b$ (with `q.den` its
@@ -100,7 +103,7 @@ written mathematical account is in preparation.
 ```bash
 cd lean
 lake exe cache get                                   # prebuilt Mathlib oleans
-lake build RequestProject.Erdos306FormalConjectures  # builds and checks the proof
+lake build RequestProject.Public.Erdos306             # builds the public theorem
 lake env lean RequestProject/Audit.lean              # prints the theorem, axioms, and audit
 ```
 

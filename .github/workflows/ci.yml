@@ -27,9 +27,9 @@ jobs:
   build:
     # The one and only full compile of RequestProject. Every other job
     # restores this instead of recompiling from scratch — previously each of
-    # verify/lint/import-audit(x4) independently rebuilt the ~8700-job
+    # verify/lint/import-audit(x4) independently rebuilt the full
     # RequestProject tree from a clean checkout, i.e. the same source built
-    # ~6 times per run. Mathlib itself was already shared via lean-action's
+    # repeatedly per run. Mathlib itself was already shared via lean-action's
     # own cache; RequestProject's own .olean output was not.
     runs-on: ubuntu-latest
     steps:

@@ -205,8 +205,7 @@ abstractions — e.g. sparse-support counting extracted to generic weighted-powe
 truncated-binomial lemmas in `Core/FiniteSums.lean`, statement quality good; CI lint
 job sharded 4-ways mirroring the import-audit, fixing the lint-job timeout flake).
 
-**Two verification failures, same root cause, and it is the *documented* gotcha
-recurring** (see `docs/cleanup-handoff.md`, the `#min_imports` saga): import-trim
+**Two verification failures, same root cause:** import-trim
 commits (`9992a3f`, `de77969`, `b5c53d2`) were pushed without a full-tree rebuild.
 The pushed tip failed CI's build job (`FingerprintLevelSet.lean`, unknown tactic —
 fixed in the then-unpushed HEAD), and HEAD itself still failed locally
@@ -225,8 +224,8 @@ pinned above, with acceptance greps). Run D1 → D2 → D3 sequentially (they ov
 `R2Certificates.lean` / file moves); D4 any time in parallel (CI-only).
 
 **Prompt preamble for every dispatched session** (include verbatim):
-1. Read `docs/circle-method-map.md` (your task's section) and
-   `docs/cleanup-handoff.md`'s "Known gotchas" before touching anything.
+1. Read `docs/circle-method-map.md` (your task's section) and verify it against
+   the live dependency graph before touching anything.
 2. Standing rules: any commit touching an `import` line requires a full
    `lake build RequestProject.Audit` first; never push with the build gate red;
    the acceptance greps of your task must pass before you call it done; update the

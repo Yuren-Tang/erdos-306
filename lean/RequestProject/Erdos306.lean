@@ -1,13 +1,13 @@
+import RequestProject.Statement.Erdos306
 import RequestProject.Erdos306Final
 
 /-!
-# Erdős 306 — alignment with `google-deepmind/formal-conjectures`
+# Proof of Erdős Problem 306
 
-This leaf restates Erdős Problem 306 **exactly as in
-`FormalConjectures/ErdosProblems/306.lean`** of the
-`google-deepmind/formal-conjectures` repository (the proposition that file
-states and leaves as `sorry`), and discharges it from our
-`erdos_306_unconditional`.
+This module proves the stable proposition `Erdos306` from the project's
+circle-method construction. Its formulation agrees with the mathematical
+content of `FormalConjectures/ErdosProblems/306.lean` in the
+`google-deepmind/formal-conjectures` repository.
 
 The benefit is external auditability: a reviewer who trusts that community
 formulation (it uses Mathlib's `ω`/`Ω` = `ArithmeticFunction.cardDistinctFactors`
@@ -42,16 +42,9 @@ lemma isSemiprime_one_lt {x : ℕ} (h : IsSemiprime x) : 1 < x := by
   obtain ⟨p, q, hp, hq, hpq, rfl⟩ := h
   nlinarith [hp.two_le, hq.two_le]
 
-/-- **Erdős Problem 306, in the `google-deepmind/formal-conjectures` formulation**
-(`ErdosProblems/306.lean`).  For every positive rational `q` with squarefree
-denominator there is a strictly increasing tuple `1 = n₀ < n₁ < … < n_k` whose
-non-initial entries are squarefree semiprimes (`ω = Ω = 2`) with
-`q = ∑_{i=1}^{k} 1/nᵢ`.  Proved here from `erdos_306_unconditional`. -/
-theorem erdos_306 :
-    ∀ (q : ℚ), 0 < q → Squarefree q.den →
-      ∃ k : ℕ, ∃ (n : Fin (k + 1) → ℕ), n 0 = 1 ∧ StrictMono n ∧
-        (∀ i ∈ Finset.Icc 1 (Fin.last k), ω (n i) = 2 ∧ Ω (n i) = 2) ∧
-        q = ∑ i ∈ Finset.Icc 1 (Fin.last k), (1 : ℚ) / (n i) := by
+/-- Erdős Problem 306. -/
+theorem erdos_306 : _root_.Erdos306 := by
+  unfold _root_.Erdos306
   intro q hq hsf
   -- Write `q = a / b` with `a, b : ℕ`, `b = q.den`.
   have hnum : 0 < q.num := Rat.num_pos.mpr hq
@@ -64,8 +57,9 @@ theorem erdos_306 :
     rw [ha_def]; exact_mod_cast Int.toNat_of_nonneg hnum.le
   have hqab : (a : ℚ) / (b : ℚ) = q := by
     rw [hacast, hb_def]; exact_mod_cast q.num_div_den
-  -- Our unconditional theorem supplies the semiprime set.
-  obtain ⟨S, hSsemi, hSsum⟩ := erdos_306_unconditional a b ha hb hbsf
+  -- The internal representation theorem supplies the semiprime set.
+  obtain ⟨S, hSsemi, hSsum⟩ :=
+    hasEgyptianSemiprimeRepr_div_of_squarefree a b ha hb hbsf
   rw [hqab] at hSsum
   -- `S` is nonempty (the sum is `q > 0`), so `S.card = m + 1`.
   have hSne : S.Nonempty := by
@@ -133,7 +127,6 @@ theorem erdos_306 :
     simp only [hn0, Nat.cast_one, div_one] at hins
     linarith [hins]
 
--- The axiom audit (`#print axioms erdos_306`) and the structural analytic axiom statements
--- are emitted by `RequestProject.Audit`, which CI runs and gates on.
+-- The axiom audit is emitted by `RequestProject.Audit`, which CI gates on.
 
 end Erdos306

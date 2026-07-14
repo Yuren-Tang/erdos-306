@@ -83,7 +83,7 @@ Expected edits:
 - remove tactic calls that became no-ops;
 - prefer newer Mathlib lemmas where they reduce proof scripts.
 
-Deliverable: `lake build RequestProject.Erdos306FormalConjectures` passes on
+Deliverable: `lake build RequestProject.Public.Erdos306` passes on
 Lean/Mathlib `v4.31.0` and the audit still lists only the two analytic axioms.
 
 ## Stage C — warning/linter cleanup
@@ -124,8 +124,9 @@ RequestProject/
   GlobalControl/         # global bookkeeping and Peierls/control lemmas
   ResonantConstruction/  # dyadic semiprime construction and final arc witness
   Public/                # stable public theorem facades
+  Statement/             # implementation-independent headline propositions
   Audit.lean       # final audit entry point
-  Erdos306FormalConjectures.lean
+  Erdos306.lean    # proof of the headline proposition
 ```
 
 Recommended migration rule: add compatibility shims first, move imports in small
@@ -160,9 +161,8 @@ Current progress:
   global-control sources no longer import or invoke historical `SBEE*` names;
 - the duplicated eventual bound `K * log X ≤ X` now has one proof in
   `Core.Asymptotics`, shared by local energy and global control;
-- the historical `GlobalControl.lean` monolith has been replaced by the
-  mathematical module chain documented in `docs/architecture.md`; the old
-  G5/G6/G7 paths are now compatibility imports only;
+- the historical `GlobalControl.lean` aggregate has been deleted; consumers
+  import the mathematical module chain documented in `docs/architecture.md`;
 - the level-set, localization, above-floor Laplace, and partition assemblies
   build through their mathematical paths, and `CircleMethodArcs` consumes the
   canonical `global_control_partition` theorem directly;
@@ -190,21 +190,16 @@ Current progress:
 5. **Keep bookkeeping compressed after diagnosis.** Expanded ring/field
    calculations were useful to expose the invariant, but mature proofs were
    folded back to the smallest stable normalization step.
-6. **Separate canonical names from compatibility.** Historical route numbers
-   remain useful in comments and paper cross-references; module and theorem
-   names should state the mathematics. Thin compatibility imports/aliases make
-   that migration reversible until full CI is green.
+6. **Separate canonical names from migration history.** Historical route
+   numbers may remain in development notes, while source modules and theorem
+   names state the mathematics. Obsolete compatibility imports are deleted once
+   their consumers have moved.
 7. **Validate at confluences.** Local module builds caught port errors cheaply;
    `CircleMethodArcs` then verified the first external consumer. The clean
    checkout build and axiom gate remain CI responsibilities.
-8. **An aggregate is never an internal dependency.** `GlobalControl.lean`
-   previously contained `mainArc`, forcing lower and downstream modules to
-   import the aggregate. Foundational data now lives in `BlockSystem`, the arc
-   definition in `MainArc`. (Stale as of 2026-07-07: the aggregate currently
-   also imports `BlockVarianceComparison`, not only `Partition` — see
-   `docs/cleanup-handoff.md` for the live audit. The invariant this lesson is
-   really about — no internal/downstream module imports the aggregate itself —
-   still held when last checked.)
+8. **An aggregate is never an internal dependency.** Foundational data lives in
+   `BlockSystem`, the arc definition in `MainArc`, and the former
+   `GlobalControl.lean` aggregate has been removed.
 9. **A cached olean is not a source check.** After changing a declaration
    interface, validate the changed source or invalidate its target; otherwise a
    stale downstream artifact can conceal a broken body.

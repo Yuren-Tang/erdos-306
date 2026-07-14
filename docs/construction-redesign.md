@@ -6,10 +6,8 @@ mathematical motivations, in the sense fixed by `docs/architecture.md`'s
 "Proof-graph discipline": every node is either a *principle* (smallest
 natural mechanism, no project types) or a *handoff* (one instantiation of a
 principle for the next layer), instantiation is single-line, and merges are
-few-armed. It was produced by actually reading the code (see
-`docs/cleanup-handoff.md` for the survey trail), so each node below lists
-the existing declarations that realize it — execution is mechanical given
-this map.
+few-armed. Each node below lists the existing declarations that realize it;
+the live source and dependency graph remain authoritative during execution.
 
 ## The mathematical content, stated once
 

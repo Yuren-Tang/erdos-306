@@ -1,9 +1,9 @@
-import RequestProject.Erdos306FormalConjectures
+import RequestProject.Erdos306
 
 /-!
 # Public Erdős 306 theorem facade
 
-This module is the stable public import for the headline theorem.  Internal
-proof modules may be renamed or moved during the cleanup, but audit and external
-users should import this file and use `Erdos306.erdos_306`.
+This module is the stable public import for the headline theorem. The
+implementation may be reorganized without changing either the proposition
+`Erdos306` or its proof `Erdos306.erdos_306`.
 -/

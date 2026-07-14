@@ -27,7 +27,7 @@ jobs:
         uses: leanprover/lean-action@v1
         with:
           lake-package-directory: "lean"
-          build-args: "RequestProject.Erdos306FormalConjectures"
+          build-args: "RequestProject.Public.Erdos306"
 
       - name: Prepare lean-graph extractor
         working-directory: lean
@@ -35,7 +35,7 @@ jobs:
           curl -fsSL \
             https://raw.githubusercontent.com/patrik-cihal/lean-graph/main/static/DependencyExtractor.lean \
             -o LeanGraphExtract.lean
-          sed -i '1i import RequestProject.Erdos306FormalConjectures' LeanGraphExtract.lean
+          sed -i '1i import RequestProject.Public.Erdos306' LeanGraphExtract.lean
           cat >> LeanGraphExtract.lean <<'EOF'
 
           #eval serializeAndWriteToFile

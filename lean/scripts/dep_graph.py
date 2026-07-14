@@ -13,8 +13,7 @@ even while large parts of the tree are red mid-refactor. It answers:
   - rough size/sorry/axiom counts per module.
 
 Usage: run from lean/, i.e. `python3 scripts/dep_graph.py [root_module]`.
-Default root is RequestProject.Erdos306FormalConjectures (the public
-theorem's entry file).
+Default root is RequestProject.Public.Erdos306, the stable public entry file.
 """
 import re
 import os
@@ -23,7 +22,7 @@ import json
 import collections
 
 ROOT_DIR = "RequestProject"
-DEFAULT_ROOT = "RequestProject.Erdos306FormalConjectures"
+DEFAULT_ROOT = "RequestProject.Public.Erdos306"
 
 
 def module_name(path: str) -> str:

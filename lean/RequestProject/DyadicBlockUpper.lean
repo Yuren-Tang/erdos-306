@@ -1,4 +1,7 @@
 import RequestProject.DyadicBlockDef
+import Mathlib.Algebra.BigOperators.Field
+import Mathlib.NumberTheory.Primorial
+import Mathlib.Tactic
 
 open Finset BigOperators
 

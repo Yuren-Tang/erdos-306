@@ -1,4 +1,6 @@
 import RequestProject.DyadicPrimes
+import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Data.Nat.Squarefree
 
 open Finset BigOperators
 
@@ -130,7 +132,7 @@ lemma blockPrimes_pair_prod_injOn (k0 : ℕ) :
     have := h_cases.1.dvd_mul.mp ( h_eq ▸ dvd_mul_right _ _ ) ; simp_all +decide [ Nat.prime_dvd_prime_iff_eq ] ;
   cases h_cases <;> simp_all +decide [ mul_comm ];
   · cases h_eq <;> simp_all +decide [ Prod.ext_iff ];
-    exact absurd ( blockPrimes_prime hpq'.1.1 ) ( by norm_num );
+    exact absurd (blockPrimes_prime hpq'.1.1) Nat.not_prime_zero
   · grind
 
 /-! ## T2 — the product-load lower bound -/

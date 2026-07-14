@@ -14,7 +14,7 @@ sh /tmp/elan-init.sh -y --default-toolchain none
 . "$HOME/.elan/env"
 cd lean
 lake exe cache get
-lake build RequestProject.Erdos306FormalConjectures
+lake build RequestProject.Public.Erdos306
 lake env lean RequestProject/Audit.lean
 ```
 
@@ -33,10 +33,8 @@ lean/lean-toolchain: leanprover/lean4:v4.31.0
 lean/lakefile.toml:  mathlib rev = "v4.31.0"
 ```
 
-`lake update` refreshed `lean/lake-manifest.json` and installed the local Lean
-`v4.31.0` toolchain.  The Mathlib cache download was interrupted by local disk
-space exhaustion (`No space left on device`), so the next engineering step is to
-finish the cache/build verification in CI or after freeing local space.
+`lake update` refreshed `lean/lake-manifest.json`; the local Lean toolchain and
+Mathlib cache are installed, and the public proof and audit build successfully.
 
 Earlier mechanical port testing found proof-script blockers in
 `RequestProject/GlobalPeierlsBookkeeping.lean`, then
