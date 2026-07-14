@@ -17,13 +17,13 @@ namespace CircleMethod
 The minor-arc budget factors through explicitly named certificate steps:
 
 * **classification + lanes** — `minorArcFrequencyLanes` builds the
-  `R2MinorEndgameFrequencyLanes`, i.e. the block-lane fibre-tail estimate
+  `MinorArcFrequencyLanes`, i.e. the block-lane fibre-tail estimate
   (`blockMinorFiberTailData`, with the bounded `b`-to-1 multiplicity), the extra
   frequency count bound (`extraMinor_card_le`, `≤ b(2N+1)`), and the per-frequency
   gadget damping (`r2ExtraSiblingChoice_of_intLabelData`, the `G`-fold damping).
 * **support budget** — `minor_arc_support_budget` feeds those lanes through the
   abstract minor-support supply principle `F.ledger.hSB` to produce the
-  `R2MinorSupportBudgetData` (the block/extra cover with its two budget fields).
+  `MinorArcSupportBudget` (the block/extra cover with its two budget fields).
 * **lane bound** — `minor_arc_lane_bound` combines the block and extra budgets via
   `hminorSum_of_block_extra_norm_bounds` into the per-`MainArcFields` minor sum
   bound `≤ minorArcBudget`.
@@ -46,12 +46,12 @@ def minorArcBudget {T : Finset ℕ} {b : ℕ}
 /-- **Minor classification + support-budget certificate.**  Build the block,
 extra-count, and gadget-damping frequency lanes (`minorArcFrequencyLanes`) and feed
 them through the abstract minor-support supply principle `F.ledger.hSB` to obtain the
-`R2MinorSupportBudgetData`: the block/extra cover of the minor frequencies with
+`MinorArcSupportBudget`: the block/extra cover of the minor frequencies with
 its block budget `(b·(η + Ctail·e^{…}))/σ_ctrl` and extra budget `b·(2N+1)·Dmp`. -/
 lemma minor_arc_support_budget {T : Finset ℕ} {b : ℕ}
     (F : ConstructionFoundation T b) (Cc : GadgetEdgeCertificate F)
     (M : WeightedEdgeCertificate F Cc) (A : MainArcWindowCertificate F Cc M) :
-    Nonempty (R2MinorSupportBudgetData M.D M.W A.N
+    Nonempty (MinorArcSupportBudget M.D M.W A.N
       ((b : ℝ) * (F.ledger.η + F.ledger.Ctail * Real.exp (-F.ledger.C ^ 2 * (16 / 9) / 2)) / sigmaCtrl M.D.BS)
       ((b : ℝ) * (2 * (A.N : ℝ) + 1) * F.ledger.Dmp)) := by
   classical
@@ -88,7 +88,7 @@ lemma minor_arc_support_budget {T : Finset ℕ} {b : ℕ}
     (mainArcClassificationData D W N F.ledger.C) hk0minMD hadmD Ln.toMultiGadget
 
 /-- **Minor lane bound.**  Combine the block and extra budgets of the
-`R2MinorSupportBudgetData` (via `hminorSum_of_block_extra_norm_bounds`) into the
+`MinorArcSupportBudget` (via `hminorSum_of_block_extra_norm_bounds`) into the
 per-`MainArcFields` minor-sum bound `∑_{h∈Sm} ‖fourierTerm h‖ ≤ minorArcBudget`. -/
 lemma minor_arc_lane_bound {T : Finset ℕ} {b : ℕ}
     (F : ConstructionFoundation T b) (Cc : GadgetEdgeCertificate F)

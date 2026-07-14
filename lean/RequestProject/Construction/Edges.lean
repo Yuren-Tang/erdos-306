@@ -22,7 +22,6 @@ the bundled record (`R2ConcreteData`) that packages it for the rest of the
 construction answer the same question at two levels, so they live in one
 file.
 
-See `docs/construction-redesign.md` node C1.
 -/
 
 /-- Gadget edges `r*s`, where `r` is a denominator prime and `s` is a chosen block

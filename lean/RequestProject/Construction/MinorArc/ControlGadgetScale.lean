@@ -1,4 +1,4 @@
-import RequestProject.Construction.MassPool
+import RequestProject.Construction.Edges
 
 open Finset BigOperators GlobalControl
 
@@ -7,15 +7,11 @@ noncomputable section
 namespace CircleMethod
 
 /-!
-# R2 component core supply
-
-Component data stable under replacing only `D.Q`: the control/gadget scale,
-avoidance, and primality hypotheses shared by every minor-endgame strategy
-(`R2MinorEndgameMultiGadget`, `R2MinorEndgameFrequency`).
+# Control and gadget scale data
 -/
 
 /-- Component data stable under replacing only `D.Q`. -/
-structure R2ComponentScaleCoreSupply
+structure ControlGadgetScaleData
     {T : Finset ℕ} {b : ℕ} (D : R2ConcreteData T b) (N : ℤ) (ρ : ℝ) where
   hρ : 0 ≤ ρ
   hctrlScale : (N : ℝ) ≤ ρ * ((2 ^ D.BS.k0 * 2 ^ D.BS.k0 : ℕ) : ℝ)

@@ -22,13 +22,12 @@ this instantiates `Construction.ExtraReservoir`'s generic
 Labels arise from the main-arc classification as integers (`ℤ`, since a main
 frequency's label is a signed CRT residue); the integer-labelled path
 (`R2ExtraIntFrequencyLabelData` onward) is the one actually consumed
-downstream (`Construction.MinorEndgame`).  It reduces existence/choice to the
+downstream (`Construction.MinorArc.Endgame`).  It reduces existence/choice to the
 natural-number case via `intLabelDataToNat`, but proves its own prepared-choice
 step directly rather than delegating to a natural-number version — so there
 is no natural-number-labelled "prepared choice"/"reservoir" pair to keep here;
 only the sibling-choice existence/packaging is shared between the two labels.
 
-See `docs/construction-redesign.md` node C6.
 -/
 
 /-- For a squarefree modulus `b`, congruence modulo every prime divisor of `b`

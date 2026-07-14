@@ -1,6 +1,7 @@
-import RequestProject.R2MinorSupportBudget
+import RequestProject.CircleMethod.MinorArcCover
 import RequestProject.CircleMethod.MinorArcEstimates
 import RequestProject.CircleMethod.QuadraticEnergy
+import RequestProject.Construction.Edges
 import RequestProject.Spectral.BernoulliCyclicFourier
 
 open Finset BigOperators GlobalControl
@@ -10,16 +11,37 @@ noncomputable section
 namespace CircleMethod
 
 /-!
-# R2 block-minor lane
+# Block-minor estimate
 
-This file records the block-minor side of the R2 minor budget.  It is meant to
-be developed as one coherent lane, not as scattered wrapper lemmas.
-
-The key point is that the final `R2MinorSupportBudgetData` asks for a sum of
-`fourierNormWeight`, while the global-control estimates are naturally stated in
-`quadraticEnergy`-energy language.  The first lemmas below bridge those two formulations.
+The Fourier norm is bounded by quadratic energy, after which the global-control
+fiber-tail estimate supplies the block-minor budget.
 -/
 
+/-- Per-main-arc data for the global-control fiber-tail budget. -/
+structure BlockMinorFiberTail
+    {T : Finset ℕ} {b : ℕ}
+    (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
+    (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
+    (Sblock : Finset ℕ) (Bblock η Ctail : ℝ) where
+  C : ℝ
+  K : ℝ
+  Qextra : ℕ → ℝ
+  hC : 1 ≤ C
+  hK : 0 ≤ K
+  heL : ∀ e ∈ D.E, e ∣ D.L
+  he0 : ∀ e ∈ D.E, 0 < e
+  hL : 0 < D.L
+  hQE : ∀ h ∈ blockMinorPart MA.Sm Sblock,
+    Qctrl D.BS (fun p => ((h : ZMod p.1))) + Qextra h ≤ quadraticEnergy D.E h
+  hnotmain : ∀ h ∈ blockMinorPart MA.Sm Sblock,
+    (fun p => ((h : ZMod p.1)) : GlobalAssignment D.BS) ∉ mainArc D.BS C
+  hfiber : ∀ a : GlobalAssignment D.BS,
+    ∑ h ∈ (blockMinorPart MA.Sm Sblock).filter
+      (fun h => (fun p => ((h : ZMod p.1)) : GlobalAssignment D.BS) = a),
+      Real.exp (-(16 / 9 : ℝ) * Qextra h) ≤ K
+  hbudget :
+    K * ((η + Ctail * Real.exp (-C ^ 2 * (16 / 9) / 2)) / sigmaCtrl D.BS)
+      ≤ Bblock
 /-- Pointwise C2/quadraticEnergy bridge at the constant used by the final minor arc. -/
 lemma fourierNormWeight_le_exp_QE
     (E : Finset ℕ) (theta : ℕ → ℝ) (q L : ℕ)
@@ -71,7 +93,7 @@ lemma sum_fourierNormWeight_le_exp_QE
     fourierNormWeight_le_exp_QE E theta q L hθ_lb hθ_ub heL he0 hL h)
 
 /-- Block-minor budget from a `quadraticEnergy`-energy budget over the block part. -/
-theorem r2_block_minor_budget_from_exp_QE
+theorem blockMinor_budget_of_quadraticEnergy
     {T : Finset ℕ} {b : ℕ}
     (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
@@ -94,7 +116,7 @@ theorem r2_block_minor_budget_from_exp_QE
 This is the target interface for the block lane: the remaining mathematical
 work is exactly to provide `hQE`, `hnotmain`, and `hfiber` for the chosen
 `Sblock`. -/
-theorem r2_block_minor_budget_from_fiber_tail
+theorem blockMinor_budget_of_fiber_tail
     {T : Finset ℕ} {b : ℕ}
     (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
     (MA : MainArcFields D.E W.theta (D.L / b) D.L N)
@@ -116,20 +138,20 @@ theorem r2_block_minor_budget_from_fiber_tail
           Real.exp (-(16 / 9 : ℝ) * Qctrl D.BS a.1) ≤ Bblock) :
     ∑ h ∈ blockMinorPart MA.Sm Sblock,
       fourierNormWeight D.E W.theta (D.L / b) D.L h ≤ Bblock := by
-  refine r2_block_minor_budget_from_exp_QE D W N MA Sblock Bblock heL he0 hL ?_
+  refine blockMinor_budget_of_quadraticEnergy D W N MA Sblock Bblock heL he0 hL ?_
   exact le_trans
     (block_part_bound D.BS D.E (16 / 9) C K MA.Sm Sblock Qextra
       (by norm_num) hQE hnotmain hfiber)
     hbudget
 
-/-- G7-packaged block-minor budget.
+/-- Global-control partition form of the block-minor budget.
 
 This is the block lane in the same quantifier order as the global-control
 partition: after the desired loss `η` is fixed, a base scale and a
 Gaussian-tail constant are produced.  The caller only has to verify the
 block-specific support facts (`hQE`, `hnotmain`, `hfiber`) and choose `Bblock`
-large enough for the resulting G7 budget. -/
-theorem exists_r2_block_minor_budget_from_fiber_tail_g7
+large enough for the resulting global-control budget. -/
+theorem exists_blockMinor_budget_of_fiber_tail
     (η : ℝ) (hη : 0 < η) :
     ∃ (k0min : ℕ) (Ctail : ℝ), 0 < Ctail ∧
       ∀ {T : Finset ℕ} {b : ℕ}
@@ -157,7 +179,7 @@ theorem exists_r2_block_minor_budget_from_fiber_tail_g7
   refine ⟨k0min, Ctail, hCtail, ?_⟩
   intro T b D W N MA Sblock Bblock C K Qextra hk0 hadm hC hK
     heL he0 hL hQE hnotmain hfiber hBblock
-  refine r2_block_minor_budget_from_fiber_tail D W N MA Sblock Bblock C K Qextra
+  refine blockMinor_budget_of_fiber_tail D W N MA Sblock Bblock C K Qextra
     heL he0 hL hQE hnotmain hfiber ?_
   exact le_trans
     (mul_le_mul_of_nonneg_left (hgcp D.BS hk0 hadm C hC) hK)

@@ -3,7 +3,7 @@ import RequestProject.CircleMethod.MainArcNumericBounds
 import RequestProject.Construction.BaseLoadBudget
 import RequestProject.Construction.BlockSystemSelection
 import RequestProject.Construction.EdgeSquareLoad
-import RequestProject.Construction.MinorEndgame
+import RequestProject.Construction.MinorArc.Endgame
 import RequestProject.Construction.ParameterSelection
 
 open Finset BigOperators GlobalControl
@@ -69,10 +69,10 @@ structure ConstructionParameters (b : ℕ) where
   hG1 : 1 ≤ G
   hSB : ∀ {T' : Finset ℕ} {b' : ℕ}
       (D : R2ConcreteData T' b') (W : R2ConcreteData.Weights D) (N : ℤ)
-      (Bblock Bextra ρ : ℝ) (Cls : R2MinorClassificationData D W N),
+      (Bblock Bextra ρ : ℝ) (Cls : MinorArcClassification D W N),
       k0minM ≤ D.BS.k0 → admissibleGlobalRange D.BS →
-      R2MinorEndgameMultiGadgetLanes D W N Bblock Bextra η Ctail ρ Cls →
-      Nonempty (R2MinorSupportBudgetData D W N Bblock Bextra)
+      MinorArcMultiGadgetLanes D W N Bblock Bextra η Ctail ρ Cls →
+      Nonempty (MinorArcSupportBudget D W N Bblock Bextra)
   hCge3 : (3 : ℝ) ≤ C
   hCge1 : (1 : ℝ) ≤ C
   hbbdef : base_b = Real.sqrt (1 - (8 / 9) / (b : ℝ) ^ 2)
@@ -168,7 +168,7 @@ lemma exists_construction_parameters (b : ℕ) (hb : 3 ≤ b) (hbsf : Squarefree
   set η : ℝ := c3 / (4 * K * (b : ℝ)) with hηdef
   have hηpos : 0 < η := by rw [hηdef]; positivity
   obtain ⟨k0minM, Ctail, hCtail, hSB⟩ :=
-    exists_r2_minorSupportBudget_from_multiGadget_lanes η hηpos
+    exists_minorArcSupportBudget_of_multiGadget_lanes η hηpos
   obtain ⟨C0, hC0one, hC0bd⟩ :=
     exists_gaussian_tail_cutoff Ctail (c3 / K) b (by positivity)
   set C : ℝ := max C0 3 with hCdef

@@ -22,7 +22,6 @@ This node is deliberately independent of *how* the per-frequency choices are
 produced (CRT sibling selection is `Construction.ExtraSiblingChoice`) — it
 only consumes raw choice data and produces the aggregate object.
 
-See `docs/construction-redesign.md` node C6.
 -/
 
 /-- Finite reservoir data sufficient to build the existing abstract

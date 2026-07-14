@@ -19,7 +19,6 @@ consumer is `weights` below and its own motivating question, "build the
 weight package once the reciprocal-load window is known," is the same
 question this file already answers), consumed by the weighted-edge certificate.
 
-See `docs/construction-redesign.md` nodes C2, C3.
 -/
 
 namespace R2ConcreteData

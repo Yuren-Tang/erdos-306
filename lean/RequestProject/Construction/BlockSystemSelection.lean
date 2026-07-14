@@ -1,5 +1,6 @@
-import RequestProject.R2DyadicBlockSupport
+import RequestProject.BlockMassPool
 import RequestProject.Construction.BlockSupportCompatibility
+import RequestProject.GlobalControl.BlockSystem
 
 open Finset BigOperators GlobalControl
 open scoped Classical
@@ -15,6 +16,37 @@ The concrete construction needs a sufficiently large dyadic block system and
 a prescribed finite number of primes from one of its blocks. These choices
 depend only on the abstract block-system interface and dyadic prime density.
 -/
+
+/-- A dyadic block system with arbitrarily large bottom scale, admissible
+global range, and the full bottom block of primes in its support. -/
+theorem exists_dyadic_blockSystem_with_bottom_block (k0min : ℕ) :
+    ∃ BS : BlockSystem,
+      k0min ≤ BS.k0 ∧ admissibleGlobalRange BS ∧
+        blockPrimes BS.k0 ⊆ blockSupport BS := by
+  set k0 : ℕ := max k0min 5 with hk0def
+  have h5 : 5 ≤ k0 := le_max_right _ _
+  refine ⟨{
+    k0 := k0
+    K := 3 * k0
+    hk := by omega
+    hk0 := by omega
+    P := dyadicBlock
+    hprime := by
+      intro k p hp
+      exact (Finset.mem_filter.mp hp).2
+    hwindow := by
+      intro k p hp
+      have := (Finset.mem_filter.mp hp).1
+      rw [Finset.mem_Ico] at this
+      exact this
+    hdensity := by
+      intro k hk1 _hk2
+      exact dyadic_prime_density k (le_trans h5 hk1) }, ?_, ?_, ?_⟩
+  · exact le_max_left _ _
+  · dsimp only [admissibleGlobalRange]
+    omega
+  · intro p hp
+    simpa [blockPrimes, blockSupport] using hp
 
 /-- A dyadic block contains any prescribed finite number of primes once its
 prime-density lower bound exceeds that number. -/
@@ -46,7 +78,7 @@ lemma exists_dyadic_blockSystem (b : ℕ) (hb : 3 ≤ b) (k0min : ℕ) :
       2 * BS.k0 ≤ BS.K ∧
       dyadicBlock (2 * BS.k0) ⊆ blockSupport BS := by
   obtain ⟨BS, hk0, hadm, hsub⟩ :=
-    exists_blockSystem_with_blockPrimes_subset (max (max k0min 5) (b + 1))
+    exists_dyadic_blockSystem_with_bottom_block (max (max k0min 5) (b + 1))
   refine' ⟨BS, _, _, hadm, hsub, _, _, _, _⟩ <;> norm_num at *
   all_goals norm_num [BlockSupportCoprimeWith, CoversPrimeDivisors]
   any_goals tauto

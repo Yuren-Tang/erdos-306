@@ -24,7 +24,6 @@ This node does not choose the gadgets or the denominator prime — that is
 `Construction.ExtraSiblingChoice`, a separate mechanism (choosing witnesses
 vs. bounding the damping once witnesses are fixed).
 
-See `docs/construction-redesign.md` node C6.
 -/
 
 /-- The selected gadget edge set for a fixed denominator prime `r` and a set of

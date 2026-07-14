@@ -1,6 +1,6 @@
 import RequestProject.CircleMethod.QuadraticEnergy
 import RequestProject.Construction.ControlEdges
-import RequestProject.R2MainArcClassification
+import RequestProject.Construction.MainArcClassification
 
 open Finset BigOperators GlobalControl
 open scoped Classical
@@ -30,7 +30,7 @@ def blockMinorFiberTailData {T : Finset ℕ} {b : ℕ}
       (fun p => ((h : ZMod p.1)) : GlobalAssignment D.BS) ∉ mainArc D.BS C)
     (hbudget : (b : ℝ) * ((η + Ctail * Real.exp (-C ^ 2 * (16 / 9) / 2)) / sigmaCtrl D.BS)
         ≤ Bblock) :
-    R2BlockFiberTailData D W N MA Sblock Bblock η Ctail where
+    BlockMinorFiberTail D W N MA Sblock Bblock η Ctail where
   C := C
   K := b
   Qextra := fun h => quadraticEnergy D.E h - Qctrl D.BS (fun p => ((h : ZMod p.1)))
@@ -113,7 +113,7 @@ def blockMinorFrequencyLane {T : Finset ℕ} {b : ℕ}
     (heL : ∀ e ∈ D.E, e ∣ D.L) (he0 : ∀ e ∈ D.E, 0 < e) (hL : 0 < D.L)
     (hLeq : D.L = b * ∏ p ∈ blockSupport D.BS, p) :
     ∀ MA : MainArcFields D.E W.theta (D.L / b) D.L N,
-      R2BlockFiberTailData D W N MA
+      BlockMinorFiberTail D W N MA
         ((mainArcClassificationData D W N C).Sblock MA)
         ((b : ℝ) * (η + Ctail * Real.exp (-C ^ 2 * (16 / 9) / 2)) / sigmaCtrl D.BS)
         η Ctail :=
@@ -233,12 +233,12 @@ lemma minorArcFrequencyLanes {T : Finset ℕ} {b : ℕ}
     (hN2 : 2 * N < (2 : ℤ) ^ (2 * D.BS.k0))
     (hDmpnn : 0 ≤ Dmp)
     (hG : (Real.sqrt (1 - (8 / 9) / (b : ℝ) ^ 2)) ^ G ≤ Dmp) :
-    Nonempty (R2MinorEndgameFrequencyLanes D W N
+    Nonempty (MinorArcFrequencyLanes D W N
       ((b : ℝ) * (η + Ctail * Real.exp (-C ^ 2 * (16 / 9) / 2)) / sigmaCtrl D.BS)
       ((b : ℝ) * (2 * (N : ℝ) + 1) * Dmp) η Ctail (N : ℝ) Dmp
       (mainArcClassificationData D W N C)) := by
   constructor;
-  apply_rules [ R2MinorEndgameFrequencyLanes.mk ];
+  apply_rules [ MinorArcFrequencyLanes.mk ];
   use by norm_cast;
   exact le_mul_of_one_le_right ( by positivity ) ( mod_cast Nat.one_le_iff_ne_zero.mpr <| by positivity );
   exact 1;
@@ -260,4 +260,3 @@ lemma minorArcFrequencyLanes {T : Finset ℕ} {b : ℕ}
 end CircleMethod
 
 end
-

@@ -22,7 +22,7 @@ It also proves the **master per-frequency estimate**
 contraction, the Fourier-term norm is dominated by the product of the factor
 norms over *any* chosen subset of edges (`norm_prod_le_prod_of_subset`).  The
 single-factor control used by the extra lane and the multi-gadget damping are
-one-line instances (see `docs/construction-redesign.md`, nodes P2/B2).
+one-line instances.
 -/
 
 /-- A two-family cover of a finite set of minor frequencies. -/

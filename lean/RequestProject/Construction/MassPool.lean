@@ -22,7 +22,6 @@ This node does *not* include bounding the control/gadget edges' own load —
 that is a separate mechanism, independent of how `Q` is chosen, in
 `Construction.BaseLoadBudget`.
 
-See `docs/construction-redesign.md` node C2.
 -/
 
 /-- Reciprocal load is monotone under finite-set inclusion. -/

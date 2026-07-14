@@ -22,7 +22,6 @@ The forbidden-budget bridge (`R2ForbiddenBudget.of_basePieces`) discharges
 `Construction.MassPool`'s `R2ForbiddenBudget` using exactly this base-load
 split, which is why this file imports that one rather than the reverse.
 
-See `docs/construction-redesign.md` node C2.
 -/
 
 /-- The support factors of a control edge both lie in `blockSupport BS`. -/

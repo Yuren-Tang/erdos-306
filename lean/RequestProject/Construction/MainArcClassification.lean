@@ -1,4 +1,4 @@
-import RequestProject.Construction.MinorEndgame
+import RequestProject.Construction.MinorArc.Endgame
 
 open Finset BigOperators GlobalControl
 open scoped Classical
@@ -28,7 +28,7 @@ def mainArcExtraSet {T : Finset ℕ} {b : ℕ}
 all minor frequencies. -/
 def mainArcClassificationData {T : Finset ℕ} {b : ℕ}
     (D : R2ConcreteData T b) (W : R2ConcreteData.Weights D) (N : ℤ)
-    (C : ℝ) : R2MinorClassificationData D W N where
+    (C : ℝ) : MinorArcClassification D W N where
   Sblock := mainArcBlockSet D W N C
   Sextra := mainArcExtraSet D W N C
   hcover := by
