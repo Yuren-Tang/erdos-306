@@ -421,14 +421,23 @@ lemma label_covering_energy_dichotomy
       exact hnstar.2;
     have h_final : cE / X^2 * (ρ * N / 2)^4 / (2 * B / X + 2)^2 ≤ 2 * R := by
       have h_final : cE / X^2 * (ρ * N / 2)^4 / (Lsub.card : ℝ)^2 ≤ 2 * R := by
-        refine le_trans ?_ h_energy;
-        rw [ mul_div_assoc ];
-        gcongr;
-        exact le_trans ( by gcongr ) h_power_mean;
-      refine le_trans ?_ h_final;
-      gcongr;
-      · exact sq_pos_of_pos ( Nat.cast_pos.mpr ( Finset.card_pos.mpr ⟨ nstar, hnstar.1 ⟩ ) );
-      · exact le_trans ( Nat.cast_le.mpr <| Finset.card_le_card <| Finset.filter_subset _ _ ) hk0;
+        refine le_trans ?_ h_energy
+        rw [mul_div_assoc]
+        have hpow : (ρ * N / 2)^4 ≤
+            (∑ n ∈ Lsub \ {nstar}, ((Cls n).card : ℝ))^4 :=
+          pow_le_pow_left₀ (by positivity) hM₂ 4
+        have hquot : (ρ * N / 2)^4 / (Lsub.card : ℝ)^2 ≤
+            (∑ n ∈ Lsub \ {nstar}, ((Cls n).card : ℝ))^4 /
+              (Lsub.card : ℝ)^2 :=
+          div_le_div_of_nonneg_right hpow (sq_nonneg _)
+        exact mul_le_mul_of_nonneg_left (hquot.trans h_power_mean) (by positivity)
+      refine le_trans ?_ h_final
+      have hLpos : 0 < (Lsub.card : ℝ) :=
+        Nat.cast_pos.mpr (Finset.card_pos.mpr ⟨nstar, hnstar.1⟩)
+      have hLupper : (Lsub.card : ℝ) ≤ 2 * B / X + 2 :=
+        le_trans (Nat.cast_le.mpr <| Finset.card_le_card <| Finset.filter_subset _ _) hk0
+      exact div_le_div_of_nonneg_left (by positivity) (sq_pos_of_pos hLpos)
+        (pow_le_pow_left₀ hLpos.le hLupper 2)
     field_simp at h_final ⊢;
     exact Or.inl h_final;
   · have hTiny_le : (∑ n ∈ allLabels \ Lsub, ((Cls n).card : ℝ)) ≤ k0 * s0 := by

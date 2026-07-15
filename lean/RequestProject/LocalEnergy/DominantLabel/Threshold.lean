@@ -17,16 +17,7 @@ open scoped Classical
 
 private lemma exists_logarithmic_threshold (K : ℝ) :
     ∃ X0 : ℝ, 0 < X0 ∧ ∀ X : ℕ, X0 ≤ X → K ≤ (X:ℝ)/Real.log X := by
-  -- By the properties of the logarithm and the fact that $X / \log X$ tends to infinity, we can find such an $X_0$.
-  have h_log_growth : Filter.Tendsto (fun X : ℕ => (X : ℝ) / Real.log (X : ℝ)) Filter.atTop Filter.atTop := by
-    have h_log_growth : Filter.Tendsto (fun x : ℝ => x / Real.log x) Filter.atTop Filter.atTop := by
-      -- We can use the change of variables $u = \log x$ to transform the limit expression.
-      suffices h_log : Filter.Tendsto (fun u : ℝ => Real.exp u / u) Filter.atTop Filter.atTop by
-        have := h_log.comp Real.tendsto_log_atTop;
-        exact this.congr' ( by filter_upwards [ Filter.eventually_gt_atTop 0 ] with x hx using by rw [ Function.comp_apply, Real.exp_log hx ] );
-      simpa using Real.tendsto_exp_div_pow_atTop 1;
-    exact h_log_growth.comp tendsto_natCast_atTop_atTop;
-  exact Filter.eventually_atTop.mp ( h_log_growth.eventually_ge_atTop K ) |> fun ⟨ X0, hX0 ⟩ ↦ ⟨ ⌈X0⌉₊ + 1, by positivity, fun X hX ↦ hX0 X <| by linarith [ Nat.le_ceil X0, show ( X : ℕ ) ≥ ⌈X0⌉₊ + 1 by exact_mod_cast hX ] ⟩
+  simpa using RequestProject.eventually_le_natCast_div_log_pow 1 K
 
 /-
 **Left-disjunct chase.**  Pure algebra: the large-energy disjunct of the
@@ -112,9 +103,9 @@ private lemma high_cutoff_energy_bound (ρ : ℝ) (hρ : 0 < ρ) (_hρ4 : ρ ≤
     (husq : u^2 = (256/ρ)*R*(X:ℝ)^2/N^2)
     (hbigN : 2304/ρ ≤ N)
     (hdisj : ρ*N/4 < (2*u+2)*(32*(u+1)+8)) :
-    ρ^2 / (4718592) * (X:ℝ)/(Real.log X)^3 ≤ R := by
+    ρ^2 / (64 * (9 * 8192)) * (X:ℝ)/(Real.log X)^3 ≤ R := by
   rw [ div_le_iff₀ ( by positivity ) ] at *;
-  have h_combined : ρ^2 * N^3 / 8 < 73728 * R * X^2 := by
+  have h_combined : ρ^2 * N^3 / 8 < (9 * 8192) * R * X^2 := by
     field_simp at *;
     nlinarith [ sq_nonneg ( u - 1 ), mul_le_mul_of_nonneg_left hbigN hρ.le, mul_le_mul_of_nonneg_left hbigN hNpos.le ];
   have h_combined : N^3 ≥ X^3 / (8 * (Real.log X)^3) := by
@@ -248,7 +239,8 @@ theorem nondominant_energy_lower_bound
   obtain ⟨cE, hcE0, hcE⟩ : ∃ cE : ℝ, 0 < cE ∧ ∀ (Y : ℕ) (Q : Finset ℕ) [∀ p : Q, NeZero p.1] (b : BlockAssignment Q) (n n' : ℤ) (D : ℝ), n ≠ n' → |(n:ℝ)| ≤ D → |(n':ℝ)| ≤ D → D ≤ (Y:ℝ)^2/4 → ∀ (C C' : Finset Q), (∀ p ∈ C, Nat.Prime (p:ℕ) ∧ Y ≤ (p:ℕ) ∧ (p:ℕ) ≤ 2*Y) → (∀ q ∈ C', Nat.Prime (q:ℕ) ∧ Y ≤ (q:ℕ) ∧ (q:ℕ) ≤ 2*Y) → Disjoint C C' → (32 * (D/Y + 1) : ℝ) ≤ C.card → (8:ℝ) ≤ C'.card → (∀ p ∈ C, b p = ((n : ℤ) : ZMod (p:ℕ))) → (∀ q ∈ C', b q = ((n' : ℤ) : ZMod (q:ℕ))) → cE * (C.card : ℝ)^3 * C'.card / (Y:ℝ)^2 ≤ ∑ p ∈ C, ∑ q ∈ C', ((crtRepr (p:ℕ) (q:ℕ) (b p) (b q) : ℝ) / ((p:ℕ) * (q:ℕ)))^2 := by
     apply crossLabel_energy_lower_bound;
   intro ρ hρ hρ4
-  set c2 := min (ρ^2 * Real.sqrt (cE*ρ) / 10^6) (ρ^2/4718592) with hc2def
+  set c2 := min (ρ^2 * Real.sqrt (cE*ρ) / 10^6)
+    (ρ^2 / (64 * (9 * 8192))) with hc2def
   have hc2pos : 0 < c2 := by
     exact lt_min ( by positivity ) ( by positivity )
   generalize_proofs at *;
@@ -316,7 +308,7 @@ theorem nondominant_energy_lower_bound
         grind
       have hcr := high_cutoff_energy_bound ρ hρ hρ4 X N R u hlog0 hN hNpos hR0 hu0 husq hbigN hRgt
       refine le_trans ?_ hcr
-      have hcr2 : c2 ≤ ρ^2/4718592 := min_le_right _ _
+      have hcr2 : c2 ≤ ρ^2 / (64 * (9 * 8192)) := min_le_right _ _
       gcongr
 
 end LocalEnergy

@@ -55,10 +55,10 @@ lemma blockPrimes_subset_Ico (k0 : ℕ) :
   rw [Finset.mem_Ico]
   exact ⟨blockPrimes_ge hp, blockPrimes_lt hp⟩
 
-/-! ## T1 — the squared tail is small -/
+/-! ## Reciprocal-square tail -/
 
 /-
-**T1.**  The reciprocal-square load of the block primes is at most
+The reciprocal-square load of the block primes is at most
 `1/(2^{k₀}-1)`.
 -/
 lemma blockPrimes_sub_sq_tail (k0 : ℕ) (hk0 : 5 ≤ k0) :
@@ -92,13 +92,13 @@ lemma blockPrimes_pair_prod_injOn (k0 : ℕ) :
     exact absurd (blockPrimes_prime hpq'.1.1) Nat.not_prime_zero
   · grind
 
-/-! ## T2 — the product-load lower bound -/
+/-! ## Reciprocal product load -/
 
 /-
-**T2 (core).**  Given the Mertens reciprocal-sum lower bound `S ≥ 21/20` for a
+Given the Mertens reciprocal-sum lower bound `S ≥ 21/20` for a
 fixed `k₀ ≥ 5`, the off-diagonal (`p<q`) reciprocal product-load of the block
-primes is at least `1/2`.  (The Mertens input is supplied as a hypothesis here;
-the unconditional `blockPrimes_product_load_ge` feeds it from the axiom.)
+primes is at least `1/2`.  The Mertens input is supplied as a hypothesis here;
+`blockPrimes_product_load_ge` obtains it from the analytic input boundary.
 -/
 lemma blockPrimes_product_load_ge_of (k0 : ℕ) (hk0 : 5 ≤ k0)
     (hmertens : (21 : ℝ) / 20 ≤ ∑ p ∈ blockPrimes k0, (1 : ℝ) / (p : ℝ)) :
@@ -112,9 +112,9 @@ lemma blockPrimes_product_load_ge_of (k0 : ℕ) (hk0 : 5 ≤ k0)
       convert RequestProject.sq_sum_eq_sum_sq_add_twice_sum_lt ( blockPrimes k0 ) ( fun p : ℕ => ( 1 : ℝ ) / p ) using 1 ; norm_num [ mul_comm ];
   nlinarith [ show ( ∑ p ∈ blockPrimes k0, 1 / ( p : ℝ ) ^ 2 ) ≤ 1 / 31 by exact le_trans ( blockPrimes_sub_sq_tail k0 hk0 ) ( by rw [ div_le_div_iff₀ ] <;> linarith [ pow_le_pow_right₀ ( by norm_num : ( 1 : ℝ ) ≤ 2 ) hk0 ] ) ]
 
-/-! ## T2 and T3 — unconditional forms (fed from the dyadic-Mertens axiom) -/
+/-! ## Asymptotic reciprocal product load -/
 
-/-- **T2.**  For all large `k₀`, the off-diagonal (`p<q`) reciprocal product-load
+/-- For all large `k₀`, the off-diagonal (`p<q`) reciprocal product-load
 of the block primes is at least `1/2`.  This is `blockPrimes_product_load_ge_of`
 with the Mertens reciprocal-sum lower bound supplied by
 `GlobalControl.dyadic_mertens_cumulative`. -/
