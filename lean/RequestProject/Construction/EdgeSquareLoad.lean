@@ -2,7 +2,7 @@ import RequestProject.Construction.MassPool
 import RequestProject.Construction.BaseLoadBudget
 import RequestProject.CircleMethod.ControlVarianceComparison
 import RequestProject.Core.ExponentialDomination
-import RequestProject.DyadicBlockUpper
+import RequestProject.GlobalControl.DyadicPrimeBlockBounds
 import RequestProject.GlobalControl.BlockRestriction
 
 open Finset BigOperators GlobalControl

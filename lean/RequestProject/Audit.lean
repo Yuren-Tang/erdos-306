@@ -24,7 +24,7 @@ open Erdos306
 #check @erdos_306
 
 -- Sorry-free, and depends only on the axioms listed here (fully qualified,
--- so the printed names can be matched exactly against AnalyticInputs.lean):
+-- so the printed names can be matched exactly against GlobalControl/AnalyticInputs.lean):
 #print axioms erdos_306
 
 -- The two non-standard axioms (structural analytic-number-theory inputs):

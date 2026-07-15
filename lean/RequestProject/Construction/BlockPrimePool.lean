@@ -1,4 +1,4 @@
-import RequestProject.AnalyticInputs
+import RequestProject.GlobalControl.AnalyticInputs
 import RequestProject.Core.OrderedPairSum
 
 open Finset BigOperators

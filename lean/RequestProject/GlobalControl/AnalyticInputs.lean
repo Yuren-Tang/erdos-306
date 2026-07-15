@@ -1,7 +1,5 @@
-import RequestProject.DyadicBlockDef
-import Mathlib.Algebra.BigOperators.Field
+import RequestProject.GlobalControl.DyadicPrimeBlock
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Data.Finset.Union
 
 /-!
 # Structural analytic inputs

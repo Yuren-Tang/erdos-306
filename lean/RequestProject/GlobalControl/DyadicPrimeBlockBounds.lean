@@ -1,5 +1,4 @@
-import RequestProject.DyadicBlockDef
-import Mathlib.Algebra.BigOperators.Field
+import RequestProject.GlobalControl.DyadicPrimeBlock
 import Mathlib.NumberTheory.Primorial
 import Mathlib.Tactic
 
