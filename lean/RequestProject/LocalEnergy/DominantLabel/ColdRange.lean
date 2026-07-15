@@ -102,7 +102,7 @@ For a *cold* block
 
     Proof: `dominant_label_bound` gives `|m| ≤ (5/(1-ρ))·√R/σ_P`; the cold range
     `R ≤ c₂·X/log³X` together with the density `N ≥ X/(2 log X)` implies the
-    polynomial bound `R ≤ N⁴(1-ρ)²/(409600·X²)` for `X ≥ X0(c₂)` (a `K·log X ≤ X`
+    polynomial bound `R ≤ N⁴(1-ρ)²/((40·16)²X²)` for `X ≥ X0(c₂)` (a `K·log X ≤ X`
     threshold from `Core.Asymptotics`), and then `dominant_label_linear_bound`
     converts `(5/(1-ρ))·√R/σ_P ≤ N·X/16`.
 -/

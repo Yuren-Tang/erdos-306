@@ -97,7 +97,9 @@ lemma dominant_encoding_entropy_bound (eps ρ : ℝ) (hε : 0 < eps) (hρ : 0 < 
       have hfinal : (N : ℝ) ^ 3 ≥ (X : ℝ) ^ 3 / (8 * (Real.log X) ^ 3) := by
         rw [ div_le_iff₀ ] at hN3 <;> try positivity;
         rw [ ge_iff_le, div_le_iff₀ ] <;> first | positivity | nlinarith [ pow_le_pow_left₀ ( by positivity ) hN3 3 ] ;
-      have hfinal : (h : ℝ) ≤ 32768 * R * X^2 / ((1 - ρ) * (X^3 / (8 * (Real.log X)^3))) := by
+      have hfinal : (h : ℝ) ≤ (2 : ℝ)^15 * R * X^2 /
+          ((1 - ρ) * (X^3 / (8 * (Real.log X)^3))) := by
+        norm_num
         exact hh.trans ( div_le_div_of_nonneg_left ( by positivity ) ( by exact mul_pos ( by linarith ) ( by positivity ) ) ( mul_le_mul_of_nonneg_left hfinal ( by linarith ) ) );
       convert mul_le_mul_of_nonneg_right
         (mul_le_mul_of_nonneg_left hfinal (show (0 : ℝ) ≤ 5 by norm_num))
@@ -112,33 +114,46 @@ lemma dominant_encoding_entropy_bound (eps ρ : ℝ) (hε : 0 < eps) (hρ : 0 < 
 /-
 **R-polynomial bound from the trivial-window cutoff.**  For `X` large, if
     `εR < N·log(2X)` (i.e. `R` below the trivial threshold) then
-    `R ≤ N⁴(1-ρ)²/(409600 X²)` (the regime where the label is small).
+    `R ≤ N⁴(1-ρ)²/((40·16)²X²)` (the regime where the label is small).
 -/
 private lemma dominant_energy_polynomial_bound (eps ρ : ℝ) (hε : 0 < eps) (hρ : 0 < ρ) (hρ4 : ρ ≤ 1/4) :
     ∃ X0 : ℝ, 0 < X0 ∧ ∀ (X N : ℕ) (R : ℝ),
       X0 ≤ X → 1 ≤ R → 1 ≤ N → N ≤ 2*X → (X:ℝ)/(2*Real.log X) ≤ (N:ℝ) →
       eps*R < (N:ℝ)*Real.log (2*X) →
-      R ≤ (N:ℝ)^4*(1-ρ)^2/(409600*(X:ℝ)^2) := by
-  -- Choose X0 so that for all X ≥ X0, (Real.log X)^4/X ≤ eps*(1-ρ)^2/6553600 (and X ≥ 2, log X ≥ 1).
-  have hX0 : ∃ X0 : ℝ, 0 < X0 ∧ ∀ X : ℝ, X0 ≤ X → (Real.log X)^4 / X ≤ eps * (1 - ρ)^2 / 6553600 := by
-    have := Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero 4;
-    have := Metric.tendsto_nhds.mp ( this.comp ( Real.tendsto_log_atTop ) );
-    norm_num [ Real.exp_neg, Real.exp_log ] at this;
-    obtain ⟨ X0, hX0 ⟩ := this ( eps * ( 1 - ρ ) ^ 2 / 6553600 ) ( by exact div_pos ( mul_pos hε ( sq_pos_of_pos ( by linarith ) ) ) ( by norm_num ) ) ; exact ⟨ Max.max X0 2, by positivity, fun X hX => le_of_lt <| by simpa [ div_eq_mul_inv, abs_of_nonneg ( Real.log_nonneg <| show 1 ≤ X by linarith [ le_max_right X0 2 ] ), Real.exp_log ( show 0 < X by linarith [ le_max_right X0 2 ] ) ] using hX0 X <| le_trans ( le_max_left X0 2 ) hX ⟩ ;
-  obtain ⟨ X0, hX0₁, hX0₂ ⟩ := hX0; use ⌈X0⌉₊ + 2;
-  refine' ⟨ by positivity, fun X N R hX₁ hR₁ hN₁ hN₂ hN₃ hN₄ => _ ⟩;
-  -- Using the bound from hX0₂, we get:
-  have h_bound : 6553600 * (Real.log X)^4 ≤ eps * (1 - ρ)^2 * X := by
-    have := hX0₂ X ( by linarith [ Nat.le_ceil X0, show ( X : ℝ ) ≥ ⌈X0⌉₊ + 2 by exact_mod_cast hX₁ ] ) ; rw [ div_le_iff₀ ( by linarith [ Nat.le_ceil X0, show ( X : ℝ ) ≥ ⌈X0⌉₊ + 2 by exact_mod_cast hX₁ ] ) ] at this; linarith;
+      R ≤ (N:ℝ)^4*(1-ρ)^2/((40 * 16)^2*(X:ℝ)^2) := by
+  obtain ⟨X0, hX0pos, hX0⟩ :=
+    RequestProject.eventually_le_natCast_div_log_pow 4
+      (16 * (40 * 16)^2 / (eps * (1 - ρ)^2))
+  refine ⟨max X0 2, by positivity, ?_⟩
+  intro X N R hX hR₁ hN₁ hN₂ hN₃ hN₄
+  have hXtwo : (2 : ℝ) ≤ X := le_trans (le_max_right X0 2) hX
+  have hlogpos : 0 < Real.log X := Real.log_pos (lt_of_lt_of_le one_lt_two hXtwo)
+  have hasymp := hX0 X (le_trans (le_max_left X0 2) hX)
+  rw [le_div_iff₀ (pow_pos hlogpos 4)] at hasymp
+  have hcoefpos : 0 < eps * (1 - ρ)^2 :=
+    mul_pos hε (sq_pos_of_pos (by linarith))
+  have hρne : 1 - ρ ≠ 0 := ne_of_gt (by linarith)
+  have h_bound : 16 * (40 * 16)^2 * (Real.log X)^4 ≤
+      eps * (1 - ρ)^2 * X := by
+    calc
+      16 * (40 * 16)^2 * (Real.log X)^4 =
+          (eps * (1 - ρ)^2) *
+            ((16 * (40 * 16)^2 / (eps * (1 - ρ)^2)) * (Real.log X)^4) := by
+              field_simp [hε.ne', hρne]
+      _ ≤ (eps * (1 - ρ)^2) * X :=
+        mul_le_mul_of_nonneg_left hasymp hcoefpos.le
   -- Using the bound from h_bound, we get:
-  have h_bound' : 409600 * X^2 * Real.log (2 * X) ≤ eps * (1 - ρ)^2 * N^3 := by
-    have h_bound' : 409600 * X^2 * Real.log (2 * X) ≤ eps * (1 - ρ)^2 * (X / (2 * Real.log X))^3 := by
-      have h_bound' : 409600 * X^2 * Real.log (2 * X) ≤ 409600 * X^2 * (2 * Real.log X) := by
+  have h_bound' : (40 * 16)^2 * X^2 * Real.log (2 * X) ≤
+      eps * (1 - ρ)^2 * N^3 := by
+    have h_bound' : (40 * 16)^2 * X^2 * Real.log (2 * X) ≤
+        eps * (1 - ρ)^2 * (X / (2 * Real.log X))^3 := by
+      have h_bound' : (40 * 16)^2 * X^2 * Real.log (2 * X) ≤
+          (40 * 16)^2 * X^2 * (2 * Real.log X) := by
         rw [ Real.log_mul ( by positivity ) ( by norm_cast; linarith ) ];
-        exact mul_le_mul_of_nonneg_left ( by linarith [ Real.log_le_log ( by norm_num ) ( show ( X : ℝ ) ≥ 2 by linarith [ Nat.le_ceil X0 ] ) ] ) ( by positivity );
-      by_cases hX : Real.log X = 0 <;> simp_all +decide [ div_pow, mul_pow ];
-      · rcases hX with ( rfl | rfl | hX ) <;> norm_cast at *;
-      · rw [ mul_div, le_div_iff₀ ] <;> nlinarith [ show 0 < Real.log X ^ 3 by exact pow_pos ( Real.log_pos <| Nat.one_lt_cast.mpr <| Nat.one_lt_iff_ne_zero_and_ne_one.mpr ⟨ hX.1, hX.2.1 ⟩ ) 3 ];
+        exact mul_le_mul_of_nonneg_left
+          (by linarith [Real.log_le_log (by norm_num) hXtwo]) (by positivity);
+      rw [div_pow, mul_div, le_div_iff₀] <;>
+        nlinarith [show 0 < Real.log X ^ 3 by exact pow_pos hlogpos 3]
     exact h_bound'.trans ( mul_le_mul_of_nonneg_left ( pow_le_pow_left₀ ( by exact div_nonneg ( Nat.cast_nonneg _ ) ( mul_nonneg zero_le_two ( Real.log_nonneg ( by norm_cast; linarith ) ) ) ) hN₃ 3 ) ( by exact mul_nonneg hε.le ( sq_nonneg _ ) ) );
   rw [ le_div_iff₀ ] <;> nlinarith [ show ( 0 :ℝ ) < X ^ 2 by norm_cast; nlinarith ]
 
@@ -183,11 +198,11 @@ linear bound. -/
 private lemma dominant_label_linear_bound (X : ℕ) (hX : 1 ≤ X) (P : Finset ℕ) [∀ p : P, NeZero p.1]
     (hP : ∀ p ∈ P, Nat.Prime p ∧ X ≤ p ∧ p ≤ 2*X) (hN : 2 ≤ P.card)
     (ρ : ℝ) (hρ : 0 < ρ) (hρ4 : ρ ≤ 1/4) (R : ℝ) (hR0 : 0 ≤ R)
-    (hRpoly : R ≤ (P.card:ℝ)^4*(1-ρ)^2/(409600*(X:ℝ)^2)) :
+    (hRpoly : R ≤ (P.card:ℝ)^4*(1-ρ)^2/((40 * 16)^2*(X:ℝ)^2)) :
     (5/(1-ρ)) * Real.sqrt R / sigmaP P ≤ (P.card:ℝ) * X / 16 := by
   apply dominant_label_linear_bound_with_divisor X hX P hP hN ρ hρ hρ4 16 R
     (by norm_num) hR0
-  norm_num
+  norm_num at hRpoly ⊢
   exact hRpoly
 
 /- For `ε > 0`, `ρ ∈ (0, 1/4]`, and `X` large, the
