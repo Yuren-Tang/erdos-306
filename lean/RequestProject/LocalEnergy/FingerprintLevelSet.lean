@@ -1,6 +1,7 @@
 import RequestProject.LocalEnergy.FingerprintDecoding
 import RequestProject.LocalEnergy.FingerprintEntropy
 import RequestProject.LocalEnergy.BlockEnergyBounds
+import RequestProject.Core.FiniteInterval
 import RequestProject.Core.FiniteSums
 
 /-!
