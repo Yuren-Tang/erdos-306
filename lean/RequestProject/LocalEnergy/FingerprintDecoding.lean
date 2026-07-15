@@ -67,7 +67,7 @@ needed by `assignment_eq_on_compl_of_fingerprint_hot_data`. -/
 lemma cold_assignment_decoding_injective (X : ℕ) (hX : 1 ≤ X) (P F : Finset ℕ)
     (hF : ∀ p ∈ F, Nat.Prime p ∧ X ≤ p ∧ p ≤ 2 * X) (hFcard : 208 ≤ F.card)
     (hPF : ∀ q ∈ P \ F, Nat.Prime q ∧ X ≤ q ∧ q ≤ 2 * X)
-    (T : ℝ) (hT : T = (F.card : ℝ) ^ 3 / (2 ^ 11 * (X : ℝ) ^ 2) / 7)
+    (T : ℝ) (hT : T = reciprocalPhaseEnergyScale X F / 7)
     (a b : (p : ℕ) → ZMod p)
     (hab : ∀ p ∈ F, a p = b p)
     (hHot : (P \ F).filter (fun q => T ≤ fingerprintEnergy F a q (a q))

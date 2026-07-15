@@ -179,10 +179,8 @@ lemma cold_residue_unique_of_card_sq (X : ℕ) (hX : 1 ≤ X) (F : Finset ℕ)
     (a : (p : ℕ) → ZMod p)
     (q : ℕ) (hq : q.Prime) (hqF : q ∉ F) (hq2X : q ≤ 2 * X)
     (w w' : ZMod q)
-    (hw : fingerprintEnergy F a q w <
-      (F.card : ℝ) ^ 3 / (2 ^ 11 * (X : ℝ) ^ 2) / κ)
-    (hw' : fingerprintEnergy F a q w' <
-      (F.card : ℝ) ^ 3 / (2 ^ 11 * (X : ℝ) ^ 2) / κ) :
+    (hw : fingerprintEnergy F a q w < reciprocalPhaseEnergyScale X F / κ)
+    (hw' : fingerprintEnergy F a q w' < reciprocalPhaseEnergyScale X F / κ) :
     w = w' := by
   by_contra h_neq
   set E := (ZMod.valMinAbs w' - ZMod.valMinAbs w) with hE_def
@@ -199,7 +197,9 @@ lemma cold_residue_unique_of_card_sq (X : ℕ) (hX : 1 ≤ X) (F : Finset ℕ)
     refine le_trans ( Finset.sum_le_sum h_sum_bound ) ?_;
     norm_num [ Finset.sum_add_distrib, Finset.mul_sum _ _ _, Finset.sum_mul, fingerprintEnergy ];
     exact le_trans ( Finset.sum_le_sum fun x hx => show ( 3 : ℝ ) / x ^ 2 ≤ 3 / X ^ 2 by gcongr ; linarith [ hF x hx ] ) ( by norm_num; ring_nf; norm_num );
-  have h_sum_bound : (F.card : ℝ) ^ 3 / (2 ^ 11 * (X : ℝ) ^ 2) ≤ 3 * fingerprintEnergy F a q w + 3 * fingerprintEnergy F a q w' + 3 * (F.card : ℝ) / (X : ℝ) ^ 2 := by
+  have h_sum_bound : reciprocalPhaseEnergyScale X F ≤
+      3 * fingerprintEnergy F a q w + 3 * fingerprintEnergy F a q w' +
+        3 * (F.card : ℝ) / (X : ℝ) ^ 2 := by
     convert reciprocalPhase_energy_lower_bound X F hF hFcard8 q hq hqF hq2X E hE_zero hE_abs.1 hE_abs.2 |> le_trans <| h_sum_bound using 1;
   -- Simplify the inequality obtained from the sum bound.
   have hFpos : 0 < (F.card : ℝ) := by positivity
@@ -207,20 +207,21 @@ lemma cold_residue_unique_of_card_sq (X : ℕ) (hX : 1 ≤ X) (F : Finset ℕ)
   have hκne : κ ≠ 0 := hκpos.ne'
   have h_sum_scaled := mul_le_mul_of_nonneg_right h_sum_bound hκpos.le
   have hw_scaled : fingerprintEnergy F a q w * κ <
-      (F.card : ℝ) ^ 3 / (2 ^ 11 * (X : ℝ) ^ 2) := by
+      reciprocalPhaseEnergyScale X F := by
     calc
       fingerprintEnergy F a q w * κ <
-          ((F.card : ℝ) ^ 3 / (2 ^ 11 * (X : ℝ) ^ 2) / κ) * κ :=
+          (reciprocalPhaseEnergyScale X F / κ) * κ :=
         mul_lt_mul_of_pos_right hw hκpos
       _ = _ := div_mul_cancel₀ _ hκne
   have hw'_scaled : fingerprintEnergy F a q w' * κ <
-      (F.card : ℝ) ^ 3 / (2 ^ 11 * (X : ℝ) ^ 2) := by
+      reciprocalPhaseEnergyScale X F := by
     calc
       fingerprintEnergy F a q w' * κ <
-          ((F.card : ℝ) ^ 3 / (2 ^ 11 * (X : ℝ) ^ 2) / κ) * κ :=
+          (reciprocalPhaseEnergyScale X F / κ) * κ :=
         mul_lt_mul_of_pos_right hw' hκpos
       _ = _ := div_mul_cancel₀ _ hκne
   have h_simplified : (κ - 6) * (F.card : ℝ) ^ 2 < 3 * κ * 2 ^ 11 := by
+    simp only [reciprocalPhaseEnergyScale] at h_sum_scaled hw_scaled hw'_scaled
     ring_nf at h_sum_scaled hw_scaled hw'_scaled ⊢
     nlinarith [ show ( 0 : ℝ ) < ( X : ℝ ) ⁻¹ ^ 2 by positivity,
       mul_pos hFpos (show (0 : ℝ) < (X : ℝ)⁻¹ ^ 2 by positivity) ];
@@ -233,10 +234,8 @@ lemma cold_residue_unique (X : ℕ) (hX : 1 ≤ X) (F : Finset ℕ)
     (a : (p : ℕ) → ZMod p)
     (q : ℕ) (hq : q.Prime) (hqF : q ∉ F) (hq2X : q ≤ 2 * X)
     (w w' : ZMod q)
-    (hw : fingerprintEnergy F a q w <
-      (F.card : ℝ) ^ 3 / (2 ^ 11 * (X : ℝ) ^ 2) / 7)
-    (hw' : fingerprintEnergy F a q w' <
-      (F.card : ℝ) ^ 3 / (2 ^ 11 * (X : ℝ) ^ 2) / 7) :
+    (hw : fingerprintEnergy F a q w < reciprocalPhaseEnergyScale X F / 7)
+    (hw' : fingerprintEnergy F a q w' < reciprocalPhaseEnergyScale X F / 7) :
     w = w' := by
   apply cold_residue_unique_of_card_sq X hX F hF (by linarith) 7 (by norm_num) ?_
     a q hq hqF hq2X w w' hw hw'

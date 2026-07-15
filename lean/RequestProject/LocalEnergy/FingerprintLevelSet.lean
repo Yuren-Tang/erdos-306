@@ -106,7 +106,7 @@ private lemma decoding_card_bound
     (hP : ∀ p ∈ P, Nat.Prime p ∧ X ≤ p ∧ p ≤ 2 * X)
     (hFP : F ⊆ P) (hFcard : 208 ≤ F.card)
     (hFmin : ∀ p ∈ F, ∀ q ∈ P \ F, p < q)
-    (T R : ℝ) (hT : T = (F.card : ℝ) ^ 3 / (2 ^ 11 * (X : ℝ) ^ 2) / 7) (hT0 : 0 < T)
+    (T R : ℝ) (hT : T = reciprocalPhaseEnergyScale X F / 7) (hT0 : 0 < T)
     (hmax : ℕ) (hhmax : R / T < (hmax : ℝ) + 1) (hmaxP : hmax ≤ P.card) :
     ((Finset.univ.filter (fun a : BlockAssignment P => QP P a ≤ R)).card : ℝ)
       ≤ (2 * (X : ℝ)) ^ F.card * ((hmax : ℝ) + 1)
@@ -330,7 +330,7 @@ theorem fingerprint_levelSet_bound
         exact Nat.one_le_iff_ne_zero.mpr ( by rintro rfl; norm_num at * ) ) P F ( by
         exact hP ) hFP ( by
         grind +splitIndPred ) hFmin ( ( Fc : ℝ ) ^ 3 / ( 2 ^ 11 * ( X : ℝ ) ^ 2 ) / 7 ) R ( by
-        rw [ hFcard ] ) ( by
+        simp [reciprocalPhaseEnergyScale, hFcard] ) ( by
         exact div_pos ( div_pos ( pow_pos ( Nat.cast_pos.mpr ( by linarith ) ) _ ) ( mul_pos ( by norm_num ) ( sq_pos_of_pos ( Nat.cast_pos.mpr ( by linarith [ show X > 0 from Nat.cast_pos.mp ( lt_of_lt_of_le ( by positivity ) hX ) ] ) ) ) ) ) ( by norm_num ) ) hmax ( by
         linarith ) ( by
         grind ) ) ?_;

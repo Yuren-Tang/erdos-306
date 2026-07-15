@@ -12,6 +12,11 @@ open Finset
 
 namespace LocalEnergy
 
+/-- The natural quadratic-energy scale supplied by reciprocal-phase
+dispersion on a fingerprint set. -/
+noncomputable def reciprocalPhaseEnergyScale (X : ℕ) (F : Finset ℕ) : ℝ :=
+  (F.card : ℝ) ^ 3 / (2 ^ 11 * (X : ℝ) ^ 2)
+
 /-! ## Reciprocal-phase dispersion
 
 For `q ∉ F`, integer `E` with `q ∤ E`, `0 < |E| < q`, and `δ = |F|/(32X)`:
@@ -170,17 +175,17 @@ theorem reciprocalPhase_energy_lower_bound
     (hFcard : 8 ≤ F.card)
     (q : ℕ) (hq : q.Prime) (hqF : q ∉ F) (hq2X : q ≤ 2*X) (E : ℤ)
     (hqE : ¬ (q:ℤ) ∣ E) (hE0 : 0 < |E|) (hEq : |E| < (q:ℤ)) :
-    (F.card : ℝ)^3 / (2^11 * (X:ℝ)^2)
-      ≤ ∑ p ∈ F, (reciprocalPhase E q p)^2 := by
+    reciprocalPhaseEnergyScale X F ≤
+      ∑ p ∈ F, (reciprocalPhase E q p)^2 := by
   set δ := (F.card : ℝ) / (32 * X)
   have hsmall : ((F.filter (fun p => reciprocalPhase E q p ≤ δ)).card : ℝ) ≤ F.card / 2 := by
     exact reciprocalPhase_smallBall_count X F hF hFcard q hq hqF hq2X E hqE hE0 hEq
   have henergy := RequestProject.sum_sq_lower_bound_of_small_ball F
     (fun p => reciprocalPhase E q p) δ (F.card / 2) (by positivity) hsmall
   calc
-    (F.card : ℝ)^3 / (2^11 * (X:ℝ)^2) =
+    reciprocalPhaseEnergyScale X F =
         ((F.card : ℝ) - F.card / 2) * δ^2 := by
-      dsimp [δ]
+      dsimp [reciprocalPhaseEnergyScale, δ]
       ring
     _ ≤ ∑ p ∈ F, (reciprocalPhase E q p)^2 := henergy
 
