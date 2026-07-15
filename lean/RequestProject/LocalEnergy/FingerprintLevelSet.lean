@@ -191,7 +191,8 @@ private lemma cube_rpow_ge (eps : ℝ) (hε0 : 0 < eps) :
 Auxiliary (fingerprint size lower bound).  For `X` past the explicit
     threshold, `εR/(4 log 2X) ≥ 208`, so the fingerprint `⌈εR/(4 log 2X)⌉ ≥ 208`.
 -/
-private lemma Fc_ge_helper (eps Ceps : ℝ) (hε0 : 0 < eps) (hCeps : 0 < Ceps)
+private lemma fingerprint_cardinality_ge_of_scale
+    (eps Ceps : ℝ) (hε0 : 0 < eps) (hCeps : 0 < Ceps)
     (X : ℕ) (hX3 : 3 ≤ X)
     (hXbig : (1664 / (eps * Ceps)) ^ ((3 : ℝ) / 2) ≤ X)
     (R : ℝ) (hR : Ceps * (X : ℝ) ^ ((2:ℝ)/3) * (Real.log X) ^ ((4:ℝ)/3) ≤ R) :
@@ -214,13 +215,13 @@ private lemma Fc_ge_helper (eps Ceps : ℝ) (hε0 : 0 < eps) (hCeps : 0 < Ceps)
 Auxiliary (hot-count upper bound).  `R/T ≤ εR/log 2X`, where
     `T = Fc³/(2¹¹X²)/7` and `Fc ≥ εR/(4 log 2X)`, given the cube bound on `Ceps`.
 -/
-private lemma hmax_bound_helper (eps Ceps : ℝ) (hε0 : 0 < eps)
+private lemma fingerprint_exception_ratio_bound (eps Ceps : ℝ) (hε0 : 0 < eps)
     (hcube : (7 : ℝ) * 2 ^ 21 ≤ eps ^ 4 * Ceps ^ 3)
     (X : ℕ) (hX3 : 3 ≤ X) (R : ℝ)
     (hR : Ceps * (X : ℝ) ^ ((2:ℝ)/3) * (Real.log X) ^ ((4:ℝ)/3) ≤ R)
     (Fc : ℕ) (hFc : eps / 2 * R / (2 * Real.log (2 * X)) ≤ (Fc : ℝ)) :
     R / ((Fc : ℝ) ^ 3 / (2 ^ 11 * (X : ℝ) ^ 2) / 7) ≤ eps * R / Real.log (2 * X) := by
-  -- Using the bound from `Fc_ge_helper`, we know that `Fc ≥ (eps * R) / (4 * Real.log (2 * X))`.
+  -- The fingerprint-size hypothesis gives `Fc ≥ (eps * R) / (4 * Real.log (2 * X))`.
   have hFc_bound : (Fc : ℝ) ≥ (eps * R) / (4 * Real.log (2 * X)) := by
     convert hFc.ge using 1 ; ring;
   by_cases hR_pos : 0 < R;
@@ -282,7 +283,7 @@ theorem fingerprint_levelSet_bound
       convert levelset_card_le_pow X P (fun p hp => (hP p hp).2.2) R using 1;
     · obtain ⟨Fc, hFc⟩ : ∃ Fc : ℕ, 208 ≤ Fc ∧ eps / 2 * R / (2 * Real.log (2 * X)) ≤ Fc ∧ Fc ≤ eps / 2 * R / (2 * Real.log (2 * X)) + 1 ∧ Fc ≤ P.card := by
         refine' ⟨ Nat.ceil ( eps / 2 * R / ( 2 * Real.log ( 2 * X ) ) ), _, _, _, _ ⟩;
-        · have := Fc_ge_helper eps ( Max.max C2 ( ( 7 * 2 ^ 21 / eps ^ 4 ) ^ ( 1 / 3 : ℝ ) + 1 ) ) hε0 ( by positivity ) X ( by
+        · have := fingerprint_cardinality_ge_of_scale eps ( Max.max C2 ( ( 7 * 2 ^ 21 / eps ^ 4 ) ^ ( 1 / 3 : ℝ ) + 1 ) ) hε0 ( by positivity ) X ( by
             exact_mod_cast le_trans ( le_max_left _ _ ) ( le_trans ( le_max_right _ _ ) hX ) ) ( by
             exact le_trans ( le_max_of_le_right ( le_max_right _ _ ) ) hX ) R ( by
             exact hR );
@@ -301,7 +302,7 @@ theorem fingerprint_levelSet_bound
         · exact Nat.lt_floor_add_one _;
         · refine' Nat.floor_le_of_le _;
           rw [ div_div_eq_mul_div, div_le_iff₀ ];
-          · have := hmax_bound_helper eps ( Max.max C2 ( ( 7 * 2 ^ 21 / eps ^ 4 ) ^ ( 1 / 3 : ℝ ) + 1 ) ) hε0 ( by
+          · have := fingerprint_exception_ratio_bound eps ( Max.max C2 ( ( 7 * 2 ^ 21 / eps ^ 4 ) ^ ( 1 / 3 : ℝ ) + 1 ) ) hε0 ( by
               exact le_trans ( cube_rpow_ge eps hε0 ) ( mul_le_mul_of_nonneg_left ( pow_le_pow_left₀ ( by positivity ) ( le_max_right _ _ ) _ ) ( by positivity ) ) ) X ( by
               exact_mod_cast le_trans ( le_max_of_le_right ( le_max_left _ _ ) ) hX ) R hR Fc ( by
               lia );

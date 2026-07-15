@@ -103,9 +103,9 @@ lemma three_div_two_mul_le_half_of_three_le {b : ℕ} (hb : 3 ≤ b) :
   field_simp [hbne]
   nlinarith
 
-/-- With zero obstruction overlap and disjoint fixed components, the final
-forbidden-budget inequality follows from `b ≥ 3`. -/
-theorem basePieces_forbiddenBudget_final_ineq
+/-- With zero obstruction overlap and disjoint fixed components, the net load
+of the base-piece forbidden budget is at most `1/2`. -/
+theorem ForbiddenEdgeBudget.of_basePieces_net_load_le_half
     {T : Finset ℕ} {b : ℕ} (D : ConstructionData T b)
     (hb : 3 ≤ b)
     (hTsmall : ∀ e ∈ T, e < 2 ^ D.BS.k0 * 2 ^ D.BS.k0)

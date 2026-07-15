@@ -1,5 +1,6 @@
 import RequestProject.GlobalControl.LabelAdmissibility
 import RequestProject.GlobalControl.LabelAssignmentProduct
+import RequestProject.Core.ExponentialDomination
 
 /-!
 # Cold dominance and admissible labels
@@ -86,7 +87,7 @@ lemma two_prime_label_eq (X : ℕ) (P : Finset ℕ)
     facts already expose, for the same `c2`, the residue agreement that yields
     dominance for `X0` large).
 -/
-private lemma exists_cold_control_parameters_aux :
+private lemma exists_restricted_cold_control_parameters :
     ∃ (c2 e0 X0 : ℝ), 0 < c2 ∧ 0 < e0 ∧ 0 < X0 ∧
       (∀ (BS : BlockSystem) (a : GlobalAssignment BS) (k : ℕ),
         BS.k0 ≤ k → k ≤ BS.K → X0 ≤ (2:ℝ) ^ k → ¬ isHot BS c2 a k →
@@ -128,7 +129,7 @@ private lemma exists_cold_control_parameters_aux :
 
 /-
 **Master cold constants** (with arbitrary-block-assignment cold dominance).
-    Strengthens `exists_cold_control_parameters_aux` by shrinking `c2` to also lie below
+    Strengthens `exists_restricted_cold_control_parameters` by shrinking `c2` to also lie below
     Theorem-B's intrinsic constant, exposing `ColdDominance c2` in addition to
     the block dominance for restrictions and the boundary penalty floor.
 -/
@@ -142,7 +143,7 @@ lemma exists_cold_control_parameters :
         Pifloor BS e0 k ≤ Xen BS a k) ∧
       ColdDominance c2 := by
   obtain ⟨c2P, e0, X0P, hc2P, he0, hX0P, hdomR, hpen⟩ :=
-    GlobalControl.exists_cold_control_parameters_aux
+    GlobalControl.exists_restricted_cold_control_parameters
   obtain ⟨c2B, X0B, hc2B, hX0B, HB⟩ := LocalEnergy.nondominant_energy_lower_bound (1/4) (by norm_num) (by norm_num);
   refine' ⟨ Min.min c2P c2B, e0, Max.max X0P ( Max.max X0B 1 ), _, _, _, _, _, _ ⟩ <;> norm_num [ hc2P, he0, hX0P, hc2B, hX0B ];
   · intro BS a k hk1 hk2 hX0P hX0B h1 hnh;
@@ -179,16 +180,25 @@ lemma cold_labels_admissible (c2 X0 : ℝ) (hc2 : 0 < c2)
       ∀ (a : GlobalAssignment BS) (R : ℝ), 0 ≤ R → Qctrl BS a ≤ R →
         extLabel BS a (hotSet BS c2 a) (boundarySet BS c2 a)
           ∈ admLabels BS c2 R (hotSet BS c2 a) (boundarySet BS c2 a) := by
-  -- Choose k0min such that for all s ≥ k0min, 16 ≤ 2^s, 8 ≤ (BS.P s).card, and 1 ≤ Real.log (2^s).
+  -- Both scale requirements follow once the exponential dominates `16s`.
+  obtain ⟨Kgrowth, hKgrowth⟩ :=
+    RequestProject.exists_threshold_mul_pow_le_const_pow 16 1 one_lt_two
   obtain ⟨k0min, hk0min⟩ : ∃ k0min : ℕ, ∀ s : ℕ, k0min ≤ s →
       16 ≤ (2:ℕ) ^ s ∧ 8 ≤ (2 ^ s / (2 * Real.log (2 ^ s))) := by
-        refine' ⟨ 16, fun s hs => ⟨ _, _ ⟩ ⟩;
-        · exact le_trans ( by norm_num ) ( pow_le_pow_right₀ ( by norm_num ) hs );
-        · rw [ le_div_iff₀ ( by exact mul_pos zero_lt_two ( Real.log_pos ( one_lt_pow₀ one_lt_two ( by linarith ) ) ) ) ];
-          induction hs <;> norm_num [ pow_succ' ] at *;
-          · rw [ show ( 65536 : ℝ ) = 2 ^ 16 by norm_num, Real.log_pow ] ; norm_num ; linarith [ Real.log_le_sub_one_of_pos zero_lt_two ];
-          · rw [ Real.log_mul ( by positivity ) ( by positivity ), Real.log_pow ];
-            nlinarith [ Real.log_le_sub_one_of_pos zero_lt_two, Real.log_pos one_lt_two, ( by norm_cast : ( 16 : ℝ ) ≤ ↑‹ℕ› ), pow_le_pow_right₀ ( by norm_num : ( 1 : ℝ ) ≤ 2 ) ‹16 ≤ _› ];
+    refine ⟨max Kgrowth 1, fun s hs => ?_⟩
+    have hsK : Kgrowth ≤ s := le_trans (le_max_left _ _) hs
+    have hs1 : 1 ≤ s := le_trans (le_max_right _ _) hs
+    have hgrowth := hKgrowth s hsK
+    simp only [pow_one] at hgrowth
+    constructor
+    · exact_mod_cast le_trans
+        (show (16 : ℝ) ≤ 16 * s by nlinarith [show (1 : ℝ) ≤ s by exact_mod_cast hs1])
+        hgrowth
+    · rw [le_div_iff₀ (mul_pos two_pos <|
+          Real.log_pos (one_lt_pow₀ one_lt_two (Nat.one_le_iff_ne_zero.mp hs1))),
+        Real.log_pow]
+      nlinarith [Real.log_le_sub_one_of_pos zero_lt_two,
+        Real.log_nonneg one_le_two]
   use k0min;
   intro BS hBS hX0 a R hR0 hR1;
   apply extLabel_mem_admLabels;

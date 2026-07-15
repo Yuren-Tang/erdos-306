@@ -181,7 +181,7 @@ private lemma self_div_log_le_self (X : ℕ) (h : 1 ≤ Real.log X) :
 /-
 Combine `R ≤ c2·X/log³X` with the threshold `64·A²·c2 ≤ X·log X` to get `A²R ≤ N²/16`.
 -/
-private lemma nondominant_auxiliary_range_bound (ρ c2 : ℝ) (hρ : 0 < ρ) (_hc2 : 0 ≤ c2)
+private lemma nondominant_cutoff_range_bound (ρ c2 : ℝ) (hρ : 0 < ρ) (_hc2 : 0 ≤ c2)
     (X : ℕ) (N R : ℝ) (hlog0 : 0 < Real.log X)
     (hN : (X:ℝ)/(2*Real.log X) ≤ N)
     (hR : R ≤ c2*(X:ℝ)/(Real.log X)^3)
@@ -290,7 +290,7 @@ theorem nondominant_energy_lower_bound
     have hThr2 : 8192*c2/(cE*ρ^4) ≤ (X:ℝ)/Real.log X := by
       exact le_trans ( le_max_of_le_right <| le_max_of_le_right <| le_max_right _ _ ) hKX
     have hAR : (256/ρ)*R ≤ N^2/16 := by
-      apply nondominant_auxiliary_range_bound ρ c2 hρ hc2pos.le X N R hlog0 hN hRle' hThr1
+      apply nondominant_cutoff_range_bound ρ c2 hρ hc2pos.le X N R hlog0 hN hRle' hThr1
     have h1 : 1 ≤ ρ*N/8 := by
       have h16 : 16 / ρ ≤ K := by
         exact le_max_of_le_left ( le_max_right _ _ )

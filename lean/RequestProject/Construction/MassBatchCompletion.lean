@@ -35,7 +35,7 @@ lemma exists_massBatch_of_base_load {T : Finset ℕ} {b : ℕ} (hb : 3 ≤ b)
   exists_massBatchSupply_of_blockPrimes_forbiddenBudget D (by omega) hbase hlarge
     (ForbiddenEdgeBudget.of_basePieces D hTsmall) k1 hk1le hsub hload
     (by simpa [ForbiddenEdgeBudget.of_basePieces] using
-      basePieces_forbiddenBudget_final_ineq D hb hTsmall hdisj)
+      ForbiddenEdgeBudget.of_basePieces_net_load_le_half D hb hTsmall hdisj)
 
 /-- Data layer for a `G`-element gadget set `S` (generalising the singleton form):
 from a block system and a set `S` of primes `≥ 2^k0`, the residual mass batch `Q`
