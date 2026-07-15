@@ -1,5 +1,5 @@
-import RequestProject.CircleMethodAssembly
-import RequestProject.CircleMethodMainTerm
+import RequestProject.CircleMethod.ArcConstruction
+import RequestProject.CircleMethod.MainArcLowerBound
 import RequestProject.Spectral.CircleMethodBridge
 
 /-!

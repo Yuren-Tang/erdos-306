@@ -1,5 +1,5 @@
 import RequestProject.Spectral.BernoulliSum
-import RequestProject.CircleMethodMainArc
+import RequestProject.CircleMethod.BernoulliLogExpansion
 import RequestProject.CircleMethod.MainArcPeriodicity
 import RequestProject.Core.Semiprime
 

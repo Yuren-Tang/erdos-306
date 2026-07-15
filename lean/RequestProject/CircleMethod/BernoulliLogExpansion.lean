@@ -9,7 +9,7 @@ noncomputable section
 namespace CircleMethod
 
 /-!
-# Bernoulli logarithm on the main arc
+# Bernoulli logarithm expansion on the main arc
 
 Foundation for the positive main term. The per-edge complex Taylor estimate rests on
 the second-order log remainder `log(1−w) = −w − w²/2 + O(w³)` (Mathlib's

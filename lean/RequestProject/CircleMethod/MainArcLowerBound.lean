@@ -1,5 +1,5 @@
 import RequestProject.Core.GaussianIntegerSum
-import RequestProject.CircleMethodMainArc
+import RequestProject.CircleMethod.BernoulliLogExpansion
 import RequestProject.Spectral.BernoulliVariance
 
 open Complex Finset BigOperators Real

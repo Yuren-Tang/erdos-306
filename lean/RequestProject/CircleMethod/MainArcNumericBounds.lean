@@ -1,4 +1,4 @@
-import RequestProject.CircleMethodMainArc
+import RequestProject.CircleMethod.BernoulliLogExpansion
 import RequestProject.Spectral.BernoulliSum
 
 open Finset BigOperators

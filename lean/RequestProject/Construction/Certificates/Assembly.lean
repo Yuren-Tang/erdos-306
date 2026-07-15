@@ -1,5 +1,5 @@
 import RequestProject.Construction.Certificates.MinorArcEstimate
-import RequestProject.CircleMethodAssembly
+import RequestProject.CircleMethod.ArcConstruction
 import RequestProject.Core.ReciprocalPeriod
 
 open Finset BigOperators GlobalControl
