@@ -1,6 +1,6 @@
 import RequestProject.LocalEnergy.BlockEnergy
+import RequestProject.Core.DyadicPrimeDivisors
 import RequestProject.Core.LinearCongruenceCounting
-import RequestProject.LocalEnergy.ReciprocalDispersion
 
 /-!
 # Cross-label energy
@@ -121,7 +121,7 @@ open LocalEnergy in
     whose representative is `δ`-small is `≤ 2|C| + |C'|·2(2(2δX+B/X)+1)`.
 
     The `≤ 2` primes `q ∈ C'` dividing `d = n'-n` contribute `≤ |C|` pairs each
-    (`card_prime_factors_dyadic_le_two`, valid as `0 < |d| ≤ 2B ≤ X²/2 < X³`); each
+    (`card_dyadicPrimeDivisors_le_two`, valid as `0 < |d| ≤ 2B ≤ X²/2 < X³`); each
     remaining `q` has `q ∤ d`, so `crossLabel_close_fiber_bound` bounds its close fiber. -/
 lemma crossLabel_close_pair_count (X : ℕ) (P : Finset ℕ) [∀ p : P, NeZero p.1]
     (a : BlockAssignment P) (n n' : ℤ) (B : ℝ) (hB : 0 ≤ B) (hX : 1 ≤ X)
@@ -138,7 +138,8 @@ lemma crossLabel_close_pair_count (X : ℕ) (P : Finset ℕ) [∀ p : P, NeZero 
           ≤ δ * ((pq.1:ℕ) * (pq.2:ℕ)))).card : ℝ)
       ≤ 2 * (C.card : ℝ) + (C'.card : ℝ) * (2 * (2 * (2*δ*X + B/X) + 1)) := by
   have h_card_prime_factors : ((Finset.Icc X (2 * X)).filter (fun p => Nat.Prime p ∧ (p : ℤ) ∣ (n' - n))).card ≤ 2 := by
-    convert LocalEnergy.card_prime_factors_dyadic_le_two X ( n' - n ) ( sub_ne_zero.mpr ( Ne.symm hd ) ) _ using 1;
+    convert RequestProject.card_dyadicPrimeDivisors_le_two X (n' - n)
+      (sub_ne_zero.mpr (Ne.symm hd)) _ using 1;
     rw [ ← @Int.cast_lt ℝ ] ; norm_num ; cases abs_cases ( n' - n : ℝ ) <;> cases abs_cases ( n : ℝ ) <;> cases abs_cases ( n' : ℝ ) <;> nlinarith [ ( by norm_cast : ( 1 :ℝ ) ≤ X ) ] ;
   have h_card_bad : (Finset.filter (fun q : P => (q : ℤ) ∣ (n' - n)) C').card ≤ 2 := by
     refine le_trans ?_ h_card_prime_factors;

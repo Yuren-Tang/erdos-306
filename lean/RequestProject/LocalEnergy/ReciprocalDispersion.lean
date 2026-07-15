@@ -1,7 +1,7 @@
 import RequestProject.Core.SmallBallEnergy
-import RequestProject.Core.LinearCongruenceCounting
+import RequestProject.Core.DyadicPrimeDivisors
 import RequestProject.Core.UnitCircleResidue
-import Mathlib.RingTheory.Int.Basic
+import RequestProject.LocalEnergy.ReciprocalPhase
 
 /-! # Reciprocal dispersion
 
@@ -21,71 +21,6 @@ For `q ∉ F`, integer `E` with `q ∤ E`, `0 < |E| < q`, and `δ = |F|/(32X)`:
 The mechanism is the unit-circle norm together with the modular inverse `q̄`
 modulo `p`; small phases produce the divisibility relation `p ∣ E - u·q`. -/
 
-/-- Reciprocal phase `‖E·q̄/p‖ ∈ [0, 1/2]`: the distance to the nearest integer of
-    `E · q̄ / p`, where `q̄ = (q : ZMod p)⁻¹` is the modular inverse of `q` mod `p`.
-    This is the faithful fractional-norm used in `30 §1`. -/
-noncomputable def reciprocalPhase (E : ℤ) (q p : ℕ) : ℝ :=
-  ‖(((E : ℝ) * (((q : ZMod p)⁻¹).val : ℝ) / (p : ℝ) : ℝ) : UnitAddCircle)‖
-
-/-- `reciprocalPhase` is nonnegative. -/
-lemma reciprocalPhase_nonneg (E : ℤ) (q p : ℕ) : 0 ≤ reciprocalPhase E q p := by
-  exact norm_nonneg _
-
-/-
-The reciprocal phase is even in `E`: `‖(−E)q̄/p‖ = ‖E q̄/p‖`.
--/
-lemma reciprocalPhase_neg (E : ℤ) (q p : ℕ) : reciprocalPhase (-E) q p = reciprocalPhase E q p := by
-  unfold reciprocalPhase
-  rw [show ((-E : ℤ) : ℝ) * ((q : ZMod p)⁻¹).val / p =
-      -((E : ℝ) * ((q : ZMod p)⁻¹).val / p) by push_cast; ring]
-  simp
-
-/-
-**Fractional-norm triangle inequality** for the reciprocal phase:
-    `‖(A−B)q̄/p‖ ≤ ‖A q̄/p‖ + ‖B q̄/p‖`.
-
-    This is the analytic mechanism behind **cold rigidity** (`30 §1`): with
-    `A = a_p − w̃`, `B = a_p − w̃'`, the difference `A − B = w̃' − w̃ = E`, so
-    `‖E q̄/p‖ ≤ ‖A q̄/p‖ + ‖B q̄/p‖`; summing the squares and applying
-    `reciprocalPhase_energy_lower_bound` to `E` yields the two-cold-residue contradiction.
-
-    This is the triangle inequality `norm_sub_le` on `UnitAddCircle`.
--/
-lemma reciprocalPhase_sub_le (A B : ℤ) (q p : ℕ) :
-    reciprocalPhase (A - B) q p ≤ reciprocalPhase A q p + reciprocalPhase B q p := by
-  simpa [reciprocalPhase, Int.cast_sub, sub_mul, sub_div] using
-    norm_sub_le
-      ((((A : ℝ) * (((q : ZMod p)⁻¹).val : ℝ) / (p : ℝ) : ℝ) : UnitAddCircle))
-      ((((B : ℝ) * (((q : ZMod p)⁻¹).val : ℝ) / (p : ℝ) : ℝ) : UnitAddCircle))
-
-/-
-**`card_prime_factors_dyadic_le_two`** (factored out of `linearCongruence_fiber_card_le_two`'s
-    argument, per note `31 §4`).  A nonzero integer `n` with `|n| < X³` has at most
-    `2` prime factors in the dyadic window `[X, 2X]`.
-
-    Reason: three *distinct* primes `a, b, c ∈ [X, 2X]` dividing `n` are pairwise
-    coprime, so their product `a·b·c` divides `n`; hence
-    `|n| ≥ a·b·c ≥ X³`, contradicting `|n| < X³`.
--/
-lemma card_prime_factors_dyadic_le_two (X : ℕ) (n : ℤ) (hn : n ≠ 0)
-    (hX : |n| < (X:ℤ)^3) :
-    ((Finset.Icc X (2*X)).filter (fun p => Nat.Prime p ∧ (p:ℤ) ∣ n)).card ≤ 2 := by
-  by_contra h_contra;
-  obtain ⟨a, b, c, ha, hb, hc, habc⟩ : ∃ a b c : ℕ, a ∈ Finset.Icc X (2 * X) ∧ b ∈ Finset.Icc X (2 * X) ∧ c ∈ Finset.Icc X (2 * X) ∧ Nat.Prime a ∧ Nat.Prime b ∧ Nat.Prime c ∧ a ∣ Int.natAbs n ∧ b ∣ Int.natAbs n ∧ c ∣ Int.natAbs n ∧ a ≠ b ∧ a ≠ c ∧ b ≠ c := by
-    obtain ⟨ s, hs ⟩ := Finset.two_lt_card.mp ( by linarith ) ; simp_all +decide ;
-    rcases hs with ⟨ ⟨ ⟨ hs₁, hs₂ ⟩, hs₃, hs₄ ⟩, b, ⟨ ⟨ hb₁, hb₂ ⟩, hb₃, hb₄ ⟩, c, ⟨ ⟨ hc₁, hc₂ ⟩, hc₃, hc₄ ⟩, hbc ⟩ ; use s, ⟨ hs₁, hs₂ ⟩, b, ⟨ hb₁, hb₂ ⟩, c, ⟨ hc₁, hc₂ ⟩ ; simp_all +decide [ ← Int.natCast_dvd_natCast ] ;
-  -- Since $a$, $b$, and $c$ are pairwise coprime primes dividing $n$, their product $a \cdot b \cdot c$ also divides $n$.
-  have h_prod_div : (a * b * c : ℤ) ∣ n.natAbs := by
-    norm_cast;
-    apply_mod_cast Nat.Coprime.mul_dvd_of_dvd_of_dvd;
-    · simp_all +decide [ Nat.coprime_mul_iff_left, Nat.coprime_primes ];
-    · exact Nat.Coprime.mul_dvd_of_dvd_of_dvd ( by have := Nat.coprime_primes habc.1 habc.2.1; aesop ) habc.2.2.2.1 habc.2.2.2.2.1;
-    · tauto;
-  have h_prod_ge : (a * b * c : ℤ) ≥ X^3 := by
-    norm_cast;
-    exact le_trans ( by ring_nf; norm_num ) ( Nat.mul_le_mul ( Nat.mul_le_mul ( Finset.mem_Icc.mp ha |>.1 ) ( Finset.mem_Icc.mp hb |>.1 ) ) ( Finset.mem_Icc.mp hc |>.1 ) );
-  exact not_lt_of_ge ( Int.le_of_dvd ( by positivity ) h_prod_div ) ( by simpa [ abs_mul ] using hX.trans_le h_prod_ge )
-
 /-
 **Phase → divisibility witness** (the bridge of `30 §1` / `31 §4`).  If the
     reciprocal phase `‖E·q̄/p‖ = reciprocalPhase E q p` is `≤ δ`, then there is an integer
@@ -96,7 +31,7 @@ lemma card_prime_factors_dyadic_le_two (X : ℕ) (n : ℤ) (hn : n ≠ 0)
     `s ≡ E·q̄`, so `s·q ≡ E·(q̄·q) ≡ E` (using `q·q̄ ≡ 1 (mod p)`, valid as
     `p ∤ q` for distinct primes `p ≠ q`); hence `p ∣ E − s·q`.
 -/
-lemma reciprocalPhase_divisibility_witness (X p q : ℕ) (hp : p.Prime) (hp2X : p ≤ 2*X)
+private lemma reciprocalPhase_divisibility_witness (X p q : ℕ) (hp : p.Prime) (hp2X : p ≤ 2*X)
     (hq : q.Prime) (hpq : p ≠ q) (E : ℤ) (δ : ℝ) (hδ0 : 0 ≤ δ)
     (hδ : reciprocalPhase E q p ≤ δ) :
     ∃ s : ℤ, |(s:ℝ)| ≤ 2*δ*(X:ℝ) ∧ (p:ℤ) ∣ (E - s*(q:ℤ)) := by
@@ -150,7 +85,7 @@ theorem reciprocalPhase_smallBall_count
   set δ : ℝ := (F.card : ℝ) / (32 * X)
   set m : ℤ := ⌊2 * δ * (X : ℝ)⌋
   set T : Finset ℤ := Finset.Icc (-m) m;
-  -- Apply `card_prime_factors_dyadic_le_two` to bound the cardinality of the filter.
+  -- Each witness leaves at most two prime divisors in the dyadic interval.
   have : ((F.filter (fun p => reciprocalPhase E q p ≤ δ)).card : ℝ) ≤ 2 * T.card := by
     have h_cover : F.filter (fun p => reciprocalPhase E q p ≤ δ) ⊆ T.biUnion (fun s => F.filter (fun p => (p : ℤ) ∣ (E - s * q))) := by
       intro p hp; simp_all +decide ;
@@ -159,7 +94,7 @@ theorem reciprocalPhase_smallBall_count
     refine' le_trans ( Nat.cast_le.mpr ( Finset.card_le_card h_cover ) ) _;
     refine' mod_cast le_trans ( Finset.card_biUnion_le ) _;
     refine' le_trans ( Finset.sum_le_sum fun x hx => show #_ ≤ 2 from _ ) _;
-    · have := card_prime_factors_dyadic_le_two X ( E - x * q ) ?_ ?_;
+    · have := RequestProject.card_dyadicPrimeDivisors_le_two X (E - x * q) ?_ ?_;
       · refine' le_trans _ this;
         exact Finset.card_mono fun p hp => Finset.mem_filter.mpr ⟨ Finset.mem_Icc.mpr ⟨ by linarith [ hF p ( Finset.mem_filter.mp hp |>.1 ) ], by linarith [ hF p ( Finset.mem_filter.mp hp |>.1 ) ] ⟩, hF p ( Finset.mem_filter.mp hp |>.1 ) |>.1, Finset.mem_filter.mp hp |>.2 ⟩;
       · exact fun h => hqE <| by rw [ sub_eq_zero ] at h; exact h.symm ▸ dvd_mul_left _ _;
