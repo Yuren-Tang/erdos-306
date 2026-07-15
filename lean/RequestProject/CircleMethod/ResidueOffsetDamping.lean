@@ -8,7 +8,7 @@ noncomputable section
 namespace CircleMethod
 
 /-!
-# Per-gadget sibling damping for extra-minor frequencies
+# Residue-offset damping for sibling frequencies
 
 The b-fiber siblings of a main-arc frequency share its block residues but differ
 modulo a prime `r ∣ b`.  A gadget edge `r·s` (with `s` a block prime, so the
@@ -22,7 +22,7 @@ count (note 50 §4).  This file proves the arithmetic lower bound.
 `h` that is diagonal modulo `s` (`h ≡ m`, `m` small: `2|m| < s`) but *offset*
 modulo `r` (`h ≢ m`), the nearest-integer distance satisfies
 `‖h/(rs)‖ ≥ 1/(2r)`. -/
-lemma gadget_unitCircleNorm_lower (r s : ℕ) (hr : Nat.Prime r) (hs : Nat.Prime s)
+lemma unitCircleNorm_lower_of_residue_offset (r s : ℕ) (hr : Nat.Prime r) (hs : Nat.Prime s)
     (hrs : r ≠ s) (h : ℕ) (m : ℤ)
     (hm_s : (h : ZMod s) = (m : ZMod s)) (hm_r : (h : ZMod r) ≠ (m : ZMod r))
     (hm_small : 2 * |m| < (s : ℤ)) :
@@ -64,7 +64,8 @@ lemma gadget_unitCircleNorm_lower (r s : ℕ) (hr : Nat.Prime r) (hs : Nat.Prime
 Bernoulli character factor has norm `≤ √(1 − (8/9)/r²) < 1` (a constant `< 1`
 depending only on `r`).  Using `G` such gadgets per prime `r ∣ b` gives damping
 `(√(1−(8/9)/r²))^G → 0` (note 50 §4). -/
-lemma gadget_charFun_damp (r s : ℕ) (hr : Nat.Prime r) (hs : Nat.Prime s)
+lemma bernoulliCharFun_norm_le_of_residue_offset
+    (r s : ℕ) (hr : Nat.Prime r) (hs : Nat.Prime s)
     (hrs : r ≠ s) (θ : ℝ) (hθlb : 1/3 ≤ θ) (hθub : θ ≤ 2/3)
     (h : ℕ) (m : ℤ)
     (hm_s : (h : ZMod s) = (m : ZMod s)) (hm_r : (h : ZMod r) ≠ (m : ZMod r))
@@ -74,7 +75,7 @@ lemma gadget_charFun_damp (r s : ℕ) (hr : Nat.Prime r) (hs : Nat.Prime s)
   set t : ℝ := (h : ℝ) / ((r : ℝ) * (s : ℝ)) with ht
   have hr0 : (0 : ℝ) < (r : ℝ) := by exact_mod_cast hr.pos
   have hnd : 1 / (2 * (r : ℝ)) ≤ (norm ∘ ((↑) : ℝ → UnitAddCircle)) t :=
-    gadget_unitCircleNorm_lower r s hr hs hrs h m hm_s hm_r hm_small
+    unitCircleNorm_lower_of_residue_offset r s hr hs hrs h m hm_s hm_r hm_small
   -- sin²(πt) ≥ 1/r²
   have hsin : (1 : ℝ) / (r : ℝ)^2 ≤ Real.sin (Real.pi * t)^2 := by
     have h4 := sin_sq_pi_ge_four_unitCircleNorm_sq t

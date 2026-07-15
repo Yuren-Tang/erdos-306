@@ -1,7 +1,7 @@
 import RequestProject.CircleMethod.MinorArcDecomposition
 import RequestProject.CircleMethod.QuadraticEnergy
 import RequestProject.CircleMethod.MinorArcFiberTail
-import RequestProject.ExtraMinorDamping
+import RequestProject.CircleMethod.ResidueOffsetDamping
 
 open Finset BigOperators Classical Real
 
@@ -24,8 +24,8 @@ This leaf connects the two *real analytic estimates* to that splitter:
 * `block_part_bound` instantiates the fiber-tail minor-energy estimate
   `minor_energy_sum_le_fiber_tail` on the block part, producing a bound for
   `∑_{blockMinorPart} exp(-c · quadraticEnergy)`;
-* `extra_part_bound` sums the per-gadget sibling damping factor
-  `gadget_charFun_damp` over the extra part, producing a bound for
+* `extra_part_bound` sums the residue-offset sibling damping factor
+  `bernoulliCharFun_norm_le_of_residue_offset` over the extra part, producing a bound for
   `∑_{extraMinorPart} ‖bernoulliCharFun θ (h/(r·s))‖`.
 -/
 
@@ -52,7 +52,7 @@ theorem block_part_bound
     hc hQE hnotmain hfiber
 
 /-- **Extra-part bound.**  Sum the per-gadget sibling damping factor
-`gadget_charFun_damp` over the disjointized extra-minor part
+`bernoulliCharFun_norm_le_of_residue_offset` over the disjointized extra-minor part
 `extraMinorPart Sm Sblock Sextra`.  Each frequency carries its own gadget data
 `(rfun x, sfun x, θ x, mfun x)` satisfying the sibling hypotheses, and `D` is a
 uniform upper bound on the per-gadget damping `√(1 − (8/9)/r²)`.  The result is a
@@ -83,7 +83,8 @@ theorem extra_part_bound
       ≤ ∑ _x ∈ extraMinorPart Sm Sblock Sextra, D := by
         refine Finset.sum_le_sum (fun x hx => ?_)
         exact le_trans
-          (gadget_charFun_damp (rfun x) (sfun x) (hr x hx) (hs x hx) (hrs x hx)
+          (bernoulliCharFun_norm_le_of_residue_offset
+            (rfun x) (sfun x) (hr x hx) (hs x hx) (hrs x hx)
             (θ x) (hθlb x hx) (hθub x hx) x (mfun x) (hm_s x hx) (hm_r x hx)
             (hm_small x hx))
           (hD x hx)

@@ -1,6 +1,6 @@
 import RequestProject.CircleMethod.MinorArcCover
 import RequestProject.Construction.Edges
-import RequestProject.ExtraMinorDamping
+import RequestProject.CircleMethod.ResidueOffsetDamping
 import RequestProject.CircleMethod.MainArcPeriodicity
 
 open Finset BigOperators GlobalControl
@@ -18,7 +18,7 @@ their Fourier factors damp the Bernoulli summand? Two answers of
 increasing strength: a plain product bound (`fourierNormWeight_le_prod_norm_of_subset`
 instantiated at the gadget edges) and, when the gadget primes also witness a
 label mismatch, a genuine `< 1` per-factor decay
-(`gadget_charFun_damp`) raised to the gadget count.
+(`bernoulliCharFun_norm_le_of_residue_offset`) raised to the gadget count.
 
 This estimate does not choose the gadgets or the denominator prime; that is
 `Construction.MinorArc.ExtraSiblingChoice`, a separate mechanism (choosing witnesses
@@ -99,7 +99,7 @@ lemma fourierNormWeight_le_multi_gadget_damp
         ≤ ∏ _s ∈ G, Real.sqrt (1 - (8 / 9) / (r : ℝ) ^ 2) := by
     refine Finset.prod_le_prod (fun s _ => norm_nonneg _) ?_
     intro s hsG
-    exact gadget_charFun_damp r s hr (hs s hsG) (hrs s hsG)
+    exact bernoulliCharFun_norm_le_of_residue_offset r s hr (hs s hsG) (hrs s hsG)
       (theta (r * s)) (hθlb s hsG) (hθub s hsG) h m
       (hm_s s hsG) hm_r (hm_small s hsG)
   simpa using hprod
