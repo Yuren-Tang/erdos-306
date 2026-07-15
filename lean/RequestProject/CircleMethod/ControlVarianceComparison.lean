@@ -1,4 +1,5 @@
 import RequestProject.Construction.ControlEdges
+import RequestProject.Core.ExponentialDomination
 import RequestProject.Spectral.BernoulliSum
 import Mathlib.Analysis.Complex.ExponentialBounds
 
@@ -86,7 +87,8 @@ lemma sigmaE2_ge_controlVariance (BS : BlockSystem) (E : Finset ℕ) (θ : ℕ �
 
 /-- The control deviation has its natural dyadic lower scale
 `1 / (k₀ 2^k₀)`, uniformly over sufficiently large block systems. -/
-private lemma sigmaCtrl_lower_bound (BS : BlockSystem) (hk0 : 14 ≤ BS.k0) :
+private lemma sigmaCtrl_lower_bound (BS : BlockSystem)
+    (hscale : (4 : ℝ) * BS.k0 ≤ (2 : ℝ) ^ BS.k0) :
     (1 : ℝ) / (100 * (BS.k0 : ℝ) * (2 : ℝ) ^ BS.k0) ≤ sigmaCtrl BS := by
   refine Real.le_sqrt_of_sq_le ?_
   norm_num [sigmaCtrl]
@@ -129,26 +131,32 @@ private lemma sigmaCtrl_lower_bound (BS : BlockSystem) (hk0 : 14 ≤ BS.k0) :
           simp_all +decide [Real.log_pow]
           simpa only [mul_assoc] using this
         nlinarith [show (2 : ℝ) ^ BS.k0 / (2 * BS.k0 * Real.log 2) ≥ 1 by
-          exact one_le_div (by positivity) |>.2 <| by
+          exact one_le_div
+            (mul_pos (mul_pos two_pos (by exact_mod_cast BS.hk0))
+              (Real.log_pos one_lt_two)) |>.2 <| by
             nlinarith [Real.log_le_sub_one_of_pos zero_lt_two,
-              show (BS.k0 : ℝ) ≥ 14 by norm_cast,
-              show (2 : ℝ) ^ BS.k0 ≥ 2 * BS.k0 by
-                exact mod_cast Nat.le_induction (by norm_num)
-                  (fun k hk ih => by
-                    norm_num [Nat.pow_succ] at *
-                    nlinarith) _ hk0]]
+              show (2 : ℝ) ^ BS.k0 ≥ 2 * BS.k0 by nlinarith]]
       refine' le_trans _ (mul_le_mul_of_nonneg_right h_card_internal _) <;>
         norm_num [pow_succ'] at *
-      field_simp
-      refine' Nat.le_induction _ _ BS.k0 hk0 <;> norm_num [pow_succ'] at *
-      · have := Real.log_two_lt_d9
-        norm_num at *
-        nlinarith [Real.log_nonneg one_le_two]
-      · intro n hn ih
-        ring_nf at *
-        norm_num at *
-        nlinarith [Real.log_pos one_lt_two, Real.log_le_sub_one_of_pos zero_lt_two,
-          show (n : ℝ) ≥ 14 by norm_cast, pow_pos (zero_lt_two' ℝ) n]
+      field_simp [show (BS.k0 : ℝ) ≠ 0 by exact_mod_cast (ne_of_gt BS.hk0)]
+      rw [show (1 / 4 : ℝ) ^ BS.k0 * ((2 : ℝ) ^ BS.k0) ^ 3 =
+          (2 : ℝ) ^ BS.k0 by
+        rw [← pow_mul, div_pow]
+        norm_num
+        field_simp
+        rw [show (4 : ℝ) = 2 ^ 2 by norm_num, ← pow_mul, ← pow_add]
+        congr 1
+        omega]
+      have hlog0 : 0 ≤ Real.log 2 := Real.log_nonneg one_le_two
+      have hlog1 : Real.log 2 ≤ 1 := by
+        nlinarith [Real.log_le_sub_one_of_pos zero_lt_two]
+      have hlog_sq : Real.log 2 ^ 2 ≤ 1 := by nlinarith
+      have hpow : 0 < (2 : ℝ) ^ BS.k0 := pow_pos zero_lt_two BS.k0
+      have hgap : (BS.k0 : ℝ) * 2 * Real.log 2 ≤ (2 : ℝ) ^ BS.k0 / 2 := by
+        nlinarith
+      rw [div_le_div_iff_of_pos_right
+        (sq_pos_of_pos (show (0 : ℝ) < BS.k0 by exact_mod_cast BS.hk0))]
+      nlinarith
     · rw [← mul_inv]
       gcongr
       norm_cast
@@ -172,8 +180,11 @@ private lemma sigmaCtrl_lower_bound (BS : BlockSystem) (hk0 : 14 ≤ BS.k0) :
 numerical witness from downstream parameter selection. -/
 lemma exists_sigmaCtrl_lower_bound :
     ∃ c : ℝ, 1 ≤ c ∧ ∃ K0 : ℕ, ∀ BS : BlockSystem, K0 ≤ BS.k0 →
-      (1 : ℝ) / (c * (BS.k0 : ℝ) * (2 : ℝ) ^ BS.k0) ≤ sigmaCtrl BS :=
-  ⟨100, by norm_num, 14, fun BS h => sigmaCtrl_lower_bound BS h⟩
+      (1 : ℝ) / (c * (BS.k0 : ℝ) * (2 : ℝ) ^ BS.k0) ≤ sigmaCtrl BS := by
+  obtain ⟨K0, hK0⟩ :=
+    RequestProject.exists_threshold_mul_pow_le_const_pow 4 1 one_lt_two
+  refine ⟨100, by norm_num, K0, fun BS hBS => sigmaCtrl_lower_bound BS ?_⟩
+  simpa using hK0 BS.k0 hBS
 
 /-- **σ_E² in terms of σ_ctrl² plus the extra-edge inverse-square mass.**  For any edge
 set containing the control edges, `σ_E² ≤ ¼(σ_ctrl² + ∑_{extra} 1/e²)`. -/
