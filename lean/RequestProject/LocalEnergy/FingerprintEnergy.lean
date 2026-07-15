@@ -1,6 +1,7 @@
-import Mathlib.Analysis.Complex.ExponentialBounds
+import Mathlib.Algebra.Order.Star.Basic
 import Mathlib.Data.ZMod.Basic
-import RequestProject.Core.FiniteInterval
+import Mathlib.Tactic.LinearCombination
+import RequestProject.Core.UnitCircleResidue
 import RequestProject.LocalEnergy.CRTRepresentation
 import RequestProject.LocalEnergy.ReciprocalPhase
 import RequestProject.LocalEnergy.ReciprocalDispersion
@@ -163,19 +164,25 @@ private lemma reciprocalPhase_sq_le_crtEnergy (p q : ℕ) (hp : p.Prime) (hq : q
 
 /-! ## Uniqueness below the dispersion threshold
 
-For `q ∉ F`, at most one residue `w` has `t_q(w) < G_F/7` where
-`G_F = |F|³/(2¹¹ X²)`.  The contradiction (using `reciprocalPhase_energy_lower_bound`)
-requires `|F|` larger than an absolute constant; `43008 ≤ |F|²`
-(i.e. `|F| ≥ 208`) is what the `(α+β+γ)²≤3(α²+β²+γ²)` step needs. -/
+For `q ∉ F`, suppose two residues both have energy below `G_F / κ`, where
+`G_F = |F|³/(2¹¹ X²)`. The two CRT comparisons consume `6G_F / κ`; the
+remaining error is impossible when `κ > 6` and
+`3κ2¹¹ ≤ (κ - 6)|F|²`. Taking `κ = 7` gives the convenient sufficient
+condition `43008 ≤ |F|²`, hence `|F| ≥ 208`. -/
 
-lemma cold_residue_unique (X : ℕ) (hX : 1 ≤ X) (F : Finset ℕ)
+/-- General uniqueness criterion below the reciprocal-dispersion scale. -/
+lemma cold_residue_unique_of_card_sq (X : ℕ) (hX : 1 ≤ X) (F : Finset ℕ)
     (hF : ∀ p ∈ F, Nat.Prime p ∧ X ≤ p ∧ p ≤ 2 * X)
-    (hFcard : 208 ≤ F.card)
+    (hFcard8 : 8 ≤ F.card)
+    (κ : ℝ) (hκ : 6 < κ)
+    (hFcard : 3 * κ * 2 ^ 11 ≤ (κ - 6) * (F.card : ℝ) ^ 2)
     (a : (p : ℕ) → ZMod p)
     (q : ℕ) (hq : q.Prime) (hqF : q ∉ F) (hq2X : q ≤ 2 * X)
     (w w' : ZMod q)
-    (hw : fingerprintEnergy F a q w < (F.card : ℝ) ^ 3 / (2 ^ 11 * (X : ℝ) ^ 2) / 7)
-    (hw' : fingerprintEnergy F a q w' < (F.card : ℝ) ^ 3 / (2 ^ 11 * (X : ℝ) ^ 2) / 7) :
+    (hw : fingerprintEnergy F a q w <
+      (F.card : ℝ) ^ 3 / (2 ^ 11 * (X : ℝ) ^ 2) / κ)
+    (hw' : fingerprintEnergy F a q w' <
+      (F.card : ℝ) ^ 3 / (2 ^ 11 * (X : ℝ) ^ 2) / κ) :
     w = w' := by
   by_contra h_neq
   set E := (ZMod.valMinAbs w' - ZMod.valMinAbs w) with hE_def
@@ -193,11 +200,48 @@ lemma cold_residue_unique (X : ℕ) (hX : 1 ≤ X) (F : Finset ℕ)
     norm_num [ Finset.sum_add_distrib, Finset.mul_sum _ _ _, Finset.sum_mul, fingerprintEnergy ];
     exact le_trans ( Finset.sum_le_sum fun x hx => show ( 3 : ℝ ) / x ^ 2 ≤ 3 / X ^ 2 by gcongr ; linarith [ hF x hx ] ) ( by norm_num; ring_nf; norm_num );
   have h_sum_bound : (F.card : ℝ) ^ 3 / (2 ^ 11 * (X : ℝ) ^ 2) ≤ 3 * fingerprintEnergy F a q w + 3 * fingerprintEnergy F a q w' + 3 * (F.card : ℝ) / (X : ℝ) ^ 2 := by
-    convert reciprocalPhase_energy_lower_bound X F hF ( by linarith ) q hq hqF hq2X E hE_zero hE_abs.1 hE_abs.2 |> le_trans <| h_sum_bound using 1;
+    convert reciprocalPhase_energy_lower_bound X F hF hFcard8 q hq hqF hq2X E hE_zero hE_abs.1 hE_abs.2 |> le_trans <| h_sum_bound using 1;
   -- Simplify the inequality obtained from the sum bound.
-  have h_simplified : (F.card : ℝ) ^ 2 < 3 * 7 * 2 ^ 11 := by
-    ring_nf at *;
-    nlinarith [ show ( 0 : ℝ ) < ( X : ℝ ) ⁻¹ ^ 2 by positivity, show ( 0 : ℝ ) < ( F.card : ℝ ) * ( X : ℝ ) ⁻¹ ^ 2 by positivity ];
-  exact absurd h_simplified ( by norm_cast; nlinarith only [ hFcard ] )
+  have hFpos : 0 < (F.card : ℝ) := by positivity
+  have hκpos : 0 < κ := by linarith
+  have hκne : κ ≠ 0 := hκpos.ne'
+  have h_sum_scaled := mul_le_mul_of_nonneg_right h_sum_bound hκpos.le
+  have hw_scaled : fingerprintEnergy F a q w * κ <
+      (F.card : ℝ) ^ 3 / (2 ^ 11 * (X : ℝ) ^ 2) := by
+    calc
+      fingerprintEnergy F a q w * κ <
+          ((F.card : ℝ) ^ 3 / (2 ^ 11 * (X : ℝ) ^ 2) / κ) * κ :=
+        mul_lt_mul_of_pos_right hw hκpos
+      _ = _ := div_mul_cancel₀ _ hκne
+  have hw'_scaled : fingerprintEnergy F a q w' * κ <
+      (F.card : ℝ) ^ 3 / (2 ^ 11 * (X : ℝ) ^ 2) := by
+    calc
+      fingerprintEnergy F a q w' * κ <
+          ((F.card : ℝ) ^ 3 / (2 ^ 11 * (X : ℝ) ^ 2) / κ) * κ :=
+        mul_lt_mul_of_pos_right hw' hκpos
+      _ = _ := div_mul_cancel₀ _ hκne
+  have h_simplified : (κ - 6) * (F.card : ℝ) ^ 2 < 3 * κ * 2 ^ 11 := by
+    ring_nf at h_sum_scaled hw_scaled hw'_scaled ⊢
+    nlinarith [ show ( 0 : ℝ ) < ( X : ℝ ) ⁻¹ ^ 2 by positivity,
+      mul_pos hFpos (show (0 : ℝ) < (X : ℝ)⁻¹ ^ 2 by positivity) ];
+  exact (not_lt_of_ge hFcard) h_simplified
+
+/-- With threshold `G_F / 7`, cardinality `208` is sufficient for uniqueness. -/
+lemma cold_residue_unique (X : ℕ) (hX : 1 ≤ X) (F : Finset ℕ)
+    (hF : ∀ p ∈ F, Nat.Prime p ∧ X ≤ p ∧ p ≤ 2 * X)
+    (hFcard : 208 ≤ F.card)
+    (a : (p : ℕ) → ZMod p)
+    (q : ℕ) (hq : q.Prime) (hqF : q ∉ F) (hq2X : q ≤ 2 * X)
+    (w w' : ZMod q)
+    (hw : fingerprintEnergy F a q w <
+      (F.card : ℝ) ^ 3 / (2 ^ 11 * (X : ℝ) ^ 2) / 7)
+    (hw' : fingerprintEnergy F a q w' <
+      (F.card : ℝ) ^ 3 / (2 ^ 11 * (X : ℝ) ^ 2) / 7) :
+    w = w' := by
+  apply cold_residue_unique_of_card_sq X hX F hF (by linarith) 7 (by norm_num) ?_
+    a q hq hqF hq2X w w' hw hw'
+  norm_num
+  have hFcard' : (208 : ℝ) ≤ F.card := by exact_mod_cast hFcard
+  nlinarith [sq_nonneg ((F.card : ℝ) - 208)]
 
 end LocalEnergy
