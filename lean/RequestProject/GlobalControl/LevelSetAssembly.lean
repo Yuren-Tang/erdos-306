@@ -78,10 +78,7 @@ hot and boundary charges supply the remaining exponential factors.
 -/
 lemma global_encoded_fiber_sum_bound
     (eps : ℝ) (heps : 0 < eps) (heps1 : eps < 1)
-    (c2 e0 X0 : ℝ) (hc2 : 0 < c2) (he0 : 0 < e0) (_hX0 : 0 < X0)
-    (_hdom : ∀ (BS : BlockSystem) (a : GlobalAssignment BS) (k : ℕ),
-        BS.k0 ≤ k → k ≤ BS.K → X0 ≤ (2:ℝ) ^ k → ¬ isHot BS c2 a k →
-        LocalEnergy.HasDominantLabel (2 ^ k) (BS.P k) (restrict BS a k) (1/4))
+    (c2 e0 : ℝ) (hc2 : 0 < c2) (he0 : 0 < e0)
     (hdomB : ColdDominance c2) :
     ∃ (k0min : ℕ) (A : ℝ), 0 < A ∧
       ∀ (BS : BlockSystem), k0min ≤ BS.k0 → admissibleGlobalRange BS →
@@ -163,7 +160,7 @@ theorem global_levelset (eps : ℝ) (heps : 0 < eps) (heps1 : eps < 1) :
     exists_cold_control_parameters
   obtain ⟨k0L, hlabels⟩ := cold_labels_admissible c2 X0 hc2 hdom
   obtain ⟨k0R, A, hA, hsum⟩ :=
-    global_encoded_fiber_sum_bound eps heps heps1 c2 e0 X0 hc2 he0 hX0 hdom hdomB
+    global_encoded_fiber_sum_bound eps heps heps1 c2 e0 hc2 he0 hdomB
   obtain ⟨k0X, hX0pow⟩ : ∃ n : ℕ, X0 ≤ (2:ℝ) ^ n := by
     obtain ⟨n, hn⟩ := pow_unbounded_of_one_lt X0 (by norm_num : (1:ℝ) < 2)
     exact ⟨n, le_of_lt hn⟩
