@@ -1,6 +1,6 @@
 import RequestProject.CircleMethod.MinorArcDecomposition
 import RequestProject.CircleMethod.QuadraticEnergy
-import RequestProject.ExtraEnergyMinorArc
+import RequestProject.CircleMethod.MinorArcFiberTail
 import RequestProject.ExtraMinorDamping
 
 open Finset BigOperators Classical Real

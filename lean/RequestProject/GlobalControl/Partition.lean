@@ -13,8 +13,8 @@ namespace GlobalControl
 /-!
 # Global control partition
 
-This module is downstream-only: it imports `GlobalControl` and assembles the
-headline off-main-arc bound `global_control_partition` from
+This module is downstream-only: it assembles the headline off-main-arc bound
+`global_control_partition` from the direct owner modules for
 
 * the level-set theorem `global_levelset` (factor `exp(A · numBlocks BS)`,
   with `A` fixed before the base-scale threshold, so the growing Peierls floor
