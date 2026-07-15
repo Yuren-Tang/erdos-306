@@ -1,5 +1,5 @@
 import RequestProject.Statement.Erdos306
-import RequestProject.Erdos306Final
+import RequestProject.Construction.SemiprimeRepresentation
 
 /-!
 # Proof of Erdős Problem 306
