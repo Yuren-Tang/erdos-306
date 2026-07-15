@@ -1,5 +1,6 @@
 import RequestProject.Construction.MinorArc.ExtraReservoir
 import RequestProject.Construction.BlockSupportCompatibility
+import RequestProject.CircleMethod.BlockSupportFrequencyFibers
 
 open Finset BigOperators GlobalControl
 
@@ -65,14 +66,14 @@ theorem exists_R_mismatch_of_block_eq_not_global
   have h_crt : h ≡ m [MOD b] ∧ h ≡ m [MOD ∏ s ∈ blockSupport BS, s] := by
     refine' ⟨ modEq_of_modEq_primeDivisors hsqfree _, _ ⟩;
     · exact fun p pp dp => hnot p ( hcover p pp dp ) pp dp;
-    · convert freq_assignment_eq_modEq_blockSupport_prod BS _;
+    · convert blockSupport_residue_eq_modEq_prod BS _;
       ext ⟨ p, hp ⟩ ; specialize hblock p hp; simp_all +decide [ ← ZMod.natCast_eq_natCast_iff' ] ;
   rw [ Nat.ModEq.symm ];
   rw [ ← Nat.modEq_and_modEq_iff_modEq_mul ] ; tauto;
   exact Nat.Coprime.prod_right fun x hx => hcop x hx |> Nat.Coprime.symm
 
 /-- A fiber over one block assignment has at most `b - 1` non-main siblings,
-using `mainArc_fiber_card_le`. -/
+using `blockSupport_frequency_fiber_card_le`. -/
 theorem extra_sibling_card_le_pred_b
     (BS : BlockSystem) (L b : ℕ)
     (hL : L = b * ∏ p ∈ blockSupport BS, p)
@@ -85,7 +86,8 @@ theorem extra_sibling_card_le_pred_b
     (((Finset.range L).filter
         (fun h => (fun p : {p : ℕ // p ∈ blockSupport BS} =>
           (h : ZMod p.1)) = a)).erase main).card ≤ b - 1 := by
-  convert Nat.sub_le_sub_right ( CircleMethod.mainArc_fiber_card_le BS L b hL a ) 1 using 1;
+  convert Nat.sub_le_sub_right
+    (CircleMethod.blockSupport_frequency_fiber_card_le BS L b hL a) 1 using 1;
   exact Finset.card_erase_of_mem hmain
 
 /-- Block-label data for the extra-minor frequencies. -/

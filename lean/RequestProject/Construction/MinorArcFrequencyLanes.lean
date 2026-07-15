@@ -1,5 +1,6 @@
 import RequestProject.CircleMethod.QuadraticEnergy
 import RequestProject.CircleMethod.MainArcPeriodicity
+import RequestProject.CircleMethod.BlockSupportFrequencyFibers
 import RequestProject.Construction.ControlEdges
 import RequestProject.Construction.MainArcClassification
 
@@ -59,7 +60,7 @@ def blockMinorFiberTailData {T : Finset ℕ} {b : ℕ}
       nlinarith [hnn]
     · simp only [nsmul_eq_mul, mul_one]
       exact_mod_cast le_trans (Finset.card_le_card hsubset)
-        (mainArc_fiber_card_le D.BS D.L b hLeq a)
+        (blockSupport_frequency_fiber_card_le D.BS D.L b hLeq a)
 
 /-
 Count bound for the extra-minor frequencies: a main-arc frequency is a CRT
@@ -82,7 +83,7 @@ lemma extraMinor_card_le {T : Finset ℕ} {b : ℕ} (D : ConstructionData T b)
     obtain ⟨ m, hm₁, hm₂ ⟩ := hh.2.2.2; use m; simp_all +decide [ freqAssignmentOf ] ;
     exact ⟨ ⟨ by exact_mod_cast neg_le_of_abs_le ( hm₁.trans hCN ), by exact_mod_cast le_of_abs_le ( hm₁.trans hCN ) ⟩, by linarith [ Finset.mem_range.mp ( mainArcFields_mem_range_of_mem_Sm MA hh.1 ) ] ⟩;
   · refine' le_trans ( Nat.cast_le.mpr <| Finset.card_biUnion_le ) _;
-    refine' le_trans ( Nat.cast_le.mpr <| Finset.sum_le_sum fun x hx => mainArc_fiber_card_le D.BS D.L b hLeq _ ) _ ; norm_num [ Int.card_Icc ] ; ring_nf ; norm_cast ; norm_num [ hN ] ;
+    refine' le_trans ( Nat.cast_le.mpr <| Finset.sum_le_sum fun x hx => blockSupport_frequency_fiber_card_le D.BS D.L b hLeq _ ) _ ; norm_num [ Int.card_Icc ] ; ring_nf ; norm_cast ; norm_num [ hN ] ;
     rw [ max_eq_left ] <;> linarith
 
 /-- **Main-arc CRT label lane.** Every extra-minor frequency `h` lies on the main

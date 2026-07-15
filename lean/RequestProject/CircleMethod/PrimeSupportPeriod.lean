@@ -1,6 +1,4 @@
 import RequestProject.Construction.ControlEdges
-import RequestProject.CircleMethod.FrequencyControlEnergy
-import RequestProject.FiberCount
 
 open Finset BigOperators Classical
 
@@ -11,11 +9,9 @@ namespace CircleMethod
 open GlobalControl
 
 /-!
-# Prime-support periods and frequency fibers
+# Prime-support periods
 
-The prime factors appearing in an edge set determine a natural period.  Separating
-them from a block system's support also identifies the frequency fibers relevant to
-the minor-arc estimate.
+The prime factors appearing in an edge set determine a natural period.
 -/
 
 /-- Prime support of the edge denominators, defined through prime factors.  For
@@ -128,15 +124,6 @@ lemma semiprime_edge_dvd_primeSupportPeriod
     e ∣ primeSupportPeriod b (edgePrimeSupport E) := by
   exact edge_dvd_primeSupportPeriod_of_mem_support
     (semiprime_dvd_edgePrimeSupport_prod he hsemi)
-
-theorem blockSupport_frequency_fiber_card_le
-    (BS : BlockSystem) (L M : ℕ)
-    (hL : L = M * ∏ p ∈ blockSupport BS, p) :
-    ∀ a : GlobalAssignment BS,
-      ((Finset.range L).filter
-        (fun h => (fun p : {p : ℕ // p ∈ blockSupport BS} =>
-          (h : ZMod p.1)) = a)).card ≤ M :=
-  mainArc_fiber_card_le BS L M hL
 
 end CircleMethod
 
