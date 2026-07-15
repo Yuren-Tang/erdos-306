@@ -52,62 +52,70 @@ lemma eventually_absorb_block_level_set_prefactor (eps c2 C0 : ℝ) (heps : 0 < 
         2 * (Real.log C0 + Real.log 34 + Real.log X + Real.log (Real.log X) + 1) ∧
       eps * (c2 * X / (Real.log X) ^ 3) ≥ Real.log (c2 * X / (Real.log X) ^ 3) := by
   obtain ⟨X0₁, hX0₁⟩ : ∃ X0₁ : ℕ, 2 ≤ X0₁ ∧ ∀ X : ℕ, X0₁ ≤ X → eps * c2 * (X : ℝ) / (Real.log X) ^ 3 ≥ 2 * (Real.log C0 + Real.log 34 + Real.log X + Real.log (Real.log X) + 1) := by
-    have h_lim : Filter.Tendsto (fun X : ℝ => (Real.log C0 + Real.log 34 + Real.log X + Real.log (Real.log X) + 1) * (Real.log X) ^ 3 / X) Filter.atTop (nhds 0) := by
-      -- We'll use the fact that $\frac{\log^k X}{X}$ tends to $0$ as $X$ tends to infinity for any $k$.
-      have h_log_pow : ∀ k : ℕ, Filter.Tendsto (fun X : ℝ => (Real.log X) ^ k / X) Filter.atTop (nhds 0) := by
-        intro k
-        have h_log_pow_div_X_zero : Filter.Tendsto (fun X : ℝ => (Real.log X)^k / X) Filter.atTop (nhds 0) := by
-          have h_log_pow_div_X_zero : Filter.Tendsto (fun X : ℝ => X^k / Real.exp X) Filter.atTop (nhds 0) := by
-            simpa only [div_eq_mul_inv, Real.exp_neg] using
-              Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero k
-          have := h_log_pow_div_X_zero.comp Real.tendsto_log_atTop;
-          exact this.congr' ( by filter_upwards [ Filter.eventually_gt_atTop 0 ] with x hx using by rw [ Function.comp_apply, Real.exp_log hx ] )
-        exact h_log_pow_div_X_zero;
-      -- We'll use the fact that $\frac{\log(\log X)}{X}$ tends to $0$ as $X$ tends to infinity.
-      have h_log_log : Filter.Tendsto (fun X : ℝ => Real.log (Real.log X) * (Real.log X) ^ 3 / X) Filter.atTop (nhds 0) := by
-        -- We can use the fact that $\frac{\log(\log X)}{\log X}$ tends to $0$ as $X$ tends to infinity.
-        have h_log_log_div_log : Filter.Tendsto (fun X : ℝ => Real.log (Real.log X) / Real.log X) Filter.atTop (nhds 0) := by
-          have := h_log_pow 1;
-          exact this.comp ( Real.tendsto_log_atTop ) |> fun h => h.congr' ( by filter_upwards [ Filter.eventually_gt_atTop 1 ] with x hx using by simp +decide [div_eq_mul_inv] );
-        convert h_log_log_div_log.mul ( h_log_pow 4 ) using 2 <;> ring_nf;
-        grind;
-      convert Filter.Tendsto.add ( Filter.Tendsto.add ( Filter.Tendsto.add ( Filter.Tendsto.add ( h_log_pow 3 |> Filter.Tendsto.const_mul ( Real.log C0 ) ) ( h_log_pow 3 |> Filter.Tendsto.const_mul ( Real.log 34 ) ) ) ( h_log_pow 4 ) ) h_log_log ) ( h_log_pow 3 ) using 2 <;> ring;
-    obtain ⟨ X0₁, hX0₁ ⟩ := Metric.tendsto_atTop.mp h_lim ( eps * c2 / 2 ) ( by positivity );
-    refine' ⟨ ⌈X0₁⌉₊ + 2, _, _ ⟩ <;> norm_num;
-    intro X hX; specialize hX0₁ X ( Nat.le_of_ceil_le ( by linarith ) ) ; rw [ dist_eq_norm ] at hX0₁ ; rw [ Real.norm_eq_abs ] at hX0₁ ; rw [ abs_lt ] at hX0₁ ; rw [ le_div_iff₀ ( pow_pos ( Real.log_pos <| Nat.one_lt_cast.mpr <| by linarith ) _ ) ] ; nlinarith [ show ( X : ℝ ) ≥ ⌈X0₁⌉₊ + 2 by exact_mod_cast hX, Real.log_pos <| show ( X : ℝ ) > 1 by norm_cast; linarith, pow_pos ( Real.log_pos <| show ( X : ℝ ) > 1 by norm_cast; linarith ) 3, mul_div_cancel₀ ( ( Real.log C0 + Real.log 34 + Real.log X + Real.log ( Real.log X ) + 1 ) * Real.log X ^ 3 ) ( show ( X : ℝ ) ≠ 0 by norm_cast; linarith ) ] ;
-  -- Show that `eps * (c2 * X / (Real.log X) ^ 3) ≥ Real.log (c2 * X / (Real.log X) ^ 3)` for large X.
-  have h_log : Filter.Tendsto (fun X : ℝ => Real.log (c2 * X / (Real.log X) ^ 3) / (c2 * X / (Real.log X) ^ 3)) Filter.atTop (nhds 0) := by
-    have h_log : Filter.Tendsto (fun t : ℝ => Real.log t / t) Filter.atTop (nhds 0) := by
-      -- Let $y = \frac{1}{t}$, so we can rewrite the limit as $\lim_{y \to 0^+} y \log(1/y)$.
-      suffices h_log_recip : Filter.Tendsto (fun y : ℝ => y * Real.log (1 / y)) (Filter.map (fun t => 1 / t) Filter.atTop) (nhds 0) by
-        exact h_log_recip.congr ( by simp +contextual [ div_eq_inv_mul ] );
-      norm_num;
-      exact tendsto_nhdsWithin_of_tendsto_nhds ( by simpa using Real.continuous_mul_log.neg.tendsto 0 );
-    refine h_log.comp ?_;
-    -- We can use the change of variables $u = \log X$ to transform the limit expression.
-    suffices h_log : Filter.Tendsto (fun u : ℝ => c2 * Real.exp u / u ^ 3) Filter.atTop Filter.atTop by
-      have := h_log.comp Real.tendsto_log_atTop;
-      exact this.congr' ( by filter_upwards [ Filter.eventually_gt_atTop 0 ] with x hx using by rw [ Function.comp_apply, Real.exp_log hx ] );
-    simpa [ mul_div_assoc ] using Filter.Tendsto.const_mul_atTop hc2 ( Real.tendsto_exp_div_pow_atTop 3 );
-  -- By the definition of limit, there exists an $X0₂$ such that for all $X \geq X0₂$, $\frac{\log(c2 * X / (\log X)^3)}{c2 * X / (\log X)^3} < \epsilon$.
-  obtain ⟨X0₂, hX0₂⟩ : ∃ X0₂ : ℕ, ∀ X : ℕ, X0₂ ≤ X → Real.log (c2 * X / (Real.log X) ^ 3) / (c2 * X / (Real.log X) ^ 3) < eps := by
-    exact Filter.eventually_atTop.mp ( h_log.eventually ( gt_mem_nhds heps ) ) |> fun ⟨ X0₂, hX0₂ ⟩ => ⟨ ⌈X0₂⌉₊, fun X hX => hX0₂ X <| Nat.le_of_ceil_le hX ⟩;
+    set A := Real.log C0 + Real.log 34 + 1
+    obtain ⟨Xa, _hXa0, hXa⟩ := RequestProject.eventually_le_natCast_div_log_pow 3
+      (4 * |A| / (eps * c2))
+    obtain ⟨Xb, _hXb0, hXb⟩ := RequestProject.eventually_le_natCast_div_log_pow 4
+      (8 / (eps * c2))
+    refine ⟨Nat.ceil (max Xa Xb) + 3, by omega, fun X hX => ?_⟩
+    have hceil : Nat.ceil (max Xa Xb) ≤ X := by omega
+    have hmax : max Xa Xb ≤ (X : ℝ) :=
+      le_trans (Nat.le_ceil _) (by exact_mod_cast hceil)
+    have ha := hXa X (le_trans (le_max_left _ _) hmax)
+    have hb := hXb X (le_trans (le_max_right _ _) hmax)
+    have hX3 : 3 ≤ X := by omega
+    have hlog : 0 < Real.log X := Real.log_pos (by norm_cast; omega)
+    have hloglog : Real.log (Real.log X) ≤ Real.log X := by
+      linarith [Real.log_le_sub_one_of_pos hlog]
+    have hec : 0 < eps * c2 := mul_pos heps hc2
+    have ha_scaled := mul_le_mul_of_nonneg_left ha
+      (show 0 ≤ eps * c2 / 2 by positivity)
+    have hconstant :
+        2 * |A| ≤ (eps * c2 / 2) * ((X : ℝ) / (Real.log X) ^ 3) := by
+      calc
+        2 * |A| = (eps * c2 / 2) * (4 * |A| / (eps * c2)) := by
+          field_simp [hec.ne']; ring
+        _ ≤ (eps * c2 / 2) * ((X : ℝ) / (Real.log X) ^ 3) := ha_scaled
+    have hb_scaled := mul_le_mul_of_nonneg_left hb
+      (mul_nonneg (show 0 ≤ eps * c2 / 2 by positivity) hlog.le)
+    have hlogterm :
+        4 * Real.log X ≤ (eps * c2 / 2) * ((X : ℝ) / (Real.log X) ^ 3) := by
+      calc
+        4 * Real.log X =
+            (eps * c2 / 2 * Real.log X) * (8 / (eps * c2)) := by
+          field_simp [hec.ne']; ring
+        _ ≤ (eps * c2 / 2 * Real.log X) *
+            ((X : ℝ) / (Real.log X) ^ 4) := hb_scaled
+        _ = (eps * c2 / 2) * ((X : ℝ) / (Real.log X) ^ 3) := by
+          field_simp [hlog.ne']
+    have hAupper : A ≤ |A| := le_abs_self A
+    dsimp [A] at hconstant ⊢
+    dsimp [A] at hAupper
+    ring_nf at hconstant hlogterm hAupper ⊢
+    nlinarith
+  have h_scale_inf :
+      Filter.Tendsto (fun X : ℕ => c2 * X / (Real.log X) ^ 3)
+        Filter.atTop Filter.atTop := by
+    simpa [mul_div_assoc] using
+      (RequestProject.tendsto_natCast_div_log_pow_atTop 3).const_mul_atTop hc2
+  obtain ⟨t0, _ht0, hlog⟩ := RequestProject.eventually_log_le_mul_self eps heps
+  obtain ⟨X0₂, hX0₂⟩ := Filter.eventually_atTop.mp
+    (h_scale_inf.eventually_ge_atTop t0)
   refine' ⟨ X0₁ + X0₂ + 2, _, _ ⟩ <;> norm_num at *;
-  intro X hX; specialize hX0₂ X ( by linarith ) ; rw [ div_lt_iff₀ ( div_pos ( mul_pos hc2 ( Nat.cast_pos.mpr ( by linarith ) ) ) ( pow_pos ( Real.log_pos ( Nat.one_lt_cast.mpr ( by linarith ) ) ) 3 ) ) ] at hX0₂; exact ⟨ hX0₁.2 X ( by linarith ), by linarith ⟩ ;
+  intro X hX
+  exact ⟨hX0₁.2 X (by linarith), hlog _ (hX0₂ X (by linarith))⟩
 
 /-
 Helper: `Rw c2 k → ∞`, so for `X = 2^k` large, `1/eps ≤ Rw c2 k`.
 -/
 lemma block_energy_threshold_eventually_large (eps c2 : ℝ) (hc2 : 0 < c2) :
     ∃ X0 : ℝ, 0 < X0 ∧ ∀ (k : ℕ), 1 ≤ k → X0 ≤ (2:ℝ) ^ k → 1 / eps ≤ Rw c2 k := by
-  -- Apply the fact that $Rw c2 k$ tends to infinity as $k$ increases.
   have h_Rw_inf : Filter.Tendsto (fun k : ℕ => Rw c2 k) Filter.atTop Filter.atTop := by
-    have h_lim : Filter.Tendsto (fun X : ℝ => c2 * X / (Real.log X) ^ 3) Filter.atTop Filter.atTop := by
-      have h_lim : Filter.Tendsto (fun u : ℝ => c2 * Real.exp u / u ^ 3) Filter.atTop Filter.atTop := by
-        simpa [ mul_div_assoc ] using Filter.Tendsto.const_mul_atTop hc2 ( Real.tendsto_exp_div_pow_atTop 3 );
-      have := h_lim.comp Real.tendsto_log_atTop;
-      exact this.congr' ( by filter_upwards [ Filter.eventually_gt_atTop 0 ] with x hx using by rw [ Function.comp_apply, Real.exp_log hx ] );
-    exact h_lim.comp ( tendsto_pow_atTop_atTop_of_one_lt one_lt_two ) |> Filter.Tendsto.comp <| Filter.tendsto_id;
+    have hscale := (RequestProject.tendsto_natCast_div_log_pow_atTop 3).const_mul_atTop hc2
+    have hpow : Filter.Tendsto (fun k : ℕ => 2 ^ k) Filter.atTop Filter.atTop :=
+      tendsto_pow_atTop_atTop_of_one_lt (by norm_num)
+    refine (hscale.comp hpow).congr' (Filter.Eventually.of_forall fun k => ?_)
+    simp [Rw, Function.comp_apply, mul_div_assoc]
   obtain ⟨ k, hk ⟩ := Filter.eventually_atTop.mp ( h_Rw_inf.eventually_ge_atTop ( 1 / eps ) );
   exact ⟨ 2 ^ k, by positivity, fun n hn hn' => hk n <| Nat.le_of_not_lt fun h => by linarith [ pow_lt_pow_right₀ ( by norm_num : ( 1 : ℝ ) < 2 ) h ] ⟩
 

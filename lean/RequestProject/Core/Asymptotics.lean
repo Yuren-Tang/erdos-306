@@ -32,30 +32,48 @@ theorem eventually_const_mul_log_le_nat (K : ℝ) :
           Real.log_nonneg (show (X : ℝ) ≥ 1 by norm_cast; linarith)]
     · linarith
 
+/-- Along natural-number scales, `X / (log X) ^ n` tends to infinity for
+every fixed natural exponent `n`. -/
+theorem tendsto_natCast_div_log_pow_atTop (n : ℕ) :
+    Filter.Tendsto (fun X : ℕ => (X : ℝ) / (Real.log X) ^ n)
+      Filter.atTop Filter.atTop := by
+  suffices h_log :
+      Filter.Tendsto (fun y : ℝ => Real.exp y / y ^ n)
+        Filter.atTop Filter.atTop by
+    have h_subst :
+        Filter.Tendsto
+          (fun X : ℕ => Real.exp (Real.log X) / (Real.log X) ^ n)
+          Filter.atTop Filter.atTop :=
+      h_log.comp (Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop)
+    exact h_subst.congr' (by
+      filter_upwards [Filter.eventually_gt_atTop 0] with X hX
+      rw [Real.exp_log (Nat.cast_pos.mpr hX)])
+  exact Real.tendsto_exp_div_pow_atTop n
+
 /-- Every constant is eventually bounded by `X / (log X) ^ n`, for
 natural-number scales `X`. -/
 theorem eventually_le_natCast_div_log_pow (n : ℕ) (K : ℝ) :
     ∃ X0 : ℝ, 0 < X0 ∧ ∀ X : ℕ, X0 ≤ X →
       K ≤ (X : ℝ) / (Real.log X) ^ n := by
-  have h_log_pow_inf :
-      Filter.Tendsto (fun X : ℕ => (X : ℝ) / (Real.log X) ^ n)
-        Filter.atTop Filter.atTop := by
-    suffices h_log :
-        Filter.Tendsto (fun y : ℝ => Real.exp y / y ^ n)
-          Filter.atTop Filter.atTop by
-      have h_subst :
-          Filter.Tendsto
-            (fun X : ℕ => Real.exp (Real.log X) / (Real.log X) ^ n)
-            Filter.atTop Filter.atTop :=
-        h_log.comp (Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop)
-      exact h_subst.congr' (by
-        filter_upwards [Filter.eventually_gt_atTop 0] with X hX
-        rw [Real.exp_log (Nat.cast_pos.mpr hX)])
-    exact Real.tendsto_exp_div_pow_atTop n
-  rcases Filter.eventually_atTop.mp (h_log_pow_inf.eventually_ge_atTop K) with
+  rcases Filter.eventually_atTop.mp
+      ((tendsto_natCast_div_log_pow_atTop n).eventually_ge_atTop K) with
     ⟨X0, hX0⟩
   exact ⟨X0 + 1, by positivity,
     fun X hX => hX0 _ (Nat.le_of_succ_le (by exact_mod_cast hX))⟩
+
+/-- For every positive slope, `log t` is eventually bounded by that slope
+times `t`. -/
+theorem eventually_log_le_mul_self (eps : ℝ) (heps : 0 < eps) :
+    ∃ t0 : ℝ, 0 < t0 ∧ ∀ t : ℝ, t0 ≤ t → Real.log t ≤ eps * t := by
+  obtain ⟨t0, ht0⟩ := Filter.eventually_atTop.mp
+    (Real.isLittleO_log_id_atTop.bound heps)
+  refine ⟨max (t0 : ℝ) 1, by positivity, fun t ht => ?_⟩
+  have ht0t : t0 ≤ t := le_trans (le_max_left _ _) ht
+  have ht1 : 1 ≤ t := le_trans (le_max_right _ _) ht
+  have h := ht0 t ht0t
+  rw [Real.norm_eq_abs, Real.norm_eq_abs] at h
+  simpa only [id_eq, abs_of_nonneg (by linarith : 0 ≤ t)] using
+    le_trans (le_abs_self (Real.log t)) h
 
 /-- Every constant multiple of a real power of `log X` is eventually bounded
 by any fixed positive real power of `X`, along natural-number scales. -/
