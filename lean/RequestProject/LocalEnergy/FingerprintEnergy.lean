@@ -168,7 +168,7 @@ For `q ∉ F`, suppose two residues both have energy below `G_F / κ`, where
 `G_F = |F|³/(2¹¹ X²)`. The two CRT comparisons consume `6G_F / κ`; the
 remaining error is impossible when `κ > 6` and
 `3κ2¹¹ ≤ (κ - 6)|F|²`. Taking `κ = 7` gives the convenient sufficient
-condition `43008 ≤ |F|²`, hence `|F| ≥ 208`. -/
+condition `3·7·2¹¹ ≤ |F|²`, hence `|F| ≥ 208`. -/
 
 /-- General uniqueness criterion below the reciprocal-dispersion scale. -/
 lemma cold_residue_unique_of_card_sq (X : ℕ) (hX : 1 ≤ X) (F : Finset ℕ)

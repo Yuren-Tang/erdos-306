@@ -52,7 +52,7 @@ private lemma bernoulli_log_taylor_explicit (θ t : ℝ) (hθlb : 1/3 ≤ θ) (h
     (ht : |t| ≤ 1 / 10) :
     ‖Complex.log (bernoulliCharFun θ t) -
         (2*Real.pi*θ*t*Complex.I - 2*Real.pi^2*θ*(1-θ)*t^2)‖ ≤
-      100000 * |t|^3 := by
+      2880 * |t|^3 := by
   have hθ0 : (0:ℝ) ≤ θ := le_trans (by norm_num) hθlb
   have hpi : (0:ℝ) < Real.pi := Real.pi_pos
   have ht0 : (0:ℝ) ≤ |t| := abs_nonneg t
@@ -129,7 +129,7 @@ private lemma bernoulli_log_taylor_explicit (θ t : ℝ) (hθlb : 1/3 ≤ θ) (h
     calc ‖z - s‖ * ‖z + s‖ ≤ (80*|t|^2) * (21*|t|) :=
           mul_le_mul hzms_t hzps_t (norm_nonneg _) (by positivity)
       _ = 1680 * |t|^3 := by ring
-  have hBnorm : ‖(↑θ*s - (↑θ*s)^2/2) - T‖ ≤ 1000 * |t|^3 := by
+  have hBnorm : ‖(↑θ*s - (↑θ*s)^2/2) - T‖ ≤ 450 * |t|^3 := by
     rw [hB]
     have hsplit : ‖(↑θ:ℂ)^2*(z^2-s^2)/2 + ↑θ*r3‖ ≤ θ^2*‖z^2-s^2‖/2 + θ*‖r3‖ := by
       calc ‖(↑θ:ℂ)^2*(z^2-s^2)/2 + ↑θ*r3‖
@@ -143,7 +143,7 @@ private lemma bernoulli_log_taylor_explicit (θ t : ℝ) (hθlb : 1/3 ≤ θ) (h
       nlinarith only [this, hzsq_t, norm_nonneg (z^2-s^2), pow_nonneg ht0 3]
     have hb2 : θ*‖r3‖ ≤ (2/3)*(114*|t|^3) := mul_le_mul hθub hr3t (norm_nonneg r3) (by norm_num)
     nlinarith only [hb1, hb2, pow_nonneg ht0 3]
-  have hAbnd : ‖Complex.log (bernoulliCharFun θ t) - (↑θ*s - (↑θ*s)^2/2)‖ ≤ 99000 * |t|^3 := by
+  have hAbnd : ‖Complex.log (bernoulliCharFun θ t) - (↑θ*s - (↑θ*s)^2/2)‖ ≤ 2430 * |t|^3 := by
     refine le_trans hA ?_
     have hinv : (1 - ‖(θ:ℂ)*s‖)⁻¹ ≤ 10 := by
       rw [inv_le_comm₀ (by linarith [hNhalf]) (by norm_num)]; linarith [hNhalf]
@@ -160,8 +160,8 @@ private lemma bernoulli_log_taylor_explicit (θ t : ℝ) (hθlb : 1/3 ≤ θ) (h
           ((↑θ*s - (↑θ*s)^2/2) - T)‖ := by ring_nf
     _ ≤ ‖Complex.log (bernoulliCharFun θ t) - (↑θ*s - (↑θ*s)^2/2)‖ +
           ‖(↑θ*s - (↑θ*s)^2/2) - T‖ := norm_add_le _ _
-    _ ≤ 99000 * |t|^3 + 1000 * |t|^3 := add_le_add hAbnd hBnorm
-    _ = 100000 * |t|^3 := by ring
+    _ ≤ 2430 * |t|^3 + 450 * |t|^3 := add_le_add hAbnd hBnorm
+    _ = 2880 * |t|^3 := by ring
 
 private lemma exists_bernoulli_taylor_remainder_constant :
     ∃ C : ℝ, 0 < C ∧
@@ -169,7 +169,7 @@ private lemma exists_bernoulli_taylor_remainder_constant :
         ‖Complex.log (bernoulliCharFun θ t) -
             (2 * Real.pi * θ * t * Complex.I -
               2 * Real.pi ^ 2 * θ * (1 - θ) * t ^ 2)‖ ≤ C * |t| ^ 3 := by
-  refine ⟨100000, by norm_num, ?_⟩
+  refine ⟨2880, by norm_num, ?_⟩
   intro θ t hθlb hθub ht
   exact bernoulli_log_taylor_explicit θ t hθlb hθub (by simpa [bernoulliTaylorRadius] using ht)
 
