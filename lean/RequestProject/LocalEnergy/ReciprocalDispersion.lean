@@ -60,6 +60,60 @@ private lemma reciprocalPhase_divisibility_witness (X p q : ℕ) (hp : p.Prime) 
         ZMod.val_inv_mul ((Nat.coprime_primes hq hp).mpr hpq.symm)
     rw [hinv, sub_self, mul_zero]
 
+/-! ## Small-ball count -/
+
+/-- If every possible short witness `s` leaves a nonzero integer
+`E - s q` of size below `X³`, then at most `2(4δX+1)` primes have reciprocal
+phase at most `δ`. -/
+theorem reciprocalPhase_smallBall_count_le
+    (X : ℕ) (F : Finset ℕ)
+    (hF : ∀ p ∈ F, Nat.Prime p ∧ X ≤ p ∧ p ≤ 2 * X)
+    (q : ℕ) (hq : q.Prime) (hqF : q ∉ F) (E : ℤ)
+    (hqE : ¬ (q : ℤ) ∣ E) (δ : ℝ) (hδ : 0 ≤ δ)
+    (hsize : ∀ s : ℤ, |(s : ℝ)| ≤ 2 * δ * X →
+      |E - s * q| < (X : ℤ) ^ 3) :
+    ((F.filter (fun p => reciprocalPhase E q p ≤ δ)).card : ℝ) ≤
+      2 * (4 * δ * X + 1) := by
+  set m : ℤ := ⌊2 * δ * (X : ℝ)⌋
+  set T : Finset ℤ := Finset.Icc (-m) m
+  have hcovered :
+      ((F.filter (fun p => reciprocalPhase E q p ≤ δ)).card : ℝ) ≤
+        2 * T.card := by
+    have h_cover : F.filter (fun p => reciprocalPhase E q p ≤ δ) ⊆
+        T.biUnion (fun s => F.filter (fun p => (p : ℤ) ∣ E - s * q)) := by
+      intro p hp
+      simp_all +decide
+      obtain ⟨s, hs, hsdiv⟩ := reciprocalPhase_divisibility_witness X p q
+        (hF p hp.1).1 (hF p hp.1).2.2 hq (by aesop) E δ hδ hp.2
+      exact ⟨s, Finset.mem_Icc.mpr
+        ⟨neg_le_of_abs_le <| Int.le_floor.mpr <| mod_cast hs,
+         le_of_abs_le <| Int.le_floor.mpr <| mod_cast hs⟩, hsdiv⟩
+    refine' le_trans (Nat.cast_le.mpr (Finset.card_le_card h_cover)) _
+    refine' mod_cast le_trans Finset.card_biUnion_le _
+    refine' le_trans (Finset.sum_le_sum fun s hs => show #_ ≤ 2 from _) _
+    · have hsreal : |(s : ℝ)| ≤ 2 * δ * X :=
+        le_trans (mod_cast abs_le.mpr
+          ⟨by linarith [Finset.mem_Icc.mp hs],
+           by linarith [Finset.mem_Icc.mp hs]⟩) (Int.floor_le _)
+      have hdivisors := RequestProject.card_dyadicPrimeDivisors_le_two X
+        (E - s * q)
+        (fun h => hqE <| by rw [sub_eq_zero] at h; exact h.symm ▸ dvd_mul_left _ _)
+        (hsize s hsreal)
+      exact (Finset.card_mono fun p hp => Finset.mem_filter.mpr
+        ⟨Finset.mem_Icc.mpr
+          ⟨by linarith [hF p (Finset.mem_filter.mp hp).1],
+           by linarith [hF p (Finset.mem_filter.mp hp).1]⟩,
+         (hF p (Finset.mem_filter.mp hp).1).1,
+         (Finset.mem_filter.mp hp).2⟩).trans hdivisors
+    · norm_num [mul_comm]
+  have hT_card : T.card ≤ 2 * m + 1 := by
+    simp +zetaDelta at *
+    exact ⟨by linarith, by linarith [show ⌊2 * δ * X⌋ ≥ 0 by positivity]⟩
+  have hT_card_le : (T.card : ℝ) ≤ 4 * δ * X + 1 := by
+    linarith [Int.floor_le (2 * δ * X), Int.lt_floor_add_one (2 * δ * X),
+      (by norm_cast : (T.card : ℝ) ≤ 2 * m + 1)]
+  exact hcovered.trans (mul_le_mul_of_nonneg_left hT_card_le zero_le_two)
+
 /-
 **Dispersion residue count** (`30 §1`).  Number of fingerprint primes whose
     reciprocal phase is `≤ δ := |F|/(32X)` is at most `2(4δX+1) = |F|/4 + 2`,
@@ -81,43 +135,29 @@ theorem reciprocalPhase_smallBall_count
     (hqE : ¬ (q:ℤ) ∣ E) (_hE0 : 0 < |E|) (hEq : |E| < (q:ℤ)) :
     ((F.filter (fun p => reciprocalPhase E q p ≤ (F.card : ℝ) / (32 * X))).card : ℝ)
       ≤ (F.card : ℝ) / 2 := by
-  -- Let m : ℤ := ⌊2*δ*(X:ℝ)⌋; then m ≥ 0 and (m:ℝ) ≤ 2*δ*X. Let T : Finset ℤ := Finset.Icc (-m) m; its card is (2*m+1).toNat and (T.card : ℝ) ≤ 2*(2*δ*X) + 1 = 4*δ*X + 1.
   set δ : ℝ := (F.card : ℝ) / (32 * X)
-  set m : ℤ := ⌊2 * δ * (X : ℝ)⌋
-  set T : Finset ℤ := Finset.Icc (-m) m;
-  -- Each witness leaves at most two prime divisors in the dyadic interval.
-  have : ((F.filter (fun p => reciprocalPhase E q p ≤ δ)).card : ℝ) ≤ 2 * T.card := by
-    have h_cover : F.filter (fun p => reciprocalPhase E q p ≤ δ) ⊆ T.biUnion (fun s => F.filter (fun p => (p : ℤ) ∣ (E - s * q))) := by
-      intro p hp; simp_all +decide ;
-      obtain ⟨ s, hs₁, hs₂ ⟩ := reciprocalPhase_divisibility_witness X p q ( hF p hp.1 |>.1 ) ( hF p hp.1 |>.2.2 ) hq ( by aesop ) E δ ( by positivity ) hp.2;
-      exact ⟨ s, Finset.mem_Icc.mpr ⟨ neg_le_of_abs_le <| Int.le_floor.mpr <| mod_cast hs₁, le_of_abs_le <| Int.le_floor.mpr <| mod_cast hs₁ ⟩, hs₂ ⟩;
-    refine' le_trans ( Nat.cast_le.mpr ( Finset.card_le_card h_cover ) ) _;
-    refine' mod_cast le_trans ( Finset.card_biUnion_le ) _;
-    refine' le_trans ( Finset.sum_le_sum fun x hx => show #_ ≤ 2 from _ ) _;
-    · have := RequestProject.card_dyadicPrimeDivisors_le_two X (E - x * q) ?_ ?_;
-      · refine' le_trans _ this;
-        exact Finset.card_mono fun p hp => Finset.mem_filter.mpr ⟨ Finset.mem_Icc.mpr ⟨ by linarith [ hF p ( Finset.mem_filter.mp hp |>.1 ) ], by linarith [ hF p ( Finset.mem_filter.mp hp |>.1 ) ] ⟩, hF p ( Finset.mem_filter.mp hp |>.1 ) |>.1, Finset.mem_filter.mp hp |>.2 ⟩;
-      · exact fun h => hqE <| by rw [ sub_eq_zero ] at h; exact h.symm ▸ dvd_mul_left _ _;
-      · -- Since $|x| \leq m$, we have $|x| \leq 2 * δ * X$.
-        have hx_bound : |x| ≤ 2 * δ * X := by
-          exact le_trans ( mod_cast abs_le.mpr ⟨ by linarith [ Finset.mem_Icc.mp hx ], by linarith [ Finset.mem_Icc.mp hx ] ⟩ ) ( Int.floor_le _ );
-        rw [ mul_div, div_mul_eq_mul_div, le_div_iff₀ ] at * <;> norm_cast at * <;> cases X <;> norm_num at *;
-        · aesop;
-        · have h_card_bound : (F.card : ℤ) ≤ (2 * (Nat.succ ‹_›) + 1) := by
-            exact_mod_cast le_trans ( Finset.card_le_card ( show F ⊆ Finset.Icc ( Nat.succ ‹_› ) ( 2 * ( Nat.succ ‹_› ) ) from fun p hp => Finset.mem_Icc.mpr ⟨ by linarith [ hF p hp ], by linarith [ hF p hp ] ⟩ ) ) ( by simp +arith +decide );
-          norm_num [ abs_lt ] at *;
-          constructor <;> cases abs_cases x <;> nlinarith [ pow_succ' ( ( ‹_› : ℕ ) : ℤ ) 2 ];
-        · exact absurd hq2X hq.ne_zero;
-    · norm_num [ mul_comm ];
-  -- Since $T$ is a finite set of integers, its cardinality is at most $2m + 1$.
-  have hT_card : T.card ≤ 2 * m + 1 := by
-    simp +zetaDelta at *;
-    exact ⟨ by linarith, by linarith [ show ⌊2 * ( ( F.card : ℝ ) / ( 32 * X ) ) * X⌋ ≥ 0 by positivity ] ⟩;
-  -- Since $m \leq 2\delta X$, we have $2m + 1 \leq 4\delta X + 1$.
-  have hT_card_le : (T.card : ℝ) ≤ 4 * δ * X + 1 := by
-    linarith [ Int.floor_le ( 2 * δ * X ), Int.lt_floor_add_one ( 2 * δ * X ), ( by norm_cast : ( T.card : ℝ ) ≤ 2 * m + 1 ) ];
-  by_cases hX : X = 0 <;> simp_all +decide [ mul_comm ];
-  nlinarith [ show ( F.card : ℝ ) ≥ 8 by norm_cast, show ( X : ℝ ) ≥ 1 by exact Nat.one_le_cast.mpr ( Nat.pos_of_ne_zero hX ), mul_div_cancel₀ ( F.card : ℝ ) ( by positivity : ( 32 * X : ℝ ) ≠ 0 ) ]
+  have hsize : ∀ s : ℤ, |(s : ℝ)| ≤ 2 * δ * X →
+      |E - s * q| < (X : ℤ) ^ 3 := by
+    intro s hs
+    rw [mul_div, div_mul_eq_mul_div, le_div_iff₀] at * <;>
+      norm_cast at * <;> cases X <;> norm_num at *
+    · aesop
+    · have h_card_bound : (F.card : ℤ) ≤ 2 * Nat.succ ‹_› + 1 := by
+        exact_mod_cast le_trans
+          (Finset.card_le_card (show F ⊆ Finset.Icc (Nat.succ ‹_›)
+            (2 * Nat.succ ‹_›) from fun p hp => Finset.mem_Icc.mpr
+              ⟨by linarith [hF p hp], by linarith [hF p hp]⟩))
+          (by simp +arith +decide)
+      norm_num [abs_lt] at *
+      constructor <;> cases abs_cases s <;>
+        nlinarith [pow_succ' ((‹_› : ℕ) : ℤ) 2]
+    · exact absurd hq2X hq.ne_zero
+  have hcount := reciprocalPhase_smallBall_count_le X F hF q hq hqF E hqE
+    δ (by positivity) hsize
+  by_cases hX : X = 0 <;> simp_all +decide [mul_comm]
+  nlinarith [show (F.card : ℝ) ≥ 8 by norm_cast,
+    show (X : ℝ) ≥ 1 by exact Nat.one_le_cast.mpr (Nat.pos_of_ne_zero hX),
+    mul_div_cancel₀ (F.card : ℝ) (by positivity : (32 * X : ℝ) ≠ 0)]
 
 /-
 **Dispersion energy bound** (`30 §1`):
