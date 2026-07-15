@@ -1,4 +1,5 @@
 import Mathlib.Analysis.SpecialFunctions.Log.NegMulLog
+import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 
 /-! Elementary asymptotic thresholds used throughout the proof. -/
 
@@ -55,6 +56,36 @@ theorem eventually_le_natCast_div_log_pow (n : ℕ) (K : ℝ) :
     ⟨X0, hX0⟩
   exact ⟨X0 + 1, by positivity,
     fun X hX => hX0 _ (Nat.le_of_succ_le (by exact_mod_cast hX))⟩
+
+/-- Every constant multiple of a real power of `log X` is eventually bounded
+by any fixed positive real power of `X`, along natural-number scales. -/
+theorem eventually_const_mul_log_rpow_le_natCast_rpow
+    (K r s : ℝ) (hs : 0 < s) :
+    ∃ X0 : ℝ, 0 < X0 ∧ ∀ X : ℕ, X0 ≤ X →
+      K * (Real.log X) ^ r ≤ (X : ℝ) ^ s := by
+  have ho :
+      (fun X : ℕ => (Real.log X) ^ r) =o[Filter.atTop]
+        fun X : ℕ => (X : ℝ) ^ s :=
+    (isLittleO_log_rpow_rpow_atTop r hs).comp_tendsto
+      tendsto_natCast_atTop_atTop
+  have hbound := ho.bound (show 0 < 1 / (|K| + 1) by positivity)
+  obtain ⟨X0, hX0⟩ := Filter.eventually_atTop.mp hbound
+  refine ⟨(X0 : ℝ) + 1, by positivity, fun X hX => ?_⟩
+  have hX0X : X0 ≤ X := by
+    exact_mod_cast le_trans (show (X0 : ℝ) ≤ X0 + 1 by linarith) hX
+  have hX1 : 1 ≤ X := le_trans (Nat.le_add_left 1 X0) (by exact_mod_cast hX)
+  have hlog0 : 0 ≤ Real.log X := Real.log_nonneg (Nat.one_le_cast.mpr hX1)
+  have h := hX0 X hX0X
+  rw [Real.norm_eq_abs, Real.norm_eq_abs,
+    abs_of_nonneg (Real.rpow_nonneg hlog0 r),
+    abs_of_nonneg (Real.rpow_nonneg (Nat.cast_nonneg X) s)] at h
+  calc
+    K * (Real.log X) ^ r ≤ |K| * (Real.log X) ^ r :=
+      mul_le_mul_of_nonneg_right (le_abs_self K) (Real.rpow_nonneg hlog0 r)
+    _ ≤ (|K| + 1) * (1 / (|K| + 1) * (X : ℝ) ^ s) :=
+      mul_le_mul (by linarith [le_abs_self K]) h
+        (Real.rpow_nonneg hlog0 r) (by positivity)
+    _ = (X : ℝ) ^ s := by field_simp
 
 /-- A linear bound for `log` propagates from a base point `t0` throughout
 `[t0, ∞)` once `t0 ≥ 1 / eps`. -/

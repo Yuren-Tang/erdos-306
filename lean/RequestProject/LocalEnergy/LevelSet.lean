@@ -1,7 +1,8 @@
 import Mathlib.Tactic.IntervalCases
+import RequestProject.Core.Asymptotics
 import RequestProject.Core.LevelSetLaplace
 import RequestProject.LocalEnergy.BlockEnergyBounds
-import RequestProject.LocalEnergy.DominantLabel
+import RequestProject.LocalEnergy.DominantLabel.ColdRange
 import RequestProject.LocalEnergy.FingerprintLevelSet
 
 /-!
@@ -51,20 +52,36 @@ def SingleBlockPartitionBound (c : ℝ) : Prop :=
 **Mesh `R_C ≤ R_w` (asymptotic).**  For `X` large the fingerprint threshold
     `Cε·X^{2/3}(log X)^{4/3}` is below the window floor `cp·X/(log X)³`.
 -/
-lemma fingerprint_threshold_le_nondominant_threshold (cp Ceps : ℝ) (hcp : 0 < cp) (_hCeps : 0 < Ceps) :
+lemma fingerprint_threshold_le_nondominant_threshold (cp Ceps : ℝ) (hcp : 0 < cp) :
     ∃ X1 : ℝ, 0 < X1 ∧ ∀ X : ℕ, X1 ≤ X →
       Ceps*(X:ℝ)^((2:ℝ)/3)*(Real.log X)^((4:ℝ)/3) ≤ cp*(X:ℝ)/(Real.log X)^3 := by
-  obtain ⟨X1, hX1⟩ : ∃ X1 : ℝ, 0 < X1 ∧ ∀ X : ℕ, X1 ≤ X → Ceps^3 * (X : ℝ)^2 * (Real.log X)^4 ≤ cp^3 * (X : ℝ)^3 / (Real.log X)^9 := by
-    obtain ⟨ X1, hX1 ⟩ := RequestProject.eventually_le_natCast_div_log_pow 13 ( Ceps^3 / cp^3 );
-    refine' ⟨ Max.max X1 3, _, _ ⟩ <;> norm_num;
-    intro X hX₁ hX₂; have := hX1.2 X hX₁; rw [ div_le_div_iff₀ ] at this;
-    · rw [ le_div_iff₀ ( pow_pos ( Real.log_pos ( by norm_cast; linarith ) ) _ ) ] ; nlinarith [ show ( X : ℝ ) ^ 3 > 0 by positivity ] ;
-    · positivity;
-    · exact pow_pos ( Real.log_pos ( by norm_cast; linarith ) ) _;
-  refine' ⟨ Max.max X1 3, by positivity, fun X hX => _ ⟩ ; specialize hX1 ; replace hX1 := hX1.2 X ( le_trans ( le_max_left _ _ ) hX ) ; norm_num at *;
-  contrapose! hX1;
-  convert pow_lt_pow_left₀ hX1 ( div_nonneg ( mul_nonneg hcp.le ( Nat.cast_nonneg _ ) ) ( pow_nonneg ( Real.log_nonneg ( Nat.one_le_cast.mpr ( by linarith ) ) ) _ ) ) three_ne_zero using 1 <;> ring_nf;
-  norm_num only [ ← Real.rpow_natCast, ← Real.rpow_mul ( Nat.cast_nonneg _ ), ← Real.rpow_mul ( Real.log_nonneg ( Nat.one_le_cast.mpr ( by linarith ) ) ) ]
+  obtain ⟨X1, hX1, hdom⟩ :=
+    RequestProject.eventually_const_mul_log_rpow_le_natCast_rpow
+      (Ceps / cp) (13 / 3) (1 / 3) (by norm_num)
+  refine ⟨max X1 3, by positivity, fun X hX => ?_⟩
+  have hX3 : (3 : ℝ) ≤ X := le_trans (le_max_right _ _) hX
+  have hlog : 0 < Real.log X := Real.log_pos (by linarith)
+  have hdomX := hdom X (le_trans (le_max_left _ _) hX)
+  rw [le_div_iff₀ (pow_pos hlog 3)]
+  have hscaled := mul_le_mul_of_nonneg_left hdomX
+    (mul_nonneg hcp.le (Real.rpow_nonneg (Nat.cast_nonneg X) ((2 : ℝ) / 3)))
+  calc
+    Ceps * (X : ℝ) ^ ((2 : ℝ) / 3) * (Real.log X) ^ ((4 : ℝ) / 3) *
+        (Real.log X) ^ 3 =
+        (cp * (X : ℝ) ^ ((2 : ℝ) / 3)) *
+          ((Ceps / cp) * (Real.log X) ^ ((13 : ℝ) / 3)) := by
+      have hlogpow :
+          (Real.log X) ^ ((4 : ℝ) / 3) * (Real.log X) ^ 3 =
+            (Real.log X) ^ ((13 : ℝ) / 3) := by
+        norm_num only [← Real.rpow_natCast]
+        rw [← Real.rpow_add hlog]
+        norm_num
+      rw [mul_assoc, hlogpow]
+      field_simp
+    _ ≤ (cp * (X : ℝ) ^ ((2 : ℝ) / 3)) * (X : ℝ) ^ ((1 : ℝ) / 3) := hscaled
+    _ = cp * (X : ℝ) := by
+      rw [mul_assoc, ← Real.rpow_add (by positivity)]
+      norm_num
 
 /-
 **Unified level-set bound.** Combining dominant-label counting below the window via
@@ -82,8 +99,8 @@ lemma block_level_set_bound (eps : ℝ) (hε0 : 0 < eps) (hε1 : eps < 1) :
             ((Finset.univ.filter (fun a : BlockAssignment P => QP P a ≤ R)).card : ℝ)
               ≤ C0 * Real.exp (eps*R) * (1 + Real.sqrt R / sigmaP P) := by
   obtain ⟨cp, X0c, hcp, hX0c, Hcor⟩ := LocalEnergy.low_energy_level_set_bound eps hε0 (1/4) (by norm_num) (by norm_num)
-  obtain ⟨Ceps, X0f, hCeps, hX0f, Hfp⟩ := LocalEnergy.fingerprint_levelSet_bound eps hε0 hε1
-  obtain ⟨Xm, hXm0, hmesh⟩ := fingerprint_threshold_le_nondominant_threshold cp Ceps hcp hCeps
+  obtain ⟨Ceps, X0f, _hCeps, hX0f, Hfp⟩ := LocalEnergy.fingerprint_levelSet_bound eps hε0 hε1
+  obtain ⟨Xm, hXm0, hmesh⟩ := fingerprint_threshold_le_nondominant_threshold cp Ceps hcp
   obtain ⟨X16, hX160, hX16⟩ := RequestProject.eventually_le_natCast_div_log_pow 3 (16/cp)
   obtain ⟨Xc2, hXc20, hXc2⟩ := RequestProject.eventually_le_natCast_div_log_pow 1 4;
   refine' ⟨ 20, Max.max ( Max.max X0c X0f ) ( Max.max Xm ( Max.max X16 ( Max.max Xc2 3 ) ) ), _, _, _ ⟩ <;> norm_num;

@@ -1,3 +1,4 @@
+import Mathlib.Data.Nat.Choose.Cast
 import RequestProject.Core.FiniteInterval
 import RequestProject.LocalEnergy.CrossLabelEnergy
 import RequestProject.LocalEnergy.BlockEnergyBounds
@@ -94,13 +95,15 @@ lemma dominant_label_bound (X : ℕ) (hX : 16 ≤ X)
         refine Finset.sum_le_sum fun pq hpq => one_div_le_one_div_of_le ?_ ?_ <;> norm_cast <;> norm_num at *;
         · exact pow_pos ( mul_pos ( Nat.cast_pos.mpr ( Nat.Prime.pos ( hP _ pq.1.2 |>.1 ) ) ) ( Nat.cast_pos.mpr ( Nat.Prime.pos ( hP _ pq.2.2 |>.1 ) ) ) ) _;
         · exact le_trans ( Nat.pow_le_pow_left ( Nat.mul_le_mul ( hP _ pq.1.2 |>.2.2 ) ( hP _ pq.2.2 |>.2.2 ) ) 2 ) ( by ring_nf; norm_num );
-      have h_card_filter : (Finset.filter (fun pq => pq.1 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ))) ∧ pq.2 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ)))) (increasingPairs P)).card = c * (c - 1) / 2 := by
-        rw [card_filter_increasingPairs, Nat.choose_two_right]
-      rcases c with ( _ | _ | c ) <;> norm_num at *;
-      · exact Finset.sum_nonneg fun _ _ => by positivity;
-      · exact Finset.sum_nonneg fun _ _ => by positivity;
-      · convert hS_ge_c_c_minus_1_div_16X4 using 1 ; norm_num [ h_card_filter ] ; ring_nf;
-        exact Or.inl ( by rw [ Nat.cast_div ( show 2 ∣ 2 + c * 3 + c ^ 2 from even_iff_two_dvd.mp ( by simp +arith +decide [ parity_simps ] ) ) ( by norm_num ) ] ; push_cast ; ring );
+      have h_card_filter : (Finset.filter (fun pq => pq.1 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ))) ∧ pq.2 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ)))) (increasingPairs P)).card = c.choose 2 := by
+        rw [card_filter_increasingPairs]
+      have h_card_filter_real :
+          ((Finset.filter (fun pq => pq.1 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ))) ∧ pq.2 ∈ P.attach.filter (fun p => a p = ((m : ℤ) : ZMod (p:ℕ)))) (increasingPairs P)).card : ℝ) =
+            (c : ℝ) * ((c : ℝ) - 1) / 2 := by
+        rw [h_card_filter, Nat.cast_choose_two]
+      refine le_trans ?_ hS_ge_c_c_minus_1_div_16X4
+      rw [← h_card_filter_real]
+      simp
     -- We need to show that $\sigma_P^2 \le \frac{N(N-1)}{2} \cdot \frac{1}{X^4}$.
     have hsigmaP2_le_N_N_minus_1_div_2X4 : (sigmaP P) ^ 2 ≤ (P.card * (P.card - 1) / 2 : ℝ) * (1 / (X ^ 4 : ℝ)) := by
       have hsigmaP2_le_N_N_minus_1_div_2X4 : (sigmaP P) ^ 2 ≤ (∑ pq ∈ increasingPairs P, (1 : ℝ) / ((pq.1.1 : ℝ) * (pq.2.1 : ℝ)) ^ 2) := by
@@ -110,10 +113,9 @@ lemma dominant_label_bound (X : ℕ) (hX : 16 ≤ X)
       refine' le_trans ( Finset.sum_le_sum fun x hx => one_div_le_one_div_of_le ( by positivity ) <| show ( ( x.1.1 : ℝ ) * x.2.1 ) ^ 2 ≥ X ^ 4 by
                                                                                                       norm_cast;
                                                                                                       rw [ show X ^ 4 = ( X ^ 2 ) ^ 2 by ring ] ; gcongr ; nlinarith only [ hP x.1 x.1.2, hP x.2 x.2.2 ] ; ) _ ; norm_num;
-      rw [show (increasingPairs P).card = P.card * (P.card - 1) / 2 by
-        rw [card_increasingPairs, Nat.choose_two_right]]
-      · cases P using Finset.induction <;> norm_num [ Nat.dvd_iff_mod_eq_zero, Nat.mod_two_of_bodd ] at *;
-        cases k : Finset.card ( insert ‹_› ‹_› ) <;> simp_all +decide [ Nat.dvd_iff_mod_eq_zero, Nat.mod_two_of_bodd ];
+      rw [show (increasingPairs P).card = P.card.choose 2 by
+        rw [card_increasingPairs]]
+      simp [Nat.cast_choose_two]
     refine le_trans ?_ hS_ge_c_c_minus_1_div_16X4;
     refine le_trans ( mul_le_mul_of_nonneg_left hsigmaP2_le_N_N_minus_1_div_2X4 <| by positivity ) ?_;
     field_simp;
