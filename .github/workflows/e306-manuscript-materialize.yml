@@ -1,0 +1,35 @@
+name: E306 manuscript materializer
+
+on:
+  push:
+    branches:
+      - paper/arxiv-v1
+    paths:
+      - .e306-upload/READY
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: paper/arxiv-v1
+          fetch-depth: 0
+      - name: Verify and materialize manuscript
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .e306-upload/chunk-* > /tmp/e306-paper-revision.b64
+          base64 --decode /tmp/e306-paper-revision.b64 > /tmp/e306-paper-revision.tar.gz
+          echo '558c083a5901c2a7dd49a19343d6a1f0c4d5cbcb1c47561b9a59e309e91e6752  /tmp/e306-paper-revision.tar.gz' | sha256sum --check -
+          tar -xzf /tmp/e306-paper-revision.tar.gz -C .
+          rm -rf .e306-upload
+          rm -f .github/workflows/e306-manuscript-materialize.yml
+          git config user.name 'E306 manuscript materializer'
+          git config user.email 'actions@users.noreply.github.com'
+          git add -A -- paper .e306-upload .github/workflows/e306-manuscript-materialize.yml
+          git commit -m 'paper: major rewrite around structural analytic principles'
+          git push origin HEAD:paper/arxiv-v1
