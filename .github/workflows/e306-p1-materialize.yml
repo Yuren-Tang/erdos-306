@@ -1,0 +1,34 @@
+name: E306 P1 materialize main
+
+on:
+  push:
+    branches:
+      - paper/arxiv-v1
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: ${{ hashFiles('.e306-p1-ready') != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: paper/arxiv-v1
+      - name: Reconstruct validated manuscript source
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f .e306-p1-main.part.00
+          test -f .e306-p1-main.part.01
+          test -f .e306-p1-main.part.02
+          test -f .e306-p1-main.part.03
+          cat .e306-p1-main.part.* | base64 --decode > paper/main.tex
+          echo '942d0db38b73a40bd766a2547fd3aab30b884c929a15d0de85292926320d7879  paper/main.tex' | sha256sum --check --strict
+          rm -f .e306-p1-main.part.* .e306-p1-ready .github/workflows/e306-p1-materialize.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add paper/main.tex .github/workflows/e306-p1-materialize.yml .e306-p1-main.part.* .e306-p1-ready || true
+          git commit -m 'paper: adopt PNT local-law backend'
+          git push origin HEAD:paper/arxiv-v1
