@@ -62,8 +62,8 @@
 - [x] Source contains no absolute local paths.
 - [x] Draft compiles locally with the available TeX toolchain, or otherwise receives a syntax-only fallback check recorded in the handoff.
 - [ ] Re-run `pdflatex`, `bibtex`, `pdflatex`, `pdflatex` in the final submission environment.
-- [ ] Inspect PDF for overfull boxes, broken URLs, and page-break defects.
-- [ ] Confirm arXiv source package contains exactly the intended `paper/` source files.
+- [x] Inspect rendered 11-page PDF for overfull boxes, broken URLs, and page-break defects; local compile log is warning-free.
+- [x] Confirm branch diff contains exactly the six intended `paper/` source files and no other changes.
 
 ## Reproducibility
 
