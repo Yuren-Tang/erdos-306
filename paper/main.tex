@@ -3,11 +3,14 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
-\usepackage[margin=1.15in]{geometry}
+\usepackage[margin=1.05in]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{microtype}
 \usepackage[hidelinks]{hyperref}
 \usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{xcolor}
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}[theorem]{Proposition}
@@ -16,667 +19,1055 @@
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{remark}[theorem]{Remark}
+\newtheorem{statusnote}[theorem]{Status note}
 
 \DeclareMathOperator{\supp}{supp}
 \DeclareMathOperator{\lcm}{lcm}
 \DeclareMathOperator{\rad}{rad}
 \DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\Var}{Var}
 \newcommand{\N}{\mathbb N}
 \newcommand{\Q}{\mathbb Q}
 \newcommand{\R}{\mathbb R}
 \newcommand{\C}{\mathbb C}
 \newcommand{\Z}{\mathbb Z}
+\newcommand{\F}{\mathbb F}
 \newcommand{\e}{\mathrm e}
 \newcommand{\1}{\mathbf 1}
 \newcommand{\RS}{Rosser--Schoenfeld}
+\newcommand{\Pk}{\mathcal P}
+\newcommand{\Bset}{\mathcal B}
+\newcommand{\Ectrl}{E_{\mathrm{ctrl}}}
+\newcommand{\Egad}{E_{\mathrm{res}}}
+\newcommand{\Emass}{E_{\mathrm{mass}}}
+\newcommand{\Qctrl}{Q_{\mathrm{ctrl}}}
+\newcommand{\QE}{Q_E}
+\newcommand{\sctrl}{\sigma_{\mathrm{ctrl}}}
+\newcommand{\sE}{\sigma_E}
+\newcommand{\normdist}[1]{\left\lVert #1\right\rVert_{\R/\Z}}
+\newcommand{\status}[1]{\textsf{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 
 \title{Distinct Semiprime Egyptian Fractions for Rationals with Squarefree Denominator}
 \author{Yuren Tang}
-\date{Manuscript v1, based on software release v0.0.3}
+\date{Major-revision manuscript workspace, 16 July 2026}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-We prove that every positive rational number whose reduced denominator is
-squarefree is a finite sum of distinct unit fractions with denominators equal
-to products of two distinct primes.  The proof is constructive in the
-existential sense and is formalized in Lean~4 and Mathlib.  Its analytic core
-is a finite circle-method argument for a weighted subset-sum problem.  A
-dyadic system of prime blocks supplies three families of squarefree
-semiprimes: control edges for the minor arcs, a residual mass batch, and
-denominator-sensitive gadget edges.  The squarefree hypothesis is used both
-as the necessary local obstruction and, in the sufficiency proof, to promote
-congruence modulo every prime divisor of the denominator to congruence modulo
-the denominator itself.  Two explicit estimates of Rosser and Schoenfeld are
-the only nonstandard analytic inputs accepted by the released Lean proof:
-a lower bound for primes in a dyadic interval and two-sided bounds for the
-sum of reciprocals of primes.  We give a human-readable reconstruction of the
-released proof, state its exact trust boundary, and record the relation
-between this article, software release v0.0.3, and its archived DOI.
+We prove that a positive rational number is a sum of reciprocals of distinct
+squarefree semiprimes if and only if its reduced denominator is squarefree.
+The sufficiency proof is organized around two structural prime-supply
+conditions rather than around the file topology of its formalization.  The
+first supplies enough primes in each sufficiently large dyadic block; the
+second supplies a fixed positive reciprocal-prime mass across a long dyadic
+window.  From these conditions we prove an abstract avoiding construction for
+$1/b$, then obtain arbitrary numerators by disjoint iteration.
+
+The construction combines a finite spectral selection principle with a
+weighted circle method.  Control semiprimes encode residue assignments across
+dyadic prime blocks; a reciprocal-mass reservoir places the Bernoulli weights
+in a uniform window; and denominator-sensitive reservoir edges damp the
+frequencies that are invisible to the block residues.  We isolate the three
+load-bearing estimates: a global control partition obtained from level-set
+counting and a localization dichotomy, a block-minor fiber estimate with exact
+CRT multiplicity, and squarefree-CRT reservoir damping.  The order of the
+terminal parameter choices is made explicit, including the single inequality
+that makes the main Gaussian contribution dominate both minor sectors.
+
+Finally, the two structural prime-supply conditions are derived from explicit
+estimates of Rosser and Schoenfeld.  The immutable software release
+\texttt{v0.0.3}, archived under DOI 10.5281/zenodo.20767390, remains the
+current machine-checked evidence:
+its headline theorem depends on the three standard Lean axioms and exactly two
+source-transcribed Rosser--Schoenfeld inputs.  A later frozen refactor supplies
+the principle/handoff architecture used for exposition here, but is not
+presented as released formal authority.
 \end{abstract}
 
-\section{The problem and the result}
+\tableofcontents
 
-An integer will be called a \emph{squarefree semiprime} if it has the form
-\(pq\), where \(p<q\) are primes.  Thus both the number \(\omega(n)\) of
-distinct prime divisors and the number \(\Omega(n)\) of prime factors counted
-with multiplicity are equal to \(2\).
+\section{Result, necessity, and proof architecture}
 
-The problem considered here asks which positive rational numbers admit an
-Egyptian-fraction expansion
+An integer $n$ is a \emph{squarefree semiprime} if
 \[
-        q=\sum_{n\in S}\frac1n
+        n=pq
 \]
-in which \(S\) is a finite set of squarefree semiprimes.  Because \(S\) is a
-set, the denominators are distinct.
+for two distinct primes $p<q$.  Equivalently, its arithmetic functions satisfy
+$\omega(n)=\Omega(n)=2$.
 
-\begin{theorem}[Main theorem]\label{thm:main}
-Let \(q>0\) be rational and write \(q=a/b\) in lowest terms with \(b>0\).
-If \(b\) is squarefree, then there are distinct squarefree semiprimes
-\(n_1<\cdots<n_k\) such that
-\[
-             q=\frac1{n_1}+\cdots+\frac1{n_k}.
-\]
+\begin{theorem}[Erd\H{o}s 306 in the present formulation]\label{thm:headline}
+Let $q>0$ be rational.  Write $q=a/b$ in lowest terms with $a,b\in\N$ and
+$b>0$.  Then $q$ is a finite sum of reciprocals of distinct squarefree
+semiprimes if and only if $b$ is squarefree.
 \end{theorem}
 
-The squarefree condition is also necessary.  Indeed, if every denominator
-\(n\in S\) is squarefree, then the denominator of
-\(\sum_{n\in S}1/n\), after reduction, divides
-\(\lcm(S)\), hence is squarefree.  Consequently Theorem~\ref{thm:main},
-together with this elementary observation, gives the expected
-characterization.
+The necessary direction is immediate but important for the exact scope.  If
+$S$ is a finite set of squarefree integers, then the denominator of
+$\sum_{n\in S}1/n$ divides $\lcm(S)$; the latter is squarefree.  Hence every
+reduced denominator arising from squarefree semiprimes is squarefree.
 
-The released formal theorem is stated in a deliberately rigid finite-sequence
-encoding.  It asserts that for every positive \(q\in\Q\) with squarefree
-Lean denominator there exist \(k\in\N\) and a strictly increasing map
-\[
-       n:\operatorname{Fin}(k+1)\longrightarrow\N
-\]
-with \(n(0)=1\), such that for every index \(i\) from \(1\) through the final
-index one has
-\(\omega(n(i))=\Omega(n(i))=2\), and
-\[
-       q=\sum_{i=1}^{k}\frac1{n(i)}.
-\]
-The initial value \(n(0)=1\) is a dummy anchor.  Strict monotonicity then
-places every actual denominator above \(1\), and the interval of indices
-\(1,\ldots,k\) records the nonempty finite expansion.
+The sufficiency proof will be separated into four conceptual layers.
 
-\section{Formal encoding and proof organization}
-
-The formal development uses the predicate
-\[
- \operatorname{IsSemiprime}(n)
- \quad\Longleftrightarrow\quad
- \exists\,p<q\text{ prime},\ n=pq.
-\]
-A finite set \(S\subset\N\) represents \(r\in\Q\) when every member of
-\(S\) is a squarefree semiprime and
-\[
-             \sum_{n\in S}\frac1n=r.
-\]
-An \emph{avoiding} representation additionally requires
-\(S\cap T=\varnothing\) for a prescribed finite obstruction set \(T\).
-
-The avoiding formulation is not cosmetic.  It permits repeated use of a
-unit-numerator theorem without reusing a denominator.  The formal proof has
-four levels.
-
-\begin{enumerate}[label=(\roman*)]
-\item For squarefree \(b\ge3\) and every finite \(T\), construct a finite
-      semiprime set \(S\), disjoint from \(T\), with
-      \(\sum_{n\in S}1/n=1/b\).
-\item Deduce the cases \(b=2\) and \(b=1\) by the identities
-      \[
-      \frac12=\frac13+\frac16,
-      \qquad
-      1=\frac12+\frac13+\frac16,
-      \]
-      choosing the component representations successively with avoidance.
-\item For \(a\ge1\), inductively take \(a\) pairwise disjoint avoiding
-      representations of \(1/b\), and unite them to obtain \(a/b\).
-\item Order the final finite set, prepend the dummy value \(1\), and translate
-      \(\operatorname{IsSemiprime}\) into
-      \(\omega=\Omega=2\).
+\begin{enumerate}[label=\textbf{Layer \arabic*.}]
+\item \emph{Structural analytic supply.}  Dyadic blocks have enough primes for
+      the control geometry and for denominator-sensitive reservoirs, while a
+      long dyadic window has enough reciprocal-prime mass to create the
+      required semiprime load.
+\item \emph{Finite spectral construction.}  From this supply, for every
+      squarefree $b\ge3$ and finite obstruction set $T$, construct an admissible
+      weighted family of distinct semiprimes whose main Fourier arcs strictly
+      dominate the minor arcs.
+\item \emph{Exact reciprocal selection.}  A finite spectral principle converts
+      the strict Fourier gap into a subset with reciprocal sum exactly $1/b$.
+\item \emph{Arithmetic closure.}  Deal with $b=1,2$, iterate the avoiding
+      unit-numerator statement to obtain $a/b$, and order the final finite set.
 \end{enumerate}
 
-Only step (i) is analytic.  The remainder of the article reconstructs it.
+This order is also the paper's principle/handoff order.  The structural
+hypotheses are the analytic principle; the finite construction theorem is the
+handoff to arithmetic; the circle method is factored into its own selection
+principle and concrete certificate.
 
-\section{The two explicit prime estimates}
+\section{The exact finite statement and avoiding reductions}
 
-Let \(\pi(x)\) denote the number of primes at most \(x\).  The released Lean
-proof accepts exactly the following two nonstandard analytic statements.
-They are transcribed in the release from \RS~\cite{RosserSchoenfeld1962}.
-
-\begin{proposition}[\RS, Corollary 3, equation (3.8)]\label{prop:rs-dyadic}
-For every real \(x\ge 41/2\),
+For a finite set $T\subset\N$, write
 \[
-  \frac{3x}{5\log x}
-   < \pi(\lfloor2x\rfloor)-\pi(\lfloor x\rfloor).
+ \operatorname{Rep}_T(r)
 \]
-\end{proposition}
+when there is a finite set $S\subset\N$ such that
+\begin{enumerate}[label=(\roman*)]
+\item every $n\in S$ is a squarefree semiprime;
+\item $S\cap T=\varnothing$;
+\item $\sum_{n\in S}1/n=r$.
+\end{enumerate}
+The avoidance parameter is the mechanism that makes later unions disjoint.
 
-\begin{proposition}[\RS, Theorem 5, equations (3.17)--(3.18)]
-\label{prop:rs-mertens}
-There is a real constant \(B\) such that, for every real \(x\),
-\[
- x>1\quad\Longrightarrow\quad
- \log\log x+B-\frac1{2(\log x)^2}
- <
- \sum_{\substack{2\le p\le\lfloor x\rfloor\\p\ {\rm prime}}}\frac1p,
-\]
-and
-\[
- x\ge286\quad\Longrightarrow\quad
- \sum_{\substack{2\le p\le\lfloor x\rfloor\\p\ {\rm prime}}}\frac1p
- <
- \log\log x+B+\frac1{2(\log x)^2}.
-\]
-The same constant \(B\) occurs in both inequalities.
-\end{proposition}
+\begin{lemma}[Unit numerator implies arbitrary numerator]\label{lem:numerator-reduction}
+Assume that $\operatorname{Rep}_T(1/b)$ holds for every finite $T$.  Then for
+every $a\ge1$ and finite $T$ one has $\operatorname{Rep}_T(a/b)$.
+\end{lemma}
 
-No prime number theorem or asymptotic Mertens theorem is an axiom of the
-release.  The two propositions above are the complete released analytic
-trust boundary.
+\begin{proof}
+Induct on $a$.  Having obtained $S$ for $a/b$, apply the unit-numerator
+hypothesis with obstruction set $T\cup S$ to obtain $U$ for $1/b$.  Then
+$S\cap U=\varnothing$, and the reciprocal sums add over $S\cup U$.
+\end{proof}
 
-For \(k\in\N\), write
+\begin{lemma}[The small denominators]\label{lem:small-b}
+If the avoiding unit-numerator assertion holds for squarefree denominators at
+least $3$, then it holds for all positive squarefree denominators.
+\end{lemma}
+
+\begin{proof}
+For $b=2$, successively choose disjoint avoiding representations of $1/3$ and
+$1/6$ and use $1/2=1/3+1/6$.  For $b=1$, successively choose disjoint avoiding
+representations of $1/2$, $1/3$, and $1/6$ and use
+$1=1/2+1/3+1/6$.
+\end{proof}
+
+Thus the analytic content is exactly the following avoiding statement for
+$b\ge3$.
+
+\section{Structural prime supply and the abstract construction theorem}
+
+For $k\in\N$, define the dyadic prime block
 \[
-  P_k=\{p\text{ prime}:2^k\le p<2^{k+1}\}.
+       \Pk_k=\{p\text{ prime}:2^k\le p<2^{k+1}\}.
 \]
-Proposition~\ref{prop:rs-dyadic}, applied with \(x=2^k\), yields for \(k\ge5\)
-the explicit lower bound
-\begin{equation}\label{eq:dyadic-density}
-       |P_k|\ge \frac{2^k}{2\log(2^k)}.
+We isolate two conditions.
+
+\begin{definition}[Dyadic density condition $\mathbf D$]\label{def:D}
+For every $k\ge5$,
+\begin{equation}\label{eq:D}
+       |\Pk_k|\ge \frac{2^k}{2\log(2^k)}.
 \end{equation}
-The constant is weakened slightly from the direct substitution in order to
-obtain a convenient uniform interface.
+\end{definition}
 
-The second input is used at two endpoints.  Subtracting the upper estimate at
-\(2^{k_0}\) from the lower estimate at \(2^{3k_0+1}\) cancels \(B\).
-For all sufficiently large \(k_0\)---the formal proof takes an explicit
-threshold---one obtains
-\begin{equation}\label{eq:cumulative-mertens}
- \sum_{k=k_0}^{3k_0}\ \sum_{p\in P_k}\frac1p
-   \ge \frac{21}{20}.
+\begin{definition}[Reciprocal-window condition $\mathbf M$]\label{def:M}
+There exists $k_1\ge5$ such that for every $k_0\ge k_1$,
+\begin{equation}\label{eq:M}
+  \sum_{p\in\bigcup_{k=k_0}^{3k_0}\Pk_k}\frac1p\ge\frac{21}{20}.
 \end{equation}
-The proof checks the logarithmic gain and the two explicit error terms
-numerically.
+The upper index is inclusive.  Consequently the actual prime interval is
+$[2^{k_0},2^{3k_0+1})$.
+\end{definition}
+
+Condition $\mathbf D$ is a cardinality supply.  It is used to populate each
+control block and to select many high reservoir primes.  Condition $\mathbf M$
+is a reciprocal-mass supply.  It is used only to create a large pool of
+semiprime reciprocals from which a load window can be selected.  Keeping these
+roles separate prevents a common logical blur: many primes do not by themselves
+provide enough reciprocal mass, while reciprocal mass alone does not provide
+the uniform block cardinalities needed by the control system.
+
+\begin{theorem}[Structural avoiding construction]\label{thm:structural-construction}
+Assume $\mathbf D$ and $\mathbf M$.  Let $b\ge3$ be squarefree and let
+$T\subset\N$ be finite.  Then $\operatorname{Rep}_T(1/b)$ holds.
+\end{theorem}
+
+\begin{corollary}[Structural form of Erd\H{o}s 306]\label{cor:structural-E306}
+Conditions $\mathbf D$ and $\mathbf M$ imply the sufficiency direction of
+Theorem~\ref{thm:headline}.
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{thm:structural-construction}, then
+Lemmas~\ref{lem:small-b} and~\ref{lem:numerator-reduction}.
+\end{proof}
+
+Sections~\ref{sec:spectral}--\ref{sec:terminal} prove
+Theorem~\ref{thm:structural-construction}.  Section~\ref{sec:RS} derives
+$\mathbf D$ and $\mathbf M$ from the exact Rosser--Schoenfeld backend used by
+the released formal proof.
+
+\section{Finite spectral selection}\label{sec:spectral}
+
+The circle method is used in a finite cyclic group, so the existence mechanism
+can be stated without analytic number theory.
+
+Let $E$ be a finite set of positive integers, let $L$ be a common multiple of
+$E$, let $q_0\in\Z/L\Z$, and let $\theta_e\in[0,1]$.  Choose every $e\in E$
+independently with probability $\theta_e$.  For $A\subseteq E$, set
+\[
+  w(A)=\prod_{e\in A}\theta_e\prod_{e\in E\setminus A}(1-\theta_e).
+\]
+The weighted number of subsets with
+$\sum_{e\in A}L/e\equiv q_0\pmod L$ is
+\[
+ W_{L,q_0}(E,\theta)
+ =\sum_{\substack{A\subseteq E\\
+             \sum_{e\in A}L/e\equiv q_0\ (\mathrm{mod}\ L)}}w(A).
+\]
+Finite Fourier orthogonality gives
+\begin{equation}\label{eq:finite-fourier}
+ L W_{L,q_0}(E,\theta)
+ =\sum_{h=0}^{L-1}
+     \prod_{e\in E}\bigl((1-\theta_e)+\theta_e e^{2\pi i h/e}\bigr)
+     e^{-2\pi i hq_0/L}.
+\end{equation}
+
+\begin{lemma}[Finite spectral selection]\label{lem:spectral-selection}
+Partition the frequency set into disjoint sets $S_M$ and $S_m$.  If
+\[
+ \Re\sum_{h\in S_M}F(h)>\sum_{h\in S_m}|F(h)|
+\]
+and the imaginary part of the main sum is zero, where $F(h)$ is the summand in
+\eqref{eq:finite-fourier}, then $W_{L,q_0}(E,\theta)>0$.  Hence an admissible
+subset exists.
+\end{lemma}
+
+\begin{proof}
+The real part of the full Fourier sum is at least the displayed positive
+difference.  Thus the left side of \eqref{eq:finite-fourier} is positive.
+All subset weights are nonnegative, so at least one admissible subset has
+positive weight.
+\end{proof}
+
+For the reciprocal problem take $q_0=L/b$.  If every $e$ divides $L$ and
+\begin{equation}\label{eq:no-wrap}
+       \sum_{e\in E}\frac1e<1,
+\end{equation}
+then a congruence
+$\sum_{e\in A}L/e\equiv L/b\pmod L$ is equivalent to the exact equality
+$\sum_{e\in A}1/e=1/b$: both numbers lie in $[0,1)$.
+
+It remains to build an $E$, a weight function, and main/minor estimates that
+meet Lemma~\ref{lem:spectral-selection}.
+
+\section{Dyadic control geometry}\label{sec:control}
+
+Fix squarefree $b\ge3$ and finite $T$.  We shall choose a large bottom scale
+$k_0$, a terminal scale $K$, and prime blocks
+\[
+       P_k\subseteq\Pk_k\qquad(k_0\le k\le K).
+\]
+Condition $\mathbf D$ permits all required finite selections once $k_0$ is
+large.  Put
+\[
+       \Bset=\bigcup_{k=k_0}^{K}P_k.
+\]
+All primes in $\Bset$ are chosen larger than $b$ and larger than every element
+of $T$.
+
+The \emph{control graph} has vertices $\Bset$.  It includes sufficiently many
+pairs inside each block and selected pairs between consecutive blocks.  The
+corresponding semiprime set is
+\[
+       \Ectrl=\{pq:\{p,q\}\text{ is a control pair}\}.
+\]
+Unique factorization makes the product map injective on the ordered prime
+pairs, so these denominators are distinct.
+
+For each $p\in\Bset$, a frequency $h$ determines a residue
+$a_p=h\pmod p$.  A general residue assignment is
+\[
+       a=(a_p)_{p\in\Bset}\in
+       \mathcal A:=\prod_{p\in\Bset}\Z/p\Z.
+\]
+For a control pair $\{p,q\}$, let $x_{pq}(a)$ be the centered CRT
+representative modulo $pq$ determined by $(a_p,a_q)$.  Define
+\begin{equation}\label{eq:Qctrl}
+ \Qctrl(a)=\sum_{\{p,q\}\in\mathcal C}
+       \left(\frac{x_{pq}(a)}{pq}\right)^2,
+ \qquad
+ \sctrl^2=\sum_{\{p,q\}\in\mathcal C}\frac1{(pq)^2}.
+\end{equation}
+For an actual frequency $h$, the exact CRT identity is
+\[
+   \normdist{h/(pq)}=\frac{|x_{pq}(a(h))|}{pq}.
+\]
+Hence, if the final edge family contains $\Ectrl$,
+\begin{equation}\label{eq:control-full-energy}
+       \Qctrl(a(h))\le \QE(h)
+       :=\sum_{e\in E}\normdist{h/e}^{2}.
+\end{equation}
+
+The control graph is chosen so that two quantitative facts hold for all large
+$k_0$:
+\begin{align}
+ \sctrl&\ge \frac{1}{c_\sigma k_0 2^{k_0}},
+       \label{eq:sctrl-lower}\\
+ \sum_{e\in\Ectrl}\frac1e&<\frac{3}{4b}.
+       \label{eq:control-load}
+\end{align}
+Here $c_\sigma\ge1$ is an absolute constant produced by the elementary block
+calculation.  The first estimate comes from the numerous pairs in the bottom
+block; the second follows because all denominators grow quadratically in the
+block scale.  Neither estimate uses condition $\mathbf M$.
+
+The associated main set in assignment space is
+\begin{equation}\label{eq:assignment-main}
+ \mathfrak M(C)=
+ \left\{a:\exists m\in\Z,
+   |m|\le \frac C{\sctrl},\quad
+   a_p\equiv m\pmod p\ \text{for all }p\in\Bset\right\}.
+\end{equation}
+The global-control theorem bounds the Laplace mass outside this set.
+
+\section{The global control partition}\label{sec:global}
+
+This section isolates the most substantial combinatorial estimate.  Its input
+is only the block system and its quadratic energy; the reciprocal-mass
+reservoir and denominator reservoir are not involved.
+
+\begin{theorem}[Global control partition]\label{thm:global-partition}
+For every $c>0$ and every $\eta>0$, there exist a scale $k_*(c,\eta)$ and a
+constant $C_{\mathrm{tail}}>0$ such that, for every admissible block system with
+$k_0\ge k_*$ and every $C\ge1$,
+\begin{equation}\label{eq:global-partition}
+ \sum_{a\notin\mathfrak M(C)}e^{-c\Qctrl(a)}
+ \le
+ \frac{\eta+C_{\mathrm{tail}}e^{-cC^2/2}}{\sctrl}.
+\end{equation}
+\end{theorem}
+
+We prove it through four explicit handoffs.
+
+\subsection{Single-block rigidity and finite encoding}
+
+For each block $P_k$, let $Q_k(a)$ be its local part of the control energy.
+There are increasing forcing thresholds $R_k$ and adjacent-boundary thresholds
+$\Pi_k$ with the following properties.
+
+\begin{lemma}[Cold-block structure]\label{lem:cold-block}
+For sufficiently large $k_0$, if $Q_k(a)<R_k$, then there is a dominant integer
+label $\ell_k$ such that all but an explicitly energy-controlled exceptional
+set of primes in $P_k$ satisfy $a_p\equiv\ell_k\pmod p$.  The number of possible
+labels and exceptional sets with energy at most $R$ is bounded by an
+exponential charge $e^{\varepsilon R}$ times a polynomial label window.
+\end{lemma}
+
+\begin{proof}[Mechanism]
+For two residues in one block, closeness of their reciprocal phases forces a
+linear congruence modulo the product of the two primes.  Centered CRT
+representatives are unique inside the short interval allowed by the energy
+threshold.  Thus many low-energy pair constraints decode the same integer
+fingerprint.  If no label captures most residues, cross-label pairs force a
+quadratic amount of energy.  Once a dominant label exists, each exception
+pays a definite energy charge.  Summing the choices of exceptions uses the
+weighted subset-entropy inequality
+$\sum_{A}\prod_{j\in A}u_j=\prod_j(1+u_j)$, with $u_j$ chosen as an exponential
+of the paid charge.
+\end{proof}
+
+\begin{lemma}[Adjacent-scale mismatch penalty]\label{lem:boundary-penalty}
+If consecutive cold blocks have distinct dominant labels, then the adjacent
+control pairs force energy at least $\Pi_k$ at their boundary.
+\end{lemma}
+
+\begin{proof}[Mechanism]
+A residue matching $\ell_k$ in $P_k$ and a residue matching
+$\ell_{k+1}$ in $P_{k+1}$ determine a centered CRT representative.  If the
+labels differ, sufficiently many cross pairs have a nonzero representative of
+controlled size.  Squaring and summing these contributions produces the
+boundary floor.  Removing the exceptional primes costs only the already
+charged exception energy.
+\end{proof}
+
+An assignment of total energy at most $R$ can now be encoded by:
+\begin{enumerate}[label=(\roman*)]
+\item the set $H$ of hot blocks, where $Q_k\ge R_k$;
+\item the set $B$ of cold boundaries with a label mismatch;
+\item dyadic energy shells for the hot and exceptional parts;
+\item one label for each cold segment of blocks separated by $H\cup B$;
+\item the residual fiber inside these data.
+\end{enumerate}
+Every hot block and every mismatch boundary consumes a definite portion of the
+energy budget.  Cold labels propagate along a segment, and the fiber size is
+controlled by the exception charges.
+
+\begin{lemma}[Global level-set bound]\label{lem:level-set}
+For every $0<\varepsilon<1$ there are constants $A>0$ and $k_\varepsilon$ such
+that, for $k_0\ge k_\varepsilon$, $R\ge1$,
+\begin{equation}\label{eq:level-set}
+ \#\{a\in\mathcal A:\Qctrl(a)\le R\}
+ \le e^{A J}e^{8\varepsilon R}
+       \left(1+\frac{\sqrt R}{\sctrl}\right),
+\end{equation}
+where $J$ is the number of dyadic blocks.
+\end{lemma}
+
+\begin{proof}
+Sum the encoding fibers over $H$, $B$, the shells, and segment labels.  The
+weighted entropy sums for $H$ and $B$ each contribute at most
+$e^{2\varepsilon R+J}$; shell counting and exception fibers contribute another
+$e^{4\varepsilon R+A_0J}$.  Once a label is fixed on the first cold segment,
+propagation determines all other cold labels except across charged boundaries.
+The initial label has size $O(\sqrt R/\sctrl)$, because a diagonal label $m$
+already contributes $m^2\sctrl^2$.  Combining the factors and enlarging the
+constant of $J$ gives \eqref{eq:level-set}.
+\end{proof}
+
+\subsection{Localization outside the main assignment arc}
 
 Let
 \[
-        \mathcal P(k_0)=\bigcup_{k=k_0}^{3k_0}P_k.
+ \mathcal F_0=\min(R_{k_0},\Pi_{k_0})
 \]
-Put \(A=\sum_{p\in\mathcal P(k_0)}1/p\) and
-\(A_2=\sum_{p\in\mathcal P(k_0)}1/p^2\).  Unique factorization and the
-diagonal/off-diagonal decomposition give
-\begin{equation}\label{eq:pair-identity}
- \sum_{\substack{p,q\in\mathcal P(k_0)\\p<q}}\frac1{pq}
-        =\frac{A^2-A_2}{2}.
+be the global control floor.  Define the diagonal sector outside the label
+window by
+\[
+ \mathfrak D(C)=\left\{a:\exists m\in\Z,
+  a_p\equiv m\pmod p\ \forall p,\quad
+  |m|>C/\sctrl,\quad
+  \Qctrl(a)=m^2\sctrl^2\right\}.
+\]
+
+\begin{lemma}[Localization dichotomy]\label{lem:localization}
+For all sufficiently large $k_0$,
+\[
+ a\notin\mathfrak M(C)
+ \quad\Longrightarrow\quad
+ \Qctrl(a)\ge\mathcal F_0\quad\text{or}\quad a\in\mathfrak D(C).
+\]
+\end{lemma}
+
+\begin{proof}
+If a hot block exists, its local energy gives the first alternative.  If all
+blocks are cold but a boundary label changes, Lemma~\ref{lem:boundary-penalty}
+gives the first alternative.  Otherwise all blocks are cold, have no
+exceptions after the low-energy merger, and their labels agree.  Hence every
+residue is the reduction of one integer $m$.  If $|m|\le C/\sctrl$, then $a$ is
+in the main arc, contrary to the hypothesis.  Otherwise the CRT energy
+identity gives $\Qctrl(a)=m^2\sctrl^2$, so $a\in\mathfrak D(C)$.
+\end{proof}
+
+\subsection{High-energy absorption}
+
+\begin{lemma}[Laplace mass above the floor]\label{lem:floor-laplace}
+For every $c>0$ and $\eta>0$, after increasing $k_0$,
+\begin{equation}\label{eq:floor-laplace}
+ \sum_{\Qctrl(a)\ge\mathcal F_0}e^{-c\Qctrl(a)}
+ \le\frac{\eta}{\sctrl}.
 \end{equation}
-Since \(A\ge21/20\) by \eqref{eq:cumulative-mertens}, while the elementary
-telescoping estimate
+\end{lemma}
+
+\begin{proof}
+Choose $\varepsilon$ with $8\varepsilon<c$, and put
+$\bar c=(8\varepsilon+c)/2$.  Decompose assignment space into integer energy
+shells and apply Lemma~\ref{lem:level-set}; the factor
+$e^{8\varepsilon R}$ is summable against $e^{-\bar cR}$.  This gives a full
+Laplace bound of the form
 \[
-       A_2\le\sum_{n\ge2^{k_0}}\frac1{n^2}
-            \le\frac1{2^{k_0}-1}
+ \sum_a e^{-\bar c\Qctrl(a)}
+ \le e^{AJ}K_0\left(1+\frac1{\sctrl}\right).
 \]
-is small, the formal development derives
-\begin{equation}\label{eq:pair-mass}
- \sum_{\substack{p,q\in\mathcal P(k_0)\\p<q}}\frac1{pq}\ge\frac12
+On the sector $\Qctrl\ge\mathcal F_0$, factor out
+$e^{-(c-\bar c)\mathcal F_0}$.  The forcing floor grows fast enough with $k_0$
+to absorb both $e^{AJ}$ and the fixed $K_0$.  Since $\sctrl\le1$ at large
+scale, $1+1/\sctrl\le2/\sctrl$.  The remaining coefficient can therefore be
+made at most $\eta$.
+\end{proof}
+
+\subsection{The diagonal Gaussian sector}
+
+\begin{lemma}[Diagonal Gaussian tail]\label{lem:diagonal-tail}
+For every $c>0$ there is $C_{\mathrm{tail}}>0$ such that, for all large $k_0$
+and $C\ge1$,
+\begin{equation}\label{eq:diagonal-tail}
+ \sum_{a\in\mathfrak D(C)}e^{-c\Qctrl(a)}
+ \le \frac{C_{\mathrm{tail}}e^{-cC^2/2}}{\sctrl}.
 \end{equation}
-for all sufficiently large \(k_0\).  Equation~\eqref{eq:dyadic-density}
-provides the cardinality needed for the control system and the gadgets;
-equations~\eqref{eq:cumulative-mertens}--\eqref{eq:pair-mass} provide the
-reciprocal mass needed for the residual batch.
+\end{lemma}
 
-\section{The finite semiprime system}
-
-Fix a squarefree integer \(b\ge3\) and a finite obstruction set
-\(T\subset\N\).  All scales below are chosen after \(b\) and \(T\), and may
-therefore be made arbitrarily large.
-
-\subsection{Prime blocks and the common period}
-
-Choose a large lower scale \(k_0\) and a larger terminal scale \(K\).
-For each \(k_0\le k\le K\), choose a finite prime block
-\(P_k\subset[2^k,2^{k+1})\) satisfying the density supplied by
-\eqref{eq:dyadic-density}.  Let
+\begin{proof}
+A diagonal assignment is determined by its integer label, so the sum injects
+into
 \[
-        \mathcal B=\bigcup_{k=k_0}^{K}P_k
+ \sum_{|m|>C/\sctrl}e^{-cm^2\sctrl^2}.
 \]
-be the block support.  The scale is taken so large that every
-\(s\in\mathcal B\) exceeds \(b\) and every element of \(T\).
-Thus every block prime is coprime to \(b\).
+Split $cm^2\sctrl^2$ into two equal halves.  The window condition extracts
+$e^{-cC^2/2}$, while the remaining integer Gaussian sum is at most
+$1+6/\sqrt{c\sctrl^2/2}$.  For $\sctrl\le1$ this is bounded by a constant
+depending only on $c$, divided by $\sctrl$.
+\end{proof}
 
-The common Fourier period is
-\begin{equation}\label{eq:period}
-        L=b\prod_{s\in\mathcal B}s.
+\begin{proof}[Proof of Theorem~\ref{thm:global-partition}]
+Apply Lemma~\ref{lem:localization} and split the off-main sum into the two
+sectors.  Use Lemmas~\ref{lem:floor-laplace} and
+\ref{lem:diagonal-tail}, then add the bounds.
+\end{proof}
+
+A quantifier issue is worth recording.  The entropy factor in
+\eqref{eq:level-set} is $e^{AJ}$ with $A$ fixed before the final base-scale
+threshold.  It is not an arbitrary constant chosen after $k_0$.  This fixed
+order is what permits the control floor to absorb the entropy.
+
+\section{Reciprocal mass, edge families, and weights}\label{sec:mass}
+
+Condition $\mathbf M$ enters here and nowhere in the global-control proof.  Put
+\[
+   \Pk(k_0)=\bigcup_{k=k_0}^{3k_0}\Pk_k,
+   \qquad S_1=\sum_{p\in\Pk(k_0)}\frac1p,
+   \qquad S_2=\sum_{p\in\Pk(k_0)}\frac1{p^2}.
+\]
+For the products of two distinct primes,
+\begin{equation}\label{eq:pair-mass-id}
+ \sum_{\substack{p,q\in\Pk(k_0)\\p<q}}\frac1{pq}
+ =\frac{S_1^2-S_2}{2}.
 \end{equation}
-Each denominator constructed below divides \(L\).
-
-\subsection{Control edges}
-
-The block system contains two kinds of ordered prime pairs:
-pairs of distinct primes within one block, and selected bipartite pairs
-between adjacent blocks.  Their products form the control set
+Condition $\mathbf M$ gives $S_1\ge21/20$, while
 \[
-       E_{\mathrm{ctrl}}=\{pq:(p,q)\text{ is a control pair}\}.
+ S_2\le\sum_{n\ge2^{k_0}}\frac1{n^2}
+ \le\frac1{2^{k_0}-1}.
 \]
-Every control edge is a product of two distinct primes.  The product map is
-injective on ordered control pairs, so no multiplicity is lost when the pair
-system is replaced by a finite set of denominators.
+Thus, for $k_0\ge5$,
+\begin{equation}\label{eq:pair-mass-half}
+ \sum_{p<q}\frac1{pq}\ge\frac12.
+\end{equation}
 
-For a residue assignment \(a=(a_p)_{p\in\mathcal B}\), the control quadratic
-energy is a sum of squared circular distances attached to these pairs.  For
-an actual frequency \(h\), the assignment is \(a_p=h\bmod p\), and the
-formal identity identifying pair energy with denominator energy gives
+The final denominator family has three disjoint parts:
 \[
-       Q_{\mathrm{ctrl}}(a(h))\le Q_E(h)
+       E=\Ectrl\,\dot\cup\,\Emass\,\dot\cup\,\Egad.
 \]
-whenever the final edge set \(E\) contains \(E_{\mathrm{ctrl}}\).
-This inequality is the bridge from the combinatorial block system to the
-Fourier minor-arc estimate.
+The already defined $\Ectrl$ provides control energy.  The set $\Egad$ is the
+denominator-sensitive reservoir described in Section~\ref{sec:extra}.  Both are
+fixed before the mass batch is selected.  Their reciprocal load satisfies
+\begin{equation}\label{eq:base-load}
+ \sum_{e\in\Ectrl\cup\Egad}\frac1e<\frac{3}{2b},
+\end{equation}
+and in fact the control part is below $3/(4b)$ while the reservoir part tends
+to zero with the scale.
 
-The control reciprocal load can be made small by increasing \(k_0\), while
-its reciprocal-square load remains quantitatively visible.  Write
-\[
-       \sigma_{\mathrm{ctrl}}^2
-            =\sum_{e\in E_{\mathrm{ctrl}}}\frac1{e^2}.
-\]
-The number of internal pairs in the bottom block and
-\eqref{eq:dyadic-density} give a lower bound of the correct scale,
-\[
-       \sigma_{\mathrm{ctrl}}
-          \gg \frac{2^{-k_0}}{k_0},
-\]
-with an explicit weakened constant in Lean.  This lower bound later prevents
-the main-label window from becoming too large compared with the edge sizes.
+Remove from the product pool in \eqref{eq:pair-mass-half} the finite obstruction
+set $T$, the control products, and the reservoir products.  The forbidden load
+is strictly smaller than the surplus in \eqref{eq:pair-mass-half} at large
+scale.  Every remaining term is also smaller than $3/(2b)$ because its
+semiprime denominator is at least $2^{2k_0}$.
 
-\subsection{Denominator gadgets and the squarefree hypothesis}
-
-Let
-\[
-       R=\{r:r\text{ is prime and }r\mid b\}.
-\]
-Choose \(G\) distinct primes \(S=\{s_1,\ldots,s_G\}\) in a high block,
-for example at scale \(2k_0\).  Equation~\eqref{eq:dyadic-density} guarantees
-their existence once \(k_0\) is large.  The gadget edges are
-\[
-       E_{\mathrm{gad}}=\{rs:r\in R,\ s\in S\}.
-\]
-Because block primes exceed \(b\), one has \(r<s\), and every gadget is a
-squarefree semiprime.  Also \(rs\mid L\).
-
-Here the squarefree hypothesis is structural, not merely inherited from the
-necessary condition.  If integers \(h,m\) agree modulo every prime divisor
-of a squarefree \(b\), then they agree modulo \(b\).  Consequently, if \(h\)
-and \(m\) agree on all block-support residues but do not agree modulo the
-global period \(L\), then there is a prime \(r\mid b\) for which
-\[
-                   h\not\equiv m\pmod r.
-\]
-The implication fails for nonsquarefree moduli: agreement modulo every prime
-divisor of \(4\), for instance, does not imply agreement modulo \(4\).
-This is the precise point at which squarefreeness enters the extra-minor-arc
-argument.
-
-\subsection{The residual mass batch}
-
-Let the \emph{base edges} be
-\(E_{\mathrm{ctrl}}\cup E_{\mathrm{gad}}\).  By taking \(k_0\) large, their
-reciprocal load is made smaller than \(3/(2b)\).  The candidate mass pool
-consists of products \(pq\) with \(p<q\) in
-\(\mathcal P(k_0)\), after removing finitely many forbidden or conflicting
-edges.  The full pool has load at least \(1/2\) by
-\eqref{eq:pair-mass}; the formal forbidden-budget estimates show that the
-remaining pool still supplies the required residual mass.
-
-A finite greedy lemma is used in a particularly robust form.  If a finite
-set of positive summands has total mass at least a target and every individual
-summand is smaller than a prescribed gap, a subset can be chosen whose sum
-lies between the target and target plus the gap.  Applied to reciprocal
-semiprimes, it gives a mass batch \(Q\) disjoint from the base edges and from
-\(T\) such that the final edge set
-\[
-             E=E_{\mathrm{ctrl}}\cup Q\cup E_{\mathrm{gad}}
-\]
+\begin{lemma}[Greedy reciprocal window]\label{lem:greedy-window}
+Let $(x_i)_{i\in I}$ be a finite family of positive reals.  Suppose
+$\sum_i x_i\ge t$ and $x_i<g$ for every $i$.  Then some subset $J\subseteq I$
 satisfies
+\[
+          t\le\sum_{j\in J}x_j<t+g.
+\]
+\end{lemma}
+
+\begin{proof}
+Choose a subset minimal by inclusion among those whose sum is at least $t$.
+Removing any selected term drops the sum below $t$; hence the selected sum is
+less than $t+x_j<t+g$ for each selected $j$.  The empty case is excluded by
+$t>0$.
+\end{proof}
+
+Apply the lemma to the residual target
+$t=3/(2b)-\sum_{e\in\Ectrl\cup\Egad}1/e$ and gap $g=3/(2b)$.  It produces
+$\Emass$ such that
 \begin{equation}\label{eq:load-window}
        \frac{3}{2b}\le\sum_{e\in E}\frac1e<\frac3b.
 \end{equation}
-All edges are distinct squarefree semiprimes, avoid \(T\), and divide \(L\).
-
-Define the common Bernoulli parameter
-\begin{equation}\label{eq:theta}
-       \theta=\frac{1/b}{\sum_{e\in E}1/e}.
+Every element of $E$ is a distinct product of two distinct primes, avoids $T$,
+and divides the common period
+\begin{equation}\label{eq:period}
+       L=b\prod_{p\in\Bset}p.
 \end{equation}
-The load window gives
+
+Let $\Lambda=\sum_{e\in E}1/e$ and use the uniform weight
+\begin{equation}\label{eq:theta}
+       \theta=\frac{1/b}{\Lambda}.
+\end{equation}
+Then
 \begin{equation}\label{eq:theta-window}
-       \frac13\le\theta\le\frac23,
+       \frac13<\theta\le\frac23,
        \qquad
        \sum_{e\in E}\frac{\theta}{e}=\frac1b.
 \end{equation}
-The strict upper bound in \eqref{eq:load-window}, together with \(b\ge3\),
-also gives
-\[
-                   \sum_{e\in E}\frac1e<1.
-\]
-This is the no-wrap condition needed to turn a congruence modulo \(L\) into
-an exact reciprocal-sum equality.
+The upper load bound and $b\ge3$ also give $\Lambda<1$, which is the no-wrap
+condition \eqref{eq:no-wrap}.
 
-\section{The weighted circle method}
-
-\subsection{The weighted count}
-
-Select each \(e\in E\) independently with probability \(\theta\).  For
-\(A\subseteq E\), put
-\[
-       w(A)=\prod_{e\in A}\theta\prod_{e\in E\setminus A}(1-\theta).
-\]
-The weighted count
-\begin{equation}\label{eq:wcount}
- W(E,\theta,b)
-  =\sum_{\substack{A\subseteq E\\\sum_{e\in A}1/e=1/b}}w(A)
+Finally the inverse-square load obeys
+\begin{equation}\label{eq:square-load}
+       \sum_{e\in E}\frac1{e^2}\le S_{\mathrm{load}}\sctrl^2
 \end{equation}
-is nonnegative.  If it is positive, at least one subset \(A\) supplies the
-desired avoiding representation of \(1/b\).
-
-Since every \(e\mid L\), the condition in \eqref{eq:wcount} can be tested
-modulo \(L\).  The no-wrap inequality ensures
+for an absolute $S_{\mathrm{load}}\ge1$.  Hence, with
 \[
-  \sum_{e\in A}\frac1e=\frac1b
-  \quad\Longleftrightarrow\quad
-  \sum_{e\in A}\frac{L}{e}\equiv\frac{L}{b}\pmod L.
+       \sE^2=\sum_{e\in E}\frac{\theta(1-\theta)}{e^2},
 \]
-Finite Fourier orthogonality on \(\Z/L\Z\) therefore gives the exact identity
-\begin{equation}\label{eq:fourier}
- L\,W(E,\theta,b)
-   =\sum_{h=0}^{L-1}
-       \left(
-       \prod_{e\in E}
-          \left((1-\theta)+\theta
-             \exp\!\left(2\pi i\,\frac{h}{e}\right)\right)
-       \right)
-       \exp\!\left(-2\pi i\,\frac{h}{b}\right).
+there is a constant $K_\sigma\ge1$ such that
+\begin{equation}\label{eq:variance-comparison}
+ \sqrt{\frac29}\,\sctrl\le\sE\le K_\sigma\sctrl.
 \end{equation}
-The proof now separates a symmetric set of main frequencies from its
-complement.
+The lower bound uses the control edges and the minimum of
+$\theta(1-\theta)$ on $[1/3,2/3]$; the upper bound uses
+\eqref{eq:square-load} and $\theta(1-\theta)\le1/4$.
 
-\subsection{Variance and the main arcs}
+\section{The main Fourier arcs}\label{sec:main}
 
-Set
-\begin{equation}\label{eq:sigma}
-       \sigma_E^2
-          =\sum_{e\in E}\frac{\theta(1-\theta)}{e^2}.
+Choose a cutoff $C\ge3$ and
+\begin{equation}\label{eq:N}
+       N=\left\lceil\frac C{\sctrl}\right\rceil.
 \end{equation}
-Because \(\theta\in[1/3,2/3]\) and \(E\ne\varnothing\), this variance is
-positive.  The control edges give the lower comparison
-\[
-       \sigma_E^2\ge\frac29\,\sigma_{\mathrm{ctrl}}^2.
-\]
-The non-control edges are chosen sufficiently large that their
-reciprocal-square contribution is controlled, yielding a corresponding
-upper comparison
-\[
-       \sigma_E\le 501\,\sigma_{\mathrm{ctrl}}
-\]
-in the released quantitative assembly.
-
-Let
-\[
-      N=\left\lceil \frac{C}{\sigma_{\mathrm{ctrl}}}\right\rceil
-\]
-for a constant \(C\ge3\) selected after the global-control tail constants.
-The main frequencies are canonically labelled by integers
-\(-N\le m\le N\).  At label \(m\), the Fourier summand is
-\begin{equation}\label{eq:label-term}
- T_m=
-   \left(\prod_{e\in E}
-      \bigl((1-\theta)+\theta\e^{2\pi i m/e}\bigr)\right)
-      \e^{-2\pi i m/b}.
+After increasing $k_0$, the following hold simultaneously:
+\begin{equation}\label{eq:window-geometry}
+ 2N<2^{2k_0},\qquad 2N+1\le L,
+ \qquad \frac1{\sE}\le N.
 \end{equation}
-For \(|m|/e\le1/10\), the logarithm of each Bernoulli factor has a verified
-third-order expansion.  Summing it over \(E\), and using the exact mass
-identity in \eqref{eq:theta-window}, cancels the linear phase against the
-target factor:
+The first inequality is used by the reservoir labels, the second makes the
+signed labels inject into $\Z/L\Z$, and the third provides enough Gaussian
+mass.
+
+For $|m|\le N$, let
 \[
- \log T_m
-   =-2\pi^2m^2\sigma_E^2+\delta_m,
+ T_m=\prod_{e\in E}\bigl((1-\theta)+\theta e^{2\pi i m/e}\bigr)
+       e^{-2\pi i m/b}.
+\]
+The exact mass identity in \eqref{eq:theta-window} cancels the linear term in
+the logarithm.  A uniform third-order expansion of the Bernoulli
+characteristic function gives
+\begin{equation}\label{eq:main-expansion}
+ \log T_m=-2\pi^2m^2\sE^2+\delta_m,
  \qquad
- |\delta_m|
-   \le 100000\sum_{e\in E}\left|\frac m e\right|^3.
-\]
-The large-scale inequalities in the construction ensure that the final
-remainder is at most \(1/10\) throughout the label window.  Hence
-\[
-      \Re T_m
-        \ge 0.8\,\exp(-2\pi^2m^2\sigma_E^2).
-\]
-A finite Gaussian-sum lower bound and \(N\ge1/\sigma_E\) then imply
+ |\delta_m|\le C_3\sum_{e\in E}|m/e|^3.
+\end{equation}
+The scale inequality $2N<2^{2k_0}$ puts every $m/e$ in the Taylor disk, and the
+inverse-square load plus eventual exponential domination makes the remainder
+at most $1/10$.  Therefore
+\begin{equation}\label{eq:per-main-lower}
+        \Re T_m\ge0.8e^{-2\pi^2m^2\sE^2}.
+\end{equation}
+Conjugate symmetry gives $T_{-m}=\overline{T_m}$, so the main sum is real.  An
+elementary finite Gaussian lower bound yields
 \begin{equation}\label{eq:main-lower}
  \Re\sum_{|m|\le N}T_m
-   \ge
-   \frac{c_3}{\sigma_E},
+ \ge\frac{c_3}{\sE},
  \qquad
- c_3=0.8\,\frac{\exp(-\pi^2/2)}2.
+ c_3=0.8\frac{e^{-\pi^2/2}}2>0.
 \end{equation}
-Moreover \(T_{-m}=\overline{T_m}\), so the main sum is real.
 
-\subsection{The block-minor lane}
-
-For \(t\in\R\), let \(\|t\|\) denote distance to the nearest integer.  The
-squared modulus of a Bernoulli factor is
+For every frequency, the Bernoulli factor satisfies
 \[
-  \left|(1-\theta)+\theta\e^{2\pi i t}\right|^2
-   =1-4\theta(1-\theta)\sin^2(\pi t).
+ \left|(1-\theta)+\theta e^{2\pi it}\right|^2
+ =1-4\theta(1-\theta)\sin^2(\pi t).
 \]
-The formal minor-arc inequality weakens this to an exponential:
-\[
-  \left|\prod_{e\in E}
-       \bigl((1-\theta)+\theta\e^{2\pi i h/e}\bigr)\right|
-       \le
-       \exp\!\left(-\frac{16}{9}Q_E(h)\right),
-\]
-where \(Q_E(h)\) is the sum of suitable squared circular distances.
-
-A frequency is placed in the block-minor lane when its residue assignment on
-the block support is outside the global-control main arc.  Since
-\(Q_{\mathrm{ctrl}}(a(h))\le Q_E(h)\), the global-control partition theorem
-bounds the sum of the exponential energies over all such assignments by
-\[
- \frac{\eta+C_{\mathrm{tail}}
-     \exp(-C^2(16/9)/2)}
-      {\sigma_{\mathrm{ctrl}}}.
-\]
-The map from frequencies modulo \(L\) to assignments on the block-support
-primes is not injective: the factor \(b\) in \eqref{eq:period} remains.
-The proof therefore uses a bounded-multiplicity form of the estimate, with
-multiplicity at most \(b\).  Parameters \(\eta\) and \(C\) are chosen so that
-the resulting block-minor contribution is a small fixed fraction of
-\(c_3/\sigma_E\).
-
-\subsection{The extra-minor lane}
-
-The remaining minor frequencies resemble a main label on every block prime.
-Let \(h\) be such a frequency and let \(m\) be its block label.  It is not a
-genuine main frequency, so \(h\not\equiv m\pmod L\).  By the squarefree CRT
-step from Section~4.3, there is a prime \(r\mid b\) such that
-\(h\not\equiv m\pmod r\), while for every gadget prime \(s\in S\),
-\[
-                   h\equiv m\pmod s.
-\]
-Each gadget edge \(rs\) then contributes genuine Fourier damping.  Uniformly
-for \(\theta\in[1/3,2/3]\), the product over a \(G\)-element gadget reservoir
-is bounded by
-\begin{equation}\label{eq:gadget-damp}
- \left(\sqrt{1-\frac{8}{9r^2}}\right)^G
- \le
- \left(\sqrt{1-\frac{8}{9b^2}}\right)^G.
+Using $\theta\in[1/3,2/3]$ and the elementary lower bound for
+$\sin^2(\pi t)$ in terms of $\normdist t^2$ gives
+\begin{equation}\label{eq:fourier-energy}
+       |F(h)|\le e^{-(16/9)\QE(h)}.
 \end{equation}
-The number of extra frequencies is bounded by \(b(2N+1)\): each block label
-has at most \(b-1\) non-main siblings in the CRT fiber.  Since the base in
-\eqref{eq:gadget-damp} is strictly less than \(1\), \(G\) is chosen so that
-the entire extra-minor sum is another small fixed fraction of
-\(c_3/\sigma_E\).  The dyadic prime-density estimate ensures that the chosen
-high block contains \(G\) distinct gadget primes.
+This is the handoff from Fourier factors to the two minor-energy estimates.
 
-\subsection{Positivity}
+\section{The block-minor fiber estimate}\label{sec:block-minor}
 
-The terminal parameter order is important.  First the universal
-global-control and main-term constants are fixed.  Then \(G\) is chosen to
-force the gadget damping.  Finally \(k_0\) is taken large enough to satisfy
-simultaneously:
-
-\begin{itemize}
-\item the prime-cardinality requirements for the block system and gadgets;
-\item the reciprocal-mass and forbidden-budget requirements for \(Q\);
-\item avoidance of the prescribed finite set \(T\);
-\item the control-load and reciprocal-square comparisons;
-\item \(2N+1\le L\), so the main labels inject into residues modulo \(L\);
-\item the per-edge and cubic Taylor bounds on the main arcs.
-\end{itemize}
-
-With these choices, the real lower bound
-\eqref{eq:main-lower} strictly exceeds the norm of the two minor-lane sums.
-The imaginary part of the main sum is zero.  Therefore the full Fourier sum
-in \eqref{eq:fourier} has positive real part, and
+Map a frequency $h\pmod L$ to its block assignment
 \[
-                       W(E,\theta,b)>0.
+       a(h)=(h\pmod p)_{p\in\Bset}.
 \]
-A subset \(A\subseteq E\) with \(\sum_{e\in A}1/e=1/b\) follows.  Its
-members are distinct squarefree semiprimes and avoid \(T\).  This proves the
-analytic unit-numerator theorem for squarefree \(b\ge3\).
-
-\section{From unit numerators to the headline theorem}
-
-We now complete the arithmetic reductions.
-
-\begin{proposition}[Avoiding unit fractions]\label{prop:unit}
-For every squarefree \(b\ge1\) and every finite \(T\subset\N\), there is a
-finite set \(S\) of squarefree semiprimes such that
-\(S\cap T=\varnothing\) and
+The block-minor sector consists of frequencies for which
+$a(h)\notin\mathfrak M(C)$.  The full period has the form
+$L=b\prod_{p\in\Bset}p$, so fixing all block residues leaves at most $b$
+frequencies modulo $L$.  More generally, write
 \[
-                         \sum_{n\in S}\frac1n=\frac1b.
+       Q_{\mathrm{extra}}(h)=\QE(h)-\Qctrl(a(h))\ge0.
 \]
+Then each assignment fiber satisfies
+\begin{equation}\label{eq:fiber-tail}
+ \sum_{\substack{h\text{ in block sector}\\a(h)=a}}
+ e^{-(16/9)Q_{\mathrm{extra}}(h)}\le b.
+\end{equation}
+This includes the bounded-cardinality argument, because every summand is at
+most $1$.
+
+Reindexing by fibers and using \eqref{eq:control-full-energy},
+\begin{align}
+ \sum_{h\text{ in block sector}}e^{-(16/9)\QE(h)}
+ &\le
+ b\sum_{a\notin\mathfrak M(C)}e^{-(16/9)\Qctrl(a)}\\
+ &\le
+ \frac{b\bigl(\eta+C_{\mathrm{tail}}e^{-(16/9)C^2/2}\bigr)}{\sctrl}.
+ \label{eq:block-budget}
+\end{align}
+Together with \eqref{eq:fourier-energy}, this is the full block-minor norm
+budget.  The factor $b$ is not hidden in a generic big-$O$: it is the exact
+CRT fiber multiplicity caused by the denominator factor in $L$.
+
+\section{Squarefree CRT and reservoir damping}\label{sec:extra}
+
+The remaining minor frequencies have block assignments in
+$\mathfrak M(C)$.  Thus each carries an integer label $m$ with
+$|m|\le C/\sctrl\le N$ and
+\begin{equation}\label{eq:block-agreement}
+       h\equiv m\pmod p\qquad(p\in\Bset).
+\end{equation}
+A genuine main frequency is the residue of that same integer $m$ modulo $L$.
+The extra sector consists of the other frequencies in the same block fiber.
+There are at most $b-1$ siblings for each label and at most $2N+1$ labels, so
+\begin{equation}\label{eq:extra-count}
+       |S_{\mathrm{extra}}|\le b(2N+1).
+\end{equation}
+
+Let $R$ be the set of prime divisors of $b$.  Since $b$ is squarefree,
+congruence modulo every $r\in R$ implies congruence modulo $b$.
+The block primes are coprime to $b$, so the Chinese remainder theorem gives:
+
+\begin{lemma}[Squarefree sibling mismatch]\label{lem:sibling-mismatch}
+If \eqref{eq:block-agreement} holds but $h\not\equiv m\pmod L$, then there is
+$r\mid b$, $r$ prime, such that $h\not\equiv m\pmod r$.
+\end{lemma}
+
+\begin{proof}
+If $h\equiv m$ modulo every prime divisor of $b$, squarefreeness gives
+$h\equiv m\pmod b$.  Together with \eqref{eq:block-agreement} and coprimality
+of $b$ with the block-prime product, this gives $h\equiv m\pmod L$, a
+contradiction.
+\end{proof}
+
+For every $r\mid b$, choose a common set $S$ of $G$ large block primes, all at
+scale at least $2^{2k_0}$, and include the reservoir edges
+\begin{equation}\label{eq:reservoir}
+        \Egad=\{rs:r\mid b\text{ prime},\ s\in S\}.
+\end{equation}
+The labels obey $2|m|<s$ by \eqref{eq:window-geometry}.  For the mismatch prime
+$r$ supplied by Lemma~\ref{lem:sibling-mismatch}, every $s\in S$ satisfies
+$h\equiv m\pmod s$ and $h\not\equiv m\pmod r$.  The Bernoulli factor at $rs$
+therefore has the uniform bound
+\begin{equation}\label{eq:one-gadget}
+ \left|(1-\theta)+\theta e^{2\pi ih/(rs)}\right|
+ \le\sqrt{1-\frac{8}{9r^2}}
+ \le\sqrt{1-\frac{8}{9b^2}}=:\beta_b<1.
+\end{equation}
+All other factors have norm at most $1$, so
+\begin{equation}\label{eq:multi-gadget}
+       |F(h)|\le\beta_b^G.
+\end{equation}
+Choose a target damping $D_{\mathrm{mp}}>0$ and then choose $G$ so that
+$\beta_b^G\le D_{\mathrm{mp}}$.  By \eqref{eq:extra-count},
+\begin{equation}\label{eq:extra-budget}
+ \sum_{h\in S_{\mathrm{extra}}}|F(h)|
+ \le b(2N+1)D_{\mathrm{mp}}.
+\end{equation}
+Condition $\mathbf D$ guarantees the existence of $G$ distinct primes in the
+chosen high block.  The proof has separated the two mechanisms: the CRT lemma
+chooses the mismatch prime, while the reservoir lemma aggregates a uniformly
+bounded product of contractions.
+
+\section{Terminal parameter compatibility and proof of the structural theorem}
+\label{sec:terminal}
+
+The construction contains many eventual inequalities, but no circular choice
+is needed.  This section records the exact hierarchy.
+
+Let $c_3$ be the main constant in \eqref{eq:main-lower}.  Let
+$S_{\mathrm{load}}$ be the inverse-square constant in
+\eqref{eq:square-load}, and choose $K_\sigma\ge1$ with
+$S_{\mathrm{load}}\le4K_\sigma^2$, so that the upper variance comparison in
+\eqref{eq:variance-comparison} holds.
+
+\begin{enumerate}[label=\textbf{Step \arabic*.}]
+\item Fix the block-minor tolerance
+\begin{equation}\label{eq:eta-choice}
+       \eta=\frac{c_3}{4K_\sigma b}.
+\end{equation}
+Theorem~\ref{thm:global-partition} then returns a fixed
+$C_{\mathrm{tail}}$ and a base-scale threshold.
+
+\item Choose $C\ge3$ so large that
+\begin{equation}\label{eq:gaussian-quarter}
+ bC_{\mathrm{tail}}e^{-(16/9)C^2/2}
+       <\frac{c_3}{4K_\sigma}.
+\end{equation}
+This choice is made before $k_0$.
+
+\item Put
+\begin{equation}\label{eq:Dmp}
+ D_{\mathrm{mp}}
+ =\frac{c_3}{4K_\sigma b(2C+3)}.
+\end{equation}
+Since $\beta_b<1$, choose $G\ge1$ such that $\beta_b^G\le D_{\mathrm{mp}}$.
+
+\item Choose the bottom scale $k_0$ after all previous constants.  It must
+simultaneously dominate the thresholds for:
+\begin{enumerate}[label=(\alph*)]
+\item the global-control partition;
+\item the dyadic cardinality needed for $G$ reservoir primes;
+\item the reciprocal-window condition $\mathbf M$ and the pair-pool mass;
+\item the small control and reservoir base load;
+\item avoidance of $T$ and separation from the prime divisors of $b$;
+\item the lower bound \eqref{eq:sctrl-lower};
+\item the main-window inequalities \eqref{eq:window-geometry};
+\item the Taylor remainder in \eqref{eq:main-expansion};
+\item the inverse-square comparison \eqref{eq:square-load}.
+\end{enumerate}
+Every item is eventual in $k_0$ after $b,T,C,G$ are fixed, so their finite
+maximum is admissible.
+\end{enumerate}
+
+The single terminal budget is
+\begin{equation}\label{eq:terminal-budget}
+ b\eta+bC_{\mathrm{tail}}e^{-(16/9)C^2/2}
+       +bD_{\mathrm{mp}}(2C+3)
+       <\frac{c_3}{K_\sigma}.
+\end{equation}
+The first and third terms are exactly one quarter of $c_3/K_\sigma$, the
+second is strictly less than one quarter, and one quarter is left as slack.
+
+Because $N=\lceil C/\sctrl\rceil$,
+\begin{equation}\label{eq:N-sigma}
+       (2N+1)\sctrl\le2C+3.
+\end{equation}
+Multiplying \eqref{eq:block-budget} and \eqref{eq:extra-budget} by the
+appropriate variance normalization and using
+$\sE\le K_\sigma\sctrl$, the terminal budget implies
+\begin{equation}\label{eq:minor-beat}
+ \sum_{h\in S_m}|F(h)|<\frac{c_3}{\sE}.
+\end{equation}
+The main sum is real and is at least $c_3/\sE$ by
+\eqref{eq:main-lower}.  Lemma~\ref{lem:spectral-selection} therefore selects a
+subset $A\subseteq E$ with
+\[
+       \sum_{e\in A}\frac1e=\frac1b.
+\]
+The construction of $E$ guarantees that its elements are distinct squarefree
+semiprimes and avoid $T$.  This proves
+Theorem~\ref{thm:structural-construction}.
+
+\begin{remark}[What the terminal certificate prevents]
+The order above prevents four hidden circularities: $C$ is not chosen before
+the tail constant is known; $G$ is not chosen before the extra-frequency
+budget is fixed; $k_0$ is not used to define a constant that it must later
+absorb; and the reciprocal-mass batch is selected only after the control and
+reservoir loads have been budgeted.
+\end{remark}
+
+\section{The Rosser--Schoenfeld backend}\label{sec:RS}
+
+The released proof does not assume $\mathbf D$ and $\mathbf M$ as unexplained
+axioms.  It derives them from two exact statements in
+\RS~\cite{RosserSchoenfeld1962}.
+
+\begin{proposition}[\RS, Corollary 3, equation (3.8)]\label{prop:RS-density}
+For $x\ge41/2$,
+\begin{equation}\label{eq:RS-density}
+ \frac{3x}{5\log x}
+ <\pi(\lfloor2x\rfloor)-\pi(\lfloor x\rfloor).
+\end{equation}
+\end{proposition}
+
+\begin{proposition}[\RS, Theorem 5, equations (3.17)--(3.18)]
+\label{prop:RS-Mertens}
+There is one real constant $B$ such that
+\begin{align}
+ x>1&\Longrightarrow
+ \log\log x+B-\frac1{2(\log x)^2}
+ <\sum_{p\le\lfloor x\rfloor}\frac1p,
+ \label{eq:RS-lower}\\
+ x\ge286&\Longrightarrow
+ \sum_{p\le\lfloor x\rfloor}\frac1p
+ <\log\log x+B+\frac1{2(\log x)^2}.
+ \label{eq:RS-upper}
+\end{align}
+\end{proposition}
+
+\begin{proposition}[Rosser--Schoenfeld implies $\mathbf D$]
+Proposition~\ref{prop:RS-density} implies Definition~\ref{def:D}.
 \end{proposition}
 
 \begin{proof}
-The case \(b\ge3\) is the circle-method construction.  For \(b=2\), choose
-an avoiding representation of \(1/3\), then an avoiding representation of
-\(1/6\) disjoint from both \(T\) and the first set, and use
-\(1/2=1/3+1/6\).  For \(b=1\), successively choose disjoint avoiding
-representations of \(1/2\), \(1/3\), and \(1/6\), and use
-\(1=1/2+1/3+1/6\).
+Set $x=2^k$.  For $k\ge5$, $x\ge32>41/2$, and the powers of $2$ at the two
+endpoints are composite.  Thus the prime-counting difference in
+\eqref{eq:RS-density} is exactly $|\Pk_k|$.  Finally
+\[
+       \frac{x}{2\log x}\le\frac{3x}{5\log x}.
+\]
 \end{proof}
 
-\begin{proposition}[Numerator reduction]\label{prop:numerator}
-Let \(a\ge1\), let \(b\) be squarefree, and let \(T\subset\N\) be finite.
-There is a finite set \(S\) of squarefree semiprimes, disjoint from \(T\),
-with
-\[
-                         \sum_{n\in S}\frac1n=\frac ab.
-\]
+\begin{proposition}[Rosser--Schoenfeld implies $\mathbf M$]
+Proposition~\ref{prop:RS-Mertens} implies Definition~\ref{def:M}; one may take
+$k_1=20$.
 \end{proposition}
 
 \begin{proof}
-Induct on \(a\).  For the successor step, apply the induction hypothesis to
-obtain \(S\), and apply Proposition~\ref{prop:unit} with obstruction
-\(T\cup S\) to obtain a representation \(U\) of \(1/b\).  Then \(S\cap U\)
-is empty and
+The inclusive union of blocks $k_0,\ldots,3k_0$ is exactly the primes in
+$[2^{k_0},2^{3k_0+1})$.  Apply \eqref{eq:RS-lower} at
+$x=2^{3k_0+1}$ and \eqref{eq:RS-upper} at $x=2^{k_0}$, then subtract.  The
+constant $B$ cancels.  The logarithmic main term is
 \[
-        \sum_{n\in S\cup U}\frac1n
-          =\frac ab+\frac1b=\frac{a+1}{b}.
+ \log\log(2^{3k_0+1})-\log\log(2^{k_0})
+ =\log\frac{3k_0+1}{k_0}\ge\log3>1.06.
 \]
+For $k_0\ge20$, each error term
+$1/(2\log^2(2^m))$ is less than $0.003$.  Hence the difference is greater than
+$1.06-0.006=1.054>21/20$.
 \end{proof}
 
-For a positive rational \(q\), Lean's reduced numerator and denominator
-satisfy \(q=a/b\) with \(a>0\), \(b>0\), and \(\gcd(a,b)=1\).
-Proposition~\ref{prop:numerator}, with \(T=\varnothing\), yields a nonempty
-finite set \(S\).  Ordering \(S\) increasingly produces the denominators in
-Theorem~\ref{thm:main}.  The formal lemma for semiprimes proves
-\(\omega(n)=\Omega(n)=2\), and the sum is transported from the finite set to
-the ordered index interval.
+Combining these propositions with Corollary~\ref{cor:structural-E306} proves
+the sufficiency direction of Theorem~\ref{thm:headline}; the necessity was
+proved in Section~1.
 
-\section{Trust boundary}
+\section{Formal statement and exact trust boundary}\label{sec:trust}
 
-The article and the Lean release have different evidentiary statuses.
+The released Lean theorem uses the exact proposition
+\begin{align*}
+ \forall q\in\Q,\quad &0<q\to\operatorname{Squarefree}(q.\mathrm{den})\to\\
+ &\exists k\in\N\ \exists n:\operatorname{Fin}(k+1)\to\N,\quad
+ n(0)=1,\quad n\text{ strictly increasing},\\
+ &\omega(n_i)=\Omega(n_i)=2\ (1\le i\le k),\qquad
+ q=\sum_{i=1}^k\frac1{n_i}.
+\end{align*}
+The value $n(0)=1$ is a dummy anchor.  Restricting the increasing map to the
+remaining indices gives the distinct denominators in the paper statement.
 
-\paragraph{Kernel-checked mathematics.}
-At the immutable software release
+\subsection{Immutable released evidence}
+
+The controlling proof object is
 \[
-\texttt{v0.0.3@4582185de1e0e27416e9362e0cc7943c3d2fb4fe},
+ \texttt{v0.0.3@4582185de1e0e27416e9362e0cc7943c3d2fb4fe},
 \]
-the headline theorem and every imported proof module are checked by the
-Lean kernel, conditional on the declarations in the environment.  The exact
-axiom audit of the headline theorem reports
-\[
-\begin{gathered}
+archived as \cite{TangErdos306v003} with DOI
+\texttt{10.5281/zenodo.20767390}.  Its audit reports exactly
+\begin{gather*}
  \texttt{propext},\qquad
  \texttt{Classical.choice},\qquad
  \texttt{Quot.sound},\\
  \texttt{RosserSchoenfeld.rosser\_schoenfeld\_cor3},\\
  \texttt{RosserSchoenfeld.rosser\_schoenfeld\_thm5}.
-\end{gathered}
-\]
-The first three are standard Lean foundations.  The last two are exactly
-Propositions~\ref{prop:rs-dyadic} and~\ref{prop:rs-mertens}.
+\end{gather*}
+The first three are standard Lean foundations.  The last two are precisely
+Propositions~\ref{prop:RS-density} and~\ref{prop:RS-Mertens}.  No structural
+PNT axiom, asymptotic Mertens axiom, or construction-local analytic axiom
+occurs in that released audit.
 
-\paragraph{Source transcription.}
-The two \RS\ statements are not proved inside Lean.  Their released
-declarations identify the primary source as Corollary~3, equation~(3.8),
-page~69, and Theorem~5, equations~(3.17)--(3.18), page~70, respectively.
-The bibliography and release metadata identify the 1962 article and DOI.
-A final submission workflow should retain a visual comparison against the
-publisher scan as a discrete editorial check.
+\subsection{Architecture context versus formal authority}
 
-\paragraph{Expository reconstruction.}
-The prose above is a reconstruction of the checked declaration graph.  It is
-not itself kernel checked, and it deliberately does not replace the exact
-formal objects by an alleged shorter proof.  The accompanying proof ledger
-records which statements are named kernel-checked declarations, which are
-source transcriptions, and which are expository composites.
+A later frozen development line,
+\begin{center}
+\texttt{codex/pushlinter@}\\[-2pt]
+\texttt{e55ef359a8b98525f0bac6c7a510fcad94469bff},
+\end{center}
+reorganizes the proof around structural analytic inputs, finite spectral
+selection, global control, and a resonant semiprime construction.  Its
+mathematical node graph is the source of the exposition order in this paper.
+It is not the released proof authority, has not received the complete local
+verification packet prescribed by the accepted RV1 review, and must not be
+used to overwrite the released axiom statement.  The correspondence file
+records both maps separately.
 
-\section{Reproducibility and versioning}
+\subsection{Paper-proof status}
 
-The software authority for this manuscript is the archived release
-\cite{TangErdos306v003}, DOI
-\[
-                     \texttt{10.5281/zenodo.20767390}.
-\]
-The DOI, release tag, and commit identify the proof object.  A checkout of
-that commit uses Lean~4.28.0 and Mathlib~4.28.0.  The released verification
-commands are
+The present text is intended to be self-contained at paper level.  It states
+the structural hypotheses, proves their use in the construction, isolates the
+four principal minor-arc mechanisms, and derives the structural hypotheses
+from the exact Rosser--Schoenfeld backend.  It is nevertheless not itself a
+kernel object.  Independent mathematical review of the global-control
+encoding, the block-fiber transfer, the reservoir damping, and the terminal
+constant hierarchy remains an arXiv gate rather than a hidden claim.
+
+\section{Reproducibility, novelty, and disclosure}
+
+A clean checkout of the released commit uses Lean~4.28.0 and Mathlib~4.28.0.
+The release verification commands are
 \begin{verbatim}
 cd lean
 lake exe cache get
 lake build
 lake env lean RequestProject/Audit.lean
 \end{verbatim}
-The final command prints the exact axiom audit discussed above.
+The final command prints the five-item axiom set above.  The archived release,
+not this manuscript branch or the frozen refactor branch, is the stable proof
+citation.
 
-The manuscript version ``v1'' is not software version ``v0.0.3''.  This
-article describes the immutable release even if later development branches
-refactor modules, improve exposition, or replace the two \RS\ axioms by
-formal proofs.  Such future work does not retroactively alter the authority
-of the DOI or the claims made here.  In particular, the frozen development
-line mentioned in project coordination is contextual only and is not used as
-proof authority in this manuscript.
+The conservative novelty claim is that the archived software contains a
+machine-checked proof of the stated Formal Conjectures formulation of Erd\H{o}s
+Problem~306, conditional on the two explicitly identified
+Rosser--Schoenfeld statements, and that this manuscript reconstructs the proof
+through a structural principle/handoff architecture.  It does not claim peer
+review or independent verification.  The benchmark statement is associated
+with Formal Conjectures~\cite{FormalConjectures2026}; the historical problem
+source is cited as~\cite{ErdosGraham1980}.
 
-\section{Novelty, priority, and assistance}
+The project used AI-assisted mathematical exploration, Lean development,
+source organization, and manuscript drafting.  Responsibility for the
+mathematical claims, source selection, and final submitted text remains with
+the author.  The exact disclosure and acknowledgements are retained editorial
+decisions.
 
-The conservative claim made here is that the cited software release contains
-a machine-checked proof of the stated formulation of Erdős Problem~306,
-modulo the two explicitly named \RS\ inputs, and that the present manuscript
-reconstructs that released argument.  This draft does not assert peer review,
-independent verification, or priority beyond what is evidenced by the public
-repository history and archived release.  The formal statement is aligned
-with the Formal Conjectures benchmark~\cite{FormalConjectures2026}; the
-historical problem source is cited as~\cite{ErdosGraham1980}.
+\appendix
 
-The proof development used AI-assisted theorem-proving and software-engineering
-workflows.  Authorship, contribution wording, and the final disclosure text
-for an arXiv submission remain editorial decisions and are listed in the
-accompanying open-questions file.
+\section{Dependency index for independent review}
+
+The proof of Theorem~\ref{thm:structural-construction} can be audited in the
+following order.
+\begin{enumerate}
+\item Verify the finite spectral identity and selection lemma
+      (Section~\ref{sec:spectral}).
+\item Verify the CRT energy identity and the control variance bounds
+      (Section~\ref{sec:control}).
+\item Verify cold-block decoding, adjacent mismatch energy, the level-set
+      count, localization, high-floor Laplace absorption, and the diagonal
+      Gaussian tail (Section~\ref{sec:global}).
+\item Verify the pair-pool identity, forbidden-load subtraction, and greedy
+      window, followed by the weight and variance comparisons
+      (Section~\ref{sec:mass}).
+\item Verify the Bernoulli Taylor remainder and finite Gaussian lower bound
+      (Section~\ref{sec:main}).
+\item Verify the exact $b$-to-$1$ block fiber and the reindexing inequality
+      (Section~\ref{sec:block-minor}).
+\item Verify the squarefree CRT mismatch, label gap, extra-frequency count,
+      and product damping (Section~\ref{sec:extra}).
+\item Verify the order of choices and terminal budget
+      (Section~\ref{sec:terminal}).
+\item Verify the two endpoint derivations from Rosser--Schoenfeld
+      (Section~\ref{sec:RS}).
+\item Verify the small-denominator and numerator reductions (Section~2).
+\end{enumerate}
+
+\section{Status vocabulary}
+
+\begin{description}
+\item[\status{Released checked}.]  An exact declaration is in the immutable
+release and is accepted by its Lean kernel environment.
+\item[\status{Source-transcribed input}.]  An external theorem is represented
+as an axiom with an exact source location.
+\item[\status{Paper reconstruction}.]  The statement is proved or assembled in
+this article but the prose is not a Lean term.
+\item[\status{Frozen architecture context}.]  A later refactor gives a cleaner
+mathematical name or dependency boundary, but is not cited as released proof
+authority.
+\item[\status{Review gate}.]  A source comparison, independent proof review, or
+publication decision remains outstanding.
+\end{description}
 
 \bibliographystyle{alpha}
 \bibliography{references}
