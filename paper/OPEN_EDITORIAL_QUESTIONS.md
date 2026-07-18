@@ -1,116 +1,59 @@
-# Open editorial and publication decisions — Erdős 306 manuscript
+# Erdős 306 open editorial questions
 
-This file contains decisions that the bounded manuscript worker must not make unilaterally. Mathematical defects belong in `PROOF_LEDGER.md`; objective submission gates belong in `ARXIV_CHECKLIST.md`.
+Workstream: `E306-P1-RECOVERY`
 
-## 1. Title and framing
+Scope: retained author, presentation, packaging, and submission decisions only.
 
-1. Retain the descriptive title
-   **“Distinct Semiprime Egyptian Fractions for Rationals with Squarefree Denominator”**, or use a shorter theorem-forward title mentioning Erdős Problem 306?
-2. Should the subtitle or abstract say “a machine-checked proof” when the paper itself is a paper-level reconstruction and the machine authority is the companion release?
-3. Should the structural theorem `D + M → Erdős 306` be advertised in the title/abstract, or remain the internal proof architecture?
-4. Should “squarefree semiprime” be introduced immediately, or should the title say “products of two distinct primes” for broader accessibility?
+## Decisions closed for this manuscript line
 
-## 2. Author identity and metadata
+1. **Paper backend:** PNT is the sole load-bearing external analytic theorem.
+2. **Paper bridge:** the local reciprocal-prime law is proved by Abel/partial summation.
+3. **Construction interfaces:** cardinality and inclusive-window mass are eventual.
+4. **Construction body:** preserve the architecture-led constant-first/scale-last reconstruction.
+5. **Formal evidence:** `v0.0.3` and DOI `10.5281/zenodo.20767390` remain the archived machine evidence with the exact Rosser--Schoenfeld backend.
+6. **Frozen checkpoint:** architecture context only until separate verification and disposition.
+7. **Submission:** recovery completion does not authorize arXiv submission.
 
-1. Exact author line, affiliation, postal address, email, and ORCID.
-2. Whether to list the Zenodo DOI in the abstract, footnote, data/code statement, or only bibliography.
-3. arXiv primary and secondary categories. Plausible candidates require author/Director decision; this worker does not select them.
-4. Exact comments field: page count, companion Lean release, and machine-checking qualification.
-5. License for arXiv and source repository.
+## Title
 
-## 3. Abstract and claim hierarchy
+Current working title:
 
-1. Preferred balance among:
-   - the characterization theorem;
-   - the structural analytic conditions;
-   - the finite spectral/circle-method mechanism;
-   - the machine-checked companion release.
-2. Whether the abstract should name Rosser–Schoenfeld or say only “two explicit prime estimates.”
-3. Whether to say the proof is “constructive in the existential sense.” The current proof selects finite objects noncomputably and is not an efficient algorithm.
-4. Whether to mention the frozen refactor at all in the public paper. Recommendation: keep it out of the reader-facing narrative and cite it only in reproducibility notes if a stable public ref is desired.
+> Distinct Semiprime Egyptian Fractions for Rationals with Squarefree Denominator
 
-## 4. Structural theorem presentation
+Retained choices: keep it; shorten it; mention Erdős Problem 306 explicitly; or choose a final title after independent review.
 
-1. Should conditions `D` and `M` be numbered as hypotheses, a named “dyadic supply package,” or two separate propositions?
-2. Should the paper emphasize that many analytic backends could prove `D` and `M`, while the present formal backend is Rosser–Schoenfeld?
-3. Is the historical Mertens 1874 reference useful as context, or should it be removed because it is not a direct proof input?
-4. Should a future version formulate a more general abstract theorem with arbitrary block scales or constants? Recommendation: not in arXiv v1 unless it materially shortens the proof or broadens the theorem.
+## Author line and affiliation
 
-## 5. Global-control exposition
+Decide the exact name form, affiliation or independent-researcher wording, public contact email, and whether to display ORCID `0009-0006-0847-3330`.
 
-1. The current revision gives a complete logical chain but compresses the single-block CRT decoding and entropy bookkeeping into explicit mechanism proofs. Does arXiv v1 require a longer technical appendix with every local constant and finite encoding map?
-2. Should hot blocks, boundary blocks, shells, and cold labels be illustrated by a diagram? A figure could help but is not necessary for correctness.
-3. Should the exact functions `R_k`, `Π_k`, and the block admissibility ranges be printed, or left as internally proved forcing scales with exact formal counterparts in the correspondence file?
-4. Should the global-control theorem be promoted as an independent analytic/combinatorial result? Recommendation: no independent novelty claim until literature comparison and independent review.
-5. Independent reviewer assignment for:
-   - cold-block decoding;
-   - boundary mismatch penalty;
-   - level-set entropy aggregation;
-   - floor absorption quantifier order;
-   - diagonal Gaussian tail.
+## Abstract emphasis
 
-## 6. Block-minor and reservoir exposition
+Decide whether to retain the present balance among theorem, PNT bridge, construction, and formal-version separation, or shorten the construction summary for a broader audience.
 
-1. Should the block-minor proof use only the transparent `b`-to-1 fiber count, or retain the stronger `Qextra` fiber-tail formulation in the main text? Current revision states both, with the stronger form motivating the reindexing.
-2. Should the exact count `b(2N+1)` be kept in the main text or moved to an appendix?
-3. Should the reservoir edges be called “gadgets,” “denominator reservoirs,” or “CRT damping edges”? Current recommendation: reader-facing text uses “denominator-sensitive reservoir”; correspondence may retain formal “gadget” names.
-4. Should the squarefree CRT use be highlighted in the introduction as a second, genuinely structural use of squarefreeness? Current recommendation: yes.
-5. Independent reviewer assignment for the residue-offset Bernoulli bound and the monotonic worst-case replacement `r≤b`.
+## Classification and arXiv comments
 
-## 7. Parameter and constant policy
+Decide the primary category (likely `math.NT`), possible secondary categories, comments-field wording, page-count statement, and companion-software/DOI wording.
 
-1. Retain the explicit equal-quarter budget allocation, or state a qualitative small-constant hierarchy and put the exact allocation in an appendix?
-2. Keep the constants `16/9`, `21/20`, `3/(2b)`, `3/b`, and the explicit `c3`; these are structurally useful and already retained.
-3. Decide whether to print the formal witness `k1=20` for the reciprocal-window backend in the theorem statement or only in the proof.
-4. Decide whether exact formal threshold names should appear in a supplementary table. Recommendation: correspondence file only, unless independent review requests them.
+## Acknowledgements and historical attribution
 
-## 8. Formalization and reproducibility wording
+Decide how to acknowledge the Erdős Problems database, Formal Conjectures, later independent reviewers, and AI-assisted exploration and drafting. No wording may imply peer review, sponsorship, or endorsement that has not occurred.
 
-1. Exact phrase for the relationship between paper and software. Suggested wording:
-   > “The immutable release v0.0.3 is the current machine-checked proof evidence; the article gives a self-contained mathematical reconstruction organized by a later, non-authoritative refactor.”
-2. Whether to cite the frozen `codex/pushlinter` commit publicly. It is useful for architecture provenance but not necessary for theorem trust.
-3. Whether arXiv v1 should wait for a future cleaned formal release. This is an author/Director publication-mode decision, not a mathematical necessity if the paper proof receives independent review.
-4. Whether to include the exact five-item axiom audit in the abstract, introduction, trust section, or only a reproducibility appendix.
-5. A fresh release build/audit log is still required for submission packaging. Do not wake/query the quota-exhausted L1 worker under the current restriction.
+## AI-assistance disclosure
 
-## 9. Source verification
+Current conservative wording:
 
-1. Final visual comparison of the Lean transcription with the publisher scan:
-   - Corollary 3, equation (3.8), p. 69;
-   - Theorem 5, equations (3.17)–(3.18), p. 70.
-2. Whether to quote the original Rosser–Schoenfeld notation or retain modern prime-counting notation.
-3. Verify whether the historical Erdős–Graham book is the preferred primary problem citation and whether a problem-number source should be added.
-4. Complete novelty/literature search for:
-   - semiprime Egyptian fractions;
-   - weighted subset-sum circle methods with CRT block control;
-   - related solutions or announcements for Erdős Problem 306.
-5. No priority language stronger than public repository/DOI evidence until this search is complete.
+> The project used AI-assisted mathematical exploration, Lean development, source organization, and manuscript drafting. Responsibility for the mathematical claims, source selection, and final submitted text remains with the author.
 
-## 10. AI assistance and acknowledgements
+Decide whether to use, expand, split, or adapt this wording.
 
-1. Exact disclosure of AI roles in:
-   - mathematical exploration;
-   - Lean proof development;
-   - remote review and architecture refactoring;
-   - manuscript drafting and source control.
-2. Whether to name individual systems/models and versions, or use a technology-neutral statement.
-3. Contributor acknowledgements, including any independent mathematical reviewers and software reviewers.
-4. Responsibility statement: the author retains responsibility for claims, sources, and final text.
-5. Whether to include an explicit human-verification statement for the paper proof after independent review.
+## Software and version citation
 
-## 11. Submission decision checklist for the author/Director
+Decide whether the DOI/software citation appears only in the formal section, also in the introduction, in arXiv comments, or in a code-availability paragraph. The wording must preserve the three-way distinction among paper PNT proof, released Rosser--Schoenfeld proof, and frozen architecture context.
 
-Before authorizing arXiv submission, record durable decisions on:
+## Ancillary materials and licence
 
-- [ ] final title;
-- [ ] author/affiliation/ORCID/email;
-- [ ] abstract emphasis;
-- [ ] publication mode relative to future formal refactor verification;
-- [ ] AI disclosure and acknowledgements;
-- [ ] independent proof reviewers and resolved reports;
-- [ ] publisher-scan comparison;
-- [ ] arXiv categories, comments, license;
-- [ ] final source archive and release citation;
-- [ ] E306-DIR approval to submit.
+Decide whether the ledger and correspondence are ancillary files, appendices, or repository-only review material; select the arXiv licence; decide whether a PDF is tracked; and decide how a later cleaned Lean release would be reflected in an arXiv revision.
 
-No item in this file authorizes a merge, release, DOI change, or arXiv submission.
+## Submission timing
+
+Submit only after independent mathematical and source review, final TeX/source audit, author metadata and disclosure decisions, and explicit `E306-DIR` authorization; alternatively defer until a later cleaned formal release. The recovery itself decides neither option.
