@@ -52,11 +52,11 @@ The clean recovery may be complete while independent review, formal-companion ev
 - [x] No undefined citations or references.
 - [x] No LaTeX errors, missing glyphs, or overfull/underfull boxes.
 - [x] The 14-page PDF was rendered and every page visually inspected.
-- [ ] Final remote blobs match the locally validated six files.
-- [ ] Exact base-to-tip diff contains only the six authorized `paper/` files.
+- [x] Final remote blobs match the locally validated manuscript and synchronized support packet.
+- [x] Exact base-to-tip diff contains only the six authorized `paper/` files.
 - [ ] Clean arXiv source archive generated and tested.
 
-The final two remote-validation boxes are filled only after the ordinary manual commit is verified. The source-archive box remains open because submission packaging is outside this recovery.
+The source-archive box remains open because submission packaging is outside this recovery.
 
 ## Author and submission decisions
 
