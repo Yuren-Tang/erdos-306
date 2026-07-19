@@ -16,7 +16,7 @@ The released theorem is the immutable mathematical authority. Its nonstandard fo
 
 The PNT-first human proof is a separate backend. The frozen `codex/pushlinter@e55ef359...` checkpoint may supply architecture and declaration locators, but it is not released theorem authority. Proof development does not transfer status silently among these layers.
 
-## Normalized initial queue
+## Normalized queue
 
 | Unit | State | Present disposition |
 |---|---|---|
@@ -26,13 +26,25 @@ The PNT-first human proof is a separate backend. The frozen `codex/pushlinter@e5
 | `E306-PD-A3` | `QUEUED` | Released Rosser–Schoenfeld backend is formally closed; exact human source transcription remains gated by the publisher scan. |
 | `E306-PD-A4 / R1` | `REPAIR` | PNT/partial-summation route exists; one common threshold and scale-last quantifier order must be stated at first use. |
 | `E306-PD-A5` | `ARGUMENT` | Finite Fourier identity and positivity implication are present; full convention/dependency dossier remains. |
-| `E306-PD-A6.1 / P16` | `ACTIVE` | Expand the control graph, `sigmaCtrl` lower bound and control reciprocal-load upper bound. This is the first manuscript handoff that suppresses a load-bearing derivation. |
-| `E306-PD-A6.2` | `QUEUED` | Mass and gadget construction after A6.1 and the abstract supply interface. |
+| `E306-PD-A6.1 / P16` | `COMPLETE-DRAFT` | Control graph, `sigmaCtrl` lower bound and control reciprocal-load upper bound are fully expanded at checkpoint `f8bb824...`. |
+| `E306-PD-A6.2 / P17–P18` | `ACTIVE` | Reconstruct cold-block dominance, uniqueness and exception charging, then the corrected adjacent-label boundary penalty. These nodes are Lean-closed but the manuscript gives only mechanism prose. |
+| `E306-PD-A6.3 / P24–P26` | `QUEUED` | Mass pool, forbidden-budget removal, greedy reciprocal window, weights and variance comparison. |
+| `E306-PD-A6.4 / P30–P31` | `QUEUED` | Denominator-sensitive gadget reservoirs and squarefree sibling damping. |
 | `E306-PD-A7`–`A10` | `QUEUED` | Main arcs, two minor sectors and terminal compatibility. Several central nodes are already Lean-closed but humanly compressed. |
 | `E306-PD-A11`–`A13` | `QUEUED` | Exceptional cases, finite-to-infinite bridge and final assembly. |
 | `E306-PD-B1`–`B5` | `QUEUED/ARGUMENT` | Minimal `AnalyticInputs -> Erdos306` theorem and separate analytic backends. |
 | `E306-PD-C1`–`C2`, `C4` | `QUEUED` | Formal/informal map, kernel-residual inequalities and architecture comparison. |
 | `E306-PD-C3` | `BLOCKED-SOURCE` | Human-visible Rosser–Schoenfeld pp. 69–70 transcription check unavailable. |
+
+## Material checkpoints
+
+### `E306-PD-A6.1 / P16`
+
+- checkpoint: `f8bb824be7ba2f08dfaf64a38da13be7eaa635ce`;
+- state: `COMPLETE-DRAFT`;
+- no external analytic input;
+- no `BLOCKED-FRONTIER` gap;
+- proof gives the stronger human load bound `32/(k0-1)` and maps it to the released coarse bound `512/(k0-1)`.
 
 ## Immediate formal/informal status correction
 
