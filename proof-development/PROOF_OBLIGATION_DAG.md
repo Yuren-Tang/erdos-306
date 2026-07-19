@@ -50,21 +50,22 @@ Open proof-development obligations:
 ```text
 A1' + A2
   ├─ A5 finite Fourier identity and positive weighted count
-  └─ A6 denominator family
-       ├─ A6.1 control graph and control estimates              [ACTIVE]
-       ├─ A6.2 mass-pool construction
-       └─ A6.3 denominator-sensitive gadget reservoirs
+  └─ A6 denominator/control family
+       ├─ A6.1 control graph, sigma and reciprocal-load estimates [COMPLETE-DRAFT]
+       ├─ A6.2 cold-block forcing and boundary penalty             [ACTIVE]
+       ├─ A6.3 mass-pool construction
+       └─ A6.4 denominator-sensitive gadget reservoirs
 
-A6.1
-  ├─ G5 global control level-set bound                          [Lean-closed]
-  ├─ G6 off-main localization dichotomy                        [Lean-closed]
-  └─ G7 global control partition                               [Lean-closed]
+A6.1 + A6.2
+  ├─ G5 global control level-set bound                             [Lean-closed]
+  ├─ G6 off-main localization dichotomy                           [Lean-closed]
+  └─ G7 global control partition                                  [Lean-closed]
 
-A5 + A6 + G7
-  ├─ A7 main-arc Taylor/Gaussian lower bound                    [Lean-closed]
-  ├─ A8 block-minor fibre bound                                 [Lean-closed]
-  ├─ A9 squarefree-CRT sibling suppression                     [Lean-closed]
-  └─ A10 terminal parameter compatibility and positivity        [Lean-closed]
+A5 + A6.3 + A6.4 + G7
+  ├─ A7 main-arc Taylor/Gaussian lower bound                       [Lean-closed]
+  ├─ A8 block-minor fibre bound                                    [Lean-closed]
+  ├─ A9 squarefree-CRT sibling suppression                        [Lean-closed]
+  └─ A10 terminal parameter compatibility and positivity           [Lean-closed]
 
 A10 + A11 + A11' + A12
   └─ A13 complete human theorem
@@ -73,30 +74,49 @@ A10 + A11 + A11' + A12
 
 “Lean-closed” does not mean the present manuscript gives a complete human proof. In particular, the P16–P23 and P27–P32 regions contain compressed handoffs that must be reconstructed from the proved declarations and their mathematical content.
 
-## 4. Current active frontier within proof development
+## 4. Completed current predecessor
 
-### `E306-PD-A6.1 / P16`
+### `E306-PD-A6.1 / P16` — `COMPLETE-DRAFT`
+
+Checkpoint `f8bb824be7ba2f08dfaf64a38da13be7eaa635ce` supplies:
+
+- `1/(100 k0 2^k0) <= sigmaCtrl` for `k0>=14`;
+- the stronger human estimate `controlLoad<=32/(k0-1)`;
+- the released consequence `controlLoad<=512/(k0-1)`;
+- an explicit threshold giving `controlLoad<3/(4b)`;
+- exact released declaration correspondence.
+
+No new-mathematics gap occurred.
+
+## 5. Current active frontier
+
+### `E306-PD-A6.2 / P17–P18`
 
 Inputs:
 
-- a block system with dyadic prime windows and lower cardinality density;
-- the internal and adjacent-block control-pair graph.
+- single-block CRT energy from A6.1;
+- the lower block-density interface;
+- the verified single-block dispersion and forcing package.
 
 Required outputs:
 
-1. exact definition of `Qctrl` and `sigmaCtrl`;
-2. bottom-block count giving
-   `1/(100 k0 2^k0) <= sigmaCtrl` for `k0 >= 14`;
-3. elementary dyadic reciprocal upper bound `Σ_{p in P_k} 1/p <= 4/k`;
-4. summation of internal and adjacent-block pair loads giving
-   `controlLoad <= 512/(k0-1)`;
-5. for fixed `b`, a bottom-scale threshold giving
-   `controlLoad <= 3/(4b)`;
-6. exact map to released declarations and the later uses of these inequalities.
+1. dominant-label definition and uniqueness;
+2. nondominant assignments spend at least the forcing-floor energy;
+3. cold blocks have a unique label and uniformly bounded exceptional set;
+4. the corrected label-size hypotheses omitted by the original false boundary statement;
+5. cross-block dispersion and phase bridge;
+6. no-exception and exception-aware mismatch penalties;
+7. exact constants and map to `Pifloor` / `cold_master`.
 
-No unresolved new-mathematics lemma is presently visible in this unit.
+Current partial result:
 
-## 5. Cross-cutting correspondence and repair nodes
+- dominant-label uniqueness has a complete human proof;
+- the correct exception-aware boundary statement and its formal dependency chain are normalized;
+- the nondominant-forcing proof and exact exception rounding remain `ARGUMENT`.
+
+No unresolved implication currently requires new mathematics from `E306-RL`.
+
+## 6. Cross-cutting correspondence and repair nodes
 
 - `C1` — proposition/declaration map for every node.
 - `C2` — reproducible human treatment of kernel-residual finite inequalities.
