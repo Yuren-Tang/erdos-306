@@ -1,0 +1,33 @@
+name: E306 exact manuscript reconstruction
+
+on:
+  push:
+    branches:
+      - paper/arxiv-v1-revision-v1
+
+permissions:
+  contents: write
+
+jobs:
+  reconstruct:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Reconstruct, verify, and clean transport files
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat paper/.main.chunk0 paper/.main.chunk1 paper/.main.chunk2 paper/.main.chunk3 paper/.main.chunk4 > paper/main.tex
+          test "$(git hash-object paper/main.tex)" = "262194ff9ecedce1e6c58c96b05cb3f719249f02"
+          test "$(wc -c < paper/main.tex | tr -d '[:space:]')" = "49996"
+          rm paper/.main.chunk0 paper/.main.chunk1 paper/.main.chunk2 paper/.main.chunk3 paper/.main.chunk4
+          rm .github/workflows/e306-reconstruct.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "paper: reconstruct exact revised manuscript"
+          git push origin HEAD:paper/arxiv-v1-revision-v1

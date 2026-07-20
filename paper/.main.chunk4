@@ -1,0 +1,20 @@
+m The four-layer level-set encoder, wrapped-label injection, localization,
+Laplace absorption, and Gaussian tail.
+\item Pair-pool cancellation, greedy mass window, uniform weights, and the
+variance constant $501$.
+\item Bernoulli nonvanishing, the logarithm branch, cubic remainder, and main
+Gaussian lower bound.
+\item The exact intersections defining $S_{\mathrm{blk}}$ and
+$S_{\mathrm{ext}}$, the $b$-fibre, mismatch prime, common reservoir, and
+$b(2N+1)$ count.
+\item The order $\eta\to C\to D_{\mathrm{mp}}\to G\to k_0$ and the strict
+quarter budgets using $2004=4\cdot501$.
+\item Small denominators, numerator induction, and the finite increasing-tuple
+bridge.
+\item The separate paper, released-formal, development, and source-certification
+boundaries.
+\end{enumerate}
+
+\bibliographystyle{alpha}
+\bibliography{references}
+\end{document}
