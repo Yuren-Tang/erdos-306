@@ -24,97 +24,72 @@ transfer status silently among these layers.
 
 | Unit | State | Present disposition |
 |---|---|---|
-| `E306-PD-A0–A1` | `COMPLETE-DRAFT` | Exact theorem, necessity, semiprime conventions and squarefree roles are consolidated in the arithmetic-closure and article-core packets. |
-| `E306-PD-A2 / B1` | `ACTIVE` | Isolate one backend-independent, common-threshold `AnalyticInputs -> Erdos306` theorem using exactly the construction-consumed dyadic density and inclusive reciprocal-window supplies. |
-| `E306-PD-A3 / B2` | `ARGUMENT / BLOCKED-SOURCE` | The released RS provider is formally closed; exact human source transcription remains gated by the publisher scan, while the derivation from the named axioms can be expounded now. |
-| `E306-PD-A4 / B3 / R1` | `ARGUMENT` | Complete the PNT/partial-summation provider with uniform error, endpoint conversion, one common threshold and scale-last quantifier order. |
-| `E306-PD-A5` | `COMPLETE-DRAFT` | Finite Fourier conventions, positivity criterion and no-wrap conversion are incorporated in the spectral endgame. |
+| `E306-PD-A0–A1` | `COMPLETE-DRAFT` | Exact theorem, necessity, semiprime conventions and squarefree roles are consolidated. |
+| `E306-PD-A2 / B1` | `COMPLETE-DRAFT` | Backend-independent, common-threshold `AnalyticInputs -> Erdos306` interface completed. |
+| `E306-PD-A3 / B2` | `COMPLETE-DRAFT / BLOCKED-SOURCE` | Released RS provider derivation is expounded and Lean-closed; publisher-scan transcription certification remains open. |
+| `E306-PD-A4 / B3 / R1` | `COMPLETE-DRAFT` | PNT/Abel provider includes uniform error, endpoint conversion, inclusive window and one common threshold. |
+| `E306-PD-A5` | `COMPLETE-DRAFT` | Finite Fourier conventions, positivity criterion and no-wrap conversion are integrated. |
 | `E306-PD-A6.1 / P16` | `COMPLETE-DRAFT` | Control graph, `sigmaCtrl` lower bound and reciprocal-load upper bound. |
-| `E306-PD-A6.2 / P17–P18` | `COMPLETE-DRAFT` | Nondominant forcing, dominant labels, exception charging and corrected exception-aware boundary penalty. |
-| `E306-PD-A6.3 / P19–P23` | `COMPLETE-DRAFT` | Global level sets, localization, Laplace absorption, Gaussian tail and global partition. |
-| `E306-PD-A6.4 / P24–P26` | `COMPLETE-DRAFT` | Pair pool, forbidden removal, greedy mass batch, uniform weights and variance comparison. |
-| `E306-PD-A7–A10 / P27–P32` | `COMPLETE-DRAFT` | Main arcs, block-minor transfer, squarefree sibling damping and terminal positivity. |
-| `E306-PD-A11–A13 / P0–P3,P33` | `COMPLETE-DRAFT` | Necessity, small denominators, numerator induction, public tuple bridge and exact formal assembly. |
-| `E306-PD-B4–B5` | `QUEUED` | Compare backend strength and record alternate/future analytic providers without changing released authority. |
-| `E306-PD-C1–C2` | `ARGUMENT` | Article-core declaration maps and kernel-residual ledgers now exist; complete the analytic and top-level correspondence map. |
+| `E306-PD-A6.2 / P17–P18` | `COMPLETE-DRAFT` | Nondominant forcing, dominant labels, exceptions and corrected boundary penalty. |
+| `E306-PD-A6.3 / P19–P23` | `COMPLETE-DRAFT` | Global level sets, localization and control partition. |
+| `E306-PD-A6.4 / P24–P26` | `COMPLETE-DRAFT` | Pair pool, forbidden removal, mass batch, weights and variance. |
+| `E306-PD-A7–A10 / P27–P32` | `COMPLETE-DRAFT` | Main arcs, both minor sectors, reservoirs and terminal positivity. |
+| `E306-PD-A11–A13 / P0–P3,P33` | `COMPLETE-DRAFT` | Necessity, small denominators, numerator induction and formal tuple bridge. |
+| `E306-PD-B4–B5` | `QUEUED` | Compare alternate/future analytic providers without changing released authority. |
+| `E306-PD-C1–C2` | `COMPLETE-DRAFT` | Consolidated proposition/declaration map and finite/kernel-residual ledger recorded. |
 | `E306-PD-C3` | `BLOCKED-SOURCE` | Human-visible Rosser–Schoenfeld pp. 69–70 comparison unavailable. |
-| `E306-PD-C4` | `QUEUED` | Released tree versus frozen refactor architecture. |
-| `E306-PD-R2` | `QUEUED` | Consume dispositioned Review B findings when returned. |
+| `E306-PD-C4` | `ACTIVE` | Compare released proof authority with the read-only reorganized refactor, declaration by declaration, without status transfer. |
+| `E306-PD-R2` | `QUEUED` | Consume dispositioned independent Review B findings when returned. |
 
 ## Material checkpoints
 
 ### Article core
 
-Checkpoint file: `proof-development/ARTICLE_CORE_CHECKPOINT.md`.
+`proof-development/ARTICLE_CORE_CHECKPOINT.md` is
+`COMPLETE-DRAFT / READY-FOR-INDEPENDENT-REVIEW`. It covers P16–P32 and the
+arithmetic closure to the public theorem, preserving all corrected hypotheses,
+explicit multiplicities, variance comparison, parameter order and residual
+trust boundaries.
 
-The complete-draft article core now covers P16–P32 and the arithmetic closure to
-the public theorem. It preserves:
+### Analytic interface
 
-- the corrected adjacent-label hypotheses and exception budget;
-- the fixed `exp(A * numBlocks)` global level-set factor;
-- exact forbidden-pool cancellation;
-- explicit CRT fibre and sibling multiplicities;
-- the variance bridge `sigmaE <= 501 * sigmaCtrl`;
-- the constant order `eta -> C -> Dmp -> G -> k0`;
-- exact finite/kernel-residual delegation.
+`units/E306-PD-B1-B3-ANALYTIC-INTERFACE.md` gives:
+
+- one common-threshold construction-facing interface;
+- a backend-independent implication to Erdős 306;
+- the exact released Rosser–Schoenfeld provider;
+- a separate PNT/Abel provider;
+- endpoint, uniformity and scale-last repairs.
+
+### Correspondence
+
+`proof-development/FORMAL_INFORMAL_CORRESPONDENCE.md` maps P0–P33 to the
+immutable release and inventories every accepted finite/kernel residual.
 
 No conceptual implication required return to `E306-RL`.
 
-### Unit files
-
-- `units/E306-PD-A6-1-CONTROL-GEOMETRY.md`;
-- `units/E306-PD-A6-2-COLD-BLOCK-BOUNDARY.md`;
-- `units/E306-PD-A6-3-GLOBAL-CONTROL.md`;
-- `units/E306-PD-A6-4-MASS-WEIGHTS-VARIANCE.md`;
-- `units/E306-PD-A7-A10-SPECTRAL-ENDGAME.md`;
-- `units/E306-PD-A11-A13-ARITHMETIC-CLOSURE.md`.
-
 ## Immediate formal/informal status correction
 
-The header prose in `lean/RequestProject/GlobalControl.lean` describes
-`global_levelset` and `global_control_partition` as remaining named `sorry`s.
-That description is stale at the released checkpoint. The active downstream
-release closes the route through:
-
-- `GlobalControlG5Assembly.global_levelset_final`;
-- `GlobalControlG6.g6_localization`;
-- `GlobalControlG7.global_control_partition_final`.
-
-This is a documentation/correspondence defect, not a contradiction in the
-released theorem. The exact axiom audit of `erdos_306` remains controlling.
+The header prose in `lean/RequestProject/GlobalControl.lean` describing G5/G7
+as unfinished is stale. The active release closes the route through
+`global_levelset_final`, `g6_localization`, and
+`global_control_partition_final`. This is a documentation-status defect only.
 
 ## Current active frontier
 
-Construct a reusable theorem-level interface with one common eventual threshold:
+`E306-PD-C4` compares:
 
-```text
-AnalyticInputs
-  = eventual dyadic density on every block in [k0,3k0]
-    + inclusive reciprocal-prime mass >= 21/20 on k0,...,3k0
+1. the controlling declarations and actual consumers at `v0.0.3@4582185...`;
+2. the reorganized downstream declaration graph at
+   `codex/pushlinter@e55ef359...`;
+3. the manuscript's architecture-led decomposition.
 
-AnalyticInputs -> structural avoiding representation -> Erdos306.
-```
-
-Then supply two strictly separated providers:
-
-1. released Rosser–Schoenfeld provider;
-2. human PNT plus Abel/partial-summation provider.
-
-The source-scan gate affects exact primary-source certification of provider 1;
-it does not block the abstract theorem or the already kernel-checked derivation
-from the named axioms.
+The comparison may improve locators and exposition architecture, but may not
+promote unreleased structural analytic axioms or refactor claims into released
+inputs.
 
 ## Operating rule
 
-For every unit, record separately:
-
-1. mathematical statement and all quantifiers;
-2. complete human derivation;
-3. exact released declarations and dependency path;
-4. external assumptions, if any;
-5. finite or kernel-checked residual inequalities;
-6. edge cases and parameter order;
-7. status (`ARGUMENT`, `COMPLETE-DRAFT`, `READY-FOR-CONSUMER`, or an exact block).
-
-Only an implication requiring genuinely new mathematics is returned to
-`E306-RL`.
+For every unit, record statement and quantifiers, human derivation, released
+locator, external assumptions, finite residuals, edge cases, parameter order and
+status. Only genuinely new mathematics returns to `E306-RL`.
