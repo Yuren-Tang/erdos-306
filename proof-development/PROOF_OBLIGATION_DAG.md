@@ -1,8 +1,8 @@
 # Erdős 306 proof-obligation DAG
 
 This ledger records logical dependence, not source-file import order. A node
-marked **Lean-closed** is already proved at the immutable release; human proof
-development may nevertheless be required.
+marked **Lean-closed** is proved at the immutable release; human proof
+development and manuscript translation may nevertheless remain.
 
 ## 0. Authority and external boundary
 
@@ -10,8 +10,11 @@ development may nevertheless be required.
 - `RS1` — `RosserSchoenfeld.rosser_schoenfeld_cor3`. **External formal assumption.**
 - `RS2` — `RosserSchoenfeld.rosser_schoenfeld_thm5`. **External formal assumption.**
 - `PNT` — `pi(x) ~ x/log x`. **External human-backend theorem; not a released axiom.**
+- `RB` — independent Review B at
+  `review/e306-p1-construction-v1@0b9c79d8727152d5e2511b39a48bbea0d437487e`.
 
-The two backend branches meet only at `AI`.
+The analytic backend branches meet only at `AI`. Review B is an assurance input,
+not proof authority.
 
 ## 1. Completed theorem closure
 
@@ -21,9 +24,12 @@ A0 exact theorem / public target                                  [COMPLETE-DRAF
  └─ A1' sufficiency conventions                                  [COMPLETE-DRAFT]
       ├─ A11 b = 1,2 reductions                                  [COMPLETE-DRAFT]
       ├─ A11' numerator induction                                [COMPLETE-DRAFT]
-      └─ A12 finite set -> increasing tuple                      [COMPLETE-DRAFT]
+      └─ A12 finite set -> finite increasing tuple               [COMPLETE-DRAFT]
              └─ A13 public theorem / F0 correspondence            [COMPLETE-DRAFT]
 ```
+
+The semiprime / `omega=Omega=2` equivalence and the finite tuple bridge are
+explicit in A11–A13 and the Review B reconciliation supplement.
 
 ## 2. Completed analytic fork
 
@@ -54,7 +60,7 @@ AI_RS or AI_PNT
 Unit: `units/E306-PD-B1-B3-ANALYTIC-INTERFACE.md`.
 
 The human-visible publisher-scan comparison for RS1/RS2 remains
-`BLOCKED-SOURCE`; it does not reopen the mathematical implications above.
+`BLOCKED-SOURCE`; it does not reopen these implications.
 
 ## 3. Completed article core
 
@@ -62,60 +68,96 @@ The human-visible publisher-scan comparison for RS1/RS2 remains
 A1' + A2
  ├─ A5 finite Fourier identity and positivity                    [COMPLETE-DRAFT]
  └─ denominator/control family
-      ├─ A6.1 control graph, sigma and reciprocal load           [COMPLETE-DRAFT]
-      ├─ A6.2 cold forcing and corrected boundary penalty        [COMPLETE-DRAFT]
-      ├─ A6.3 level sets, localization and partition             [COMPLETE-DRAFT]
+      ├─ A6.1 exact control graph, sigma and load                [COMPLETE-DRAFT]
+      ├─ A6.2 cold forcing, exceptions and boundary penalty      [COMPLETE-DRAFT]
+      ├─ A6.3 label-uniform levels/localization/partition         [COMPLETE-DRAFT]
       └─ A6.4 mass pool, weights and variance                    [COMPLETE-DRAFT]
 
 A5 + A6.1–A6.4
- ├─ A7 main arcs                                                 [COMPLETE-DRAFT]
- ├─ A8 block-minor fibre                                         [COMPLETE-DRAFT]
- ├─ A9 squarefree sibling suppression                            [COMPLETE-DRAFT]
+ ├─ A7 main arcs and logarithm branch                            [COMPLETE-DRAFT]
+ ├─ A8 exact Fourier-minor split and block fibre                 [COMPLETE-DRAFT]
+ ├─ A9 squarefree sibling mismatch and common reservoir          [COMPLETE-DRAFT]
  └─ A10 terminal positivity                                      [COMPLETE-DRAFT]
 ```
 
-Consumer packet: `proof-development/ARTICLE_CORE_CHECKPOINT.md`.
+The proof sources are the unit files plus
+`proof-development/REVIEW_B_RECONCILIATION.md`.
 
-## 4. Load-bearing corrections
+## 4. Review B reconciliation
 
-- `CORR-BDY` — active adjacent-label theorem requires label-size, cardinality
-  and exception hypotheses; the original unqualified statement is false.
-- `CORR-G5` — the level-set factor is `exp(A * numBlocks BS)` with fixed `A`.
-- `CORR-MASS` — forbidden pool terms are absorbed by the already-spent base load.
-- `CORR-FIBRE` — factors `b` and `b(2N+1)` remain explicit.
+```text
+RB independent review
+  ├─ RB-01..RB-17 mathematical/expository findings
+  │    -> exact PDL units + reconciliation supplements          [ABSORBED]
+  ├─ RB-18 manuscript proof-ledger synchronization
+  │    -> next manuscript worker                                [ROUTED]
+  ├─ RB-19 stale Lean comments
+  │    -> separate documentation authority                      [NOT AUTHORIZED HERE]
+  └─ RB-20 no independent kernel/CI rerun
+       -> evidence record only                                  [RECORDED]
+
+absorbed proof package
+  -> ARTICLE_CORE_CHECKPOINT
+  -> READY-FOR-MANUSCRIPT-REVISION                              [CLOSED HANDOFF]
+```
+
+Review B found no material mathematical gap, unrecorded downstream input,
+circular parameters, or material theorem mismatch. The fixed candidate remains
+unrevised; readiness attaches to the proof package, not to the old manuscript.
+
+## 5. Load-bearing corrections
+
+- `CORR-CTRL` — exact faithful assignment space, centred CRT convention, and
+  internal/adjacent control graph are stated.
+- `CORR-LOAD` — control load uses dyadic reciprocal bounds and a graph-tail sum,
+  not denominator growth alone.
+- `CORR-BDY` — adjacent-label penalty retains label-size, cardinality, agreement,
+  and exception hypotheses.
+- `CORR-WRAP` — non-wrapped huge fibres are empty; wrapped fibres inject into a
+  fixed small-label fibre.
+- `CORR-G5` — level-set factor is `exp(A * numBlocks BS)` with fixed `A`.
+- `CORR-MASS` — forbidden pool terms are absorbed by already-spent base load.
 - `CORR-VAR` — terminal comparison uses `sigmaE <= 501 * sigmaCtrl`.
+- `CORR-LOG` — Bernoulli factors are nonzero in the Taylor disk and the logarithm
+  branch is justified.
+- `CORR-LANES` — block/extra lanes are a disjoint partition inside the Fourier
+  minor set.
+- `CORR-FIBRE` — factors `b` and `b(2N+1)` remain explicit.
+- `CORR-RES` — one common `G`-prime reservoir supplies distinct selected gadget
+  edges with the exact pointwise-to-sum budget.
 - `CORR-ORDER` — `eta -> C -> Dmp -> G -> k0`.
-- `CORR-ENDPOINT` — the analytic mass window is inclusive through `3k0`, hence
-  ends at `2^(3k0+1)`.
-- `CORR-UNIFORM` — the PNT Abel bridge uses a tail-uniform error, not pointwise
-  substitution under the integral.
+- `CORR-ENDPOINT` — analytic mass window is inclusive through `3k0`, ending at
+  `2^(3k0+1)`.
+- `CORR-UNIFORM` — PNT Abel bridge uses a tail-uniform error.
+- `CORR-TUPLE` — the public object is a finite strictly increasing tuple, not an
+  infinite sequence.
 
-## 5. Correspondence and residual nodes
+## 6. Correspondence and residual nodes
 
 - `C1` — P0–P33 proposition/declaration map. **COMPLETE-DRAFT.**
 - `C2` — finite/kernel-residual ledger. **COMPLETE-DRAFT.**
 - `C3` — RS publisher-scan comparison. **BLOCKED-SOURCE.**
-- `C4` — released tree versus frozen refactor architecture. **ACTIVE.**
+- `C4` — released tree versus frozen refactor architecture. **ACTIVE / NON-BLOCKING.**
 - `R1` — Review A threshold/window repairs. **ABSORBED.**
-- `R2` — independent Review B findings. **AWAITING RETURN.**
-- `DOC1` — stale `GlobalControl.lean` header. **DOCUMENTATION-STATUS DEFECT.**
+- `R2` — independent Review B findings. **RECONCILED.**
+- `DOC1` — stale released comments. **DOCUMENTATION-STATUS DEFECT / SEPARATE.**
 
-Consolidated file: `proof-development/FORMAL_INFORMAL_CORRESPONDENCE.md`.
+Consolidated files:
 
-## 6. Current active frontier
+- `proof-development/FORMAL_INFORMAL_CORRESPONDENCE.md`;
+- `proof-development/REVIEW_B_RECONCILIATION.md`;
+- `proof-development/ARTICLE_CORE_CHECKPOINT.md`.
 
-```text
-C4:
-  release declarations and actual consumers
-    <-> reorganized read-only refactor graph
-    <-> manuscript architecture
-```
+## 7. Current handoff and continuing frontier
 
-The comparison may supply better theorem decomposition and locators. It may not
-transfer proof status, analytic premises or authority from the unreleased
-refactor.
+The exact consumer state is `READY-FOR-MANUSCRIPT-REVISION`. The manuscript
+worker must revise the fixed candidate and only then synchronize its proof
+ledger and seek renewed assurance.
 
-## 7. Genuine stop test
+The persistent programme remains open. Its non-blocking active frontier is C4
+and future returned defects, source checks, and interface generalizations.
+
+## 8. Genuine stop test
 
 Return to `E306-RL` only if a required implication needs new mathematics not
 supplied by the released proof, the accepted PNT premise, or a named finite
