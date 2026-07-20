@@ -1,96 +1,120 @@
 # Erdős 306 manuscript proof ledger
 
-Workstream: `E306-P1-RECOVERY`  
-Recovery base: `paper/arxiv-v1@c264d00a722364c777d89e4438aadc7babfcdbe0`  
-Successor branch: `paper/arxiv-v1-recovery-v1`  
-Paper backend: PNT followed by a self-contained Abel/partial-summation bridge.  
-Archived formal evidence: `v0.0.3@4582185de1e0e27416e9362e0cc7943c3d2fb4fe`, DOI `10.5281/zenodo.20767390`.
+Workstream: `E306-P1-REV1`  
+Owned branch: `paper/arxiv-v1-revision-v1`  
+Fixed parent: `paper/arxiv-v1-recovery-v1@f04a7ac7064877920890b282c246ffe6867f58bb`  
+Proof-development input: `proof-development/e306-rigour-v1@2eda43717603877d4c5a879b3103f99e36d5e6d1`  
+Immutable formal evidence: `v0.0.3@4582185de1e0e27416e9362e0cc7943c3d2fb4fe`, DOI `10.5281/zenodo.20767390`  
+Revision classification: **REVISED-CANDIDATE / READY-FOR-FINAL-FIXED-CANDIDATE-REVIEW / NOT-SUBMISSION-READY**
 
 ## Evidence vocabulary
 
 - **PAPER-EXTERNAL**: a cited theorem used by the article.
-- **PAPER-PROVED**: a derivation supplied in the article.
-- **PAPER-ASSEMBLED**: a conclusion assembled from preceding paper results.
-- **RELEASE-CHECKED**: a declaration accepted by the Lean kernel at `v0.0.3`.
-- **SOURCE-TRANSCRIBED-FORMAL**: an external theorem represented by a named formal axiom with an exact locator.
-- **FROZEN-CONTEXT**: an unreleased checkpoint supplies architecture or names, not current formal authority.
-- **REVIEW-GATED**: an independent review obligation remains open.
+- **PAPER-PROVED**: the article displays the hypotheses and the complete conceptual implication.
+- **PAPER-ASSEMBLED**: a conclusion follows directly from preceding paper results.
+- **FINITE/KERNEL-RESIDUAL**: only a named finite constant, cast, floor, threshold maximum, or polynomial inequality is delegated to the immutable companion.
+- **RELEASE-CHECKED**: a declaration is accepted by the Lean kernel at `v0.0.3`.
+- **SOURCE-TRANSCRIBED-FORMAL**: an external theorem is represented by a named formal axiom with an exact source locator.
+- **DEVELOPMENT-SOURCE**: the PDL checkpoint supplies human expansion but is not independent or released authority.
+- **FROZEN-CONTEXT**: an unreleased checkpoint supplies architecture or locators only.
+- **FINAL-REVIEW-GATED**: the revised fixed candidate awaits its final mathematical/source/package review.
 
-The paper proof and the released Lean proof have different analytic backends. No status is transferred silently between them.
+The paper proof and released Lean proof have different analytic backends. No premise or status transfers silently between them.
 
 ## Analytic and arithmetic spine
 
-| ID | Claim | Manuscript location | Status | Formal/review note |
-|---|---|---|---|---|
-| P0 | Squarefree semiprime means a product of two distinct primes; equivalently `ω=Ω=2`. | Section 1 | PAPER-PROVED / RELEASE-CHECKED | Matches the released denominator predicate. |
-| P1 | A reciprocal sum of squarefree integers has squarefree reduced denominator. | Section 1 | PAPER-PROVED | LCM argument. |
-| P2 | Avoiding `1/b` representations imply avoiding `a/b` representations. | Lemma `lem:numerator-reduction` | PAPER-PROVED / RELEASE-CHECKED | Disjoint induction. |
-| P3 | The cases `b=1,2` reduce to squarefree denominators at least 3. | Lemma `lem:small-b` | PAPER-PROVED / RELEASE-CHECKED | Uses `1/2=1/3+1/6` and `1=1/2+1/3+1/6`. |
-| P4 | `π(x) ~ x/log x`. | Section `sec:PNT` | PAPER-EXTERNAL | Soundararajan and Ingham locators; not a released project axiom. |
-| P5 | Abel summation identity on `(x,2x]`. | Equation `eq:abel` | PAPER-PROVED | Standard step-function partial summation. |
-| P6 | `Σ_{x≤p<2x}1/p = log 2/log x + o(1/log x)`. | Proposition `prop:local-law` | PAPER-PROVED / REVIEW-GATED | Endpoint and uniform-error audit remains independent-review work. |
-| P7 | `A_k=1/k+o(1/k)`. | Equation `eq:local-law-k` | PAPER-PROVED | Substitute `x=2^k`. |
-| P8 | Eventual dyadic cardinality `D_ev`. | Proposition `prop:local-to-supply` | PAPER-PROVED | Uses `A_k≤|P_k|/2^k`; no fixed cutoff is claimed. |
-| P9 | Eventual inclusive-window mass `M_ev`. | Proposition `prop:local-to-supply` | PAPER-PROVED | Inclusive blocks correspond to `[2^{k0},2^{3k0+1})`. |
-| P10 | The construction consumes only eventual supplies. | Section `sec:supply` and Section `sec:terminal` | PAPER-PROVED / FROZEN-CONTEXT | Bottom scale chosen after all constants. |
+| ID | Claim | Revised manuscript locus | Status and exact boundary |
+|---|---|---|---|
+| P0 | A squarefree semiprime is a product of two distinct primes, equivalently `ω=Ω=2`. | Lemma `lem:semiprime-equivalence` | PAPER-PROVED in both directions / RELEASE-CHECKED in the direction consumed by the public theorem. |
+| P1 | A reciprocal sum of squarefree integers has squarefree reduced denominator. | Section 1 | PAPER-PROVED; no released declaration required by the one-way formal theorem. |
+| P2 | Avoiding `1/b` representations imply avoiding `a/b` representations. | Lemma `lem:numerator-reduction` | PAPER-PROVED / RELEASE-CHECKED. |
+| P3 | The cases `b=1,2` reduce to squarefree denominators at least `3`. | Lemma `lem:small-b` | PAPER-PROVED / RELEASE-CHECKED. |
+| P4 | `π(x)~x/log x`. | Equation `eq:PNT` | PAPER-EXTERNAL; not a released project axiom. |
+| P5 | Abel summation on `(x,2x]`. | Equation `eq:abel` | PAPER-PROVED. |
+| P6 | `Σ_{x≤p<2x}1/p=log 2/log x+o(1/log x)`. | Proposition `prop:local-law` | PAPER-PROVED, including the tail-uniform error and endpoint conversion; accepted Review A repair. |
+| P7 | `A_k=1/k+o(1/k)`. | Equation `eq:local-k` | PAPER-PROVED. |
+| P8 | Eventual dyadic cardinality. | Proposition `prop:PNT-AI` | PAPER-PROVED; RELEASE-CHECKED separately from RS Cor. 3. |
+| P9 | Inclusive mass on `k0,...,3k0`, exactly `[2^k0,2^(3k0+1))`. | Definition `def:AI`, equations `eq:AI-mass`, `eq:inclusive-window` | PAPER-PROVED; RELEASE-CHECKED separately from RS Thm. 5. |
+| P10 | One common provider threshold is fixed before the construction scale. | Definition `def:AI`, Proposition `prop:PNT-AI`, terminal Step 4 | PAPER-PROVED; accepted Review A common-threshold and constants-first/scale-last repair. |
 
 ## Finite spectral construction
 
-| ID | Claim | Manuscript location | Status |
+| ID | Claim | Revised manuscript locus | Status and exact boundary |
 |---|---|---|---|
-| P11 | Eventual supplies imply an avoiding representation of `1/b` for squarefree `b≥3`. | Theorem `thm:structural-construction` | PAPER-ASSEMBLED / RELEASE-CHECKED / FROZEN-CONTEXT / REVIEW-GATED |
-| P12 | Finite Fourier identity for the weighted subset count. | Equation `eq:finite-fourier` | PAPER-PROVED / RELEASE-CHECKED |
-| P13 | Main real part greater than total minor norm implies positivity. | Lemma `lem:spectral-selection` | PAPER-PROVED / RELEASE-CHECKED |
-| P14 | Load below one converts the modular condition to exact equality. | Equation `eq:no-wrap` | PAPER-PROVED / RELEASE-CHECKED |
-| P15 | Centered CRT representatives give the exact control-energy identity. | Equations `eq:Qctrl`, `eq:control-full-energy` | PAPER-PROVED / RELEASE-CHECKED / FROZEN-CONTEXT |
-| P16 | Control variance and load have the required scale. | Equations `eq:sctrl-lower`, `eq:control-load` | PAPER-PROVED at handoff level / RELEASE-CHECKED / REVIEW-GATED |
-| P17 | Low-energy blocks admit one dominant integer label with charged exceptions. | Lemma `lem:cold-block` | PAPER-PROVED at mechanism level / FROZEN-CONTEXT / REVIEW-GATED |
-| P18 | Distinct adjacent labels force boundary energy. | Lemma `lem:boundary-penalty` | PAPER-PROVED at mechanism level / FROZEN-CONTEXT / REVIEW-GATED |
-| P19 | Global low-energy level sets satisfy `eq:level-set`. | Lemma `lem:level-set` | PAPER-PROVED / FROZEN-CONTEXT / REVIEW-GATED |
-| P20 | Every off-main assignment is above the forcing floor or diagonal. | Lemma `lem:localization` | PAPER-PROVED / FROZEN-CONTEXT / REVIEW-GATED |
-| P21 | The high-floor Laplace mass is at most `η/σ_ctrl`. | Lemma `lem:floor-laplace` | PAPER-PROVED / FROZEN-CONTEXT / REVIEW-GATED |
-| P22 | The diagonal tail is Gaussian. | Lemma `lem:diagonal-tail` | PAPER-PROVED / FROZEN-CONTEXT / REVIEW-GATED |
-| P23 | Global control partition. | Theorem `thm:global-partition` | PAPER-ASSEMBLED / RELEASE-CHECKED / REVIEW-GATED |
-| P24 | Pair-pool mass is `(S1²-S2)/2` and eventually at least `1/2`. | Equations `eq:pair-mass-id`, `eq:pair-mass-half` | PAPER-PROVED / RELEASE-CHECKED |
-| P25 | Greedy reciprocal window. | Lemma `lem:greedy-window` | PAPER-PROVED / RELEASE-CHECKED |
-| P26 | Uniform load, weight, and variance window. | Equations `eq:load-window`--`eq:variance-comparison` | PAPER-PROVED / RELEASE-CHECKED / FROZEN-CONTEXT |
-| P27 | Main-arc Taylor expansion and Gaussian lower bound. | Equations `eq:main-expansion`--`eq:main-lower` | PAPER-PROVED / RELEASE-CHECKED / REVIEW-GATED |
-| P28 | Fourier energy upper bound. | Equation `eq:fourier-energy` | PAPER-PROVED / RELEASE-CHECKED |
-| P29 | Block-minor fibre multiplicity is exactly at most `b`. | Equation `eq:block-budget` | PAPER-PROVED / RELEASE-CHECKED / REVIEW-GATED |
-| P30 | Squarefree sibling mismatch. | Lemma `lem:sibling-mismatch` | PAPER-PROVED / RELEASE-CHECKED |
-| P31 | Reservoir products give `β_b^G` damping. | Equations `eq:one-gadget`--`eq:extra-budget` | PAPER-PROVED / RELEASE-CHECKED / REVIEW-GATED |
-| P32 | Constant-first/scale-last choices make main exceed both minor sectors. | Section `sec:terminal` | PAPER-PROVED / RELEASE-CHECKED / REVIEW-GATED |
-| P33 | Headline theorem. | Theorem `thm:headline` | PAPER-ASSEMBLED / RELEASE-CHECKED |
+| P11 | The two analytic supplies imply an avoiding representation of `1/b` for squarefree `b≥3`. | Theorem `thm:structural-construction` | PAPER-ASSEMBLED / RELEASE-CHECKED / FINAL-REVIEW-GATED. |
+| P12 | Finite Fourier identity for the weighted subset count. | Equation `eq:finite-fourier` | PAPER-PROVED / RELEASE-CHECKED. |
+| P13 | Main real part greater than total minor norm implies positivity. | Lemma `lem:spectral-positivity` | PAPER-PROVED / RELEASE-CHECKED. |
+| P14 | Load below one converts the congruence to exact equality. | Equation `eq:no-wrap`, terminal section | PAPER-PROVED / RELEASE-CHECKED. |
+| P15 | Exact control graph, assignment space, centered CRT, and control/full-energy identity. | Equations `eq:control-graph`--`eq:control-energy-identity` | PAPER-PROVED / RELEASE-CHECKED. |
+| P16 | Control load and deviation have the required scale. | Lemmas `lem:primorial`, `lem:block-upper`, Proposition `prop:control-estimates` | PAPER-PROVED / RELEASE-CHECKED; explicit `32/(k0-1)` and `1/(100 k0 2^k0)`. |
+| P17 | Cold blocks admit a unique dominant label with charged exceptions and uniform wrapped-label treatment. | Proposition `prop:nondominant`, equations `eq:exception-count`, `eq:label-bound`, Section 6 large-label paragraph | PAPER-PROVED / RELEASE-CHECKED; rational chase FINITE/KERNEL-RESIDUAL. |
+| P18 | Distinct adjacent cold labels force the exception-reduced boundary floor. | Proposition `prop:boundary-penalty`, equation `eq:Pi` | PAPER-PROVED / RELEASE-CHECKED; every label-size, cardinality, residue, and exception hypothesis stated. |
+| P19 | Global level sets satisfy the fixed-`A` bound. | Proposition `prop:level-set`, equation `eq:level-set` | PAPER-PROVED / RELEASE-CHECKED; finite code arithmetic FINITE/KERNEL-RESIDUAL. |
+| P20 | Every off-main assignment is above the forcing floor or exactly diagonal. | Lemma `lem:localization`, equations `eq:global-floor`, `eq:diagonal-sector` | PAPER-PROVED / RELEASE-CHECKED. |
+| P21 | High-floor Laplace mass is at most `η/σ_ctrl`. | Lemma `lem:laplace` | PAPER-PROVED / RELEASE-CHECKED; eventual threshold FINITE/KERNEL-RESIDUAL. |
+| P22 | The diagonal sector has a discrete Gaussian tail. | Lemma `lem:gaussian-tail` | PAPER-PROVED / RELEASE-CHECKED. |
+| P23 | Global control partition. | Theorem `thm:global-partition` | PAPER-ASSEMBLED / RELEASE-CHECKED / FINAL-REVIEW-GATED. |
+| P24 | Pair-pool load is `(S1²-S2)/2` and at least `1/2`; forbidden load is cancelled exactly. | Equations `eq:pair-pool`, `eq:pool-half`, paragraphs before Lemma `lem:greedy` | PAPER-PROVED / RELEASE-CHECKED; no hidden mass surplus. |
+| P25 | Greedy reciprocal window. | Lemma `lem:greedy` | PAPER-PROVED / RELEASE-CHECKED. |
+| P26 | Load, uniform weight, and variance window. | Equations `eq:load-window`--`eq:variance-comparison` | PAPER-PROVED / RELEASE-CHECKED; inverse-square constant `1000001` FINITE/KERNEL-RESIDUAL; `Kσ=501`. |
+| P27 | Bernoulli nonvanishing, logarithm branch, Taylor expansion, and Gaussian main lower bound. | Equations `eq:log-expansion`--`eq:main-lower` | PAPER-PROVED / RELEASE-CHECKED; aggregate numeric fields FINITE/KERNEL-RESIDUAL. |
+| P28 | Universal Fourier-energy upper bound with exponent `16/9`. | Equation `eq:fourier-energy` | PAPER-PROVED / RELEASE-CHECKED. |
+| P29 | The exact block-minor lane has CRT fibre multiplicity at most `b`. | Equations `eq:minor-lanes`, `eq:block-minor-budget` | PAPER-PROVED / RELEASE-CHECKED. |
+| P30 | Every nonmain sibling differs modulo a prime divisor of squarefree `b`. | Equation `eq:mismatch-prime` and its preceding proof | PAPER-PROVED / RELEASE-CHECKED. |
+| P31 | One common `G`-prime reservoir gives `β_b^G` damping and count `b(2N+1)`. | Equations `eq:high-prime-separation`--`eq:extra-count` | PAPER-PROVED / RELEASE-CHECKED. |
+| P32 | `η→C→Dmp→G→k0`, `2004=4·501`, and three quarter budgets make minor strictly smaller than main. | Equations `eq:parameter-order`--`eq:strict-minor` | PAPER-PROVED / RELEASE-CHECKED; terminal maximum FINITE/KERNEL-RESIDUAL / FINAL-REVIEW-GATED. |
+| P33 | The finite set yields the headline theorem and the finite public tuple. | Sections 10 and 11 | PAPER-ASSEMBLED / RELEASE-CHECKED; no infinite sequence is claimed. |
 
-## Recovery extraction ledger
+## Review A and Review B repair map
 
-The recovery compared the controlled manuscript checkpoint `c264d00...` with the later mixed source only at the six authorized paper paths. The disposition of the content hunks is:
+| Review item | Revision disposition | Manuscript evidence |
+|---|---|---|
+| Review A-1 | Incorporated | One `K_AI` in Definition `def:AI` and Proposition `prop:PNT-AI`. |
+| Review A-2 | Incorporated | Inclusive endpoint `eq:inclusive-window` and provider-first/scale-last order at first construction use. |
+| RB-01 | Incorporated | Exact blocks, support, complete internal/adjacent graph, assignment space, centered CRT, and product injectivity in Section 4. |
+| RB-02 | Incorporated | Primorial, `Σ_{p∈P_k}1/p≤4/k`, edge-load decomposition, and `32/(k0-1)` in Section 4. |
+| RB-03 | Incorporated | Dominance definition, uniqueness, forcing threshold, exceptions, label bounds, and wrapped/nonwrapped fibres in Sections 5-6. |
+| RB-04 | Incorporated | Exception-aware Proposition `prop:boundary-penalty`; false unqualified formulation expressly rejected. |
+| RB-05 | Incorporated | Four-layer injective code, fixed `e^{AJ}`, exception entropy, segment labels, and large-label route in Proposition `prop:level-set`. |
+| RB-06 | Incorporated | `F0`, no-exception propagation, centered-CRT smallness, and exact diagonal identity in Lemma `lem:localization`. |
+| RB-07 | Incorporated | Unit-shell sum, `8ε<c'<c`, and scale absorption in Lemma `lem:laplace`. |
+| RB-08 | Incorporated | Label injection and explicit discrete Gaussian tail in Lemma `lem:gaussian-tail`. |
+| RB-09 | Incorporated | Mechanism-only P17-P23 prose replaced by the theorem sequence; statuses synchronized below. |
+| RB-10 | Incorporated | Component decomposition, `1000001`, and `501` in Section 7. |
+| RB-11 | Incorporated | Open-right-half-plane nonvanishing, principal logarithm, Taylor disk, cubic sum, conjugation, and main lower bound in Section 8. |
+| RB-12 | Incorporated | `S_blk=S_m∩...`, `S_ext=S_m∩...`, exact cover/disjointness, and `L=bP` fibre count in Section 9. |
+| RB-13 | Incorporated | Squarefree-CRT mismatch proof before reservoir selection. |
+| RB-14 | Incorporated | Common `G`-set, all `rs` edges, `2|m|<s`, distinctness, pointwise factor, and `b(2N+1)` sum. |
+| RB-15 | Incorporated | Exact dependency order, `501`, `2004`, `(2N+1)σ≤2C+3`, and strict three-quarter comparison. |
+| RB-16 | Incorporated | Nonempty finite set, increasing enumeration, dummy `1`, excluded anchor, finite tuple; assurance wording corrected from infinite to finite. |
+| RB-17 | Incorporated | Both directions of the semiprime / `ω=Ω=2` equivalence in Lemma `lem:semiprime-equivalence`. |
+| RB-18 | Incorporated after text revision | This ledger and `LEAN_CORRESPONDENCE.md` now describe the revised candidate rather than the existence of an external Lean proof. |
+| RB-19 | Outside authority | Released Lean comments were not edited. |
+| RB-20 | Recorded limitation | Review B was not an independent kernel/CI rerun; no mathematical repair was inferred. |
 
-| File | Retained from `c264d00...` | Revised from later paper content | Omitted / unresolved |
-|---|---|---|---|
-| `main.tex` | theorem, avoiding reductions, finite spectral construction, control geometry, global partition, mass pool, main/minor analysis, terminal parameter order, formal-status sections | analytic opening replaced by PNT; added complete Abel bridge; fixed-cutoff interfaces replaced by eventual ones; formal-release wording separated from paper proof | the former Rosser--Schoenfeld-as-paper-backend section was omitted; independent review remains open |
-| `references.bib` | release, benchmark, problem source, and Rosser--Schoenfeld formal-source citation | added Soundararajan, Ingham, and Hadamard for PNT; reclassified Mertens as background | no unverified discovery note was added |
-| `PROOF_LEDGER.md` | downstream construction ledger and released audit | inserted PNT, Abel, local-law, and eventual-supply entries; added this recovery map | no formal status was transferred to the PNT bridge |
-| `LEAN_CORRESPONDENCE.md` | theorem-statement map and exact released audit | separated paper, frozen-context, and immutable-release layers | no claim of a formal PNT theorem or bridge |
-| `ARXIV_CHECKLIST.md` | author, review, source, formal, packaging, and authorization gates | synchronized mathematical and TeX-validation state with the clean recovery | submission-ready boxes remain open |
-| `OPEN_EDITORIAL_QUESTIONS.md` | title, metadata, disclosure, licence, ancillary, and timing decisions | closed the analytic-backend and eventual-interface choices | mathematical review questions remain outside the editorial list |
+No item is classified as a material mathematical gap or blocked frontier.
 
-No additional repository path was needed for the recovery.
+## Exact finite/kernel residual ledger
 
-## Exact released nonstandard inputs
+The revised article names and limits the remaining delegations:
 
-The released headline audit contains the standard Lean foundations `propext`, `Classical.choice`, and `Quot.sound`, plus exactly:
+1. nondominant forcing rational rearrangements;
+2. cold-threshold integer rounding and the no-exception cutoff;
+3. finite label/shell/exception charge algebra;
+4. eventual domination in the high-floor sector;
+5. mass/gadget inverse-square arithmetic giving `1000001`;
+6. aggregate Taylor and Gaussian-window numeric fields;
+7. the final finite maximum of already fixed thresholds;
+8. finite-to-tuple casts and index identities.
 
-- `RosserSchoenfeld.rosser_schoenfeld_cor3`;
-- `RosserSchoenfeld.rosser_schoenfeld_thm5`.
+Each residual is downstream of a displayed mathematical implication and adds no external theorem.
 
-They correspond to Rosser--Schoenfeld (1962), Corollary 3, equation (3.8), p. 69, and Theorem 5, equations (3.17)--(3.18), p. 70. They are formal-release facts, not premises of the PNT-first paper proof.
+## Remaining gates
 
-## Open gates
+1. Final fixed-candidate mathematical review of this exact revision tip.
+2. Human-visible publisher-scan comparison of the two Rosser--Schoenfeld transcriptions on pp. 69-70.
+3. Final bibliography and clean arXiv source-package audit.
+4. Author decisions on title, affiliation/contact/ORCID display, acknowledgements, AI disclosure, licence, categories, comments, and ancillary files.
+5. Explicit Portfolio Owner and `E306-DIR` submission authorization.
 
-1. Independent audit of PNT-to-local-law uniformity and endpoints.
-2. Independent mathematical review of P17--P23 and P27--P32.
-3. Human-visible comparison of the released Rosser--Schoenfeld transcriptions with the publisher scan.
-4. Separate disposition of the frozen development checkpoint.
-5. Author metadata, disclosure, licence, category, acknowledgements, and ancillary-file decisions.
-6. Final source-package audit and explicit author/E306-DIR submission authorization.
+No Lean source, proof-development source, review branch, workflow, release, tag, DOI record, or arXiv submission is changed by this ledger.
