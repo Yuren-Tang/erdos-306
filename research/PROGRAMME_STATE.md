@@ -14,9 +14,7 @@ The released theorem authority remains
 `v0.0.3@4582185de1e0e27416e9362e0cc7943c3d2fb4fe`
 
 with the two named Rosser--Schoenfeld assumptions.  The frozen
-
 `codex/pushlinter@e55ef359a8b98525f0bac6c7a510fcad94469bff`
-
 is read-only context and supplies no released premise.  This branch is not a
 proof-development, manuscript, formalization, review, release, DOI, or
 submission surface.
@@ -24,15 +22,17 @@ submission surface.
 ## Direction disposition
 
 `E306-RL-FPCRT-02 — Global finite-prefix transfer and realization threshold`
-has reached a full theorem candidate and has been handed to E306-PDL for exact
-proof expansion.
+has produced:
 
-The Research Lead continues only with frontier mathematics:
+1. a full GFF theorem candidate using the accepted global-control architecture;
+2. a sharper sparse-sensor version of that candidate;
+3. a new two-anchor route with one exact local packaging interface still to
+   verify;
+4. general product-code, Peierls, and prefix-sensor optimality theorems.
 
-1. general product-code / Peierls mechanism extraction;
-2. literature, sharpness, and optimality comparison;
-3. genuine counterexamples or new consumers;
-4. return questions from PDL that expose a new mathematical implication.
+The first full candidate was handed to E306-PDL for proof expansion.  Research
+Lead work continues only on new mechanisms, sharpness, counterexamples,
+second consumers, and exact mathematical gaps returned by PDL.
 
 Issue #39 remains `PREPARED-HOLD`.
 
@@ -43,18 +43,16 @@ Issue #39 remains `PREPARED-HOLD`.
 - `b21c3e993739a6ee1f59f0c657f38bc38ae4756c` —
   `research/finite-prefix-crt/CONVERSATION_RECOVERY_2026-07-22.md`;
 - `38f5b1a84a5d0eb9c5793eb277e65d39bd1c1253` —
-  `research/finite-prefix-crt/CRT_SUPPRESSION_THEOREMS_V1.md`;
-- local status `ARGUMENT / MATERIAL THEOREM CANDIDATE / NOT INDEPENDENTLY REVIEWED`.
+  `research/finite-prefix-crt/CRT_SUPPRESSION_THEOREMS_V1.md`.
 
-This closes arbitrary-shift cyclic suppression, the abundance and sparse-design
+Closed there: arbitrary-shift cyclic suppression, abundance and sparse-design
 regimes, sequential CRT elimination, and algebraic realization of sparse
 columns.
 
-### First global transfer and correction
+### First global transfer and corrections
 
 - `2e9b765baeba29746ed08f0526e98674228153bb` —
   `research/finite-prefix-crt/GLOBAL_FINITE_PREFIX_TRANSFER_V1.md`;
-- status `SUPERSEDED CONDITIONAL FRONTIER`;
 - `9f892b2bc8e213339d01e4e35a226f9d3e2c6fa6` —
   `research/finite-prefix-crt/GLOBAL_FINITE_PREFIX_TRANSFER_V1_ERRATA.md`.
 
@@ -62,26 +60,43 @@ Retained valid content:
 
 1. exact fixed-prefix Fourier formula;
 2. multiplicity-sensitive cyclic energy;
-3. top-block sensor realization by PNT and Brun--Titchmarsh;
+3. actual top-block sensing by PNT and Brun--Titchmarsh;
 4. hyperbolic reciprocal capacity `pi^2/12`;
 5. balanced target tuning and major-frequency scale.
 
-Withdrawn claims:
+Withdrawn:
 
-- alias removal does not require Hoeffding because total reciprocal load is `<1`;
-- the sparse-route Linnik exponent obstruction `L<2` was an artefact of that
-  unnecessary alias argument and is withdrawn;
-- “induced by one integer label” is not a discriminating definition of a
-  diagonal CRT assignment.
+- the Hoeffding alias detour, because total reciprocal load `<1` gives
+  deterministic no-wrap;
+- the resulting false sparse-route `L<2` Linnik obstruction;
+- the non-discriminating phrase “induced by one integer label” for arbitrary CRT
+  assignments.
 
-### Quantitative high-control and dyadic GFF transfer
+### Global-control GFF candidate
 
 - `45a2a64d0cb72e6ed09563499b4aa380c1d32b6f` —
   `research/finite-prefix-crt/HC_RATE_AND_DYADIC_GFF_TRANSFER_V1.md`;
-- status `ARGUMENT / FULL THEOREM CANDIDATE / ADVERSARIALLY CORRECTED / NOT INDEPENDENTLY REVIEWED`;
 - `58066649243e79c9e4ceff305707ea6018e46e65` —
-  `research/finite-prefix-crt/HC_RATE_DYADIC_GFF_AUDIT_ADDENDUM_01.md`;
-- status `ARGUMENT / CONTROLLING ADDENDUM / NOT INDEPENDENTLY REVIEWED`.
+  `research/finite-prefix-crt/HC_RATE_DYADIC_GFF_AUDIT_ADDENDUM_01.md`.
+
+Status:
+
+`ARGUMENT / FULL THEOREM CANDIDATE / ADVERSARIALLY CORRECTED / NOT INDEPENDENTLY REVIEWED`.
+
+The accepted PDL level-set and localization architecture at
+
+`proof-development/e306-rigour-v1@cecd3c351302e49577d180ebf42ad7fa784508dc`
+
+gives the moving rate
+
+```text
+floor-sector <= epsilon_k / sigma_ctrl,
+
+epsilon_k <= C exp(A(2k+1)-c 2^k/(k+1)^3).
+```
+
+The corrected coherent terminal split uses a growing cutoff and includes the
+intermediate full-variance Gaussian lane.
 
 ### Research-to-PDL handoff
 
@@ -91,183 +106,222 @@ Withdrawn claims:
 
 The structural counterexample search found no new obstruction in mass-edge
 factorization, prefix-prime incidence, no-wrap, coherent reconstruction,
-frequency completeness, or recurrence direction.  Remaining candidate-chain
-work is proof expansion and source/correspondence checking owned by E306-PDL.
-MATH-CUR integration is premature until PDL and assurance complete.
+frequency completeness, or recurrence direction.  Routine expansion and
+source/correspondence checking belong to E306-PDL.  MATH-CUR integration remains
+premature.
 
 ### General product-code / Peierls mechanism
 
 - `032172416bcf58eb42f8edd0a159cb98f76d74f4` —
-  `research/finite-prefix-crt/PRODUCT_CODE_PEIERLS_TRANSFER_THEOREM_V1.md`;
-- status `ARGUMENT / GENERAL THEOREM CANDIDATE / NOT INDEPENDENTLY REVIEWED`.
+  `research/finite-prefix-crt/PRODUCT_CODE_PEIERLS_TRANSFER_THEOREM_V1.md`.
 
-The note extracts:
+Status:
 
-1. shifted weighted-code separation;
-2. arbitrary-shift one-fibre partition bounds;
-3. product-fibre compression and decoded skeletons;
-4. quantitative entropy--floor Peierls transfer;
-5. a combined quotient/fibre theorem;
-6. prime-block arithmetic sensors;
-7. asymptotically free CRT dimension elimination.
+`ARGUMENT / GENERAL THEOREM CANDIDATE / NOT INDEPENDENTLY REVIEWED`.
 
-### Load--distance optimality
+It extracts shifted finite-code packing, arbitrary-shift product-fibre
+compression, decoded skeletons, entropy--floor transfer, and the combined
+quotient/fibre local-limit architecture.
+
+### Prefix-bounded load--distance optimality
 
 - `7eaab57fe7c1c202a578f3a21a98fbc89a66333c` —
-  `research/finite-prefix-crt/PRIME_BLOCK_LOAD_DISTANCE_OPTIMALITY_V1.md`;
+  `PRIME_BLOCK_LOAD_DISTANCE_OPTIMALITY_V1.md`;
 - `4b61069a1785b6a24a069a41c0375acf89932d31` —
-  `research/finite-prefix-crt/PRIME_BLOCK_LOAD_DISTANCE_OPTIMALITY_ADDENDUM_IRREGULAR.md`;
+  `PRIME_BLOCK_LOAD_DISTANCE_OPTIMALITY_ADDENDUM_IRREGULAR.md`;
 - `ad2e338ce98bfaf79f8402f5465416d71baded28` —
-  `research/finite-prefix-crt/PRIME_BLOCK_LOAD_DISTANCE_OPTIMALITY_ADDENDUM_PREFIX_BOUNDED.md`;
-- controlling status `ARGUMENT / MATERIAL GENERAL THEOREM CANDIDATE / NOT INDEPENDENTLY REVIEWED`.
+  `PRIME_BLOCK_LOAD_DISTANCE_OPTIMALITY_ADDENDUM_PREFIX_BOUNDED.md`.
 
-For arbitrary irregular row-dependent sensor columns bounded by a prefix ceiling
-`Z`, worst-row cyclic distance `D_*` forces
+For arbitrary irregular row-dependent columns bounded by a prefix ceiling `Z`,
+worst-row cyclic distance `D_*` forces
 
 ```text
 Lambda >= 4 H_1(R) D_*/Z,
 W_2    >= 4 H_2(R) D_*/Z^2.
 ```
 
-The top prime block has
+The complete top prime block attains both bounds for its large distance
+`D_* asymp Z/log Z`.  This is fixed-distance optimality; it does not say that an
+application must use that unnecessarily large distance.
 
-```text
-D_*    asymp Z/log Z,
-Lambda asymp H_1(R)/log Z,
-W_2    asymp H_2(R)/(Z log Z),
-```
-
-and therefore attains both lower bounds up to constants.  The comparison class
-allows common or row-dependent columns, unequal degrees, repetitions, sparse or
-complete incidence, and arbitrary mixtures of all scales below the prefix.
-
-Thus sparsification or multiscale placement alone cannot improve load order
-under the uniform absolute-distance interface.  Genuine escape routes must
-abandon worst-row absolute compression, use cancellation/adaptivity, exceed the
-prefix ceiling, or decode low coordinates jointly.
-
-### Initial literature positioning
+### Literature positioning
 
 - `af11e3c6b69ac331882890ceee1664f042dd7193` —
-  `research/finite-prefix-crt/LITERATURE_POSITIONING_PRODUCT_CODE_PEIERLS_V1.md`;
-- status `INITIAL LITERATURE COMPARISON / NOVELTY NOT CLAIMED`.
+  `LITERATURE_POSITIONING_PRODUCT_CODE_PEIERLS_V1.md`;
+- `62a3462801575def26fee4f41bd8cd62ad71fc0a` —
+  `LITERATURE_POSITIONING_ADDENDUM_PREFIX_OPTIMALITY.md`.
 
-Conservative verdict:
+Status:
 
-- the metric `D/4` lemma is an elementary shifted packing/decoding bound, not a
-  standalone new smoothing theorem;
-- entropy--floor extraction is standard-style Peierls/Laplace bookkeeping;
-- small-bias spaces and weighted Bernoulli local-limit theorems are neighbouring
-  but do not directly provide arbitrary-shift decoded product-fibre `L^1`
-  compression;
-- modular-inverse distribution is a large existing literature, but the present
-  PNT+Brun--Titchmarsh route uses only multiplicity and yields a distinct sharp
-  load--distance interface;
-- no direct prior match was located in the initial search for prefix-optimal
-  arithmetic common-reservoir sensing or the full decoded-skeleton transfer;
-- no priority or bibliographic-completeness claim is made.
+`INITIAL COMPARISON ONLY / NOVELTY NOT CERTIFIED`.
 
-## FPCRT-02 material conclusions
+The atomic metric and Peierls lemmas are elementary or standard-style.  The
+potentially distinctive interfaces are decoded product-fibre compression,
+arithmetic prefix sensing, sharp load--distance trade-offs, and their modular
+local-limit assembly.
 
-### Quantitative Peierls extraction
+## Sparse actual-prime sensing
 
-The accepted PDL level-set and localization architecture at
+### Common-column theorem
 
-`proof-development/e306-rigour-v1@cecd3c351302e49577d180ebf42ad7fa784508dc`
+- `575475b529d720092f373523ebb1eb317401f20d` —
+  `research/finite-prefix-crt/SPARSE_ACTUAL_PRIME_SENSOR_SAMPLING_V1.md`.
 
-gives
+The full top prime population has constant mean cyclic energy for every
+`r<sqrt(Z/2)` and every nonzero multiplier.  Sampling without replacement and a
+union bound give one common actual-prime subset
 
 ```text
-floor-sector <= epsilon_k / sigma_ctrl,
-epsilon_k <= C exp(A(2k+1)-c 2^k/(k+1)^3).
+T_Z subset (Z/2,Z),
+|T_Z|=O(log Z),
+D_r(T_Z) >= c log Z  for every r<sqrt(Z/2).
 ```
 
-Thus `epsilon_k=O_M(k^(-M))` for every fixed `M`.
-
-### Complete dyadic prefixes and terminal partition
-
-For
+This is exactly the distance scale needed for product-fibre compression.  The
+sensor loads become
 
 ```text
-Z_k=2^(2k+1),
-N_k=pi(Z_k^-),
+Lambda_sensor = O(log Z log log Z / Z),
+W2_sensor     = O(log Z / Z^2),
 ```
 
-the prefix splits into low primes `<2^k` and complete high blocks
-`P_k,...,P_(2k)`.  Top-block sensors suppress every low CRT coordinate, the
-accepted high-control system handles the high floor sector, and the hyperbolic
-mass pool tunes every target in
+and are negligible relative to global high control.
+
+Consequently the full global-control route sharpens to
 
 ```text
-[C log(k)/k, 1/5].
+gamma_(N_k)=O(1/k),
+gamma_N=O(1/log p_N).
 ```
 
-Total reciprocal load is `<0.41<1`, so modular Fourier positivity is already an
-exact equality, with no alias estimate.
+This quantitative rate supersedes the earlier
+`O(log log p_N/log p_N)` candidate rate.
 
-With `C_k=D sqrt(log k)`, the expected low residues remain uniquely decoded
-throughout the growing high main arc.  The terminal split is:
+### Row-adaptive sharp theorem
 
-1. positive labels `|m|<=M_0/sqrt(V)`;
-2. coherent intermediate full-variance Gaussian tail;
-3. coherent outer tail `exp(-c C_k^2)/sigma_ctrl`;
-4. floor sector and low siblings.
+- `250a46cce3ade09018dde5564843fe11b5510d5a` —
+  `research/finite-prefix-crt/SPARSE_ACTUAL_PRIME_SENSOR_SAMPLING_ADDENDUM_ROW_ADAPTIVE.md`.
 
-Every negative lane is `o(V^(-1/2))` after fixed choices of `M_0,D`.
-
-### Gap-free floor candidate
-
-The argument gives
+Allowing each row to choose
 
 ```text
-gamma_(N_k)=O(log k/k).
+M_r=O(log r+log log Z)
 ```
 
-Li's recurrence
+actual top-block primes gives full product-fibre error `o(1)` and
 
 ```text
-gamma_N <= gamma_(N-1)+w_N/p_N
+Lambda_sensor = O(log Z/Z),
+W2_sensor     = O(log log Z/Z^2).
 ```
 
-has a summable tail because eventually `w_N<=4/sqrt(p_N)`.  His unconditional
-`gamma_N<=0.181...` supplies the side condition and overlaps the new low
-interval.  Hence the candidate conclusion is
+This attains the prefix-bounded rowwise load order at the entropy-matched
+distance required by the application.  Common-column and row-adaptive designs
+optimize different resources: number of distinct high columns versus total
+reciprocal load.
+
+## Two-anchor cross-scale route
+
+- `565fea39484fb065d62dd69ac6f17779931d41ea` —
+  `research/finite-prefix-crt/TWO_ANCHOR_CROSS_SCALE_CONTROL_V1.md`.
+
+Status:
+
+`ARGUMENT / MATERIAL NEW ROUTE / ONE LOCALIZATION INTERFACE TO VERIFY`.
+
+Take only:
+
+1. the lowest high block `A=P_k`;
+2. the top block `B=P_(2k)`;
+3. internal complete graphs on `A` and `B`;
+4. the complete bipartite graph `A x B`.
+
+Their total reciprocal load and variance are
 
 ```text
-gamma_N=O(log log p_N/log p_N) -> 0.
+Lambda_anchor = O(1/k^2),
+sigma_anchor^2 asymp 1/(Z k^2).
 ```
 
-This would prove Li's Gap-Free Floor conjecture and, via his Proposition 9.2,
-the complete positive-rational squarefree-denominator `omega=2` theorem.
+All non-anchor prefix coordinates are eliminated by one actual-prime top-block
+sample of size `O((log Z)^3)` and negligible load.
+
+### Cross-scale synchronization theorem
+
+If the anchor blocks carry coherent labels `u` and `v`, then
+
+```text
+n_pq(u,v)/(pq)
+ = v/(pq) + (u-v) q^(-1)/p   (mod 1).
+```
+
+If `u!=v`, at least one lowest-anchor prime does not divide `u-v`; the complete
+top block then forces cross energy
+
+```text
+Omega(Z/log Z).
+```
+
+If `u=v=m`, the anchor energy is exactly
+
+```text
+m^2 sigma_anchor^2.
+```
+
+### Exact remaining interface
+
+`LOCAL-ANCHOR-PARTITION(j)`:
+
+package the already verified single-block SBEE mechanism as a uniform split into
+
+1. a coherent main arc with exact label energy;
+2. a Gaussian coherent tail;
+3. a nondominant/floor error `exp(-Omega(2^j/j^3))/sigma_j`;
+4. a base scale independent of the later growing cutoff.
+
+The tree already contains `SBEEAssembly.single_block_counting`, Theorem A
+dominant counting, Theorem B forcing, and exact CRT quadratic identities.  The
+question is whether these package directly with the required quantifier order.
+That packaging belongs to PDL; failure of the interface would be the smallest
+new mathematical gap.
+
+Conditional on this interface, the route gives
+
+```text
+gamma_(N_k)=O(1/k^2),
+gamma_N=O(1/(log p_N)^2).
+```
 
 ## Current classification
 
 - local cyclic suppression: `PROVED-ARGUMENT`;
-- top-block realization: `PROVED-ARGUMENT / EXTERNAL PNT+BRUN--TITCHMARSH`;
-- hyperbolic capacity: `PROVED-ARGUMENT / EXTERNAL PNT+MERTENS`;
+- dense top-block sensing: `PROVED-ARGUMENT / EXTERNAL PNT+BRUN--TITCHMARSH`;
+- sparse common actual-prime sensing: `MATERIAL THEOREM CANDIDATE`;
+- row-adaptive application-scale optimal sensing: `SHARP GENERAL THEOREM CANDIDATE`;
+- hyperbolic mass capacity: `PROVED-ARGUMENT / EXTERNAL PNT+MERTENS`;
 - no-wrap Fourier transfer: `PROVED-ARGUMENT`;
-- moving high-control rate: `PROVED-ARGUMENT / CONSUMES ACCEPTED PDL CHECKPOINT`;
-- coherent-label terminal partition: `PROVED-ARGUMENT`;
-- dyadic finite-prefix coverage: `FULL THEOREM CANDIDATE`;
-- Li GFF: `FULL THEOREM CANDIDATE / HANDED TO PDL / NOT INDEPENDENTLY REVIEWED`;
-- full rational `omega=2` consequence: `CANDIDATE CONSEQUENCE / NOT PROJECT-ACCEPTED`;
+- moving global-control rate: `PROVED-ARGUMENT / CONSUMES ACCEPTED PDL CHECKPOINT`;
+- global-control dyadic coverage: `FULL THEOREM CANDIDATE`;
+- sharpened global-control GFF rate `O(1/log p_N)`: `FULL THEOREM STRENGTHENING CANDIDATE / NOT INDEPENDENTLY REVIEWED`;
+- two-anchor cross-scale synchronization: `PROVED-ARGUMENT`;
+- two-anchor GFF rate `O(1/(log p_N)^2)`: `CONDITIONAL ROUTE CANDIDATE / LOCAL-ANCHOR-PARTITION TO VERIFY`;
 - abstract product-code/Peierls theorem: `GENERAL THEOREM CANDIDATE`;
-- prefix-bounded prime-block optimality: `MATERIAL GENERAL THEOREM CANDIDATE`;
+- prefix-bounded load--distance optimality: `MATERIAL GENERAL THEOREM CANDIDATE`;
 - literature/priority status: `INITIAL COMPARISON ONLY / NOVELTY NOT CERTIFIED`;
-- sparse prescribed-residue route: `SECONDARY OPEN DESIGN QUESTION / NO L<2 OBSTRUCTION CLAIM`;
-- released Erdős 306 status: unchanged.
+- released Erdős 306 theorem status: unchanged.
 
 ## Next Research Lead work
 
-1. search for a second non-semiprime consumer of decoded product-fibre
+1. send the sparse-sensor strengthening and exact `LOCAL-ANCHOR-PARTITION`
+   question to E306-PDL;
+2. test the two-anchor route for exception-set and label-range obstructions;
+3. determine whether the `O(1/k^2)` anchor load is optimal under the required
+   coherent-label range;
+4. investigate cancellation or adaptive designs only after the two-anchor route
+   is dispositioned;
+5. search for a second non-semiprime consumer of decoded product-fibre
    compression;
-2. investigate whether joint low-coordinate decoding or oscillatory cancellation
-   can beat the prefix-bounded rowwise load obstruction;
-3. determine whether the optimality theorem has a known formulation in harmonic
-   sensing, code packing, or modular-inverse literature;
-4. study weighted/adaptive sensor variants and their correct universal lower
-   bounds;
-5. receive from E306-PDL only exact new-mathematics gaps.
+6. receive from E306-PDL only exact new-mathematics gaps.
 
 Only a material theorem, correction/counterexample, or smallest exact revised
 gap returns to issue #9.
