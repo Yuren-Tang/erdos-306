@@ -21,9 +21,18 @@ is read-only context and supplies no released premise.  This branch is not a
 proof-development, manuscript, formalization, review, release, DOI, or
 submission surface.
 
-## Current direction
+## Direction disposition
 
-`E306-RL-FPCRT-02 — Global finite-prefix transfer and realization threshold`.
+`E306-RL-FPCRT-02 — Global finite-prefix transfer and realization threshold`
+has reached a full theorem candidate and has been handed to E306-PDL for exact
+proof expansion.
+
+The Research Lead continues only with frontier mathematics:
+
+1. general product-code / Peierls mechanism extraction;
+2. literature and sharpness comparison;
+3. genuine counterexamples or new consumers;
+4. return questions from PDL that expose a new mathematical implication.
 
 Issue #39 remains `PREPARED-HOLD`.
 
@@ -44,7 +53,7 @@ This closes arbitrary-shift cyclic suppression, the abundance and sparse-design
 regimes, sequential CRT elimination, and algebraic realization of sparse
 columns.
 
-### First global transfer
+### First global transfer and correction
 
 - commit `2e9b765baeba29746ed08f0526e98674228153bb`;
 - `research/finite-prefix-crt/GLOBAL_FINITE_PREFIX_TRANSFER_V1.md`;
@@ -85,15 +94,43 @@ Controlling terminal-lane addendum:
 - `research/finite-prefix-crt/HC_RATE_DYADIC_GFF_AUDIT_ADDENDUM_01.md`;
 - status `ARGUMENT / CONTROLLING ADDENDUM / NOT INDEPENDENTLY REVIEWED`.
 
-## Current material conclusions
+### Research-to-PDL handoff
 
-### 1. Quantitative Peierls extraction
+- commit `059f1ecd2210c9aadf3d8a613167fa053f78bca0`;
+- `research/finite-prefix-crt/FPCRT02_RL_TO_PDL_HANDOFF_2026-07-22.md`;
+- posted to research-workbench issue #38 comment `5050438566`.
+
+The structural counterexample search found no new obstruction in mass-edge
+factorization, prefix-prime incidence, no-wrap, coherent reconstruction,
+frequency completeness, or recurrence direction.  Remaining candidate-chain
+work is proof expansion and source/correspondence checking owned by E306-PDL.
+MATH-CUR integration is premature until PDL and assurance complete.
+
+### General mechanism extraction
+
+- commit `032172416bcf58eb42f8edd0a159cb98f76d74f4`;
+- `research/finite-prefix-crt/PRODUCT_CODE_PEIERLS_TRANSFER_THEOREM_V1.md`;
+- status `ARGUMENT / GENERAL THEOREM CANDIDATE / NOT INDEPENDENTLY REVIEWED`.
+
+The note extracts:
+
+1. shifted weighted-code separation;
+2. arbitrary-shift one-fibre partition bounds;
+3. product-fibre compression and decoded skeletons;
+4. quantitative entropy--floor Peierls transfer;
+5. a combined quotient/fibre theorem;
+6. prime-block complete bipartite sensors;
+7. asymptotically free CRT dimension elimination.
+
+## FPCRT-02 material conclusions
+
+### Quantitative Peierls extraction
 
 The accepted PDL level-set and localization architecture at
 
 `proof-development/e306-rigour-v1@cecd3c351302e49577d180ebf42ad7fa784508dc`
 
-gives the moving floor-sector rate
+gives
 
 ```text
 floor-sector <= epsilon_k / sigma_ctrl,
@@ -101,15 +138,9 @@ floor-sector <= epsilon_k / sigma_ctrl,
 epsilon_k <= C exp(A(2k+1)-c 2^k/(k+1)^3).
 ```
 
-Thus `epsilon_k=O_M(k^(-M))` for every fixed `M`.  The earlier `HC-RATE`
-condition is closed with a super-polynomial margin.
+Thus `epsilon_k=O_M(k^(-M))` for every fixed `M`.
 
-The exact localization split is:
-
-1. high-energy floor sector;
-2. coherent-label sector with exact quadratic energy.
-
-### 2. Complete dyadic prefixes
+### Complete dyadic prefixes
 
 For
 
@@ -127,35 +158,30 @@ mass pool tunes every target in
 [C log(k)/k, 1/5].
 ```
 
-The total reciprocal load is `<0.41<1`, so a Fourier congruence modulo the
-primorial is automatically an exact equality; no alias estimate is needed.
+The total reciprocal load is `<0.41<1`, so modular Fourier positivity is already
+an exact equality, with no alias estimate.
 
-### 3. Coherent-label terminal partition
+### Coherent-label terminal partition
 
-Take a growing high-main cutoff
+With
 
 ```text
-C_k=D sqrt(log k).
+C_k=D sqrt(log k),
 ```
 
-For every coherent label `|m|<=C_k/sigma_ctrl`, the correct low residue
-`m mod r` remains the unique decoded point because its sensor energy is only
-`O(k log k/r^2)`, while the cyclic code distance is `Omega(Z_k/log Z_k)`.
-The reconstructed global frequency is `h=m`, and the full Bernoulli product has
-variance `V` throughout this range.
-
-The terminal split is therefore:
+the expected low residues remain uniquely decoded throughout the growing high
+main arc.  The terminal split is:
 
 1. positive labels `|m|<=M_0/sqrt(V)`;
-2. coherent intermediate Gaussian tail;
+2. coherent intermediate full-variance Gaussian tail;
 3. coherent outer tail `exp(-c C_k^2)/sigma_ctrl`;
 4. floor sector and low siblings.
 
-Each negative lane is `o(V^(-1/2))` after fixed choices of `M_0,D`.
+Every negative lane is `o(V^(-1/2))` after fixed choices of `M_0,D`.
 
-### 4. Gap-free floor
+### Gap-free floor candidate
 
-The dyadic theorem candidate gives
+The argument gives
 
 ```text
 gamma_(N_k)=O(log k/k).
@@ -168,16 +194,15 @@ gamma_N <= gamma_(N-1)+w_N/p_N
 ```
 
 has a summable tail because eventually `w_N<=4/sqrt(p_N)`.  His unconditional
-`gamma_N<=0.181...` supplies the recurrence side condition and overlaps the
-new low interval.  Hence
+`gamma_N<=0.181...` supplies the side condition and overlaps the new low
+interval.  Hence the candidate conclusion is
 
 ```text
 gamma_N=O(log log p_N/log p_N) -> 0.
 ```
 
-This is a full argument candidate for Li's Gap-Free Floor conjecture and, via
-Li's Proposition 9.2, for the complete positive-rational squarefree-denominator
-`omega=2` theorem.
+This would prove Li's Gap-Free Floor conjecture and, via his Proposition 9.2,
+the complete positive-rational squarefree-denominator `omega=2` theorem.
 
 ## Current classification
 
@@ -188,24 +213,23 @@ Li's Proposition 9.2, for the complete positive-rational squarefree-denominator
 - moving high-control rate: `PROVED-ARGUMENT / CONSUMES ACCEPTED PDL CHECKPOINT`;
 - coherent-label terminal partition: `PROVED-ARGUMENT`;
 - dyadic finite-prefix coverage: `FULL THEOREM CANDIDATE`;
-- Li GFF: `FULL THEOREM CANDIDATE / NOT INDEPENDENTLY REVIEWED`;
+- Li GFF: `FULL THEOREM CANDIDATE / HANDED TO PDL / NOT INDEPENDENTLY REVIEWED`;
 - full rational `omega=2` consequence: `CANDIDATE CONSEQUENCE / NOT PROJECT-ACCEPTED`;
+- abstract product-code/Peierls theorem: `GENERAL THEOREM CANDIDATE`;
+- prime-block free-dimension elimination: `GENERAL ARITHMETIC THEOREM CANDIDATE`;
 - sparse prescribed-residue route: `SECONDARY OPEN DESIGN QUESTION / NO L<2 OBSTRUCTION CLAIM`;
 - released Erdős 306 status: unchanged.
 
-## Next routine branch work
+## Next Research Lead work
 
-No visible new-mathematics implication remains in the preferred route.  Continue
-an adversarial stress test:
-
-1. audit the moving-rate quantifier order against the exact PDL theorem;
-2. audit coherent-label injection and the growing `C_k` range;
-3. audit every dyadic endpoint, edge-disjointness, and prime-incidence condition;
-4. audit the exact central-band overlap and recurrence side conditions;
-5. search for unused-prime, double-assignment, wrapping, or missing-frequency
-   counterexamples;
-6. if the chain survives, extract the general quantitative Peierls/product-code
-   theorem as an independently valuable result.
+1. compare the abstract theorem with small-bias spaces, expander codes, polymer or
+   cluster-expansion Peierls bounds, and conditional local-limit theorems;
+2. determine the sharp load--distance frontier for complete bipartite arithmetic
+   sensors and whether the prime-block construction is asymptotically optimal;
+3. find a second non-semiprime consumer of decoded-skeleton Fourier compression;
+4. investigate whether deterministic sparse designs can match the dense
+   prime-block reservoir while preserving prefix placement;
+5. receive from E306-PDL only exact new-mathematics gaps.
 
 Only a material theorem, correction/counterexample, or smallest exact revised
 gap returns to issue #9.
