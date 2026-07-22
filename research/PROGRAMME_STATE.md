@@ -21,32 +21,46 @@ not a PDL, Lean, manuscript, corpus, review, release, DOI, or submission surface
 ## Current direction
 
 `E306-RL-FPCRT-02 — Global finite-prefix transfer and realization threshold`
-has produced two nested full theorem candidates:
+now has a hierarchy of argument-level theorem candidates.
 
-1. a global-control route with sparse actual-prime sensors and candidate rate
-   `gamma_N=O(1/log p_N)`;
-2. a two-anchor route replacing the multi-block global quotient and candidate
-   rate `gamma_N=O(1/(log p_N)^2)`.
+The strongest current route is a **one-anchor sparse-Gibbs construction** at
+an arbitrary prime prefix `Z=p_N`:
 
-Both remain `NOT INDEPENDENTLY REVIEWED`.  Exact proof expansion and
-formal/informal correspondence belong to E306-PDL.  Research Lead work now
-continues on sharpness, counterexamples, new consumers, and any exact
-`BLOCKED-FRONTIER` returned by PDL.
+```text
+gamma_N << p_N^(-1/4) (log p_N)^(5/4).
+```
+
+It uses:
+
+1. one sparsified top prime block;
+2. one `O((log Z)^3)` actual-prime sample which both eliminates all lower CRT
+   coordinates and senses outer common labels;
+3. a near-diagonal semiprime mass strip `Z<=pq<=4Z`.
+
+It removes the multi-block global-control chain, the lower anchor,
+cross-scale synchronization, and dyadic-to-all-prefix recurrence from the
+preferred research architecture.
+
+All theorem candidates remain `NOT INDEPENDENTLY REVIEWED`.  Exact proof
+expansion, theorem-hypothesis checking, probability inequalities, and
+formal/informal correspondence belong to E306-PDL.  E306-RL continues only with
+new mathematics, counterexamples, sharpness, abstractions, and exact
+`BLOCKED-FRONTIER` returns.
 
 Issue #39 remains `PREPARED-HOLD`.
 
 ## Durable source map
 
-### Local suppression and first finite-prefix transfer
+### Recovery, local suppression, and first global transfer
 
 - `b21c3e993739a6ee1f59f0c657f38bc38ae4756c` —
-  `CONVERSATION_RECOVERY_2026-07-22.md`;
+  `research/finite-prefix-crt/CONVERSATION_RECOVERY_2026-07-22.md`;
 - `38f5b1a84a5d0eb9c5793eb277e65d39bd1c1253` —
-  `CRT_SUPPRESSION_THEOREMS_V1.md`;
+  `research/finite-prefix-crt/CRT_SUPPRESSION_THEOREMS_V1.md`;
 - `2e9b765baeba29746ed08f0526e98674228153bb` —
-  `GLOBAL_FINITE_PREFIX_TRANSFER_V1.md`;
+  `research/finite-prefix-crt/GLOBAL_FINITE_PREFIX_TRANSFER_V1.md`;
 - `9f892b2bc8e213339d01e4e35a226f9d3e2c6fa6` —
-  `GLOBAL_FINITE_PREFIX_TRANSFER_V1_ERRATA.md`.
+  `research/finite-prefix-crt/GLOBAL_FINITE_PREFIX_TRANSFER_V1_ERRATA.md`.
 
 Retained mathematics:
 
@@ -62,52 +76,29 @@ Withdrawn:
 - the derived false sparse-route `L<2` obstruction;
 - a non-discriminating definition of diagonal CRT assignments.
 
-### Original global-control GFF candidate
+### Original global-control GFF route
 
 - `45a2a64d0cb72e6ed09563499b4aa380c1d32b6f` —
   `HC_RATE_AND_DYADIC_GFF_TRANSFER_V1.md`;
 - `58066649243e79c9e4ceff305707ea6018e46e65` —
   `HC_RATE_DYADIC_GFF_AUDIT_ADDENDUM_01.md`.
 
-The accepted PDL control architecture at
-
-`proof-development/e306-rigour-v1@cecd3c351302e49577d180ebf42ad7fa784508dc`
-
-gives
+The accepted PDL level-set/localization architecture yields a super-polynomial
+moving floor-sector rate.  With dense top-block sensing this produced the first
+full GFF candidate; sparse actual-prime sensing below improves that route to
 
 ```text
-floor-sector <= epsilon_k/sigma_ctrl,
-epsilon_k <= C exp(A(2k+1)-c 2^k/(k+1)^3).
+gamma_N=O(1/log p_N).
 ```
 
-The corrected terminal partition includes:
-
-1. positive common labels;
-2. an intermediate full-variance Gaussian tail;
-3. a coherent outer tail;
-4. the floor sector and low siblings.
-
-### First RL-to-PDL handoff
-
-- `059f1ecd2210c9aadf3d8a613167fa053f78bca0` —
-  `FPCRT02_RL_TO_PDL_HANDOFF_2026-07-22.md`;
-- issue #38 comment `5050438566`.
-
-Structural counterexample search found no obstruction in mass-edge
-factorization, prefix-prime incidence, no-wrap, coherent reconstruction,
-frequency completeness, or recurrence direction.
-
-### General mechanism extraction
+### General product-code and Peierls mechanism
 
 - `032172416bcf58eb42f8edd0a159cb98f76d74f4` —
   `PRODUCT_CODE_PEIERLS_TRANSFER_THEOREM_V1.md`.
 
-Status:
-
-`ARGUMENT / GENERAL THEOREM CANDIDATE / NOT INDEPENDENTLY REVIEWED`.
-
 It extracts shifted finite-code packing, decoded product-fibre compression,
 entropy--floor transfer, and a combined quotient/fibre local-limit mechanism.
+Status: `GENERAL THEOREM CANDIDATE / NOT INDEPENDENTLY REVIEWED`.
 
 ### Prefix-bounded load--distance theory
 
@@ -125,9 +116,8 @@ Lambda >= 4 H_1(R) D_*/Z,
 W_2    >= 4 H_2(R) D_*/Z^2.
 ```
 
-The full top prime block is optimal for its large distance
-`D_* asymp Z/log Z`; sparse constructions below show that the application only
-needs logarithmic distance.
+The complete top prime block is constant-factor optimal at its large distance;
+the sparse sensor theorems attain the application-scale frontier.
 
 ### Literature positioning
 
@@ -136,180 +126,227 @@ needs logarithmic distance.
 - `62a3462801575def26fee4f41bd8cd62ad71fc0a` —
   `LITERATURE_POSITIONING_ADDENDUM_PREFIX_OPTIMALITY.md`.
 
-No priority or bibliographic-completeness claim is made.  The atomic metric and
-Peierls lemmas are elementary or standard-style; the potentially distinctive
-interfaces are decoded product fibres, arithmetic prefix sensing, sharp load
-trade-offs, and cross-scale synchronization.
+No priority or bibliographic-completeness claim is made.  Elementary or
+standard-style ingredients are distinguished from the potentially distinctive
+interfaces: decoded product fibres, arithmetic prefix sensing, sharp load
+trade-offs, sparse Gibbs anchors, and reciprocal-label sensing.
 
 ## Sparse actual-prime sensor theorems
 
-### One common sample
+### Common sample
 
 - `575475b529d720092f373523ebb1eb317401f20d` —
   `SPARSE_ACTUAL_PRIME_SENSOR_SAMPLING_V1.md`.
 
-One actual-prime subset
+One actual-prime subset of size `O(log Z)` simultaneously supplies logarithmic
+cyclic distance for all primes below `sqrt(Z/2)`.  In the accepted global-control
+route this gives the candidate
 
 ```text
-T_Z subset (Z/2,Z),
-|T_Z|=O(log Z)
-```
-
-simultaneously gives cyclic distance `Omega(log Z)` for every
-`r<sqrt(Z/2)`.  Hence
-
-```text
-Lambda_sensor = O(log Z log log Z/Z),
-W2_sensor     = O(log Z/Z^2).
-```
-
-Replacing the dense sensor reservoir in the accepted global-control route gives
-
-```text
-gamma_(N_k)=O(1/k),
 gamma_N=O(1/log p_N).
 ```
-
-This supersedes the earlier quantitative rate
-`O(log log p_N/log p_N)`.
 
 ### Row-adaptive sharp version
 
 - `250a46cce3ade09018dde5564843fe11b5510d5a` —
   `SPARSE_ACTUAL_PRIME_SENSOR_SAMPLING_ADDENDUM_ROW_ADAPTIVE.md`.
 
-Choosing
+With `M_r=O(log r+log log Z)` actual top primes per row,
 
 ```text
-M_r=O(log r+log log Z)
+Lambda_sensor=O(log Z/Z),
+W2_sensor=O(log log Z/Z^2),
 ```
 
-actual top-block primes for row `r` gives full fibre error `o(1)` with
+matching the prefix-bounded rowwise load order at the application distance.
 
-```text
-Lambda_sensor = O(log Z/Z),
-W2_sensor     = O(log log Z/Z^2).
-```
-
-This attains the prefix-bounded rowwise load order at the entropy-matched
-application distance.
-
-## Two-anchor theorem candidate
-
-### Cross-scale route
+## Two-anchor route
 
 - `565fea39484fb065d62dd69ac6f17779931d41ea` —
-  `TWO_ANCHOR_CROSS_SCALE_CONTROL_V1.md`.
-
-Use only:
-
-1. the lowest high block `A=P_k`;
-2. the top block `B=P_(2k)`;
-3. internal complete graphs on both;
-4. the complete bipartite graph `A x B`.
-
-The anchor scales are
-
-```text
-Lambda_anchor = O(1/k^2),
-sigma_anchor^2 asymp 1/(Z k^2).
-```
-
-All non-anchor coordinates are eliminated by one actual top-block sample of
-size `O((log Z)^3)` and negligible load.
-
-For coherent anchor labels `u,v`,
-
-```text
-n_pq(u,v)/(pq)
- = v/(pq)+(u-v)q^(-1)/p  (mod 1).
-```
-
-If `u!=v`, one lowest-anchor prime detects the difference and the top block
-forces cross energy `Omega(Z/log Z)`.  If `u=v=m`, the anchor energy is exactly
-`m^2 sigma_anchor^2`.
-
-### Local-partition closure
-
+  `TWO_ANCHOR_CROSS_SCALE_CONTROL_V1.md`;
 - `f91b503cef858682b7385f0c9615b9e45c528d88` —
   `TWO_ANCHOR_LOCAL_PARTITION_CLOSURE_ADDENDUM.md`;
 - `1f7928ce219cead2b10739a90bd048b38334a26e` —
-  `TWO_ANCHOR_LOCAL_PARTITION_CLOSURE_ERRATUM.md`.
+  `TWO_ANCHOR_LOCAL_PARTITION_CLOSURE_ERRATUM.md`;
+- `931ea9b74de2bf01f3c76c46efbe16019a7609d3` —
+  `FPCRT02_RL_TO_PDL_HANDOFF_ADDENDUM_SPARSE_TWO_ANCHOR.md`.
 
-Take
-
-```text
-R_0=D^2 log Z.
-```
-
-For either anchor scale `Y`:
+Two complete internal anchor graphs plus cross-scale synchronization yielded
 
 ```text
-R_0 << Y/(log Y)^3
-```
-
-so Theorem B forces every `Q<=R_0` assignment to be dominant.  Theorem A gives
-
-```text
-#exceptions << R_0(log Y)^3/Y < 1,
-```
-
-hence exact coherence and energy `m^2 sigma_P^2`.
-
-The full complement is bounded by
-
-```text
-sum_(Q>R_0) exp(-cQ)
- <= exp(-(c-c')R_0) * C_(c')/sigma_P.
-```
-
-After multiplying by the opposite anchor partition scale, choose `D` with
-`delta D^2>2`; using `V<<1/Z`, every high-anchor remainder is
-`o(V^(-1/2))`.
-
-Thus the two-anchor route is now a full argument-level theorem candidate:
-
-```text
-gamma_(N_k)=O(1/k^2),
 gamma_N=O(1/(log p_N)^2).
 ```
 
-### Superseding PDL handoff
+This route remains a valid simpler candidate but is superseded quantitatively
+by sparse-Gibbs constructions.
 
-- `931ea9b74de2bf01f3c76c46efbe16019a7609d3` —
-  `FPCRT02_RL_TO_PDL_HANDOFF_ADDENDUM_SPARSE_TWO_ANCHOR.md`;
-- issue #38 comments `5050880339` and `5050914868`.
+## Sparse Gibbs anchors and critical-scale route
 
-The local interface is no longer a new-mathematics gap.  PDL should verify exact
-hypotheses, constants, concentration statements, exception-count regime, and
-formal correspondence.  A failure of any stated input returns as one exact
+### Gibbs sparsification and moving SBEE entropy
+
+- `7443c62c58ee81a2c02542551ceff8da23e6bbad` —
+  `SPARSE_GIBBS_ANCHOR_AND_CRITICAL_SCALE_V1.md`;
+- `0bcaba1c742187e0cba4aa5776928fc5e24d28f0` —
+  `SPARSE_GIBBS_ANCHOR_AUDIT_ADDENDUM_01.md`.
+
+For bounded edge energies, Bernoulli edge sampling with rate `rho` converts a
+level-set entropy coefficient `eta<kappa rho` and a noncoherent floor `F` into
+an expected sparse noncoherent partition of size
+
+```text
+poly(parameters) * exp(-c rho F).
+```
+
+The verified single-block threshold formulas permit the moving coefficient
+
+```text
+epsilon_Y asymp Y^(-1/4) (log Y)^(13/4).
+```
+
+Sampling at this density gives a sparse block graph with
+
+```text
+Lambda_G << Y^(-1/4) (log Y)^(5/4),
+sigma_G^2 asymp Y^(-9/4) (log Y)^(5/4),
+```
+
+and super-polynomially small noncoherent partition mass.
+
+Using a lower anchor at `Y=Z^(8/9)` produced the direct all-prefix candidate
+
+```text
+gamma_N << p_N^(-2/9) (log p_N)^(5/4).
+```
+
+The audit identifies the top-sensor row `r=2` as the Lindeberg/variance
+reservoir and records the exact polynomial partition scales beaten by the
+logarithmic cutoff.
+
+### Entropy--variance method-class barrier
+
+- `4d793ac2ff07b9121d42e1cfed7e4a48d678b052` —
+  `SPARSE_BLOCK_ENTROPY_VARIANCE_BARRIER_V1.md`.
+
+For unweighted bounded-energy pair graphs whose whole coherent cutoff must stay
+in a small-phase window, pure assignment entropy forces `Omega(Y)` edges and
+
+```text
+Lambda_G >> max(1/Y, Y^2 log Z/Z^2).
+```
+
+Optimizing gives the method-class barrier
+
+```text
+Lambda_G >> Z^(-2/3) (log Z)^(1/3).
+```
+
+This is not a problem lower bound.  The one-anchor route below evades it by
+sensing the coherent outer range directly rather than reconstructing it by
+small phases.
+
+## Strongest current route: one anchor plus reciprocal-label sensing
+
+- `b0174895801cf9c1410b816683e7fa9839b028b2` —
+  `ONE_ANCHOR_RECIPROCAL_LABEL_SENSOR_V1.md`;
+- `6b438a96ee7f74ea32559e91fef6f3547987669c` —
+  `FPCRT02_RL_TO_PDL_HANDOFF_ADDENDUM_ONE_ANCHOR.md`.
+
+At an arbitrary prime prefix `Z=p_N`:
+
+1. sparsify the top block `B=(Z/2,Z]` by Gibbs sampling;
+2. sample `O((log Z)^3)` actual top primes;
+3. use this one sample both for every lower CRT inverse test and for every
+   outer common-label test;
+4. tune with a near-diagonal mass strip `Z<=pq<=4Z`.
+
+The reciprocal-label population theorem states, uniformly for
+
+```text
+Z/log Z <= |m| <= Z^(9/8),  x in {0,1},
+```
+
+that
+
+```text
+(1/|B|) sum_(q in B) ||m/(2q)+x/2||^2 >> 1/(log Z)^2.
+```
+
+Thus the `r=2` sensor row annihilates both possible lower residues throughout
+the coherent outer range.  The terminal Fourier partition is:
+
+1. positive Gaussian main arc;
+2. small-phase full-variance Gaussian tail;
+3. reciprocal-label minor arc;
+4. top-anchor coherent outer tail and noncoherent sparse-anchor sector.
+
+A near-diagonal mass strip provides
+
+```text
+V asymp q/Z
+```
+
+at the lowest tuned targets.  The reserved load is
+
+```text
+Lambda_0(Z) << Z^(-1/4) (log Z)^(5/4).
+```
+
+Hence the strongest current research conclusion is
+
+```text
+gamma_N << p_N^(-1/4) (log p_N)^(5/4).
+```
+
+Status:
+
+`FULL ARGUMENT-LEVEL THEOREM CANDIDATE / HANDED TO PDL / NOT INDEPENDENTLY REVIEWED`.
+
+## PDL handoffs
+
+- first FPCRT handoff: issue #38 comment `5050438566`;
+- sparse two-anchor handoff: issue #38 comments `5050880339`, `5050914868`;
+- one-anchor handoff source:
+  `FPCRT02_RL_TO_PDL_HANDOFF_ADDENDUM_ONE_ANCHOR.md`.
+
+The one-anchor proof-development units are:
+
+1. moving-`epsilon` SBEE quantifiers;
+2. Gibbs edge sparsification;
+3. dual-purpose top-prime sample and reciprocal-label interval count;
+4. near-diagonal mass capacity and variance;
+5. exhaustive four-lane Fourier assembly.
+
+Only a failed mathematical implication returns to E306-RL as one exact
 `BLOCKED-FRONTIER`.
 
 ## Current classification
 
-- local cyclic/product suppression: `PROVED-ARGUMENT`;
-- sparse common actual-prime sensing: `MATERIAL THEOREM CANDIDATE`;
-- row-adaptive optimal sensing: `SHARP GENERAL THEOREM CANDIDATE`;
-- hyperbolic mass capacity: `PROVED-ARGUMENT / EXTERNAL PNT+MERTENS`;
-- no-wrap transfer: `PROVED-ARGUMENT`;
-- global-control GFF rate `O(1/log p_N)`: `FULL THEOREM CANDIDATE / HANDED TO PDL`;
-- cross-scale label synchronization: `PROVED-ARGUMENT`;
-- two-anchor GFF rate `O(1/(log p_N)^2)`: `FULL THEOREM CANDIDATE / HANDED TO PDL`;
-- abstract product-code/Peierls theorem: `GENERAL THEOREM CANDIDATE`;
-- prefix-bounded load--distance theory: `MATERIAL GENERAL THEOREM CANDIDATE`;
+- cyclic/product-fibre suppression: `PROVED-ARGUMENT`;
+- sparse actual-prime sensing: `MATERIAL GENERAL THEOREM CANDIDATE`;
+- row-adaptive sensor optimality: `SHARP GENERAL THEOREM CANDIDATE`;
+- Gibbs edge sparsification: `MATERIAL GENERAL THEOREM CANDIDATE`;
+- moving SBEE entropy specialization: `ARGUMENT / CONSUMES VERIFIED EXPLICIT THRESHOLDS`;
+- entropy--variance barrier: `MATERIAL METHOD-CLASS LOWER BOUND`;
+- global-control rate `O(1/log p_N)`: `FULL THEOREM CANDIDATE / HANDED TO PDL`;
+- two-anchor rate `O(1/(log p_N)^2)`: `FULL THEOREM CANDIDATE / HANDED TO PDL`;
+- critical-scale rate `p_N^(-2/9) polylog`: `FULL THEOREM CANDIDATE / SUPERSEDED QUANTITATIVELY`;
+- one-anchor rate `p_N^(-1/4) polylog`: `STRONGEST FULL THEOREM CANDIDATE / HANDED TO PDL`;
 - literature/priority status: `INITIAL COMPARISON ONLY / NOVELTY NOT CERTIFIED`;
 - released Erdős 306 theorem status: unchanged.
 
 ## Next Research Lead work
 
-1. adversarially test the two-anchor route for a hidden cross-label or
-   concentration obstruction;
-2. determine whether `O(1/k^2)` is optimal under the coherent-label range
-   needed for low-coordinate decoding;
-3. investigate whether cancellation, adaptive sensing, or a different variance
-   reservoir can beat the quadratic-logarithmic threshold;
-4. find a second non-semiprime consumer of decoded product-fibre compression;
-5. receive from E306-PDL only exact new-mathematics gaps.
+1. adversarially attack the reciprocal-label population lemma and the
+   simultaneous top-prime sample;
+2. seek a counterexample to the near-diagonal mass-strip assembly or four-lane
+   completeness;
+3. improve the moving single-block entropy coefficient beyond exponent `1/4`;
+4. investigate a near-linear-edge `SPARSE-SBEE` theorem and the possible
+   `polylog(Z)/Z` one-anchor endpoint;
+5. compare sparse Gibbs anchor compression with random graph rigidity,
+   expander-code, and polymer/cluster-expansion literature;
+6. find a second non-semiprime consumer;
+7. receive from E306-PDL only exact new-mathematics gaps.
 
 Only a material theorem, correction/counterexample, or smallest exact revised
 gap returns to issue #9.
