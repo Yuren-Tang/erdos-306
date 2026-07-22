@@ -1,16 +1,33 @@
-\section*{Formalization and code availability}
+\section*{Formalization, finite certificates, and code availability}
 
-A machine-checked Lean~4 formalization of Erd\H{o}s Problem~306 is archived on
-Zenodo \cite{TangErdos306}.  The formalization encodes the finite set of
-denominators as a finite strictly increasing tuple; this is a representational
-detail and does not strengthen the statement of Theorem~\ref{thm:headline}.
-The article and the formalization use different analytic presentations.  The
-article derives the required dyadic estimates from the prime number theorem,
-whereas the archived formalization uses explicit estimates of Rosser and
-Schoenfeld \cite{RosserSchoenfeld1962}.  The archive provides supporting code
-and an independently checkable record of the theorem; it is not used in place
-of the mathematical arguments above.  The formalization was developed in
-connection with the Formal Conjectures benchmark \cite{FormalConjectures2026}.
+A complete Lean~4 proof of the community formulation of Erd\H{o}s Problem~306
+is archived on Zenodo \cite{TangErdos306}.  It is machine checked relative to
+exactly two named nonstandard assumptions: Rosser--Schoenfeld Corollary~3,
+equation~(3.8), and Theorem~5, equations~(3.17)--(3.18)
+\cite{RosserSchoenfeld1962}.  Those assumptions provide the released analytic
+backend.  The present article instead proves the common analytic interface from
+the prime number theorem by Abel summation; this PNT-based provider and the
+symbolic organization used here are not claimed to be formalized in the
+archived release.  Their formalization is in progress for a later software
+release and article update.
+
+The downstream construction is mathematically the same finite mechanism.  The
+archive also checks explicit finite closures for the local rigidity constants,
+level-set charge rearrangements, inverse-square comparison, Taylor bounds,
+terminal numerical budget, and finite-set-to-tuple bookkeeping.  In the article
+these are separated from the conceptual parameters: for example,
+$\mu=21/20$, $c_\sigma=1/100$, $C_2=1000001$, $K_\sigma=501$,
+$r_T=\delta_T=1/10$, the coefficient $0.8$, equal quarter budgets, and $2004$
+are admissible safety or finite certificates for the symbolic statements above.
+The formal theorem represents the finite denominator set by a strictly
+increasing tuple with an initial dummy value $1$ excluded from the reciprocal
+sum; this is equivalent finite bookkeeping, not a stronger mathematical
+endpoint.
+
+The formalization was developed in connection with the Formal Conjectures
+benchmark \cite{FormalConjectures2026}.  It supplies independently checkable
+software evidence, but it is not used to replace any implication in the human
+proof.
 
 \section*{Disclosure}
 

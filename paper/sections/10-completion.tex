@@ -1,70 +1,100 @@
-\section{Completion of the proof}\label{sec:completion}
+\section{Symbolic budget and completion}\label{sec:completion}
 
-Set $K_\sigma=501$.  Choose the constants in the order
-\begin{equation}\label{eq:parameter-order}
- \eta\longrightarrow C\longrightarrow D_{\mathrm{mp}}
- \longrightarrow G\longrightarrow k_0.
+Choose positive budget shares
+\begin{equation}\label{eq:budget-shares}
+ q_{\mathrm{blk}},q_{\mathrm{gauss}},q_{\mathrm{sib}}>0,
+ \qquad
+ q_{\mathrm{blk}}+q_{\mathrm{gauss}}+q_{\mathrm{sib}}<1.
 \end{equation}
-More precisely:
+Define the normalized major allowance
+\begin{equation}\label{eq:M0}
+ M_0=\frac{c_{\mathrm{maj}}}{K_\sigma}.
+\end{equation}
+All interface parameters
+\[
+ \mu,\alpha,\rho,c_w,r_T,\delta_T,C_2,K_\sigma,
+ q_{\mathrm{blk}},q_{\mathrm{gauss}},q_{\mathrm{sib}}
+\]
+are fixed before the bottom scale.  The remaining choices are made in the
+following order.
+
 \begin{enumerate}[label=\textbf{\arabic*.}]
 \item Set
 \begin{equation}\label{eq:eta-choice}
- \eta=\frac{c_3}{4K_\sigma b}
- =\frac{c_3}{2004b}.
+ \eta=\frac{q_{\mathrm{blk}}M_0}{b}.
 \end{equation}
-Apply Theorem~\ref{thm:global-partition} with $c=16/9$, obtaining
-$C_{\mathrm{tail}}$ and a scale threshold.
-\item Choose $C\ge3$ so large that
-\begin{equation}\label{eq:gaussian-quarter}
- bC_{\mathrm{tail}}e^{-(16/9)C^2/2}
- <\frac{c_3}{4K_\sigma}.
+Apply Theorem~\ref{thm:global-partition} at $c=c_F$, obtaining
+$C_{\mathrm{tail}}(c_F)$ and a scale threshold.
+
+\item Choose $C\ge\max\{1,1/\sqrt{v_*}\}$ so large that
+\begin{equation}\label{eq:gaussian-budget}
+ bC_{\mathrm{tail}}(c_F)e^{-c_FC^2/2}
+ <q_{\mathrm{gauss}}M_0.
 \end{equation}
-\item Set
-\begin{equation}\label{eq:Dmp}
- D_{\mathrm{mp}}
- =\frac{c_3}{4K_\sigma b(2C+3)}
- =\frac{c_3}{2004b(2C+3)},
+
+\item Put
+\begin{equation}\label{eq:AC-Dsib}
+ A_C=2C+3,
+ \qquad
+ D_{\mathrm{sib}}=
+ \frac{q_{\mathrm{sib}}M_0}{bA_C}.
 \end{equation}
-and choose $G$ so that $\beta_b^G\le D_{\mathrm{mp}}$.
-\item Finally choose $k_0$ above the finite maximum of the common analytic
-threshold $K_{\mathrm{AI}}$; the control-load and deviation thresholds; the
-cold-block, level-set, localization, and tail thresholds; the availability and
-size of the $G$ auxiliary primes; the requirement that all denominators avoid
-$T$; the pair and mass-selection thresholds; the variance comparison; the
-period and major-arc geometry; the Taylor bounds; and the remaining finite
-cardinality and inverse-square estimates.
-\end{enumerate}
-No later choice changes $\eta,C,D_{\mathrm{mp}}$, or $G$.  Since
-$N=\lceil C/\sctrl\rceil$ and eventually $\sctrl\le1$,
+The affine factor is the ceiling estimate arising from
+$N=\lceil C/\sctrl\rceil$ and the eventual inequality $\sctrl\le1$:
 \begin{equation}\label{eq:N-bound}
- (2N+1)\sctrl\le2C+3.
+ (2N+1)\sctrl\le2C+3=A_C.
 \end{equation}
-Multiplying the minor-arc estimates by $\sctrl$, the three contributions
-satisfy
+
+\item Choose $G\ge1$ so that
+\begin{equation}\label{eq:G-choice}
+ \beta_b^G\le D_{\mathrm{sib}}.
+\end{equation}
+The same $G$-prime reservoir is used for every prime divisor of $b$ and is
+fixed before the mass family.
+
+\item Only now choose $k_0$ above one finite maximum of all preceding
+thresholds: the common analytic supply; avoidance of $T$; control load and
+variance scale; local rigidity, exceptions, and corrected boundary hypotheses;
+level-set encoding and the two tails; availability and separation of the common
+reservoir; pair-pool and greedy-mass conditions; inverse-square comparison;
+period and fibre geometry; Taylor disk and aggregate remainder; and the
+remaining finite arithmetic certificates.
+\end{enumerate}
+Every threshold in the final maximum depends only on parameters fixed earlier,
+so the construction is non-circular.
+
+Multiplying the two minor estimates by $\sctrl$ and using the choices above
+gives the three separate contributions
 \begin{align}
- b\eta&=\frac{c_3}{4K_\sigma},\label{eq:quarter-one}\\
- bC_{\mathrm{tail}}e^{-(16/9)C^2/2}
- &<\frac{c_3}{4K_\sigma},\label{eq:quarter-two}\\
- b(2N+1)\sctrl D_{\mathrm{mp}}
- &\le\frac{c_3}{4K_\sigma}.
- \label{eq:quarter-three}
+ b\eta&=q_{\mathrm{blk}}M_0,\label{eq:budget-block}\\
+ bC_{\mathrm{tail}}(c_F)e^{-c_FC^2/2}
+ &<q_{\mathrm{gauss}}M_0,\label{eq:budget-gauss}\\
+ b(2N+1)\sctrl D_{\mathrm{sib}}
+ &\le q_{\mathrm{sib}}M_0.\label{eq:budget-sibling}
 \end{align}
-Here $2004=4\cdot501$.  Therefore
-\begin{equation}\label{eq:strict-minor}
+Therefore
+\begin{align}
  \sum_{h\in S_m}|F(h)|
- <\frac{3c_3}{4K_\sigma\sctrl}
- <\frac{c_3}{K_\sigma\sctrl}
- \le\frac{c_3}{\sE}.
-\end{equation}
-The last inequality uses $\sE\le K_\sigma\sctrl$.  By
-\eqref{eq:main-lower}, the real major-arc sum is at least $c_3/\sE$, so
-Lemma~\ref{lem:spectral-positivity} gives a subset $A\subseteq E$ of positive
-weight satisfying the required congruence.  The bound
-\eqref{eq:theta-window} converts it to
+ &<\frac{(q_{\mathrm{blk}}+q_{\mathrm{gauss}}+q_{\mathrm{sib}})M_0}{\sctrl}\\
+ &<\frac{M_0}{\sctrl}
+ =\frac{c_{\mathrm{maj}}}{K_\sigma\sctrl}
+ \le\frac{c_{\mathrm{maj}}}{\sE}.
+ \label{eq:strict-minor}
+\end{align}
+By \eqref{eq:main-lower}, the real major sum is at least
+$c_{\mathrm{maj}}/\sE$.  Lemma~\ref{lem:spectral-positivity} gives a subset
+$A\subseteq E$ of positive weight satisfying the target congruence.  The
+no-wrap bound and exact mean normalization convert it into
 \[
  \sum_{e\in A}\frac1e=\frac1b.
 \]
 All denominators are distinct squarefree semiprimes and avoid $T$.  This proves
 Theorem~\ref{thm:structural-construction}; Lemmas~\ref{lem:small-b} and
-\ref{lem:numerator-reduction} prove the sufficiency direction of
-Theorem~\ref{thm:headline}.
+\ref{lem:numerator-reduction} give the sufficiency direction of Theorem
+\ref{thm:headline}.
+
+The equal-quarter allocation and the identity $2004=4\cdot501$ used in one
+formal certificate are recovered by taking
+$q_{\mathrm{blk}}=q_{\mathrm{gauss}}=q_{\mathrm{sib}}=1/4$ and the released
+value $K_\sigma=501$.  They are a symmetric safety allocation, not additional
+mathematical invariants.

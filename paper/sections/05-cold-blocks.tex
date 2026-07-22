@@ -1,114 +1,91 @@
-\section{Low-energy structure in a dyadic block}\label{sec:cold}
+\section{Local rigidity and the corrected boundary theorem}\label{sec:cold}
 
 For a block $P\subseteq[X,2X]$, write $N=|P|$ and
 \[
- Q_P(a)=\sum_{p<q\in P}
- \left(\frac{H_{pq}(a)}{pq}\right)^2,
+ Q_P(a)=\sum_{p<q\in P}\left(\frac{H_{pq}(a)}{pq}\right)^2,
  \qquad
  \sigma_P^2=\sum_{p<q\in P}\frac1{(pq)^2}.
 \]
-Fix $0<\rho\le1/4$.  An integer $m$ is a dominant label if
+Fix a dominance parameter
+\begin{equation}\label{eq:rho-range}
+ 0<\rho<\frac12.
+\end{equation}
+An integer $m$ is a dominant label if it lies in the stated centred size range
+and
 \begin{equation}\label{eq:dominant}
- |m|\le X^2/2,
- \qquad
  \#\{p\in P:a_p\equiv m\pmod p\}\ge(1-\rho)N.
 \end{equation}
-Two dominant labels must be equal: their agreement classes intersect in at
-least $N/2$ primes and hence contain distinct $p,q$; then $pq$ divides the
-difference of the labels, whose absolute value is less than $pq$.
+Two dominant labels are equal once the block is large enough: their agreement
+classes contain two common primes, so the product of those primes divides the
+difference of the labels, whose centred size is smaller than that product.
 
 \begin{proposition}[Nondominant forcing]\label{prop:nondominant}
-For every $0<\rho\le1/4$, there are $c_2>0$ and $X_0$ such that, whenever
-$X\ge X_0$, $P\subseteq[X,2X]$ is a prime set with
-$N\ge X/(2\log X)$, and $Q_P(a)\le R$, the absence of a dominant label implies
+For every $\rho$ satisfying \eqref{eq:rho-range}, there are constants
+$c_w(\rho)>0$ and $X_0(\rho)$ such that, whenever $X\ge X_0(\rho)$,
+$P\subseteq[X,2X]$ is a prime set with $N\ge X/(2\log X)$, and no dominant label
+exists, then
 \begin{equation}\label{eq:nondominant-floor}
- R\ge c_2\frac{X}{\log^3X}.
+ Q_P(a)\ge c_w(\rho)\frac{X}{\log^3X}.
 \end{equation}
 \end{proposition}
 \begin{proof}
-Choose
+We record the covering-and-dispersion mechanism because it is used again in the
+global count.  If $Q_P(a)\le R$, choose a threshold
 \[
- B=\sqrt{\frac{256R}{\rho}}\frac{X^2}{N},
- \qquad u=\frac BX.
+ B\asymp_\rho \sqrt R\,\frac{X^2}{N}.
 \]
-A pair with $|H_{pq}|>B$ contributes more than $B^2/(16X^4)$, so there are at
-most $16RX^4/B^2$ such unordered pairs.  Double counting yields a base prime
-$p_0$ with at most $\rho N/8$ high-representative neighbours.  For every other
-nonexceptional $q$, set $\ell(q)=H_{p_0q}$.  Then
-$a_q\equiv\ell(q)\pmod q$, $|\ell(q)|\le B$, and all $\ell(q)$ have the same
-residue modulo $p_0$; hence there are at most $2u+2$ possible labels.
+Only $O(RX^4/B^2)$ pairs can have $|H_{pq}|>B$.  Double counting therefore
+produces a base prime $p_0$ with few such neighbours.  For every other
+nonexceptional $q$, the integer $H_{p_0q}$ is a label of size at most $B$, has
+the required residue modulo $q$, and belongs to one residue class modulo $p_0$.
+There are consequently $O(1+B/X)$ possible labels.
 
-Call a label class substantial if it has at least
-$s_0=32(u+1)+8$ elements.  No class has $(1-\rho)N$ elements.  Either the
-substantial classes outside a largest one contain at least $\rho N/2$
-elements, or the remaining classes contain more than $\rho N/4$ elements.  In
-the first case, the cross-label dispersion bound
-\[
- \sum_{p\in C_n}\sum_{q\in C_{n'}}
- \left(\frac{H_{pq}}{pq}\right)^2
- \ge\frac1{8192}\frac{|C_n|^3|C_{n'}|}{X^2}
-\]
-and power mean give
-\[
- R\ge
- \frac{\rho^2\sqrt{(1/8192)\rho}}{10^6}
- \frac{X}{\log^3X}.
-\]
-In the second case, the number and size of the small classes give
-\[
- R\ge\frac{\rho^2}{4718592}\frac{X}{\log^3X}.
-\]
-Taking $c_2$ to be the smaller displayed constant proves the claim.  The
-remaining requirements $B\le X^2/4$ and the finite integer inequalities hold
-after increasing $X_0$.
+Partition the nonexceptional primes by these labels.  If no class has size
+$(1-\rho)N$, then either a positive proportion of the primes lies in substantial
+classes outside a largest class, or a positive proportion lies in small
+classes.  In the first case, cross-label dispersion and power mean give
+$R\gg_\rho X/\log^3X$; in the second, the number and sizes of the small classes
+give the same lower bound.  Increasing $X_0(\rho)$ secures the auxiliary
+integer and size inequalities.  This proves \eqref{eq:nondominant-floor}.
 \end{proof}
 
 Call block $k$ \emph{hot} if
 \begin{equation}\label{eq:forcing-floor}
- Q_k(a)\ge R_w(c_2,k):=
- c_2\frac{2^k}{\log^3(2^k)},
+ Q_k(a)\ge R_w(k):=c_w(\rho)\frac{2^k}{\log^3(2^k)},
 \end{equation}
-and \emph{cold} otherwise.  Proposition~\ref{prop:nondominant} shows that every
-sufficiently large cold block has a unique dominant label.
-
-Let $C_m$ be the dominant agreement class and $E=P\setminus C_m$.  If
-$|m|\le NX/16$, $Q_P(a)\le R$, $R\ge1$, and $N\ge32$, single-fibre dispersion
-with $\delta=N/(128X)$ gives, for every $q\in E$,
-\[
- \sum_{p\in C_m}
- \left(\frac{H_{pq}}{pq}\right)^2
- \ge\frac{(1-\rho)N^3}{2^{15}X^2}.
-\]
-The sums for distinct exceptional $q$ are disjoint, so
-\begin{equation}\label{eq:exception-count}
- |E|\le
- \frac{2^{15}RX^2}{(1-\rho)N^3}.
+and \emph{cold} otherwise.  Every sufficiently large cold block has a unique
+dominant label.  Let $C_m$ be its agreement class and $E=P\setminus C_m$ its
+exception set.  The same dispersion argument, now with one fixed dominant
+class, gives constants depending only on $\rho$ such that
+\begin{equation}\label{eq:exception-count-symbolic}
+ |E|\ll_\rho \frac{R\log^3X}{X}
 \end{equation}
-At $\rho=1/4$, density turns this into
-$|E|\le(2^{20}/3)R\log^3X/X$.  By fixing $c_2$ sufficiently small before the
-bottom scale, every cold block has at most a prescribed exception budget
-$e_0$; the localization argument below takes $c_2\le2^{-21}$ and then has no
-exceptions.
-
-The dominant in-class pairs also imply
+and
 \begin{equation}\label{eq:label-bound}
- |m|\le\frac{5}{1-\rho}\frac{\sqrt R}{\sigma_P},
+ |m|\ll_\rho\frac{\sqrt R}{\sigma_P},
  \qquad
- \sigma_P\ge\frac{N}{8X^2}.
+ \sigma_P\gg\frac{N}{X^2}.
 \end{equation}
-Consequently, after one common scale threshold,
+Choose the forcing normalization $c_w(\rho)$ sufficiently small, before the
+bottom scale, so that the exception count lies within a fixed budget $e_0$ and
+vanishes in the later localization regime.  At a common scale threshold the
+label-size estimate also gives
 \begin{equation}\label{eq:boundary-label-size}
  32|m|\le X(N-e_0),
  \qquad N-e_0\ge12,
 \end{equation}
-with the analogous inequality in the next block.
+with the analogous inequalities in the next block.
 
-\begin{proposition}[Adjacent-label energy bound]
+The boundary theorem requires all of these hypotheses.  Distinct adjacent
+integer labels alone do not force energy.
+
+\begin{proposition}[Exception-aware adjacent-label penalty]
 \label{prop:boundary-penalty}
 Let consecutive cold blocks $P_k,P_{k+1}$ have dominant labels $m\ne m'$ and
-exception sets $E_k,E_{k+1}$ of cardinality at most $e_0$.  Assume the residue
-agreement off the exception sets, the reduced-cardinality bounds in
-\eqref{eq:boundary-label-size}, and their upper-block analogues.  Then the
+exception sets $E_k,E_{k+1}$ of cardinality at most $e_0$.  Assume residue
+agreement with the labels outside the named exception sets, the reduced
+cardinality bounds, and the label-size bounds in
+\eqref{eq:boundary-label-size} and their upper-block analogues.  Then the
 bipartite energy $X_k(a)$ satisfies
 \begin{equation}\label{eq:Pi}
  X_k(a)\ge\Pi_k:=
@@ -117,28 +94,28 @@ bipartite energy $X_k(a)$ satisfies
 \end{equation}
 \end{proposition}
 \begin{proof}
-Put $d=m'-m$.  For $p\in P_k$, $q\in P_{k+1}$, and an inverse
-$\bar p$ modulo $q$, the centered CRT representative satisfies
+Put $d=m'-m$.  For $p\in P_k$, $q\in P_{k+1}$, and an inverse $\bar p$ modulo
+$q$, the centred CRT representative satisfies
 \[
- \normdist{d\bar p/q}
- =\normdist{(H_{pq}-m)/(pq)}.
+ \normdist{d\bar p/q}=\normdist{(H_{pq}-m)/(pq)}.
 \]
 The nearest-integer triangle inequality and the label-size bound absorb the
-$m$-error.  For every nonexceptional $q$ not dividing $d$, cross-block
+$m$-term.  For every nonexceptional upper prime $q\nmid d$, cross-block
 dispersion gives
 \[
  \sum_{p\in P_k\setminus E_k}
  \left(\frac{H_{pq}}{pq}\right)^2
  \ge\frac{|P_k\setminus E_k|^3}{2^{13}(2^k)^2}.
 \]
-At most one nonexceptional upper prime divides $d$: two would have product
-larger than $|d|$ while dividing it.  Summing over the remaining upper primes
-and using the exception bounds gives \eqref{eq:Pi}.
+At most one nonexceptional upper prime divides $d$: the product of two such
+primes would exceed $|d|$ while dividing it.  Summing over the remaining upper
+primes gives \eqref{eq:Pi}.
 \end{proof}
 
-The hypotheses of Proposition~\ref{prop:boundary-penalty} cannot be omitted.
-Different integer labels need not force boundary energy without the size and
-exception assumptions: for example, one label may be the product of all
-lower-block primes while the other is zero, even though the represented
-residues coincide.  We shall use only the proposition in the form stated
-above.
+The local powers of two and rational constants used in one implementation of
+the covering, exception, and boundary estimates are finite certificates.  The
+structural content retained here is the forcing scale, the quantitative
+exception and label bounds, and every hypothesis of Proposition
+\ref{prop:boundary-penalty}.  Without those hypotheses the assertion is false:
+for example, a label equal to the product of all lower-block primes can represent
+the same lower residues as zero.

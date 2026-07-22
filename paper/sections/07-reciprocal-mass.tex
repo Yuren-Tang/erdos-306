@@ -1,4 +1,4 @@
-\section{Reciprocal mass and variance}\label{sec:mass}
+\section{Reciprocal mass, weights, and variance}\label{sec:mass}
 
 Let
 \[
@@ -8,46 +8,56 @@ Let
  \qquad
  S_2=\sum_{p\in\Pk(k_0)}\frac1{p^2}.
 \]
-By \eqref{eq:inclusive-window}, this is the prime interval
-$[2^{k_0},2^{3k_0+1})$.  Expanding $S_1^2$ gives
+By \eqref{eq:inclusive-window}, these are the primes in
+$[2^{k_0},2^{3k_0+1})$.  Expanding $S_1^2$ gives the exact identity
 \begin{equation}\label{eq:pair-pool}
  \sum_{\substack{p,q\in\Pk(k_0)\\p<q}}\frac1{pq}
  =\frac{S_1^2-S_2}{2}.
 \end{equation}
-The analytic mass estimate gives $S_1\ge21/20$, and
-\[
- S_2\le\sum_{n\ge2^{k_0}}\frac1{n^2}
- \le\frac1{2^{k_0}-1}.
-\]
-Thus, for $k_0\ge5$,
+The analytic interface gives $S_1\ge\mu>1$, while
+$S_2\le(2^{k_0}-1)^{-1}\to0$.  Hence, after increasing $k_0$ so that
+$S_2\le\mu^2-1$,
 \begin{equation}\label{eq:pool-half}
  \sum_{p<q}\frac1{pq}\ge\frac12.
 \end{equation}
-The products are distinct squarefree semiprimes by unique factorization.
+Thus the structural requirement is $\mu>1$.  The choice $\mu=21/20$ and the
+finite cutoff $k_0\ge5$ are one released certificate for
+\eqref{eq:pool-half}.  All products are distinct squarefree semiprimes by unique
+factorization.
 
-Before selecting the mass family, fix the control denominators and the finite
-auxiliary family $\Eaux$ defined in Section~\ref{sec:minor}.  The number of
-auxiliary denominators is fixed before $k_0$, and each contains a prime from a
-high block, so their reciprocal sum tends to zero.  Together with
-Proposition~\ref{prop:control-estimates}, this gives, for sufficiently large $k_0$,
+The denominator family has three disjoint roles:
+\begin{equation}\label{eq:denominator-decomposition}
+ E=\Ectrl\dot\cup\Eaux\dot\cup\Emass.
+\end{equation}
+The control family has already been fixed.  The auxiliary family, defined in
+Section~\ref{sec:minor}, is chosen after the required damping has been fixed but
+before the mass family.  Its cardinality is fixed before $k_0$, and each of its
+denominators contains a high-block prime; hence its reciprocal load tends to
+zero.  Together with Proposition~\ref{prop:control-estimates}, this gives, for
+the normalization
+\begin{equation}\label{eq:alpha}
+ \alpha=\frac32,
+\end{equation}
+the eventual bound
 \begin{equation}\label{eq:base-load}
  \Lambda_{\mathrm{base}}:=
  \sum_{e\in\Ectrl\dot\cup\Eaux}\frac1e
- <\frac{3}{2b}.
+ <\frac\alpha b.
 \end{equation}
-Set $t=3/(2b)-\Lambda_{\mathrm{base}}>0$.
+Set $t=\alpha/b-\Lambda_{\mathrm{base}}>0$.
 
-From the pair family remove the products in the finite obstruction $T$, the
-control products, and the auxiliary products.  At large scale, every element
-of $T$ lies below the bottom pair scale and removes nothing.  The reciprocal
-sum lost through the other two exclusions is at most
-$\Lambda_{\mathrm{base}}$.  Hence
+Remove from the pair family the denominators already used by the control and
+auxiliary components and those in $T$.  At the final scale, every element of
+$T$ lies below the pair scale.  The reciprocal load lost through the other
+exclusions is at most $\Lambda_{\mathrm{base}}$.  Since $\alpha/b\le1/2$ for
+$b\ge3$,
 \[
  t+\operatorname{load}(\text{excluded pair terms})
- \le\frac{3}{2b}\le\frac12,
+ \le\frac\alpha b\le\frac12.
 \]
-and \eqref{eq:pool-half} shows that the remaining pair family has reciprocal
-sum at least $t$.
+Together with \eqref{eq:pool-half}, this proves that the remaining pair family
+has load at least $t$.  This is the exact forbidden-load cancellation; no
+unstated surplus in the pair pool is used.
 
 \begin{lemma}[Greedy reciprocal interval]\label{lem:greedy}
 Let $(x_i)$ be a finite family of positive reals of total at least $t$, and
@@ -55,30 +65,25 @@ suppose $x_i<g$ for every $i$.  Some subfamily has sum in $[t,t+g)$.
 \end{lemma}
 \begin{proof}
 Choose a subfamily of minimal cardinality among those with sum at least $t$.
-Removing any selected term drops the sum below $t$, so the original sum is
-less than $t+x_i<t+g$.
+Removing any selected term drops the sum below $t$, so the original sum is less
+than $t+x_i<t+g$.
 \end{proof}
 
-Apply Lemma~\ref{lem:greedy} with $x_e=1/e$, $g=3/(2b)$, and target $t$.
-The bottom pair scale ensures that every $1/e<g$.  We obtain a set
-$\Emass$ such that, for
-\[
- E=\Ectrl\dot\cup\Eaux\dot\cup\Emass,
- \qquad
- \Lambda=\sum_{e\in E}\frac1e,
-\]
+Apply Lemma~\ref{lem:greedy} with $x_e=1/e$, $g=\alpha/b$, and target $t$.
+The bottom pair scale ensures $1/e<g$.  We obtain $\Emass$ such that, for
+$\Lambda=\sum_{e\in E}1/e$,
 \begin{equation}\label{eq:load-window}
- \frac{3}{2b}\le\Lambda<\frac3b.
+ \frac\alpha b\le\Lambda<\frac{2\alpha}{b}.
 \end{equation}
 Every denominator is a distinct squarefree semiprime, avoids $T$, and divides
 \begin{equation}\label{eq:period}
  L=b\prod_{p\in\Bset}p.
 \end{equation}
-Define the common weight
+Define the common Bernoulli weight
 \begin{equation}\label{eq:theta}
  \theta=\frac{1/b}{\Lambda}.
 \end{equation}
-Then
+For $\alpha=3/2$,
 \begin{equation}\label{eq:theta-window}
  \frac13<\theta\le\frac23,
  \qquad
@@ -86,30 +91,41 @@ Then
  \qquad
  \Lambda<1.
 \end{equation}
-The middle identity cancels the linear term on the major arcs, while the last
-inequality gives \eqref{eq:no-wrap}.
+The middle identity is the exact expected-mass cancellation on the major arcs;
+the last inequality gives \eqref{eq:no-wrap}.
+
+The choice \eqref{eq:alpha} is one coherent normalization rather than several
+unrelated constants.  In the admissible range $1<\alpha\le3/2$, the greedy
+window gives $\theta\in(1/(2\alpha),1/\alpha]$.  The minimum of
+$\theta(1-\theta)$ on that interval is maximized when its endpoint values are
+balanced, which occurs uniquely at $\alpha=3/2$.  Thus
+\begin{equation}\label{eq:vstar}
+ v_*:=\min_{1/3\le u\le2/3}u(1-u)=\frac29.
+\end{equation}
 
 Put
 \begin{equation}\label{eq:sigmaE}
  \sE^2=\sum_{e\in E}\frac{\theta(1-\theta)}{e^2}.
 \end{equation}
-Since $2/9\le\theta(1-\theta)\le1/4$ and $\Ectrl\subseteq E$,
+Since $\Ectrl\subseteq E$,
 \begin{equation}\label{eq:variance-lower}
- \sE\ge\sqrt{\frac29}\,\sctrl.
+ \sE\ge\sqrt{v_*}\,\sctrl.
 \end{equation}
-For the upper bound, decompose the inverse-square sum into the control, pair,
-and auxiliary components.  Lemma~\ref{lem:block-upper} gives a convergent
-dyadic bound for the reciprocal-square sum over the primes; squaring it bounds
-the pair component.  The finitely many auxiliary denominators gain a factor
-$2^{-2k_0}$ from their high-block prime.  Comparing both errors with
-\eqref{eq:sctrl-lower}, after all finite cardinalities have been fixed, gives
+The noncontrol inverse-square contribution is finite on the common final scale.
+More precisely, the dyadic reciprocal bounds control the pair component, and
+the high-block prime in each auxiliary denominator supplies an additional
+$2^{-2k_0}$ factor.  Hence there is a fixed finite constant $C_2$ such that
 \begin{equation}\label{eq:inverse-square-constant}
- \sum_{e\in E}\frac1{e^2}
- \le1000001\,\sctrl^2.
+ \sum_{e\in E}\frac1{e^2}\le C_2\sctrl^2.
 \end{equation}
-A direct summation of the resulting geometric tails, after one further
-increase of the bottom scale, gives the stated constant.  Therefore
+Choose once and for all
+\begin{equation}\label{eq:Ksigma-choice}
+ K_\sigma>\sqrt{C_2/4}.
+\end{equation}
+Since $\theta(1-\theta)\le1/4$, we obtain the symbolic variance comparison
 \begin{equation}\label{eq:variance-comparison}
- \sqrt{\frac29}\,\sctrl
- \le\sE\le501\,\sctrl.
+ \sqrt{v_*}\,\sctrl\le\sE\le K_\sigma\sctrl.
 \end{equation}
+The archived finite instantiation uses $C_2=1000001$ and $K_\sigma=501$.
+Finiteness of the comparison is structural; these integers are a checked
+certificate and a rounded safety margin, respectively.

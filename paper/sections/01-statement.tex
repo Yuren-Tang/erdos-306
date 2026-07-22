@@ -1,10 +1,11 @@
-\section{Introduction and statement of the theorem}
+\section{Introduction and theorem}
 
 Egyptian-fraction problems ask for representations of rational numbers as sums
-of reciprocals subject to arithmetic restrictions on the denominators.  A
-problem of Erd\H{o}s and Graham asks for the precise obstruction when every
-denominator is required to be a product of two distinct primes
-\cite{ErdosGraham1980}.  We prove that the evident squarefreeness obstruction is
+of reciprocals subject to arithmetic restrictions on the denominators.  Erd\H{o}s
+and Graham asked whether every positive rational with squarefree reduced
+denominator admits such a representation using distinct products of two primes
+\cite{ErdosGraham1980}; the current problem record is also maintained by Bloom
+\cite{BloomErdos306}.  We prove that the evident squarefreeness obstruction is
 the only one.
 
 An integer is a \emph{squarefree semiprime} if it is a product $pq$ of two
@@ -18,10 +19,10 @@ For $n\ge1$, the following are equivalent:
 \end{enumerate}
 \end{lemma}
 \begin{proof}
-If $n=pq$ with $p\ne q$, then its prime factorization has two factors counted
-with multiplicity and two distinct prime factors.  Conversely,
-$\Omega(n)=2$ gives $n=pq$ for primes $p,q$, possibly equal.  Equality would
-imply $\omega(n)=1$, so $p\ne q$.
+If $n=pq$ with $p\ne q$, its prime factorization has two factors counted with
+multiplicity and two distinct prime factors.  Conversely, $\Omega(n)=2$ gives
+$n=pq$ for primes $p,q$, possibly equal.  Equality would imply $\omega(n)=1$,
+so $p\ne q$.
 \end{proof}
 
 \begin{theorem}[Erd\H{o}s Problem 306]\label{thm:headline}
@@ -37,18 +38,19 @@ $M=\lcmop(S)$, then
   =\frac{\sum_{n\in S}M/n}{M}.
 \]
 The reduced denominator divides $M$, and an lcm of squarefree integers is
-squarefree.  Every divisor of a squarefree integer is squarefree, so subsequent
-cancellation causes no difficulty.
+squarefree.  Every divisor of a squarefree integer is squarefree, so cancellation
+causes no difficulty.
 
-For the converse it is useful to retain an avoidance condition.  For a finite
-set $T\subset\N$, write $\operatorname{Rep}_T(r)$ if there is a finite set $S$
-of squarefree semiprimes such that
+For the converse we retain an avoidance parameter.  For a finite set
+$T\subset\N$, write $\operatorname{Rep}_T(r)$ if there is a finite set $S$ of
+squarefree semiprimes such that
 \[
  S\cap T=\varnothing,
  \qquad
  \sum_{n\in S}\frac1n=r.
 \]
-The set $T$ ensures that successive representations use distinct denominators.
+The obstruction set is part of the mechanism: it prevents denominators from
+being repeated when representations are added.
 
 \begin{lemma}[Numerator reduction]\label{lem:numerator-reduction}
 If $\operatorname{Rep}_T(1/b)$ holds for every finite $T$, then
@@ -68,24 +70,24 @@ then it holds for all positive squarefree $b$.
 \begin{proof}
 For $b=2$, take disjoint avoiding representations of $1/3$ and $1/6$ and use
 $1/2=1/3+1/6$.  For $b=1$, take pairwise disjoint avoiding representations of
-$1/2$, $1/3$, and $1/6$, and use
-$1=1/2+1/3+1/6$.
+$1/2$, $1/3$, and $1/6$, and use $1=1/2+1/3+1/6$.
 \end{proof}
 
-It remains to establish the following statement.
+It remains to prove the following avoiding statement.
 
 \begin{theorem}[Avoiding unit-fraction construction]\label{thm:structural-construction}
 Let $b\ge3$ be squarefree and let $T\subset\N$ be finite.  Then
 $\operatorname{Rep}_T(1/b)$ holds.
 \end{theorem}
 
-We briefly describe the proof.  The prime number theorem first supplies enough
-primes and reciprocal-prime mass in a common range of dyadic blocks.  A finite
-Fourier formula reduces the construction to a comparison between major and
-minor frequencies.  A graph joining primes within the same or adjacent blocks
-controls the residue assignments of small energy.  Global level-set and tail
-estimates then bound all assignments away from a short diagonal family.  A
-second family of semiprimes supplies the required reciprocal mass, and
-auxiliary denominators indexed by the prime divisors of $b$ suppress the
-minor frequencies that are invisible to the block residues.  The constants
-are chosen in a fixed order, with the bottom dyadic scale chosen last.
+The proof is organized by mathematical handoffs rather than by a numerical
+certificate.  First, one common analytic threshold supplies dense dyadic prime
+blocks and reciprocal-prime mass greater than one.  Finite Fourier inversion
+then reduces the construction to a strict major/minor comparison.  A centred
+CRT control graph yields local rigidity, a corrected adjacent-label theorem,
+and a global localization estimate.  A pair family completes the reciprocal
+load and induces a compact interval of Bernoulli weights.  The major frequencies
+have a Gaussian lower bound, while two exact minor classes are controlled by
+localization and by a common reservoir of auxiliary primes.  Three symbolic
+budget shares close the comparison; every parameter is fixed before the bottom
+dyadic scale.

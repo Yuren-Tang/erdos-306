@@ -1,45 +1,45 @@
-\section{The dyadic control graph}\label{sec:control}
+\section{The centred-CRT control system}\label{sec:control}
 
-Fix a squarefree integer $b\ge3$ and a finite set $T$.  The bottom scale $k_0$
-will be chosen at the end.  Put $K=3k_0$ and use the full dyadic blocks
+Fix a squarefree integer $b\ge3$ and a finite obstruction set $T$.  The bottom
+scale $k_0$ will be chosen only after all other parameters.  Put $K=3k_0$ and
+use the full dyadic blocks
 \[
  P_k=\Pk_k,
  \qquad
  |P_k|\ge\frac{2^k}{2\log(2^k)}
  \quad(k_0\le k\le3k_0).
 \]
-The estimates below remain valid for arbitrary subsets satisfying the same
-lower density.  Using the full blocks also ensures that all primes in the mass
-construction belong to the period support.  The half-open dyadic intervals are
-disjoint, and
+The estimates remain valid for subsets with the same lower density, but the
+full blocks ensure that the later mass family and prime reservoir belong to one
+period support.  The half-open intervals are disjoint, and
 \[
  \Bset=\bigcup_{k=k_0}^{K}P_k.
 \]
-We take the block primes outside the prime support of $b$ and larger than every
-element of $T$.
+We take all block primes outside the prime support of $b$ and large enough that
+the products used below avoid $T$.
 
-Define the control graph by
+The control graph consists of every unordered pair inside one block and every
+pair between consecutive blocks:
 \begin{equation}\label{eq:control-graph}
  \Cgraph=
- \bigcup_{k=k_0}^{K}
- \{(p,q):p,q\in P_k,\ p<q\}
+ \bigcup_{k=k_0}^{K}\{(p,q):p,q\in P_k,\ p<q\}
  \;\cup\;
  \bigcup_{k=k_0}^{K-1}(P_k\times P_{k+1}).
 \end{equation}
-Thus the graph contains every unordered pair within a block and every pair
-between adjacent blocks.  The two families are disjoint.  Unique factorization
-shows that $(p,q)\mapsto pq$ is injective on this family; hence
+The two indexed families are disjoint.  Unique factorization makes the product
+map injective on them, so
 \[
  \Ectrl=\{pq:(p,q)\in\Cgraph\}
 \]
 is a set of distinct squarefree semiprimes.
 
-A global assignment is a vector
+A global assignment is a residue vector
 \[
  a=(a_p)_{p\in\Bset},
  \qquad a_p\in\Z/p\Z.
 \]
-For distinct block primes $p,q$, let $H_{pq}(a)$ be the unique integer with
+For distinct block primes $p,q$, let $H_{pq}(a)$ be the unique centred CRT
+representative satisfying
 \begin{equation}\label{eq:centered-crt}
  H_{pq}(a)\equiv a_p\pmod p,
  \qquad
@@ -47,102 +47,88 @@ For distinct block primes $p,q$, let $H_{pq}(a)$ be the unique integer with
  \qquad
  -\frac{pq}{2}<H_{pq}(a)\le\frac{pq}{2}.
 \end{equation}
-This is the ordinary representative in $[0,pq)$, shifted by $-pq$ when it
-exceeds $pq/2$.  Define
+Define
 \begin{equation}\label{eq:Qctrl}
  \Qctrl(a)=\sum_{(p,q)\in\Cgraph}
  \left(\frac{H_{pq}(a)}{pq}\right)^2,
  \qquad
  \sctrl^2=\sum_{(p,q)\in\Cgraph}\frac1{(pq)^2}.
 \end{equation}
-For a frequency $h$, let $a(h)_p=h\pmod p$.  Then $H_{pq}(a(h))$ is the
-centered residue of $h$ modulo $pq$, so
+For a Fourier frequency $h$, let $a(h)_p=h\pmod p$.  The centred convention gives
+the exact phase identity
 \begin{equation}\label{eq:control-energy-identity}
  \normdist{h/(pq)}=\frac{|H_{pq}(a(h))|}{pq},
  \qquad
  \Qctrl(a(h))\le\QE(h):=\sum_{e\in E}\normdist{h/e}^2.
 \end{equation}
+This centring is also what later turns a globally constant residue assignment
+into an exact one-dimensional quadratic energy.
 
-We now establish the reciprocal-load and deviation estimates used later.
+The control mechanism needs two scale estimates.  The first requires an upper
+bound for the number of primes in a block; large denominators alone do not
+control the number of edges.
 
-\begin{lemma}[Dyadic primorial bound]\label{lem:primorial}
-Let $P_r$ be the product of all primes at most $2^r$.  Then
-$P_r\le4^{2^r}$ for every $r\ge0$.
-\end{lemma}
-\begin{proof}
-Induct on $r$.  For $r=0$ the product is empty.  For $r\ge1$, put
-$n=2^r$ and $m=n/2$.  Every prime $m<p\le n$ divides
-$\binom nm$, so their product is at most $\binom nm\le2^n$.  The induction
-hypothesis bounds the product of primes at most $m$ by $4^m=2^n$.
-Multiplication gives $P_r\le4^n$.
-\end{proof}
-
-\begin{lemma}[Reciprocal sum in one block]\label{lem:block-upper}
-For every subset $P_k$ of the primes in $[2^k,2^{k+1})$, $k\ge1$,
+\begin{lemma}[Elementary block reciprocal bound]\label{lem:block-upper}
+There is an absolute constant $C_B>0$ such that, for every subset $P_k$ of the
+primes in $[2^k,2^{k+1})$ and every $k\ge1$,
 \begin{equation}\label{eq:block-recip-upper}
- S_k:=\sum_{p\in P_k}\frac1p\le\frac4k.
+ \sum_{p\in P_k}\frac1p\le\frac{C_B}{k}.
 \end{equation}
 \end{lemma}
 \begin{proof}
-Let $M_k$ be the number of all primes in the interval.  Every such prime is at
-least $2^k$, while their product is at most the primorial at $2^{k+1}$.
-Lemma~\ref{lem:primorial} gives
+Let $M_k$ be the number of primes in the interval.  An elementary induction
+using the central binomial coefficient gives
 \[
- (2^k)^{M_k}\le4^{2^{k+1}}=2^{2^{k+2}},
- \qquad kM_k\le2^{k+2}.
+ \prod_{p\le2^r}p\le4^{2^r}.
 \]
-Therefore $S_k\le M_k2^{-k}\le4/k$.
+Every prime in the $k$th block is at least $2^k$, whereas their product is at
+most the primorial at $2^{k+1}$.  Hence $kM_k\le2^{k+2}$ and
+$\sum_{p\in P_k}1/p\le M_k2^{-k}\le4/k$.  Thus one may take $C_B=4$.
 \end{proof}
 
 \begin{proposition}[Control load and deviation scale]\label{prop:control-estimates}
-For $k_0\ge2$,
-\begin{equation}\label{eq:control-load-strong}
+There are fixed constants $C_{\mathrm{load}},c_\sigma>0$ such that, for all
+sufficiently large $k_0$,
+\begin{equation}\label{eq:control-load-symbolic}
  \sum_{e\in\Ectrl}\frac1e
- \le\frac{32}{k_0-1}
- \le\frac{512}{k_0-1}.
+ \le\frac{C_{\mathrm{load}}}{k_0-1},
+ \qquad
+ \sctrl\ge\frac{c_\sigma}{k_0 2^{k_0}}.
 \end{equation}
-For $k_0\ge14$,
-\begin{equation}\label{eq:sctrl-lower}
- \sctrl\ge\frac1{100k_0 2^{k_0}}.
-\end{equation}
-Consequently, for fixed $b$, the control load is eventually below any
-prescribed positive multiple of $1/b$.
+In particular, for fixed $b$, the control load tends to zero.
 \end{proposition}
 \begin{proof}
-Internal edges in block $k$ have load at most
-\[
- \sum_{p<q\in P_k}\frac1{pq}
- \le S_k^2\le\frac{16}{k^2},
-\]
-and the adjacent bipartite load is
-\[
- \sum_{p\in P_k,q\in P_{k+1}}\frac1{pq}
- =S_kS_{k+1}\le\frac{16}{k(k+1)}\le\frac{16}{k^2}.
-\]
-Hence
+Write $S_k=\sum_{p\in P_k}1/p$.  Internal edges in block $k$ have load at most
+$S_k^2$, while the adjacent bipartite load is $S_kS_{k+1}$.  Lemma
+\ref{lem:block-upper} therefore gives
 \[
  \sum_{e\in\Ectrl}\frac1e
- \le32\sum_{k=k_0}^{\infty}\frac1{k^2}
- \le\frac{32}{k_0-1},
+ \le2C_B^2\sum_{k\ge k_0}\frac1{k^2}
+ \le\frac{2C_B^2}{k_0-1}.
 \]
-where $1/k^2\le1/(k-1)-1/k$.
+Thus $C_{\mathrm{load}}=32$ is available from this human estimate.
 
-For the lower bound, put $k=k_0$, $X=2^k$, and $m=|P_k|$.  Density gives
-$m\ge X/(2k\log2)$, and for $k\ge14$ this lower bound is at least $2$.
-Thus $m(m-1)/2\ge m^2/4$.  Every internal pair in the bottom block satisfies
-$p,q<2^{k+1}$, so
-\begin{align*}
+For the second estimate, use only the internal edges of the bottom block.  Put
+$X=2^{k_0}$ and $m=|P_{k_0}|$.  The density estimate gives
+$m\gg X/k_0$, and every internal product is below $2^{2k_0+2}$.  Once $m\ge2$,
+\[
  \sctrl^2
- &\ge\frac{m(m-1)/2}{2^{4k+4}}
- \ge\frac1{256(\log2)^2k^2 2^{2k}}.
-\end{align*}
-Taking square roots yields
-$\sctrl\ge1/(16(\log2)k2^k)\ge1/(100k2^k)$.
+ \ge\frac{m(m-1)/2}{2^{4k_0+4}}
+ \gg\frac1{k_0^2 2^{2k_0}}.
+\]
+Taking square roots gives the stated inequality for some fixed $c_\sigma>0$.
 \end{proof}
+
+For compatibility with the archived finite certificate, one may take
+$C_{\mathrm{load}}=32$ in the preceding proof and $c_\sigma=1/100$ after a
+finite threshold; the release also uses the coarser load constant $512$.  These
+numbers certify \eqref{eq:control-load-symbolic} but are not independent
+parameters of the construction.
 
 For $C\ge1$, define the main assignment set
 \begin{equation}\label{eq:assignment-main}
  \mathfrak M(C)=
- \left\{a:\exists m\in\Z,\ |m|\le C/\sctrl,
- \ a_p\equiv m\pmod p\ \text{for all }p\in\Bset\right\}.
+ \left\{a:\exists m\in\Z,
+ |m|\le C/\sctrl,
+ \ a_p\equiv m\pmod p\text{ for all }p\in\Bset\right\}.
 \end{equation}

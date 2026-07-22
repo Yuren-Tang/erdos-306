@@ -1,6 +1,6 @@
-\section{Finite Fourier inversion}\label{sec:fourier}
+\section{Finite Fourier selection}\label{sec:fourier}
 
-Let $E$ be a finite set of positive integers, let each $e\in E$ divide $L$, and
+Let $E$ be a finite set of positive integers, let every $e\in E$ divide $L$, and
 let $\theta_e\in[0,1]$.  Give $A\subseteq E$ the product weight
 \[
  w(A)=\prod_{e\in A}\theta_e
@@ -14,17 +14,15 @@ Finite character orthogonality gives
 \begin{equation}\label{eq:finite-fourier}
  LW_{L,q_0}
  =\sum_{h=0}^{L-1}
-   \prod_{e\in E}
-   \bigl((1-\theta_e)+\theta_e e^{2\pi ih/e}\bigr)
+   \prod_{e\in E}\bigl((1-\theta_e)+\theta_e e^{2\pi ih/e}\bigr)
    e^{-2\pi ihq_0/L}.
 \end{equation}
 
-\begin{lemma}[Fourier positivity]\label{lem:spectral-positivity}
+\begin{lemma}[Finite Fourier positivity]\label{lem:spectral-positivity}
 Suppose the frequencies are partitioned as $S_M\dot\cup S_m$, the sum over
 $S_M$ is real, and
 \[
- \Re\sum_{h\in S_M}F(h)
- >\sum_{h\in S_m}|F(h)|,
+ \Re\sum_{h\in S_M}F(h)>\sum_{h\in S_m}|F(h)|,
 \]
 where $F(h)$ is the summand in \eqref{eq:finite-fourier}.  Then
 $W_{L,q_0}>0$.
@@ -38,5 +36,5 @@ For the reciprocal problem we take $q_0=L/b$.  If
 \begin{equation}\label{eq:no-wrap}
  \sum_{e\in E}\frac1e<1,
 \end{equation}
-then an admissible congruence gives an exact equality: after division by $L$,
-both $\sum_{e\in A}1/e$ and $1/b$ lie in $[0,1)$.
+then an admissible congruence gives an equality: after division by $L$, both
+$\sum_{e\in A}1/e$ and $1/b$ lie in $[0,1)$.
