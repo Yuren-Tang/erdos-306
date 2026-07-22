@@ -1,7 +1,8 @@
 # E306-PD-PAPER-FIRST-01 — dependency and parameter ledger
 
-**State:** `READY-FOR-PAPER-FIRST-MANUSCRIPT`  
+**State:** `READY-FOR-REPAIR-VERIFICATION`  
 **Proof controlled by:** `proof-development/PAPER-FIRST-HUMAN-PROOF.md`  
+**Repair audit:** `review/e306-paper-first-proof-audit-v1@3d1451faf66830bbf38e16047b78dd08d7efa803`  
 **Purpose:** certify logical closure, non-circular parameter choice, and the
 absence of hidden formal or computational premises
 
@@ -39,8 +40,8 @@ premise.
 | `F1` | exact finite Fourier identity | character orthogonality | proved |
 | `F2` | Fourier-energy upper bound | `D3`, sine inequality | proved |
 | `R1` | deterministic reciprocal dispersion | prime congruence fibres | proved |
-| `R2` | cross-label energy | `R1`, centred CRT identity | proved |
-| `R3` | nondominant forcing | `R2`, explicit covering dichotomy | proved |
+| `R2` | cross-label energy for `|C_m|>=max(16,128B/X)` | `R1`, centred CRT identity | repaired / proved |
+| `R3` | nondominant forcing, with `R=0` separated and the exact ordered-pair class sum | `R2`, explicit covering dichotomy | repaired / proved |
 | `R4` | exact label on every cold block | `R1`, `R3` | proved |
 | `R5` | fingerprint rigidity | `R1`, centred CRT difference identity | proved |
 | `R6` | energetic-block entropy | `R5`, explicit fingerprint count | proved |
@@ -57,7 +58,8 @@ premise.
 | `H4` | avoiding unit theorem | `P2`, `D2` | proved |
 
 There is no unresolved node and no node whose proof is “the formalization checks
-it”.
+it”. The two repaired nodes await the bounded verification specified by the
+audit before manuscript launch.
 
 ## 3. Fixed data
 
@@ -179,7 +181,8 @@ proved eventual statements.
 ### Arithmetic and avoidance thresholds
 
 - every block prime is outside the support of `b`;
-- every product denominator exceeds `max T`;
+- every product denominator exceeds every element of `T` (vacuous if `T` is
+  empty);
 - all pair and auxiliary products are distinct;
 - the period is larger than the major interval.
 
@@ -233,14 +236,26 @@ count.
 
 ### “Nondominance costs energy”
 
-The proof gives an exhaustive dichotomy:
+The proof first treats `R=0`: zero energy makes every centred CRT lift zero and
+therefore gives the common dominant label `0`. Thus `B>0` before `B^2` appears in
+a denominator.
+
+For `R>0` the proof gives an exhaustive dichotomy:
 
 - either small label classes carry a fixed mass, forcing
   `N<=C(B/X+1)^2`;
-- or substantial classes carry the mass, and the explicit cross-label energy
-  plus power mean forces `R>=cN^4/(M^2X^2)`.
+- or substantial classes carry the mass. Each has
+  `n_i>=s_0=256(B/X+1)>=max(16,128B/X)`, so the repaired Lemma 8 applies to
+  every ordered pair. Dividing the ordered sum by two gives exactly
+  ```text
+  R >= c/(2X^2) sum_i n_i^3 ((S-n_i)-(t-1)).
+  ```
+  Since `S-n_i>=s_0(t-1)` and `s_0>=256`, the bracket is at least
+  `(255/256)(S-n_i)`. The largest-class/power-mean alternative then forces
+  `R>=cN^4/(M^2X^2)`.
 
-Substitution of `B=A sqrt(R)X^2/N` closes both alternatives algebraically.
+Substitution of `B=A sqrt(R)X^2/N` closes both alternatives algebraically and
+retains the positive forcing conclusion `R>=cX/log^3X`.
 
 ### “Cold blocks have no exceptions”
 
@@ -332,7 +347,7 @@ None of these factors is hidden in `O(1)`.
 
 ## 10. Closure classification
 
-- **Mathematical gap:** none.
+- **Mathematical gap:** none after the bounded repairs.
 - **External-source gap:** none beyond citing a standard PNT source in the future
   manuscript.
 - **Finite computation delegated to software:** none.
@@ -340,4 +355,6 @@ None of these factors is hidden in `O(1)`.
 - **Circular parameter dependence:** none.
 - **Blocked frontier:** none.
 
-The proof packet is therefore ready for a fresh paper-first manuscript.
+The corrected proof packet is ready for the bounded verification required by the
+independent audit. It does not claim the verifier's manuscript-launch decision in
+advance.
