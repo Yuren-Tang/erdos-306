@@ -17,8 +17,8 @@ with the two named Rosser--Schoenfeld assumptions.  The frozen pushlinter line i
 read-only development evidence.  This branch is not a proof-development,
 manuscript, Curator, review, Lean, release, DOI, arXiv, or submission surface.
 
-The complete-pair multiblock paper-first route has now passed independent audit
-with bounded local repairs and is the assured ordinary-mathematics fallback.  The
+The complete-pair multiblock paper-first route has passed independent audit with
+bounded local repairs and is the assured ordinary-mathematics fallback.  The
 shorter one-anchor and GFF routes below remain unreviewed research candidates.
 
 ## Current strongest conclusions
@@ -70,8 +70,7 @@ Controlling sources:
 
 ### Gap-Free Floor / finite-prefix frontier
 
-The strongest current GFF candidate is now the small-parameter complete-pair
-route:
+The strongest current GFF candidate is the small-parameter complete-pair route:
 
 ```text
 gamma_N << p_N^(-1/2)(log p_N)^(7/2).
@@ -80,11 +79,37 @@ gamma_N << p_N^(-1/2)(log p_N)^(7/2).
 At prefix `Z=p_N`, choose a fixed power interval
 
 ```text
-P={p:Z^(1/tau)<=p<=Z},
-4/3<tau<2,
+P={p:Z^(1/tau)<=p<=Z}.
 ```
 
-use all complete pairs in `P`, and set the common Bernoulli parameter
+The lower-band realization theorem uses
+
+```text
+4/3<tau<2.
+```
+
+The full GFF consequence additionally requires overlap with Li's known central
+band.  If
+
+```text
+gamma_*=0.181...,
+lambda_tau=(log tau)^2/2,
+tau_CB=exp(sqrt(2 gamma_*)) approximately 1.825,
+```
+
+then choose
+
+```text
+tau in (tau_CB,2)
+and
+gamma_*<q_*<lambda_tau.
+```
+
+For example `tau=1.95` leaves a fixed overlap margin.  This corrects the earlier
+overstatement that every `tau in (4/3,2)` automatically yields the full GFF
+consequence.
+
+Use all complete pairs in `P`, and set the common Bernoulli parameter
 `theta=q/Lambda`.  A target-adaptive top core has size
 
 ```text
@@ -98,20 +123,23 @@ weighted witness damping `qZ/(log Z)^3`.  Balancing the two gives
 q^2Z>>(log Z)^7.
 ```
 
-The interval restriction has two exact roles:
+The interval restrictions have three exact roles:
 
 - `tau<2` makes every denominator at least the prime-prefix alias scale;
 - `tau>4/3` keeps the major width below `Z/log Z` and makes complete-pair variance
-  dominate the lower-sensor variance at the square-root floor.
+  dominate the lower-sensor variance at the square-root floor;
+- `tau>tau_CB` makes the complete-pair load exceed Li's central-band threshold.
 
-Controlling source:
+Controlling sources:
 
-- `research/finite-prefix-crt/SMALL_THETA_COMPLETE_PAIR_DEFECT_EXPANSION_GFF_V1.md`.
+- `research/finite-prefix-crt/SMALL_THETA_COMPLETE_PAIR_DEFECT_EXPANSION_GFF_V1.md`;
+- `research/finite-prefix-crt/SMALL_THETA_COMPLETE_PAIR_DEFECT_EXPANSION_GFF_ADDENDUM_CENTRAL_BAND.md`.
 
 Status:
 
 ```text
 MATERIAL FULL THEOREM CANDIDATE /
+CENTRAL-BAND GAP FOUND AND REPAIRED /
 STRONGEST CURRENT GFF RATE /
 NOT INDEPENDENTLY REVIEWED.
 ```
@@ -139,9 +167,9 @@ Retained mechanisms:
 Retained mechanisms:
 
 1. exact prefix Fourier identity;
-2. congruence-to-exact alias removal;
+2. no-wrap congruence-to-exact transfer;
 3. high-denominator square-load control;
-4. target tuning and complement symmetry interface.
+4. target tuning and complement-symmetry interface.
 
 ### Sparse actual-prime sensing
 
@@ -163,8 +191,8 @@ Retained mechanisms:
 - `PRIME_BLOCK_LOAD_DISTANCE_OPTIMALITY_ADDENDUM_PREFIX_BOUNDED.md`.
 
 Every prefix-bounded irregular rowwise design satisfies the recorded reciprocal
-and square-load lower bounds.  The new square-root route does not contradict them:
-its sensor core grows as `1/q`, exactly paying for the weak small-parameter kernel.
+and square-load lower bounds.  The square-root route does not contradict them: its
+sensor core grows as `1/q`, exactly paying for the weak small-parameter kernel.
 
 ### Sparse Gibbs history
 
@@ -197,7 +225,7 @@ accepted by PDL or independent audit.  The last line is the strongest and newest
 - sparse actual-prime sensing: `MATERIAL GENERAL THEOREM CANDIDATE`;
 - decoder-defect expansion: `PROVED ARGUMENT`;
 - sparse arithmetic synchronization: `ARGUMENT-LEVEL SOLUTION`;
-- square-root GFF rate: `STRONGEST FULL THEOREM CANDIDATE`;
+- square-root GFF rate: `STRONGEST FULL THEOREM CANDIDATE / CENTRAL-BAND REPAIRED`;
 - literature/priority status: `INITIAL COMPARISON ONLY / NOVELTY NOT CERTIFIED`.
 
 ## Assurance and control disposition
@@ -215,7 +243,7 @@ Recommended flow for the GFF theorem:
 
 ```text
 PDL exact small-theta reconstruction
--> verify Li central-band bridge
+-> verify the corrected Li central-band bridge
 -> independent finite-prefix audit
 -> only then theorem-status or publication decisions.
 ```
@@ -225,8 +253,8 @@ canonical promotion.
 
 ## Next Research Lead frontier
 
-1. adversarially audit the square-root GFF route, especially the generalized
-   reciprocal-label count, small-`theta` cumulants, and central-band bridge;
+1. adversarially audit the generalized reciprocal-label count, small-`theta`
+   cumulants, and no-wrap/central-band ledger;
 2. determine whether the `1/2` exponent is a genuine barrier for sampled-core
    defect expansion or can be beaten by a better top-scale sensor mean;
 3. investigate direct bipartite rigidity which might replace the remaining robust
