@@ -144,6 +144,46 @@ STRONGEST CURRENT GFF RATE /
 NOT INDEPENDENTLY REVIEWED.
 ```
 
+## Method-class power barrier
+
+The file
+
+`research/finite-prefix-crt/SAMPLED_CORE_DEFECT_EXPANSION_POWER_BARRIER_V1.md`
+
+isolates a conditional square-root barrier.  In any proof which simultaneously
+uses:
+
+1. small-parameter kernel damping linear in `q`;
+2. independent absolute-value row compression;
+3. a common bounded-energy core;
+4. explicit enumeration of all core residue assignments;
+5. a deterministic witness floor `Z^(1+o(1))`;
+
+the effective row distance forces
+
+```text
+|S|>>log Z/q,
+```
+
+and explicit core enumeration forces
+
+```text
+q>=Z^(-1/2-o(1)).
+```
+
+This is not a lower bound for GFF.  It says that improving reciprocal dispersion
+or the witness floor may reduce the logarithmic factor, but cannot cross the power
+`1/2` while the five architectural hypotheses remain.
+
+For a population mean `(log Z)^(-b)` and witness floor `Z/(log Z)^a`, the concrete
+balance is
+
+```text
+q^2Z>>(log Z)^(a+b+2).
+```
+
+The current values `a=3`, `b=2` give the exponent `7` on the logarithm.
+
 ## Mechanism ledger
 
 ### Shifted code and product fibres
@@ -226,6 +266,7 @@ accepted by PDL or independent audit.  The last line is the strongest and newest
 - decoder-defect expansion: `PROVED ARGUMENT`;
 - sparse arithmetic synchronization: `ARGUMENT-LEVEL SOLUTION`;
 - square-root GFF rate: `STRONGEST FULL THEOREM CANDIDATE / CENTRAL-BAND REPAIRED`;
+- sampled-core power `1/2`: `CONDITIONAL METHOD-CLASS BARRIER / NOT PROBLEM OPTIMALITY`;
 - literature/priority status: `INITIAL COMPARISON ONLY / NOVELTY NOT CERTIFIED`.
 
 ## Assurance and control disposition
@@ -255,13 +296,15 @@ canonical promotion.
 
 1. adversarially audit the generalized reciprocal-label count, small-`theta`
    cumulants, and no-wrap/central-band ledger;
-2. determine whether the `1/2` exponent is a genuine barrier for sampled-core
-   defect expansion or can be beaten by a better top-scale sensor mean;
-3. investigate direct bipartite rigidity which might replace the remaining robust
+2. improve the logarithmic factor by strengthening top-scale reciprocal dispersion
+   or the deterministic witness floor;
+3. seek a genuinely non-enumerative synchronization, joint-decoding, or complex-
+   cancellation route capable of crossing the sampled-core power `1/2` barrier;
+4. investigate direct bipartite rigidity which might replace the remaining robust
    exact-cold witness theorem;
-4. abstract decoder-defect expansion into a general Gibbs/code theorem;
-5. find a second non-semiprime consumer;
-6. receive only exact failed implications or structural obstructions from PDL.
+5. abstract decoder-defect expansion into a general Gibbs/code theorem;
+6. find a second non-semiprime consumer;
+7. receive only exact failed implications or structural obstructions from PDL.
 
 Only a material theorem, correction/counterexample, or smallest exact revised gap
 returns to issue #9.
