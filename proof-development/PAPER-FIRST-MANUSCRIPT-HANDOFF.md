@@ -1,8 +1,10 @@
 # E306-PD-PAPER-FIRST-01 — manuscript handoff
 
-**Return state:** `READY-FOR-PAPER-FIRST-MANUSCRIPT`  
-**Consumer:** a fresh `E306-P1-REV5` manuscript worker, if and when separately
-launched  
+**Return state:** `READY-FOR-REPAIR-VERIFICATION`  
+**Immediate consumer:** bounded verification against
+`review/e306-paper-first-proof-audit-v1@3d1451faf66830bbf38e16047b78dd08d7efa803`  
+**Later consumer:** a fresh `E306-P1-REV5` manuscript worker, only after the
+bounded verification passes  
 **Proof-development start:** `proof-development/e306-rigour-v1@cecd3c351302e49577d180ebf42ad7fa784508dc`
 
 ## 1. Controlling proof sources
@@ -20,6 +22,24 @@ The fresh manuscript must be written from these paper-first files:
 Earlier Lean releases, refactors, dossiers, corpora, and manuscripts may be used
 to recover bibliography data or genuinely clean prose only. They do not override
 the mathematics in the four proof files above.
+
+### Repair synchronization
+
+The controlling human proof now contains the exact bounded repairs required by
+the independent audit:
+
+- Lemma 8 assumes `|C_m|>=max(16,128B/X)`, so every invocation of the dispersion
+  lemma lies in its proved range;
+- Proposition 9 disposes of `R=0` before defining `B` or dividing by `B^2`;
+- its substantial-class sum is
+  `1/2 sum_i n_i^3((S-n_i)-(t-1))`, with
+  `(S-n_i)-(t-1)>=(255/256)(S-n_i)` derived from `n_j>=s_0`;
+- avoidance is phrased by requiring `X^2` to exceed every element of `T`, a
+  vacuous condition when `T` is empty.
+
+These are local repairs only. They do not change the complete-pair family, the
+multiblock rigidity route, the Fourier partition, the reservoir, the parameter
+order, or the headline theorem.
 
 ## 2. Principal mathematical change
 
@@ -221,22 +241,25 @@ true.
 
 ## 9. Assurance boundary
 
-This checkpoint is an authorial proof-development return. It establishes a
-complete paper-first proof suitable for manuscript consumption. It is not:
+This checkpoint is an authorial proof-development repair return. It records a
+complete paper-first proof whose three local mathematical defects and one
+empty-set ambiguity have been repaired. It is now suitable for the bounded
+verification specified by the independent audit; it is not yet the verifier's
+clean manuscript-launch decision. It is also not:
 
 - Owner approval of a manuscript;
-- independent mathematical review;
+- independent mathematical review beyond the named pending verification;
 - a formalization result;
 - a release or canonical promotion;
 - permission to submit to arXiv or a journal.
 
-A fresh manuscript must be written, then undergo substantive Owner review and an
-independent mathematical review.
+After bounded verification, a fresh manuscript must still be written and undergo
+substantive Owner review and independent mathematical review.
 
 ## 10. Return classification
 
-The route comparison found a genuine simplification, and the complete proof has
-been reconstructed without formal authority. No new unresolved theorem or
-external source is needed.
+The audit-authorized local repairs are complete without changing the proof route,
+headline theorem, denominator family, Fourier partition, or parameter order. No
+new unresolved theorem or external source was introduced.
 
-`[READY-FOR-PAPER-FIRST-MANUSCRIPT E306-PD-PAPER-FIRST-01]`
+`[READY-FOR-REPAIR-VERIFICATION E306-PD-PF-REPAIR-01]`
