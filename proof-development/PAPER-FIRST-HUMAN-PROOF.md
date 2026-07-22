@@ -1,6 +1,6 @@
 # E306-PD-PAPER-FIRST-01 — standalone Lean-independent human proof
 
-**State:** `READY-FOR-PAPER-FIRST-MANUSCRIPT`  
+**State:** `READY-FOR-REPAIR-VERIFICATION`  
 **Scope:** complete proof of Erdős Problem 306, with no appeal to a formal
 certificate or a previous manuscript  
 **External input:** the prime number theorem
@@ -190,7 +190,8 @@ primes in the top block `P_{3n-1}`. Define
 \]
 
 Choose `n` large enough that every prime in `mathcal P` is larger than every
-prime divisor of `b` and that `X^2>max(T)`. Unique factorization then shows:
+prime divisor of `b` and that `X^2` exceeds every element of `T`; when `T` is
+empty, the latter condition is vacuous. Unique factorization then shows:
 
 - every member of `E` is a squarefree semiprime;
 - all members of `E` are distinct;
@@ -219,7 +220,7 @@ For fixed `b` and `G`, the auxiliary load tends to zero, because
 
 \[
  \sum_{rs\in E_{\rm aux}}\frac1{rs}
- =\left(\sum_{r\mid b\atop r\ {m prime}}\frac1r\right)
+ =\left(\sum_{r\mid b\atop r\ {\rm prime}}\frac1r\right)
   \left(\sum_{s\in\mathcal G}\frac1s\right)
  \le C_bG2^{-(3n-1)}.
 \]
@@ -452,7 +453,7 @@ Let `C_m,C_{m'}` be two disjoint label classes with `m!=m'`, each label of
 absolute value at most `B`. Suppose
 
 \[
- |C_m|\ge128B/X,
+ |C_m|\ge\max\{16,128B/X\},
  \qquad |C_{m'}|\ge2,
  \qquad B<X^2/4.
 \]
@@ -478,8 +479,9 @@ gives `jp congruent d mod q`, so
  \le\frac{|H_{pq}|}{pq}+\frac{|m|}{pq}.
 \]
 
-Apply Lemma 7 to `F=C_m`. With `delta=|C_m|/(64X)`, at least half the `p` have
-left side greater than `delta`. The size assumption gives
+Apply Lemma 7 to `F=C_m`; the hypothesis `|C_m|>=16` is exactly the missing
+applicability condition. With `delta=|C_m|/(64X)`, at least half the `p` have
+left side greater than `delta`. The other size assumption gives
 
 \[
  \frac{|m|}{pq}\le\frac{B}{X^2}
@@ -505,13 +507,21 @@ There is `c_w>0` such that, for all sufficiently large `X`,
 
 implies that `a` has a unique dominant label.
 
-**Proof.** Suppose `Q_P(a)<=R` and no dominant label exists. Choose
+**Proof.** Suppose `Q_P(a)<=R` and no dominant label exists. First consider
+`R=0`. Every summand in `Q_P(a)` is nonnegative, so every centred CRT lift
+`H_{pq}` is zero. For large `X` we have `N>=2`; for each `p in P`, choose
+`q in P` with `q!=p`. The congruences defining `H_{pq}=0` give
+`a_p congruent 0 mod p`. Thus every coordinate has the common label `0`, which
+is dominant, a contradiction. Hence the nondominant case has `R>0`.
+
+Choose
 
 \[
  B=A_\rho\sqrt R\frac{X^2}{N},
 \]
 
-where `A_rho` is a sufficiently large fixed constant. Call a pair bad when
+where `A_rho` is a sufficiently large fixed constant. In particular `B>0`, so
+the following division by `B^2` is legitimate. Call a pair bad when
 `|H_{pq}|>B`. Since `pq<4X^2`, every bad pair contributes more than
 `B^2/(16X^4)`. Hence
 
@@ -586,16 +596,45 @@ classes contain at least `(1-rho/2)N` vertices after the uncovered vertices are
 also deducted. Their largest class has size at most `(1-rho)N`, so a fixed
 positive proportion of their mass lies outside a largest class.
 
-For distinct substantial classes, Lemma 8 applies. If their sizes are
-`n_1,...,n_t` and `S=sum n_i`, summing its conclusion gives
+Let their sizes be `n_1,...,n_t` and put `S=sum n_i`. Every substantial class
+has
 
 \[
- R\ge\frac{c_E}{X^2}\sum_i n_i^3(S-n_i-O(1)).
+ n_i\ge s_0=256(B/X+1),
 \]
 
-For large `N`, the `O(1)` is absorbed. If the largest class is at least `S/2`,
-its term alone is at least `c_rho S^4/X^2`. Otherwise every
-`S-n_i>=S/2`, and power mean gives
+so `n_i>=16` and `n_i>=128B/X`. Lemma 8 therefore applies to every ordered pair
+of distinct substantial classes. Summing the ordered inequalities and dividing
+by two—because each unordered cross-class edge is counted in both orientations—
+gives
+
+\[
+ R\ge\frac{c_E}{2X^2}\sum_i n_i^3
+       \sum_{j\ne i}(n_j-1)
+ =\frac{c_E}{2X^2}\sum_i n_i^3\bigl((S-n_i)-(t-1)\bigr).
+\]
+
+For every `i`,
+
+\[
+ S-n_i=\sum_{j\ne i}n_j\ge(t-1)s_0.
+\]
+
+Since `s_0>=256`,
+
+\[
+ (S-n_i)-(t-1)\ge\frac{255}{256}(S-n_i).
+\]
+
+Thus, after changing the absolute constant,
+
+\[
+ R\ge\frac{c'_E}{X^2}\sum_i n_i^3(S-n_i).
+\]
+
+If the largest class has size at least `S/2`, the fixed positive mass outside it
+noted above gives `S-n_max>=c_rho S`; its term is therefore at least
+`c_rho S^4/X^2`. Otherwise every `S-n_i>=S/2`, and power mean gives
 
 \[
  \sum_i n_i^3\ge\frac{S^3}{t^2}\ge\frac{S^3}{M^2}.
