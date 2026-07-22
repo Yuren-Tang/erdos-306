@@ -1,3 +1,167 @@
-\input{sections/06a-level-set-encoding.tex}
-\input{sections/06b-localization.tex}
-\input{sections/06c-tail-partition.tex}
+\section{Global level sets and tail bounds}\label{sec:global}
+
+Let $J=K+1-k_0$ be the number of blocks and
+\[
+ \mathcal L(R)=\{a:\Qctrl(a)\le R\}.
+\]
+We encode each assignment in $\mathcal L(R)$ by four finite pieces of data:
+\begin{enumerate}[label=(\arabic*)]
+\item the hot-block set $H$ and the assignment on each hot block, with
+\[
+ \sum_{k\in H}R_w(c_2,k)\le R;
+\]
+\item the cold boundaries $B$ at which adjacent dominant labels differ, with
+$\sum_{k\in B}\Pi_k\le R$;
+\item the integer shells $v_k=\lfloor Q_k(a)\rfloor$;
+\item the dominant labels and exceptional coordinates on the maximal cold
+segments.
+\end{enumerate}
+The first three pieces determine the cold segments.  On each such segment,
+Proposition~\ref{prop:boundary-penalty} propagates one dominant label.  The
+first label lies in an interval of length $O(1+\sqrt R/\sctrl)$; every later
+segment begins after a hot block or a boundary of unequal labels.  The
+exceptional primes and their residues are bounded using
+\eqref{eq:exception-count}.
+
+The count must be uniform in the integer label.  A nonwrapped label outside the
+range allowed by \eqref{eq:label-bound} has empty fibre.  A wrapped label
+represents the same residues as a smaller dominant label $M$.  Two primes from
+the agreement class determine this lift uniquely: if two admissible small
+integers agree modulo both primes, their difference is divisible by the
+product of the primes but has smaller absolute value.  Replacing the recorded
+wrapped label by $M$ therefore injects its fibre into a fixed small-label
+fibre.
+
+\begin{proposition}[Global level-set estimate]\label{prop:level-set}
+For every $0<\varepsilon<1$, there are $A>0$ and $k_\varepsilon$ such that,
+for every admissible block system with $k_0\ge k_\varepsilon$ and every
+$R\ge1$,
+\begin{equation}\label{eq:level-set}
+ \#\mathcal L(R)
+ \le e^{AJ}e^{8\varepsilon R}
+ \left(1+\frac{\sqrt R}{\sctrl}\right).
+\end{equation}
+The constant $A$ is fixed before the block system and before $k_0$.
+\end{proposition}
+\begin{proof}
+The preceding data form an injective code.  The full vectors reconstruct every
+hot block, while on a cold block the segment label, exceptional-prime set, and
+recorded exceptional residues reconstruct every coordinate.  The sums over
+hot-block choices and unequal-label boundaries are controlled by their energy
+charges; shell vectors are controlled by their total integer mass; and the
+exception choices use
+$\sum_A\prod_{j\in A}u_j=\prod_j(1+u_j)$.  The possible first labels of the
+cold segments contribute the factor $1+\sqrt R/\sctrl$.  Choosing the cold
+forcing constant and then the common block threshold makes the total charge
+exponent at most $8\varepsilon R$, while the bounded local encoding entropy
+contributes one factor $e^A$ per block.  Summing the fibres proves
+\eqref{eq:level-set}.  All finite window counts and exponential rearrangements
+use only the displayed charge bounds.
+\end{proof}
+
+Define the global forcing floor
+\begin{equation}\label{eq:global-floor}
+ \mathcal F_0=
+ \min\{R_w(c_2,k_0),\Pi_{k_0}\}.
+\end{equation}
+After increasing $k_0$, monotonicity gives
+$R_w(c_2,k_0)\le R_w(c_2,k)$ and
+$R_w(c_2,k_0)\le\Pi_k$ for every relevant block and boundary.
+
+\begin{lemma}[Localization]\label{lem:localization}
+For sufficiently large $k_0$, every $a\notin\mathfrak M(C)$ satisfies either
+\[
+ \Qctrl(a)\ge\mathcal F_0
+\]
+or there is an integer $m$ such that
+\begin{equation}\label{eq:diagonal-sector}
+ a_p\equiv m\pmod p\quad(p\in\Bset),
+ \qquad |m|>C/\sctrl,
+ \qquad \Qctrl(a)=m^2\sctrl^2.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Suppose $\Qctrl(a)<\mathcal F_0$.  Then no block is hot and no adjacent cold
+labels differ.  The small-$c_2$ refinement following
+\eqref{eq:exception-count} eliminates every exception, so all coordinates
+have one common label $m$.  For sufficiently large $k_0$, we also have $2|m|<pq$ for every
+control pair.  Hence $m$ is the centered CRT representative and
+\[
+ \Qctrl(a)=\sum_{(p,q)\in\Cgraph}(m/pq)^2=m^2\sctrl^2.
+\]
+If $|m|\le C/\sctrl$, then $a\in\mathfrak M(C)$; otherwise
+\eqref{eq:diagonal-sector} holds.
+\end{proof}
+
+\begin{lemma}[High-energy tail]\label{lem:laplace}
+For every $c>0$ and $\eta>0$, after increasing $k_0$,
+\begin{equation}\label{eq:laplace}
+ \sum_{\Qctrl(a)\ge\mathcal F_0}e^{-c\Qctrl(a)}
+ \le\frac\eta{\sctrl}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Choose $\varepsilon>0$ and $c'$ with
+\[
+ 8\varepsilon<c'<c.
+\]
+Decomposition into unit energy shells and Proposition~\ref{prop:level-set}
+give a convergent bound
+\[
+ \sum_a e^{-c'\Qctrl(a)}
+ \le e^{AJ}K(c',\varepsilon)
+ \left(1+\frac1{\sctrl}\right).
+\]
+On the range $\Qctrl\ge\mathcal F_0$, extract
+$e^{-(c-c')\mathcal F_0}$.  The forcing floor grows exponentially in the
+bottom scale, while $J=O(k_0)$ and Proposition~\ref{prop:control-estimates}
+gives only polynomial-exponential growth for $\sctrl^{-1}$.  With
+$c,c',\varepsilon,A$ and $\eta$ fixed first, one final threshold makes the
+extracted factor absorb both $e^{AJ}$ and $1+\sctrl^{-1}$, yielding
+\eqref{eq:laplace}.
+\end{proof}
+
+\begin{lemma}[Diagonal Gaussian tail]\label{lem:gaussian-tail}
+For every $c>0$ there is
+$C_{\mathrm{tail}}=1+6\sqrt2/\sqrt c$ such that, eventually,
+\begin{equation}\label{eq:gaussian-tail}
+ \sum_{\substack{a\text{ satisfying }\eqref{eq:diagonal-sector}}}
+ e^{-c\Qctrl(a)}
+ \le\frac{C_{\mathrm{tail}}e^{-cC^2/2}}{\sctrl}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+A diagonal assignment is determined by its integer label, so the left side
+injects into
+\[
+ \sum_{|m|>C/\sctrl}e^{-cm^2\sctrl^2}.
+\]
+Split the exponent into two equal parts.  The first is at most
+$e^{-cC^2/2}$; the remaining discrete Gaussian is bounded by its central term
+and a comparison with the Gaussian integral, giving
+$C_{\mathrm{tail}}/\sctrl$ once $c\sctrl^2/2\le1$.
+\end{proof}
+
+\begin{theorem}[Global tail estimate]\label{thm:global-partition}
+For every $c>0$ and $\eta>0$, there are $k_*(c,\eta)$ and
+$C_{\mathrm{tail}}>0$ such that, for every admissible block system with
+$k_0\ge k_*$ and every $C\ge1$,
+\begin{equation}\label{eq:global-partition}
+ \sum_{a\notin\mathfrak M(C)}e^{-c\Qctrl(a)}
+ \le\frac{\eta+C_{\mathrm{tail}}e^{-cC^2/2}}{\sctrl}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Apply Lemma~\ref{lem:localization}; the two alternatives are bounded by
+Lemmas~\ref{lem:laplace} and \ref{lem:gaussian-tail}.
+\end{proof}
+
+The quantifier order is
+\[
+ c,\eta
+ \longrightarrow
+ \varepsilon,c',A,c_2,e_0,C_{\mathrm{tail}}
+ \longrightarrow k_*
+ \longrightarrow \text{block system and }C.
+\]
+In particular, no entropy or tail constant is chosen after the bottom scale.

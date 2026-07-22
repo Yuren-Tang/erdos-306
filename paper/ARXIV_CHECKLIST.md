@@ -2,55 +2,55 @@
 
 > Repository-only control record. This file is excluded from the public arXiv source package.
 
-Task: `E306-P1-REV2`  
-Branch: `paper/arxiv-v1-revision-v2`  
-Exact base: `84ee55acaa292cf170661cc5fe32936de7d28ccd`
+Task: `E306-P1-REV3`  
+Branch: `paper/arxiv-v1-revision-v3`  
+Exact base: `6c708c08192cc6730cb9fa806310f662f2cf0eed`
 
 ## Current classification
 
-**PUBLICATION-BOUNDARY REVISION COMPLETE / AWAITING DIRECTOR RECEPTION AND OWNER REVIEW / NOT SUBMISSION-READY.**
+**EDITORIAL NORMALIZATION COMPLETE / AWAITING DIRECTOR RECEPTION AND PORTFOLIO OWNER SUBSTANTIVE REVIEW / NOT SUBMISSION-READY.**
 
-## Public article boundary
+## Editorial normalization
 
-- [x] Public article source consists of `main.tex`, `references.bib`, and the semantic section files under `sections/`.
-- [x] Formalization cited through Zenodo DOI `10.5281/zenodo.20767389`.
-- [x] No GitHub SHA or branch appears in the article or bibliography.
-- [x] No proof-development checkpoint, manuscript workstream, internal review, assurance, or workflow record appears in the article.
-- [x] No frozen development-checkpoint reference appears in the article.
-- [x] No Lean theorem/declaration inventory appears in the article.
-- [x] Formalization/code availability is one concise public-facing section.
-- [x] Formalization is not used as a substitute for load-bearing mathematical exposition.
-- [x] Repository-only ledgers and checklists are explicitly excluded from the public source package.
+- [x] Abstract shortened to a conventional theorem-and-method summary.
+- [x] Standard introduction added, with historical context, theorem, elementary reductions, and proof overview.
+- [x] Table of contents removed.
+- [x] Engineering-dossier diction removed from headings, transitions, and theorem names.
+- [x] Major/minor-arc, auxiliary-denominator, and completion terminology normalized.
+- [x] Lean-specific dummy-anchor/tuple section removed from the mathematical body.
+- [x] The formal tuple encoding is confined to one sentence in the unnumbered code-availability note and is identified as representational only.
+- [x] Historical context moved to the introduction; code availability and disclosure moved to unnumbered end matter.
+- [x] No load-bearing theorem, hypothesis, estimate, constant, parameter order, or proof implication was removed or weakened.
 
-## Mathematics and presentation
+## Public source hygiene
 
-- [x] Exact theorem, necessity, and semiprime criterion.
-- [x] PNT/Abel local law, common threshold, and inclusive endpoint.
-- [x] Finite Fourier identity and exact control construction.
-- [x] Cold-block, global-partition, mass, main/minor, reservoir, and terminal arguments.
-- [x] Finite strictly increasing tuple bridge.
-- [x] Internal “immutable companion”, “named residual”, and release-audit prose removed or rewritten as mathematical prose.
-- [x] Title page contains no internal candidate date/status label.
+- [x] Public source consists only of `main.tex`, `references.bib`, and eleven semantic files under `sections/`.
+- [x] Tiny wrapper/include files from REV2 were consolidated and removed.
+- [x] Unused packages, macros, and theorem environments were removed.
+- [x] PDF title and author metadata are set.
+- [x] BibTeX fields and notes are normalized without changing the canonical formalization DOI `10.5281/zenodo.20767389`.
+- [x] No GitHub SHA/branch, workstream, checkpoint, workflow, internal review, Lean declaration inventory, or former DOI appears in the public source.
+- [x] Repository-only control records are excluded from the public package.
 
-## Sources
+## Mathematics and sources
 
-- [x] Soundararajan, Ingham, and Hadamard for PNT context.
-- [x] Mertens retained as historical background.
-- [x] Rosser-Schoenfeld cited as the analytic source used by the archived formalization.
-- [x] Formal Conjectures and Erdős-Graham context cited.
-- [x] Formalization DOI corrected to `10.5281/zenodo.20767389`.
+- [x] Exact theorem, necessity, semiprime criterion, and avoiding reductions retained.
+- [x] PNT/Abel local law, common threshold, and inclusive endpoint retained.
+- [x] Finite Fourier identity and all control, level-set, tail, mass, major/minor, auxiliary-prime, and completion estimates retained.
+- [x] All constants `21/20`, `1000001`, `501`, `2004`, and the dependency order remain explicit.
+- [x] All eight bibliography entries are cited exactly once or more; no citation key is missing and no entry is unused.
 - [ ] Human publisher-scan comparison of Rosser-Schoenfeld pp. 69-70.
 - [ ] Final source-package and bibliography audit after Owner review.
 
 ## Validation
 
-The final `[RETURN E306-P1-REV2]` records fresh source blob hashes, TeX/BibTeX passes, citation/reference checks, PDF hash and page count, rendered-page inspection, and base-to-tip path/history audit.
+The final `[RETURN E306-P1-REV3]` records the exact source blob manifest, clean TeX/BibTeX passes, citation/reference audit, PDF hash/page count, 200-dpi full-page visual inspection, and exact base-to-tip path/history audit.
 
 ## Remaining author and submission decisions
 
 - [ ] Final author-name form, affiliation, public email, and ORCID display.
 - [ ] Final acknowledgement and AI-assistance wording.
-- [ ] arXiv categories, comments, licence, and source-package metadata.
+- [ ] arXiv categories, comments, licence, and package metadata.
 - [ ] Portfolio Owner approval.
 - [ ] E306-DIR submission authorization.
 

@@ -1,4 +1,4 @@
-\section{Cold blocks and the corrected boundary theorem}\label{sec:cold}
+\section{Low-energy structure in a dyadic block}\label{sec:cold}
 
 For a block $P\subseteq[X,2X]$, write $N=|P|$ and
 \[
@@ -13,9 +13,9 @@ Fix $0<\rho\le1/4$.  An integer $m$ is a dominant label if
  \qquad
  \#\{p\in P:a_p\equiv m\pmod p\}\ge(1-\rho)N.
 \end{equation}
-Two dominant labels are equal: their agreement classes intersect in at least
-$N/2$ primes, hence contain distinct $p,q$; then $pq$ divides the difference,
-whose absolute value is at most $X^2<pq$.
+Two dominant labels must be equal: their agreement classes intersect in at
+least $N/2$ primes and hence contain distinct $p,q$; then $pq$ divides the
+difference of the labels, whose absolute value is less than $pq$.
 
 \begin{proposition}[Nondominant forcing]\label{prop:nondominant}
 For every $0<\rho\le1/4$, there are $c_2>0$ and $X_0$ such that, whenever
@@ -26,15 +26,13 @@ $N\ge X/(2\log X)$, and $Q_P(a)\le R$, the absence of a dominant label implies
 \end{equation}
 \end{proposition}
 \begin{proof}
-We give the covering and dispersion implication explicitly; the remaining
-steps are elementary rearrangements of the displayed inequalities.
 Choose
 \[
  B=\sqrt{\frac{256R}{\rho}}\frac{X^2}{N},
  \qquad u=\frac BX.
 \]
 A pair with $|H_{pq}|>B$ contributes more than $B^2/(16X^4)$, so there are at
-most $16RX^4/B^2$ such unordered pairs.  Double counting chooses a base prime
+most $16RX^4/B^2$ such unordered pairs.  Double counting yields a base prime
 $p_0$ with at most $\rho N/8$ high-representative neighbours.  For every other
 nonexceptional $q$, set $\ell(q)=H_{p_0q}$.  Then
 $a_q\equiv\ell(q)\pmod q$, $|\ell(q)|\le B$, and all $\ell(q)$ have the same
@@ -43,8 +41,8 @@ residue modulo $p_0$; hence there are at most $2u+2$ possible labels.
 Call a label class substantial if it has at least
 $s_0=32(u+1)+8$ elements.  No class has $(1-\rho)N$ elements.  Either the
 substantial classes outside a largest one contain at least $\rho N/2$
-elements, or the tiny classes contain more than $\rho N/4$ elements.  In the
-first case, the cross-label dispersion bound
+elements, or the remaining classes contain more than $\rho N/4$ elements.  In
+the first case, the cross-label dispersion bound
 \[
  \sum_{p\in C_n}\sum_{q\in C_{n'}}
  \left(\frac{H_{pq}}{pq}\right)^2
@@ -56,13 +54,13 @@ and power mean give
  \frac{\rho^2\sqrt{(1/8192)\rho}}{10^6}
  \frac{X}{\log^3X}.
 \]
-In the second case, the number and size of the tiny classes give
+In the second case, the number and size of the small classes give
 \[
  R\ge\frac{\rho^2}{4718592}\frac{X}{\log^3X}.
 \]
 Taking $c_2$ to be the smaller displayed constant proves the claim.  The
-remaining requirements $B\le X^2/4$ and the finite integer inequalities are
-simultaneously secured by increasing $X_0$.
+remaining requirements $B\le X^2/4$ and the finite integer inequalities hold
+after increasing $X_0$.
 \end{proof}
 
 Call block $k$ \emph{hot} if
@@ -70,7 +68,7 @@ Call block $k$ \emph{hot} if
  Q_k(a)\ge R_w(c_2,k):=
  c_2\frac{2^k}{\log^3(2^k)},
 \end{equation}
-and cold otherwise.  Proposition~\ref{prop:nondominant} says that every
+and \emph{cold} otherwise.  Proposition~\ref{prop:nondominant} shows that every
 sufficiently large cold block has a unique dominant label.
 
 Let $C_m$ be the dominant agreement class and $E=P\setminus C_m$.  If
@@ -89,8 +87,8 @@ The sums for distinct exceptional $q$ are disjoint, so
 At $\rho=1/4$, density turns this into
 $|E|\le(2^{20}/3)R\log^3X/X$.  By fixing $c_2$ sufficiently small before the
 bottom scale, every cold block has at most a prescribed exception budget
-$e_0$; the low-energy localization used later takes $c_2\le2^{-21}$ and then
-has no exceptions.
+$e_0$; the localization argument below takes $c_2\le2^{-21}$ and then has no
+exceptions.
 
 The dominant in-class pairs also imply
 \begin{equation}\label{eq:label-bound}
@@ -105,7 +103,7 @@ Consequently, after one common scale threshold,
 \end{equation}
 with the analogous inequality in the next block.
 
-\begin{proposition}[Exception-aware adjacent-label penalty]
+\begin{proposition}[Adjacent-label energy bound]
 \label{prop:boundary-penalty}
 Let consecutive cold blocks $P_k,P_{k+1}$ have dominant labels $m\ne m'$ and
 exception sets $E_k,E_{k+1}$ of cardinality at most $e_0$.  Assume the residue
@@ -138,9 +136,9 @@ larger than $|d|$ while dividing it.  Summing over the remaining upper primes
 and using the exception bounds gives \eqref{eq:Pi}.
 \end{proof}
 
-The hypotheses in Proposition~\ref{prop:boundary-penalty} are indispensable.
-An unqualified assertion that different integer labels always force boundary
-energy is false: one label may be the product of all lower-block primes while
-the other is zero, so the represented residues can coincide.  The construction
-uses only the corrected, exception-aware proposition above.
-
+The hypotheses of Proposition~\ref{prop:boundary-penalty} cannot be omitted.
+Different integer labels need not force boundary energy without the size and
+exception assumptions: for example, one label may be the product of all
+lower-block primes while the other is zero, even though the represented
+residues coincide.  We shall use only the proposition in the form stated
+above.

@@ -1,23 +1,24 @@
-\section{Exact dyadic control geometry}\label{sec:control}
+\section{The dyadic control graph}\label{sec:control}
 
-Fix squarefree $b\ge3$ and finite $T$.  We shall choose $k_0$ last.  For the concrete construction take $K=3k_0$ and use the full dyadic
-blocks
+Fix a squarefree integer $b\ge3$ and a finite set $T$.  The bottom scale $k_0$
+will be chosen at the end.  Put $K=3k_0$ and use the full dyadic blocks
 \[
  P_k=\Pk_k,
  \qquad
  |P_k|\ge\frac{2^k}{2\log(2^k)}
  \quad(k_0\le k\le3k_0).
 \]
-The control estimates below remain valid for arbitrary subsets satisfying the
-same lower density, but using the full blocks ensures that the mass-pool primes
-from $k_0,\ldots,3k_0$ are contained in the period support.  The half-open dyadic windows are disjoint, and
+The estimates below remain valid for arbitrary subsets satisfying the same
+lower density.  Using the full blocks also ensures that all primes in the mass
+construction belong to the period support.  The half-open dyadic intervals are
+disjoint, and
 \[
  \Bset=\bigcup_{k=k_0}^{K}P_k.
 \]
-All block primes are chosen outside the prime support of $b$ and above every
+We take the block primes outside the prime support of $b$ and larger than every
 element of $T$.
 
-The control graph is exactly
+Define the control graph by
 \begin{equation}\label{eq:control-graph}
  \Cgraph=
  \bigcup_{k=k_0}^{K}
@@ -25,16 +26,15 @@ The control graph is exactly
  \;\cup\;
  \bigcup_{k=k_0}^{K-1}(P_k\times P_{k+1}).
 \end{equation}
-Thus it contains every internal unordered pair and every adjacent complete
-bipartite pair.  The two indexed pieces are disjoint.  Unique factorization
-shows that the product map $(p,q)\mapsto pq$ is injective on this family; in
-particular
+Thus the graph contains every unordered pair within a block and every pair
+between adjacent blocks.  The two families are disjoint.  Unique factorization
+shows that $(p,q)\mapsto pq$ is injective on this family; hence
 \[
  \Ectrl=\{pq:(p,q)\in\Cgraph\}
 \]
 is a set of distinct squarefree semiprimes.
 
-A global assignment is
+A global assignment is a vector
 \[
  a=(a_p)_{p\in\Bset},
  \qquad a_p\in\Z/p\Z.
@@ -47,8 +47,8 @@ For distinct block primes $p,q$, let $H_{pq}(a)$ be the unique integer with
  \qquad
  -\frac{pq}{2}<H_{pq}(a)\le\frac{pq}{2}.
 \end{equation}
-This is the ordinary representative in $[0,pq)$, shifted by $-pq$ precisely
-when it exceeds $pq/2$.  Define
+This is the ordinary representative in $[0,pq)$, shifted by $-pq$ when it
+exceeds $pq/2$.  Define
 \begin{equation}\label{eq:Qctrl}
  \Qctrl(a)=\sum_{(p,q)\in\Cgraph}
  \left(\frac{H_{pq}(a)}{pq}\right)^2,
@@ -63,8 +63,7 @@ centered residue of $h$ modulo $pq$, so
  \Qctrl(a(h))\le\QE(h):=\sum_{e\in E}\normdist{h/e}^2.
 \end{equation}
 
-We next prove both quantitative control estimates.  The load estimate must
-account for the number of edges; denominator growth alone is insufficient.
+We now establish the reciprocal-load and deviation estimates used later.
 
 \begin{lemma}[Dyadic primorial bound]\label{lem:primorial}
 Let $P_r$ be the product of all primes at most $2^r$.  Then
@@ -78,7 +77,7 @@ hypothesis bounds the product of primes at most $m$ by $4^m=2^n$.
 Multiplication gives $P_r\le4^n$.
 \end{proof}
 
-\begin{lemma}[One-block reciprocal upper bound]\label{lem:block-upper}
+\begin{lemma}[Reciprocal sum in one block]\label{lem:block-upper}
 For every subset $P_k$ of the primes in $[2^k,2^{k+1})$, $k\ge1$,
 \begin{equation}\label{eq:block-recip-upper}
  S_k:=\sum_{p\in P_k}\frac1p\le\frac4k.
@@ -115,7 +114,7 @@ Internal edges in block $k$ have load at most
  \sum_{p<q\in P_k}\frac1{pq}
  \le S_k^2\le\frac{16}{k^2},
 \]
-and the adjacent bipartite load is exactly
+and the adjacent bipartite load is
 \[
  \sum_{p\in P_k,q\in P_{k+1}}\frac1{pq}
  =S_kS_{k+1}\le\frac{16}{k(k+1)}\le\frac{16}{k^2}.
@@ -147,4 +146,3 @@ For $C\ge1$, define the main assignment set
  \left\{a:\exists m\in\Z,\ |m|\le C/\sctrl,
  \ a_p\equiv m\pmod p\ \text{for all }p\in\Bset\right\}.
 \end{equation}
-

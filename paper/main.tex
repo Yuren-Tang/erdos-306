@@ -3,41 +3,38 @@
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 \usepackage[margin=1.02in]{geometry}
-\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{amsmath,amssymb,amsthm}
 \usepackage{microtype}
 \usepackage[hidelinks]{hyperref}
+\hypersetup{
+  pdftitle={Distinct Semiprime Egyptian Fractions for Rationals with Squarefree Denominator},
+  pdfauthor={Yuren Tang}
+}
 \usepackage{enumitem}
-\usepackage{booktabs}
-\usepackage{tabularx}
-\usepackage{xcolor}
 \allowdisplaybreaks
 \emergencystretch=2em
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{corollary}[theorem]{Corollary}
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{remark}[theorem]{Remark}
 
 \DeclareMathOperator{\lcmop}{lcm}
-\DeclareMathOperator{\supp}{supp}
 \newcommand{\N}{\mathbb N}
-\newcommand{\Q}{\mathbb Q}
 \newcommand{\Z}{\mathbb Z}
 \newcommand{\Pk}{\mathcal P}
 \newcommand{\Bset}{\mathcal B}
 \newcommand{\Cgraph}{\mathcal C}
 \newcommand{\Ectrl}{E_{\mathrm{ctrl}}}
-\newcommand{\Egad}{E_{\mathrm{gad}}}
+\newcommand{\Eaux}{E_{\mathrm{aux}}}
 \newcommand{\Emass}{E_{\mathrm{mass}}}
 \newcommand{\Qctrl}{Q_{\mathrm{ctrl}}}
 \newcommand{\QE}{Q_E}
 \newcommand{\sctrl}{\sigma_{\mathrm{ctrl}}}
 \newcommand{\sE}{\sigma_E}
 \newcommand{\normdist}[1]{\left\lVert #1\right\rVert_{\mathbb R/\mathbb Z}}
-\newcommand{\status}[1]{\textsf{#1}}
 
 \title{Distinct Semiprime Egyptian Fractions for Rationals with Squarefree Denominator}
 \author{Yuren Tang}
@@ -47,46 +44,32 @@
 \maketitle
 
 \begin{abstract}
-We prove that a positive rational number is a finite sum of reciprocals of
-\emph{distinct squarefree semiprimes} if and only if its reduced denominator is
-squarefree.  The paper proof uses the prime number theorem as its sole
-load-bearing external analytic theorem.  Abel summation gives the local law
-\[
-  \sum_{2^k\le p<2^{k+1}}\frac1p
-  =\frac1k+o\!\left(\frac1k\right),
-\]
-from which one common eventual threshold supplies both the required number of
-primes in every dyadic block and a reciprocal-prime mass of at least $21/20$ on
-the inclusive block window $k_0,\ldots,3k_0$.
-
-The remaining proof is finite.  An exact control graph on dyadic prime blocks
-forces low-energy residue assignments into a common integer label.  A
-four-layer encoding gives a global level-set estimate; localization and a
-Gaussian tail then control all assignments outside a short main-label window.
-A separate pair pool supplies reciprocal mass, while denominator-sensitive
-reservoir edges damp the Fourier-minor frequencies that are invisible to the
-block residues.  We give the exception-aware adjacent-label theorem, the
-wrapped-label argument, the exact CRT fibre count, the main-arc logarithm
-branch, the variance constant $501$, and the constant order
-$\eta\to C\to D_{\mathrm{mp}}\to G\to k_0$.
-
+We prove that a positive rational number can be written as a finite sum of
+reciprocals of distinct squarefree semiprimes if and only if its reduced
+denominator is squarefree.  The analytic input is the prime number theorem,
+which by Abel summation yields a uniform supply of primes and reciprocal-prime
+mass in a suitable range of dyadic intervals.  The rest of the proof is
+finite.  A graph on the dyadic prime blocks controls low-energy residue
+assignments, while a level-set estimate and a Gaussian tail bound the remaining
+assignments.  A separate family of semiprimes supplies the required reciprocal
+mass, and auxiliary denominators associated with the prime divisors of the
+given denominator suppress the remaining minor frequencies.  Finite Fourier
+inversion then produces an avoiding representation of the reciprocal of every
+squarefree denominator; elementary reductions give the result for all positive
+rationals.
 \end{abstract}
 
-\tableofcontents
-
 \input{sections/01-statement.tex}
-\input{sections/02-analytic-interface.tex}
+\input{sections/02-analytic-input.tex}
 \input{sections/03-finite-fourier.tex}
 \input{sections/04-dyadic-control.tex}
 \input{sections/05-cold-blocks.tex}
 \input{sections/06-global-level-sets.tex}
 \input{sections/07-reciprocal-mass.tex}
 \input{sections/08-main-arcs.tex}
-\input{sections/09-minor-lanes.tex}
-\input{sections/10-terminal-parameters.tex}
-\input{sections/11-finite-tuple.tex}
-\input{sections/12-formalization.tex}
-\input{sections/13-context-disclosure.tex}
+\input{sections/09-minor-arcs.tex}
+\input{sections/10-completion.tex}
+\input{sections/11-end-matter.tex}
 
 \bibliographystyle{alpha}
 \bibliography{references}

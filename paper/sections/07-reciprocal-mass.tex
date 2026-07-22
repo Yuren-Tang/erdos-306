@@ -1,3 +1,115 @@
-\input{sections/07a-pair-pool.tex}
-\input{sections/07b-mass-batch.tex}
-\input{sections/07c-variance.tex}
+\section{Reciprocal mass and variance}\label{sec:mass}
+
+Let
+\[
+ \Pk(k_0)=\bigcup_{k=k_0}^{3k_0}\Pk_k,
+ \qquad
+ S_1=\sum_{p\in\Pk(k_0)}\frac1p,
+ \qquad
+ S_2=\sum_{p\in\Pk(k_0)}\frac1{p^2}.
+\]
+By \eqref{eq:inclusive-window}, this is the prime interval
+$[2^{k_0},2^{3k_0+1})$.  Expanding $S_1^2$ gives
+\begin{equation}\label{eq:pair-pool}
+ \sum_{\substack{p,q\in\Pk(k_0)\\p<q}}\frac1{pq}
+ =\frac{S_1^2-S_2}{2}.
+\end{equation}
+The analytic mass estimate gives $S_1\ge21/20$, and
+\[
+ S_2\le\sum_{n\ge2^{k_0}}\frac1{n^2}
+ \le\frac1{2^{k_0}-1}.
+\]
+Thus, for $k_0\ge5$,
+\begin{equation}\label{eq:pool-half}
+ \sum_{p<q}\frac1{pq}\ge\frac12.
+\end{equation}
+The products are distinct squarefree semiprimes by unique factorization.
+
+Before selecting the mass family, fix the control denominators and the finite
+auxiliary family $\Eaux$ defined in Section~\ref{sec:minor}.  The number of
+auxiliary denominators is fixed before $k_0$, and each contains a prime from a
+high block, so their reciprocal sum tends to zero.  Together with
+Proposition~\ref{prop:control-estimates}, this gives, for sufficiently large $k_0$,
+\begin{equation}\label{eq:base-load}
+ \Lambda_{\mathrm{base}}:=
+ \sum_{e\in\Ectrl\dot\cup\Eaux}\frac1e
+ <\frac{3}{2b}.
+\end{equation}
+Set $t=3/(2b)-\Lambda_{\mathrm{base}}>0$.
+
+From the pair family remove the products in the finite obstruction $T$, the
+control products, and the auxiliary products.  At large scale, every element
+of $T$ lies below the bottom pair scale and removes nothing.  The reciprocal
+sum lost through the other two exclusions is at most
+$\Lambda_{\mathrm{base}}$.  Hence
+\[
+ t+\operatorname{load}(\text{excluded pair terms})
+ \le\frac{3}{2b}\le\frac12,
+\]
+and \eqref{eq:pool-half} shows that the remaining pair family has reciprocal
+sum at least $t$.
+
+\begin{lemma}[Greedy reciprocal interval]\label{lem:greedy}
+Let $(x_i)$ be a finite family of positive reals of total at least $t$, and
+suppose $x_i<g$ for every $i$.  Some subfamily has sum in $[t,t+g)$.
+\end{lemma}
+\begin{proof}
+Choose a subfamily of minimal cardinality among those with sum at least $t$.
+Removing any selected term drops the sum below $t$, so the original sum is
+less than $t+x_i<t+g$.
+\end{proof}
+
+Apply Lemma~\ref{lem:greedy} with $x_e=1/e$, $g=3/(2b)$, and target $t$.
+The bottom pair scale ensures that every $1/e<g$.  We obtain a set
+$\Emass$ such that, for
+\[
+ E=\Ectrl\dot\cup\Eaux\dot\cup\Emass,
+ \qquad
+ \Lambda=\sum_{e\in E}\frac1e,
+\]
+\begin{equation}\label{eq:load-window}
+ \frac{3}{2b}\le\Lambda<\frac3b.
+\end{equation}
+Every denominator is a distinct squarefree semiprime, avoids $T$, and divides
+\begin{equation}\label{eq:period}
+ L=b\prod_{p\in\Bset}p.
+\end{equation}
+Define the common weight
+\begin{equation}\label{eq:theta}
+ \theta=\frac{1/b}{\Lambda}.
+\end{equation}
+Then
+\begin{equation}\label{eq:theta-window}
+ \frac13<\theta\le\frac23,
+ \qquad
+ \sum_{e\in E}\frac\theta e=\frac1b,
+ \qquad
+ \Lambda<1.
+\end{equation}
+The middle identity cancels the linear term on the major arcs, while the last
+inequality gives \eqref{eq:no-wrap}.
+
+Put
+\begin{equation}\label{eq:sigmaE}
+ \sE^2=\sum_{e\in E}\frac{\theta(1-\theta)}{e^2}.
+\end{equation}
+Since $2/9\le\theta(1-\theta)\le1/4$ and $\Ectrl\subseteq E$,
+\begin{equation}\label{eq:variance-lower}
+ \sE\ge\sqrt{\frac29}\,\sctrl.
+\end{equation}
+For the upper bound, decompose the inverse-square sum into the control, pair,
+and auxiliary components.  Lemma~\ref{lem:block-upper} gives a convergent
+dyadic bound for the reciprocal-square sum over the primes; squaring it bounds
+the pair component.  The finitely many auxiliary denominators gain a factor
+$2^{-2k_0}$ from their high-block prime.  Comparing both errors with
+\eqref{eq:sctrl-lower}, after all finite cardinalities have been fixed, gives
+\begin{equation}\label{eq:inverse-square-constant}
+ \sum_{e\in E}\frac1{e^2}
+ \le1000001\,\sctrl^2.
+\end{equation}
+A direct summation of the resulting geometric tails, after one further
+increase of the bottom scale, gives the stated constant.  Therefore
+\begin{equation}\label{eq:variance-comparison}
+ \sqrt{\frac29}\,\sctrl
+ \le\sE\le501\,\sctrl.
+\end{equation}

@@ -1,4 +1,4 @@
-\section{The analytic interface and its PNT provider}\label{sec:analytic}
+\section{Analytic input from the prime number theorem}\label{sec:analytic}
 
 For $k\ge0$, put
 \[
@@ -6,9 +6,10 @@ For $k\ge0$, put
  \qquad
  A_k=\sum_{p\in\Pk_k}\frac1p.
 \]
+We shall use the following pair of estimates at one common threshold.
 
-\begin{definition}[Construction-facing analytic inputs]\label{def:AI}
-The property $\mathbf{AI}$ holds if there is one integer $K_{\mathrm{AI}}$ such
+\begin{definition}[Dyadic prime estimates]\label{def:AI}
+The property $\mathbf{AI}$ holds if there is an integer $K_{\mathrm{AI}}$ such
 that, for every $k_0\ge K_{\mathrm{AI}}$,
 \begin{enumerate}[label=(\alph*)]
 \item for every $k_0\le k\le3k_0$,
@@ -28,19 +29,21 @@ The upper block index is inclusive, and therefore
 \end{definition}
 
 The common threshold and the endpoint identity in
-\eqref{eq:inclusive-window} are used at the first construction scale.  They
-prevent an implicit choice of one scale for density and another for mass.
+\eqref{eq:inclusive-window} will be used when the construction scale is chosen.
+They ensure that the density and mass estimates hold on the same family of
+blocks.
 
-Let $\pi(x)$ count primes at most $x$.  We use PNT in the form
+Let $\pi(x)$ count primes at most $x$.  We use the prime number theorem in the
+form
 \begin{equation}\label{eq:PNT}
  \pi(x)\sim\frac{x}{\log x}\qquad(x\to\infty).
 \end{equation}
 A modern proof may be found in Soundararajan \cite{Soundararajan2006}; Ingham,
-Theorem~23, is a standard monograph locator \cite{Ingham1990}, and Hadamard's
+Theorem~23, is a standard monograph reference \cite{Ingham1990}, and Hadamard's
 paper is cited for historical provenance \cite{Hadamard1896}.
 
 \begin{proposition}[Local reciprocal-prime law]\label{prop:local-law}
-PNT implies
+The prime number theorem implies
 \begin{equation}\label{eq:local-x}
  \sum_{x\le p<2x}\frac1p
  =\frac{\log2}{\log x}
@@ -92,8 +95,8 @@ the dyadic endpoint conventions agree exactly.  Since
 $\log(2^k)=k\log2$, equation \eqref{eq:local-k} follows.
 \end{proof}
 
-\begin{proposition}[One common eventual threshold]\label{prop:PNT-AI}
-The local law implies $\mathbf{AI}$.
+\begin{proposition}[A common dyadic threshold]\label{prop:PNT-AI}
+The local reciprocal-prime law implies $\mathbf{AI}$.
 \end{proposition}
 \begin{proof}
 Choose constants
@@ -128,14 +131,15 @@ Taking
  K_{\mathrm{AI}}=\max\{2,K_D,K_M\}
 \]
 proves both clauses simultaneously, with the exact interval
-\eqref{eq:inclusive-window}.  The provider fixes $K_{\mathrm{AI}}$ first; the
-construction later chooses $k_0$ above this and every other finite threshold.
+\eqref{eq:inclusive-window}.  The threshold $K_{\mathrm{AI}}$ is fixed first;
+the construction later chooses $k_0$ above it and every other finite
+threshold.
 \end{proof}
 
-\begin{remark}[Why ordinary Mertens is not the local premise]
+\begin{remark}
 The relation $\sum_{p\le x}1/p=\log\log x+B+o(1)$ is enough for a fixed power
 window, but subtracting it across one dyadic block leaves an uncontrolled
-$o(1)$ error while the main term is only $1/\log x$.  It is background rather
-than a second load-bearing theorem here; see Mertens \cite{Mertens1874}.
+$o(1)$ error while the main term is only $1/\log x$.  It is therefore
+background rather than a second analytic input here; see Mertens
+\cite{Mertens1874}.
 \end{remark}
-

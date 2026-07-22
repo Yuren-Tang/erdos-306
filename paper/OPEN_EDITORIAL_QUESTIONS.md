@@ -2,16 +2,18 @@
 
 > Repository-only control record. This file is excluded from the public arXiv source package.
 
-Task: `E306-P1-REV2`
+Task: `E306-P1-REV3`
 
-## Decisions fixed by the controlling correction
+## Decisions fixed by REV2 and REV3
 
 1. The public formalization citation is Zenodo DOI `10.5281/zenodo.20767389`.
-2. The article contains no GitHub SHA, branch, development checkpoint, manuscript-workstream, internal review, assurance, or workflow record.
-3. The article contains no Lean declaration inventory.
-4. Formalization is described in one concise code-availability section and does not replace mathematical proof.
-5. `PROOF_LEDGER.md`, `LEAN_CORRESPONDENCE.md`, `ARXIV_CHECKLIST.md`, and this file are repository-only control materials, not public ancillary or submission files.
-6. No new development DOI or paper-matching Lean release is a prerequisite for this manuscript revision.
+2. The public article contains no GitHub/development/review/workflow or Lean-declaration inventory.
+3. The abstract is concise and the first numbered section is a standard introduction and theorem statement.
+4. Engineering-dossier terminology has been normalized without removing mathematical content.
+5. The Lean-specific dummy-anchor construction is not part of the public mathematical body; only the finite-tuple representation boundary remains in code availability.
+6. Historical context appears in the introduction; formalization/code availability and disclosure are unnumbered end matter.
+7. The public TeX package contains only compilation-required files; repository control records are excluded.
+8. No new development DOI or paper-matching Lean release is a prerequisite for this manuscript revision.
 
 ## Title and author metadata
 
@@ -21,21 +23,17 @@ Current title:
 
 Decide the final title, author-name form, affiliation or independent-researcher wording, public contact email, and whether to display ORCID `0009-0006-0847-3330`.
 
-## Abstract and exposition
-
-Decide after substantive Owner review whether to shorten the present construction summary for a broader audience. Mathematical dependencies and public citation boundaries are already fixed.
-
 ## Acknowledgements and disclosure
 
-Current conservative disclosure:
+Current disclosure:
 
 > The project used AI-assisted mathematical exploration, formalization, source organization, and manuscript drafting. Responsibility for the mathematical claims, citations, and final text remains with the author.
 
-Decide final acknowledgement of the Erdős Problems database, Formal Conjectures, and any human reviewers without implying peer review, endorsement, or submission authorization.
+Decide the final acknowledgement of the Erdős Problems database, Formal Conjectures, and any human reviewers without implying peer review, endorsement, or submission authorization.
 
 ## arXiv metadata and package
 
-Decide primary and secondary categories, comments-field wording, licence, final page count, and source-package metadata. The public package should include only files required to compile the article; repository control records are excluded.
+Decide primary and secondary categories, comments-field wording, licence, final page-count statement, and source-package metadata.  The public package should include only `main.tex`, `references.bib`, and the eleven files named by `main.tex` under `sections/`.
 
 ## Remaining submission gates
 

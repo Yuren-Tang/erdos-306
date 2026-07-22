@@ -1,12 +1,11 @@
-\section{The exact Fourier-minor lanes}\label{sec:minor}
+\section{Minor arcs}\label{sec:minor}
 
-Use canonical representatives $0\le h<L$.  By $2N+1\le L$, the residues of
-the distinct integers $|m|\le N$ are distinct.  Let $S_M$ be this genuine
-Fourier-main set and put
+Use canonical representatives $0\le h<L$.  Since $2N+1\le L$, the residues of
+the integers $|m|\le N$ are distinct.  Let $S_M$ be this major-arc set and put
 \[
  S_m=(\Z/L\Z)\setminus S_M.
 \]
-For $h\in S_m$, define the two lanes
+We divide the minor arcs into two disjoint classes:
 \begin{equation}\label{eq:minor-lanes}
  S_{\mathrm{blk}}
  =S_m\cap\{h:a(h)\notin\mathfrak M(C)\},
@@ -14,8 +13,7 @@ For $h\in S_m$, define the two lanes
  S_{\mathrm{ext}}
  =S_m\cap\{h:a(h)\in\mathfrak M(C)\}.
 \end{equation}
-They are disjoint and cover exactly $S_m$; in particular, the block lane does
-not accidentally contain a genuine main frequency.
+Thus $S_{\mathrm{blk}}\dot\cup S_{\mathrm{ext}}=S_m$.
 
 Put
 \[
@@ -24,8 +22,7 @@ Put
 \]
 If two frequencies have the same block assignment, their difference is
 divisible by $P$.  In $[0,bP)$ a fixed residue modulo $P$ has at most the $b$
-representatives
-$r,r+P,\ldots,r+(b-1)P$.  Since
+representatives $r,r+P,\ldots,r+(b-1)P$.  Since
 $\Qctrl(a(h))\le\QE(h)$, Theorem~\ref{thm:global-partition} with $c=16/9$
 gives
 \begin{equation}\label{eq:block-minor-budget}
@@ -34,7 +31,7 @@ gives
  \frac{b\bigl(\eta+C_{\mathrm{tail}}
  e^{-(16/9)C^2/2}\bigr)}{\sctrl}.
 \end{equation}
-The factor $b$ is the exact fibre multiplicity.
+The factor $b$ is the fibre multiplicity.
 
 Now let $h\in S_{\mathrm{ext}}$.  There is a label $m=m(h)$ with
 \[
@@ -42,34 +39,33 @@ Now let $h\in S_{\mathrm{ext}}$.  There is a label $m=m(h)$ with
  \qquad h\equiv m\pmod p\quad(p\in\Bset).
 \]
 Because $h\notin S_M$, it is not congruent to $m$ modulo $L$.  If it agreed
-with $m$ modulo every prime divisor of squarefree $b$, then it would agree
-modulo $b$.  Together with the block congruences and coprimality of $b$ and
-$P$, CRT would give agreement modulo $L$, a contradiction.  Hence one may
-choose a prime
+with $m$ modulo every prime divisor of the squarefree integer $b$, then it
+would agree modulo $b$.  Together with the block congruences and the
+coprimality of $b$ and $P$, the Chinese remainder theorem would give agreement
+modulo $L$, a contradiction.  Hence there is a prime
 \begin{equation}\label{eq:mismatch-prime}
  r(h)\mid b,
  \qquad h\not\equiv m(h)\pmod{r(h)}.
 \end{equation}
-This is the second independent use of squarefreeness.
+This is the second use of the squarefreeness of $b$.
 
-After $N$ and the damping target are fixed, choose one common set $\mathcal G$
-of exactly $G$ primes in the designated high block, all outside the prime
-support of $b$, with
+Let $G$ be the integer chosen in Section~\ref{sec:completion}.  For sufficiently
+large $k_0$, select a set $\mathcal G$ of exactly $G$ primes in a high block,
+all outside the prime support of $b$, with
 \begin{equation}\label{eq:high-prime-separation}
  2N<s\qquad(s\in\mathcal G).
 \end{equation}
-The density clause of $\mathbf{AI}$ supplies this set at the final scale.
-Include in $E$ every gadget denominator
-\begin{equation}\label{eq:gadget-family}
+The density estimate in Definition~\ref{def:AI} supplies these primes for sufficiently large $k_0$.  Let $\Eaux$ contain every auxiliary denominator
+\begin{equation}\label{eq:aux-family}
  rs\qquad(r\mid b\text{ prime},\ s\in\mathcal G).
 \end{equation}
-Unique factorization recovers both primes, so all gadget products are distinct;
-they cannot collide with two-block-prime products because block primes lie
+Unique factorization recovers both primes, so these products are distinct; they
+cannot coincide with products of two block primes because the block primes lie
 outside the prime support of $b$.
 
 Fix $h\in S_{\mathrm{ext}}$, write $m=m(h)$ and $r=r(h)$, and take
 $s\in\mathcal G$.  Since $h\equiv m\pmod s$, write $h=m+js$.  The mismatch
-modulo $r$ says $j\not\equiv0\pmod r$.  Therefore
+modulo $r$ gives $j\not\equiv0\pmod r$.  Therefore
 \[
  \normdist{j/r}\ge\frac1r,
  \qquad
@@ -80,18 +76,16 @@ and the triangle inequality on $\mathbb R/\mathbb Z$ gives
  \normdist{h/(rs)}\ge\frac1{2r}.
 \]
 The one-factor identity used above now yields
-\begin{equation}\label{eq:gadget-factor}
+\begin{equation}\label{eq:aux-factor}
  \left|(1-\theta)+\theta e^{2\pi ih/(rs)}\right|
  \le\sqrt{1-\frac8{9r^2}}
- \le\sqrt{1-\frac8{9b^2}}=:\beta_b<1.
+ \le\sqrt{1-\frac8{9b^2}}=: \beta_b<1.
 \end{equation}
-The $G$ factors are distinct, so $|F(h)|\le\beta_b^G$.
-There are at most $2N+1$ labels and at most $b$ frequencies in each block
-fibre; hence
+The $G$ factors are distinct, so $|F(h)|\le\beta_b^G$.  There are at most
+$2N+1$ labels and at most $b$ frequencies in each block fibre; hence
 \begin{equation}\label{eq:extra-count}
  |S_{\mathrm{ext}}|\le b(2N+1),
  \qquad
  \sum_{h\in S_{\mathrm{ext}}}|F(h)|
  \le b(2N+1)\beta_b^G.
 \end{equation}
-
