@@ -17,160 +17,162 @@ with the two named Rosser--Schoenfeld assumptions.  The frozen
 
 `codex/pushlinter@e55ef359a8b98525f0bac6c7a510fcad94469bff`
 
-is read-only development context and supplies no released premise or proof
-status.  This research branch is not a proof-development, manuscript,
-formalization, review, release, DOI, or submission surface.
+is read-only context and supplies no released premise.  This branch is not a
+proof-development, manuscript, formalization, review, release, DOI, or
+submission surface.
 
 ## Current direction
 
 `E306-RL-FPCRT-02 — Global finite-prefix transfer and realization threshold`.
 
-Issue #39 remains `PREPARED-HOLD`; this standing-branch work does not activate
-the child probe.
+Issue #39 remains `PREPARED-HOLD`.
 
 ## Durable source chain
 
-### Conversation recovery
+### Recovery source
 
-Commit:
+- commit `b21c3e993739a6ee1f59f0c657f38bc38ae4756c`;
+- `research/finite-prefix-crt/CONVERSATION_RECOVERY_2026-07-22.md`.
 
-`b21c3e993739a6ee1f59f0c657f38bc38ae4756c`
+### Local suppression
 
-File:
+- commit `38f5b1a84a5d0eb9c5793eb277e65d39bd1c1253`;
+- `research/finite-prefix-crt/CRT_SUPPRESSION_THEOREMS_V1.md`;
+- status `ARGUMENT / MATERIAL THEOREM CANDIDATE / NOT INDEPENDENTLY REVIEWED`.
 
-`research/finite-prefix-crt/CONVERSATION_RECOVERY_2026-07-22.md`
+This closes arbitrary-shift cyclic suppression, the abundance and sparse-design
+regimes, sequential CRT elimination, and algebraic realization of sparse
+columns.
 
-Status: `COMPLETE / RECOVERY SOURCE`.
+### First global transfer
 
-### Local CRT suppression
+- commit `2e9b765baeba29746ed08f0526e98674228153bb`;
+- `research/finite-prefix-crt/GLOBAL_FINITE_PREFIX_TRANSFER_V1.md`;
+- status `SUPERSEDED CONDITIONAL FRONTIER`.
 
-Commit:
-
-`38f5b1a84a5d0eb9c5793eb277e65d39bd1c1253`
-
-File:
-
-`research/finite-prefix-crt/CRT_SUPPRESSION_THEOREMS_V1.md`
-
-Status:
-
-`ARGUMENT / MATERIAL THEOREM CANDIDATE / NOT INDEPENDENTLY REVIEWED`.
-
-Closed there:
-
-1. weighted arbitrary-shift cyclic-code suppression;
-2. distribution-free abundance suppression;
-3. sparse `O_A(log r)` cyclic designs;
-4. one simultaneous design matrix for all low primes;
-5. semiprime CRT interpretation and sequential low-coordinate elimination;
-6. algebraic realization of one sparse column modulo the low primorial.
-
-### First global finite-prefix transfer
-
-Commit:
-
-`2e9b765baeba29746ed08f0526e98674228153bb`
-
-File:
-
-`research/finite-prefix-crt/GLOBAL_FINITE_PREFIX_TRANSFER_V1.md`
-
-Status:
-
-`ARGUMENT / MATERIAL THEOREM CANDIDATE / SUPERSEDED CONDITIONAL FRONTIER`.
-
-Closed there:
+Retained valid content:
 
 1. exact fixed-prefix Fourier formula;
-2. congruence-to-exact alias transfer;
-3. multiplicity-sensitive cyclic energy;
-4. prefix-native top-block sensors via PNT and Brun--Titchmarsh;
-5. hyperbolic reciprocal capacity `pi^2/12`;
-6. balanced target tuning down to `O(log log z/log z)`;
-7. main-frequency lower bound;
-8. the least-prime-only sparse-route obstruction `L<2`.
+2. multiplicity-sensitive cyclic energy;
+3. top-block sensor realization by PNT and Brun--Titchmarsh;
+4. hyperbolic reciprocal capacity `pi^2/12`;
+5. balanced target tuning and major-frequency scale.
 
-That note isolated `HC-RATE(z)` as its remaining conditional input.
+Controlling correction:
 
-### Quantitative high-control closure and GFF transfer
+- commit `9f892b2bc8e213339d01e4e35a226f9d3e2c6fa6`;
+- `research/finite-prefix-crt/GLOBAL_FINITE_PREFIX_TRANSFER_V1_ERRATA.md`.
 
-Theorem-source commit before this state update:
+Withdrawn claims:
 
-`de6922f4eb481f7861c8d77a5544269c0b0f95c6`
+- alias removal does not require Hoeffding because total reciprocal load is `<1`;
+- the asserted sparse-route Linnik exponent obstruction `L<2` was an artefact of
+  that unnecessary alias argument and is withdrawn;
+- “induced by one integer label” is not a discriminating definition of a
+  diagonal CRT assignment.
 
-File:
+### Quantitative high-control and dyadic GFF transfer
 
-`research/finite-prefix-crt/HC_RATE_AND_DYADIC_GFF_TRANSFER_V1.md`
+Corrected theorem source:
 
-Status:
+- commit `45a2a64d0cb72e6ed09563499b4aa380c1d32b6f`;
+- `research/finite-prefix-crt/HC_RATE_AND_DYADIC_GFF_TRANSFER_V1.md`;
+- status `ARGUMENT / FULL THEOREM CANDIDATE / ADVERSARIALLY CORRECTED / NOT INDEPENDENTLY REVIEWED`.
 
-`ARGUMENT / FULL THEOREM CANDIDATE / NOT INDEPENDENTLY REVIEWED`.
+Controlling terminal-lane addendum:
 
-## Material conclusions of FPCRT-02
+- commit `58066649243e79c9e4ceff305707ea6018e46e65`;
+- `research/finite-prefix-crt/HC_RATE_DYADIC_GFF_AUDIT_ADDENDUM_01.md`;
+- status `ARGUMENT / CONTROLLING ADDENDUM / NOT INDEPENDENTLY REVIEWED`.
+
+## Current material conclusions
 
 ### 1. Quantitative Peierls extraction
 
-The accepted PDL level-set and localization architecture gives the explicit
-moving bound
+The accepted PDL level-set and localization architecture at
+
+`proof-development/e306-rigour-v1@cecd3c351302e49577d180ebf42ad7fa784508dc`
+
+gives the moving floor-sector rate
 
 ```text
-offdiag <= epsilon_k / sigma_ctrl,
+floor-sector <= epsilon_k / sigma_ctrl,
 
-epsilon_k <= C exp(A(2k+1) - c 2^k/(k+1)^3).
+epsilon_k <= C exp(A(2k+1)-c 2^k/(k+1)^3).
 ```
 
-Hence `epsilon_k=O_M(k^(-M))` for every fixed `M`.  The earlier condition
-`HC-RATE(z)` is therefore closed with a super-polynomial margin when
-`k asymp log z`.
+Thus `epsilon_k=O_M(k^(-M))` for every fixed `M`.  The earlier `HC-RATE`
+condition is closed with a super-polynomial margin.
 
-Exact consumed proof-development checkpoint:
+The exact localization split is:
 
-`proof-development/e306-rigour-v1@cecd3c351302e49577d180ebf42ad7fa784508dc`.
-
-This consumption changes no PDL or release status.
+1. high-energy floor sector;
+2. coherent-label sector with exact quadratic energy.
 
 ### 2. Complete dyadic prefixes
 
 For
 
 ```text
-Z_k = 2^(2k+1),
-N_k = pi(Z_k^-),
+Z_k=2^(2k+1),
+N_k=pi(Z_k^-),
 ```
 
-the primes below `Z_k` split exactly into low primes `<2^k` and complete high
-dyadic blocks `P_k,...,P_(2k)`.  A common top-block sensor reservoir suppresses
-all low CRT coordinates; the accepted high-control architecture suppresses the
-high off-diagonal assignments; the hyperbolic mass pool tunes every target in
+the prefix splits into low primes `<2^k` and complete high blocks
+`P_k,...,P_(2k)`.  Top-block sensors suppress every low CRT coordinate, the
+accepted high-control system handles the high floor sector, and the hyperbolic
+mass pool tunes every target in
 
 ```text
 [C log(k)/k, 1/5].
 ```
 
-All selected prime factors remain inside the prefix and every selected
-semiprime denominator is at least `Z_k/2`, so the Fourier congruence converts to
-an exact subset sum by an exponentially strong alias estimate.
+The total reciprocal load is `<0.41<1`, so a Fourier congruence modulo the
+primorial is automatically an exact equality; no alias estimate is needed.
 
-Thus
+### 3. Coherent-label terminal partition
+
+Take a growing high-main cutoff
 
 ```text
-gamma_(N_k) = O(log(k)/k).
+C_k=D sqrt(log k).
 ```
 
-### 3. All-prefix transfer
+For every coherent label `|m|<=C_k/sigma_ctrl`, the correct low residue
+`m mod r` remains the unique decoded point because its sensor energy is only
+`O(k log k/r^2)`, while the cyclic code distance is `Omega(Z_k/log Z_k)`.
+The reconstructed global frequency is `h=m`, and the full Bernoulli product has
+variance `V` throughout this range.
 
-Li's exact floor recurrence is
+The terminal split is therefore:
+
+1. positive labels `|m|<=M_0/sqrt(V)`;
+2. coherent intermediate Gaussian tail;
+3. coherent outer tail `exp(-c C_k^2)/sigma_ctrl`;
+4. floor sector and low siblings.
+
+Each negative lane is `o(V^(-1/2))` after fixed choices of `M_0,D`.
+
+### 4. Gap-free floor
+
+The dyadic theorem candidate gives
 
 ```text
-gamma_N <= gamma_(N-1) + w_N/p_N,
+gamma_(N_k)=O(log k/k).
 ```
 
-under a side condition already guaranteed by his unconditional bound
-`gamma_N<=0.181...`.  His estimate `w_N<=4/sqrt(p_N)` makes
-`sum_N w_N/p_N` convergent.  Iteration from the complete dyadic subsequence gives
+Li's recurrence
 
 ```text
-gamma_N = O(log log p_N / log p_N) -> 0.
+gamma_N <= gamma_(N-1)+w_N/p_N
+```
+
+has a summable tail because eventually `w_N<=4/sqrt(p_N)`.  His unconditional
+`gamma_N<=0.181...` supplies the recurrence side condition and overlaps the
+new low interval.  Hence
+
+```text
+gamma_N=O(log log p_N/log p_N) -> 0.
 ```
 
 This is a full argument candidate for Li's Gap-Free Floor conjecture and, via
@@ -179,36 +181,31 @@ Li's Proposition 9.2, for the complete positive-rational squarefree-denominator
 
 ## Current classification
 
-- conversation recovery: `COMPLETE`;
 - local cyclic suppression: `PROVED-ARGUMENT`;
-- top-block prefix realization: `PROVED-ARGUMENT / EXTERNAL PNT+BRUN–TITCHMARSH`;
-- hyperbolic reciprocal capacity: `PROVED-ARGUMENT / EXTERNAL PNT+MERTENS`;
-- exact Fourier and alias transfer: `PROVED-ARGUMENT`;
-- quantitative high-control rate: `PROVED-ARGUMENT / CONSUMES ACCEPTED PDL CHECKPOINT`;
-- complete dyadic-prefix coverage: `FULL THEOREM CANDIDATE`;
-- Li Gap-Free Floor conjecture: `FULL THEOREM CANDIDATE / NOT INDEPENDENTLY REVIEWED`;
-- full rational squarefree-denominator `omega=2` consequence: `CONDITIONAL ON THE CANDIDATE CHAIN / NOT YET PROJECT-ACCEPTED`;
-- sparse least-prime-only route: `METHOD-OBSTRUCTED AT CURRENT EXPONENT SCALE`;
-- released Erdős 306 theorem status: unchanged.
+- top-block realization: `PROVED-ARGUMENT / EXTERNAL PNT+BRUN--TITCHMARSH`;
+- hyperbolic capacity: `PROVED-ARGUMENT / EXTERNAL PNT+MERTENS`;
+- no-wrap Fourier transfer: `PROVED-ARGUMENT`;
+- moving high-control rate: `PROVED-ARGUMENT / CONSUMES ACCEPTED PDL CHECKPOINT`;
+- coherent-label terminal partition: `PROVED-ARGUMENT`;
+- dyadic finite-prefix coverage: `FULL THEOREM CANDIDATE`;
+- Li GFF: `FULL THEOREM CANDIDATE / NOT INDEPENDENTLY REVIEWED`;
+- full rational `omega=2` consequence: `CANDIDATE CONSEQUENCE / NOT PROJECT-ACCEPTED`;
+- sparse prescribed-residue route: `SECONDARY OPEN DESIGN QUESTION / NO L<2 OBSTRUCTION CLAIM`;
+- released Erdős 306 status: unchanged.
 
-## No visible new-mathematics gap
+## Next routine branch work
 
-No further exact missing mathematical implication is currently visible in the
-preferred route.  The next work is an adversarial research-level stress test,
-not routine manuscript or proof-development work:
+No visible new-mathematics implication remains in the preferred route.  Continue
+an adversarial stress test:
 
-1. audit the quantitative extraction from level sets to the moving
-   `epsilon_k` rate;
-2. audit every prime endpoint and incidence condition in the complete dyadic
-   prefix;
-3. reconstruct the diagonal-frequency partition with one fixed constant
-   hierarchy;
-4. verify the exact overlap with Li's central band and every recurrence side
-   condition;
-5. search for a counterexample to the claimed all-prefix rate or an overlooked
-   unused-prime / alias lane;
-6. only if the chain survives, extract the independently valuable general
-   arithmetic product-code / quantitative Peierls theorem.
+1. audit the moving-rate quantifier order against the exact PDL theorem;
+2. audit coherent-label injection and the growing `C_k` range;
+3. audit every dyadic endpoint, edge-disjointness, and prime-incidence condition;
+4. audit the exact central-band overlap and recurrence side conditions;
+5. search for unused-prime, double-assignment, wrapping, or missing-frequency
+   counterexamples;
+6. if the chain survives, extract the general quantitative Peierls/product-code
+   theorem as an independently valuable result.
 
-Only a material theorem, counterexample/obstruction, or smallest exact revised
+Only a material theorem, correction/counterexample, or smallest exact revised
 gap returns to issue #9.
