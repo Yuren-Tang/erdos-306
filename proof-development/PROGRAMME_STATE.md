@@ -4,9 +4,11 @@
 **Standing issue:** `Yuren-Tang/research-workbench#38`  
 **Formal authority:** `v0.0.3@4582185de1e0e27416e9362e0cc7943c3d2fb4fe`  
 **Initial human-proof input:** `paper/arxiv-v1-recovery-v1@f04a7ac7064877920890b282c246ffe6867f58bb`  
+**Current read-only manuscript input:** `paper/arxiv-v1-revision-v3@94615a5c860be9ce04c2be0153759a4e66fc25ab`  
 **Owned branch:** `proof-development/e306-rigour-v1`, created from the exact formal authority  
 **Review B source:** `review/e306-p1-construction-v1@0b9c79d8727152d5e2511b39a48bbea0d437487e`  
-**Updated:** 2026-07-20 (Europe/Berlin)
+**E306-PD-MECH-01 ACK:** `research-workbench#38` comment `5048782139`  
+**Updated:** 2026-07-22 (Europe/Berlin)
 
 ## Trust-boundary rule
 
@@ -18,9 +20,10 @@ formal assumptions are exactly
 
 The PNT-first human proof is a separate backend. The frozen
 `codex/pushlinter@e55ef359...` checkpoint may supply architecture and declaration
-locators, but it is not released theorem authority. The fixed manuscript and
-independent review branch remain read-only inputs. No status is transferred
-silently among these layers.
+locators, but it is not released theorem authority. Every manuscript and
+independent-review branch remains a read-only input to this programme. No proof
+status, analytic premise, or authority is transferred silently among these
+layers.
 
 ## Normalized queue
 
@@ -41,28 +44,53 @@ silently among these layers.
 | `E306-PD-C3` | `BLOCKED-SOURCE` | Human-visible Rosser–Schoenfeld pp. 69–70 comparison unavailable. |
 | `E306-PD-C4` | `ACTIVE / NON-BLOCKING` | Release/refactor/manuscript architecture comparison without authority transfer. |
 | `E306-PD-R2` | `RECONCILED` | Review B RB-01–RB-20 dispositioned in `REVIEW_B_RECONCILIATION.md`. |
+| `E306-PD-MECH-01` | `READY-FOR-MANUSCRIPT-CONSUMER` | Public constants classified and replaced by a complete symbolic dependency architecture for REV4. |
 | `E306-PD-B4–B5` | `QUEUED` | Alternate/future analytic providers. |
 
 ## Material checkpoints
 
-### Manuscript-revision checkpoint
+### Mechanism-first manuscript-consumer checkpoint
+
+The controlling consumer files are:
+
+- `proof-development/E306-PD-MECH-01-CONSTANT-PURIFICATION.md`;
+- `proof-development/E306-PD-MECH-01-MANUSCRIPT-ARCHITECTURE.md`.
+
+Together they are `READY-FOR-MANUSCRIPT-CONSUMER`. They audit every public
+numerical choice in the fixed REV3 input and distinguish:
+
+1. structural boundaries and exact fibre factors;
+2. chosen normalizations;
+3. safety margins;
+4. released formal finite certificates.
+
+The symbolic architecture replaces the hard-coded terminal quarter allocation
+by positive shares `q_blk,q_gauss,q_sib` with sum below `1`; uses symbolic
+`C_2`, `K_sigma`, Taylor, main-term and tail constants; derives the Bernoulli
+normalization and Fourier damping; and chooses the final bottom scale as one
+finite maximum after all other data.
+
+No new mathematical implication was needed. There is no `BLOCKED-FRONTIER`.
+
+### Prior manuscript-revision checkpoint
 
 `proof-development/ARTICLE_CORE_CHECKPOINT.md` and
-`proof-development/REVIEW_B_RECONCILIATION.md` are
-`READY-FOR-MANUSCRIPT-REVISION`.
+`proof-development/REVIEW_B_RECONCILIATION.md` remain the complete proof and
+Review B repair sources. They are now supplemented, not superseded, by the
+mechanism-first packet.
 
 Review B found no material mathematical gap, unrecorded downstream theorem,
 circular parameter choice, or material theorem mismatch. Its bounded findings
-are reconciled as follows:
+remain reconciled as follows:
 
 - `RB-01`–`RB-17`: absorbed into exact PDL proof sources;
 - `RB-18`: manuscript ledger synchronization after the actual rewrite;
 - `RB-19`: separately authorized Lean-comment cleanup only;
 - `RB-20`: evidence limitation recorded, with no theorem obligation.
 
-The fixed manuscript candidate remains unrevised and retains Review B's
-`BOUNDED MATHEMATICAL REVISION REQUIRED` classification until a manuscript
-worker consumes the checkpoint and returns a new exact candidate.
+The fixed REV3 manuscript input remains read-only and is not submission-ready.
+The next manuscript worker must consume both the reconciliation packet and the
+new symbolic architecture.
 
 ### Analytic interface
 
@@ -84,11 +112,18 @@ The stale G5/G7 and old analytic-input comments in released Lean files are
 The human symbol-by-symbol RS publisher-scan comparison remains
 `BLOCKED-SOURCE`; neither item reopens the downstream mathematics.
 
+The `E306-PD-MECH-01` commits modify only `proof-development/` files. They do not
+modify `paper/`, Lean sources, releases, workflows, tags, DOI records, review
+branches, or other roles' branches.
+
 ## Current active frontier
 
-The immediate consumer is manuscript revision from the exact Review B
-reconciliation checkpoint. The persistent PDL role continues independently;
-its non-blocking mathematical frontier remains `E306-PD-C4`, followed by future
+The immediate consumer is the prepared REV4 manuscript worker, which should
+start from exactly `paper/arxiv-v1-revision-v3@94615a5c...` and consume the two
+`E306-PD-MECH-01` files together with the prior proof/reconciliation packet.
+
+The persistent PDL role remains open. After this bounded consumer return, its
+non-blocking mathematical frontier reverts to `E306-PD-C4`, followed by future
 returned defects, source certification, and interface generalization.
 
 ## Operating rule
