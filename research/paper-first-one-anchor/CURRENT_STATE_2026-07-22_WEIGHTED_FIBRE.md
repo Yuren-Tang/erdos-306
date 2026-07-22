@@ -9,7 +9,9 @@
 1. `research/paper-first-one-anchor/PAPER_FIRST_ONE_ANCHOR_ROUTE_AUDIT_ADDENDUM_01.md`
    — all-coordinate strengthening and removal of the separate sibling sector;
 2. `research/paper-first-one-anchor/PAPER_FIRST_ONE_ANCHOR_ROUTE_AUDIT_ADDENDUM_02.md`
-   — controlling weighted-fibre correction and complete Fourier ledger.
+   — controlling weighted-fibre correction and complete Fourier ledger;
+3. `research/paper-first-one-anchor/PAPER_FIRST_ONE_ANCHOR_MAJOR_ARC_AND_TERMINAL_BUDGET.md`
+   — direct full-family major arc and strict `C -> X` terminal budget.
 
 ## Current mathematical classification
 
@@ -17,6 +19,7 @@
 MATERIAL STRICTER ALTERNATIVE ROUTE CANDIDATE /
 ROUTE-LEVEL FRONTIER AHEAD OF CURRENT RECORDED E306 PROOF DAGS /
 WEIGHTED-FIBRE NORMALIZATION REPAIRED /
+DIRECT FULL-FAMILY MAJOR ARC CLOSED /
 NO PNT-IN-PROGRESSIONS INPUT NEEDED /
 NOT INDEPENDENTLY REVIEWED.
 ```
@@ -64,6 +67,39 @@ For fixed `r|b`, no prime-distribution theorem modulo `r` is required:
 D_r>=|B|/r^2>>_b Z/log Z.
 ```
 
+## Direct actual-family major arc
+
+Define
+
+```text
+sigma_E^2=theta(1-theta) sum_(e in E)1/e^2.
+```
+
+Then
+
+```text
+sigma_E^2 asymp_b 1/(X^2 (log X)^2),
+1/sigma_E asymp_b X log X.
+```
+
+The full `E_b` square load is smaller than the pair square load by
+`O_b(log X/X)`.  Since every denominator is at least `X^2`, uniformly for
+`|m|<=C/sigma_E`,
+
+```text
+sum_e |m/e|^3 = O_(b,C)(log X/X)=o(1).
+```
+
+The exact identity `theta sum_e1/e=1/b` cancels the linear phase.  Therefore
+
+```text
+log F(m)=-2 pi^2 m^2 sigma_E^2+o_(b,C)(1),
+Re sum_(|m|<=C/sigma_E)F(m)>=c_maj/sigma_E.
+```
+
+No scaffold variance, comparison constant `K_b`, or fixed reservoir size `G` is
+needed.
+
 ## Exhaustive terminal lanes
 
 1. genuine major frequencies `|m|<=C/sigma_E`;
@@ -89,8 +125,7 @@ reservoir size `G` from the proposed proof DAG.
 2. independent verification of the one-block fingerprint entropy theorem with the
    exact Bernoulli exponent;
 3. verification of the multiplicity-sensitive cyclic packing constant;
-4. line-by-line Taylor major-arc constants with the full `E_b` family;
-5. endpoint and quantifier audit.
+4. endpoint and quantifier audit of the complete assembled proof.
 
 No manuscript, Curator, review, Lean, release, DOI, or canonical status changes follow
 from this checkpoint.
