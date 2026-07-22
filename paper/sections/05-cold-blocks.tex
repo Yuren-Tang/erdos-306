@@ -1,0 +1,146 @@
+\section{Cold blocks and the corrected boundary theorem}\label{sec:cold}
+
+For a block $P\subseteq[X,2X]$, write $N=|P|$ and
+\[
+ Q_P(a)=\sum_{p<q\in P}
+ \left(\frac{H_{pq}(a)}{pq}\right)^2,
+ \qquad
+ \sigma_P^2=\sum_{p<q\in P}\frac1{(pq)^2}.
+\]
+Fix $0<\rho\le1/4$.  An integer $m$ is a dominant label if
+\begin{equation}\label{eq:dominant}
+ |m|\le X^2/2,
+ \qquad
+ \#\{p\in P:a_p\equiv m\pmod p\}\ge(1-\rho)N.
+\end{equation}
+Two dominant labels are equal: their agreement classes intersect in at least
+$N/2$ primes, hence contain distinct $p,q$; then $pq$ divides the difference,
+whose absolute value is at most $X^2<pq$.
+
+\begin{proposition}[Nondominant forcing]\label{prop:nondominant}
+For every $0<\rho\le1/4$, there are $c_2>0$ and $X_0$ such that, whenever
+$X\ge X_0$, $P\subseteq[X,2X]$ is a prime set with
+$N\ge X/(2\log X)$, and $Q_P(a)\le R$, the absence of a dominant label implies
+\begin{equation}\label{eq:nondominant-floor}
+ R\ge c_2\frac{X}{\log^3X}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+We give the covering and dispersion implication explicitly; the remaining
+steps are elementary rearrangements of the displayed inequalities.
+Choose
+\[
+ B=\sqrt{\frac{256R}{\rho}}\frac{X^2}{N},
+ \qquad u=\frac BX.
+\]
+A pair with $|H_{pq}|>B$ contributes more than $B^2/(16X^4)$, so there are at
+most $16RX^4/B^2$ such unordered pairs.  Double counting chooses a base prime
+$p_0$ with at most $\rho N/8$ high-representative neighbours.  For every other
+nonexceptional $q$, set $\ell(q)=H_{p_0q}$.  Then
+$a_q\equiv\ell(q)\pmod q$, $|\ell(q)|\le B$, and all $\ell(q)$ have the same
+residue modulo $p_0$; hence there are at most $2u+2$ possible labels.
+
+Call a label class substantial if it has at least
+$s_0=32(u+1)+8$ elements.  No class has $(1-\rho)N$ elements.  Either the
+substantial classes outside a largest one contain at least $\rho N/2$
+elements, or the tiny classes contain more than $\rho N/4$ elements.  In the
+first case, the cross-label dispersion bound
+\[
+ \sum_{p\in C_n}\sum_{q\in C_{n'}}
+ \left(\frac{H_{pq}}{pq}\right)^2
+ \ge\frac1{8192}\frac{|C_n|^3|C_{n'}|}{X^2}
+\]
+and power mean give
+\[
+ R\ge
+ \frac{\rho^2\sqrt{(1/8192)\rho}}{10^6}
+ \frac{X}{\log^3X}.
+\]
+In the second case, the number and size of the tiny classes give
+\[
+ R\ge\frac{\rho^2}{4718592}\frac{X}{\log^3X}.
+\]
+Taking $c_2$ to be the smaller displayed constant proves the claim.  The
+remaining requirements $B\le X^2/4$ and the finite integer inequalities are
+simultaneously secured by increasing $X_0$.
+\end{proof}
+
+Call block $k$ \emph{hot} if
+\begin{equation}\label{eq:forcing-floor}
+ Q_k(a)\ge R_w(c_2,k):=
+ c_2\frac{2^k}{\log^3(2^k)},
+\end{equation}
+and cold otherwise.  Proposition~\ref{prop:nondominant} says that every
+sufficiently large cold block has a unique dominant label.
+
+Let $C_m$ be the dominant agreement class and $E=P\setminus C_m$.  If
+$|m|\le NX/16$, $Q_P(a)\le R$, $R\ge1$, and $N\ge32$, single-fibre dispersion
+with $\delta=N/(128X)$ gives, for every $q\in E$,
+\[
+ \sum_{p\in C_m}
+ \left(\frac{H_{pq}}{pq}\right)^2
+ \ge\frac{(1-\rho)N^3}{2^{15}X^2}.
+\]
+The sums for distinct exceptional $q$ are disjoint, so
+\begin{equation}\label{eq:exception-count}
+ |E|\le
+ \frac{2^{15}RX^2}{(1-\rho)N^3}.
+\end{equation}
+At $\rho=1/4$, density turns this into
+$|E|\le(2^{20}/3)R\log^3X/X$.  By fixing $c_2$ sufficiently small before the
+bottom scale, every cold block has at most a prescribed exception budget
+$e_0$; the low-energy localization used later takes $c_2\le2^{-21}$ and then
+has no exceptions.
+
+The dominant in-class pairs also imply
+\begin{equation}\label{eq:label-bound}
+ |m|\le\frac{5}{1-\rho}\frac{\sqrt R}{\sigma_P},
+ \qquad
+ \sigma_P\ge\frac{N}{8X^2}.
+\end{equation}
+Consequently, after one common scale threshold,
+\begin{equation}\label{eq:boundary-label-size}
+ 32|m|\le X(N-e_0),
+ \qquad N-e_0\ge12,
+\end{equation}
+with the analogous inequality in the next block.
+
+\begin{proposition}[Exception-aware adjacent-label penalty]
+\label{prop:boundary-penalty}
+Let consecutive cold blocks $P_k,P_{k+1}$ have dominant labels $m\ne m'$ and
+exception sets $E_k,E_{k+1}$ of cardinality at most $e_0$.  Assume the residue
+agreement off the exception sets, the reduced-cardinality bounds in
+\eqref{eq:boundary-label-size}, and their upper-block analogues.  Then the
+bipartite energy $X_k(a)$ satisfies
+\begin{equation}\label{eq:Pi}
+ X_k(a)\ge\Pi_k:=
+ \frac{(|P_{k+1}|-e_0-1)(|P_k|-e_0)^3}
+      {2^{13}(2^k)^2}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Put $d=m'-m$.  For $p\in P_k$, $q\in P_{k+1}$, and an inverse
+$\bar p$ modulo $q$, the centered CRT representative satisfies
+\[
+ \normdist{d\bar p/q}
+ =\normdist{(H_{pq}-m)/(pq)}.
+\]
+The nearest-integer triangle inequality and the label-size bound absorb the
+$m$-error.  For every nonexceptional $q$ not dividing $d$, cross-block
+dispersion gives
+\[
+ \sum_{p\in P_k\setminus E_k}
+ \left(\frac{H_{pq}}{pq}\right)^2
+ \ge\frac{|P_k\setminus E_k|^3}{2^{13}(2^k)^2}.
+\]
+At most one nonexceptional upper prime divides $d$: two would have product
+larger than $|d|$ while dividing it.  Summing over the remaining upper primes
+and using the exception bounds gives \eqref{eq:Pi}.
+\end{proof}
+
+The hypotheses in Proposition~\ref{prop:boundary-penalty} are indispensable.
+An unqualified assertion that different integer labels always force boundary
+energy is false: one label may be the product of all lower-block primes while
+the other is zero, so the represented residues can coincide.  The construction
+uses only the corrected, exception-aware proposition above.
+

@@ -1,0 +1,141 @@
+\section{The analytic interface and its PNT provider}\label{sec:analytic}
+
+For $k\ge0$, put
+\[
+ \Pk_k=\{p\text{ prime}:2^k\le p<2^{k+1}\},
+ \qquad
+ A_k=\sum_{p\in\Pk_k}\frac1p.
+\]
+
+\begin{definition}[Construction-facing analytic inputs]\label{def:AI}
+The property $\mathbf{AI}$ holds if there is one integer $K_{\mathrm{AI}}$ such
+that, for every $k_0\ge K_{\mathrm{AI}}$,
+\begin{enumerate}[label=(\alph*)]
+\item for every $k_0\le k\le3k_0$,
+\begin{equation}\label{eq:AI-density}
+ |\Pk_k|\ge\frac{2^k}{2\log(2^k)};
+\end{equation}
+\item the inclusive reciprocal window satisfies
+\begin{equation}\label{eq:AI-mass}
+ \sum_{k=k_0}^{3k_0}A_k\ge\frac{21}{20}.
+\end{equation}
+\end{enumerate}
+The upper block index is inclusive, and therefore
+\begin{equation}\label{eq:inclusive-window}
+ \bigcup_{k=k_0}^{3k_0}\Pk_k
+ =\{p:2^{k_0}\le p<2^{3k_0+1}\}.
+\end{equation}
+\end{definition}
+
+The common threshold and the endpoint identity in
+\eqref{eq:inclusive-window} are used at the first construction scale.  They
+prevent an implicit choice of one scale for density and another for mass.
+
+Let $\pi(x)$ count primes at most $x$.  We use PNT in the form
+\begin{equation}\label{eq:PNT}
+ \pi(x)\sim\frac{x}{\log x}\qquad(x\to\infty).
+\end{equation}
+A modern proof may be found in Soundararajan \cite{Soundararajan2006}; Ingham,
+Theorem~23, is a standard monograph locator \cite{Ingham1990}, and Hadamard's
+paper is cited for historical provenance \cite{Hadamard1896}.
+
+\begin{proposition}[Local reciprocal-prime law]\label{prop:local-law}
+PNT implies
+\begin{equation}\label{eq:local-x}
+ \sum_{x\le p<2x}\frac1p
+ =\frac{\log2}{\log x}
+  +o\!\left(\frac1{\log x}\right).
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:local-k}
+ A_k=\frac1k+o\!\left(\frac1k\right).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Begin with $(x,2x]$.  Abel summation for the prime-counting step function and
+$f(t)=1/t$ gives
+\begin{equation}\label{eq:abel}
+ \sum_{x<p\le2x}\frac1p
+ =\frac{\pi(2x)}{2x}-\frac{\pi(x)}x
+  +\int_x^{2x}\frac{\pi(t)}{t^2}\,dt.
+\end{equation}
+Set
+\[
+ \varepsilon(x)=\sup_{t\ge x}
+ \left|\frac{\pi(t)\log t}{t}-1\right|.
+\]
+Then $\varepsilon(x)\to0$, and uniformly for $t\in[x,2x]$,
+\[
+ \pi(t)=\frac{t}{\log t}\bigl(1+O(\varepsilon(x))\bigr).
+\]
+Thus
+\begin{align*}
+ \int_x^{2x}\frac{\pi(t)}{t^2}\,dt
+ &=\int_x^{2x}\frac{dt}{t\log t}
+   +O\!\left(\varepsilon(x)
+             \int_x^{2x}\frac{dt}{t\log t}\right)\\
+ &=\log\frac{\log(2x)}{\log x}
+   +o\!\left(\frac1{\log x}\right)\\
+ &=\frac{\log2}{\log x}
+   +O\!\left(\frac1{\log^2x}\right)
+   +o\!\left(\frac1{\log x}\right).
+\end{align*}
+The boundary term in \eqref{eq:abel} is
+\[
+ \frac1{\log(2x)}-\frac1{\log x}
+ +O\!\left(\frac{\varepsilon(x)}{\log x}\right)
+ =o\!\left(\frac1{\log x}\right).
+\]
+Changing $(x,2x]$ to $[x,2x)$ affects at most the endpoint terms, hence by
+$O(1/x)=o(1/\log x)$.  At $x=2^k$, $k\ge2$, both endpoints are composite, so
+the dyadic endpoint conventions agree exactly.  Since
+$\log(2^k)=k\log2$, equation \eqref{eq:local-k} follows.
+\end{proof}
+
+\begin{proposition}[One common eventual threshold]\label{prop:PNT-AI}
+The local law implies $\mathbf{AI}$.
+\end{proposition}
+\begin{proof}
+Choose constants
+\[
+ \frac1{2\log2}<c_D<1,
+ \qquad
+ \frac{21}{20\log3}<c_M<1.
+\]
+Equation \eqref{eq:local-k} gives thresholds $K_D,K_M$ such that
+$A_k\ge c_D/k$ for $k\ge K_D$ and $A_k\ge c_M/k$ for $k\ge K_M$.
+For $p\in\Pk_k$, $1/p\le2^{-k}$, so
+\[
+ A_k\le\frac{|\Pk_k|}{2^k},
+ \qquad
+ |\Pk_k|\ge2^kA_k
+ \ge\frac{2^k}{2k\log2}.
+\]
+For the inclusive window, monotonicity of $1/t$ gives
+\[
+ \sum_{k=k_0}^{3k_0}\frac1k
+ \ge\int_{k_0}^{3k_0+1}\frac{dt}{t}
+ =\log\!\left(3+\frac1{k_0}\right)>\log3.
+\]
+Hence
+\[
+ \sum_{k=k_0}^{3k_0}A_k
+ \ge c_M\sum_{k=k_0}^{3k_0}\frac1k
+ >c_M\log3>\frac{21}{20}.
+\]
+Taking
+\[
+ K_{\mathrm{AI}}=\max\{2,K_D,K_M\}
+\]
+proves both clauses simultaneously, with the exact interval
+\eqref{eq:inclusive-window}.  The provider fixes $K_{\mathrm{AI}}$ first; the
+construction later chooses $k_0$ above this and every other finite threshold.
+\end{proof}
+
+\begin{remark}[Why ordinary Mertens is not the local premise]
+The relation $\sum_{p\le x}1/p=\log\log x+B+o(1)$ is enough for a fixed power
+window, but subtracting it across one dyadic block leaves an uncontrolled
+$o(1)$ error while the main term is only $1/\log x$.  It is background rather
+than a second load-bearing theorem here; see Mertens \cite{Mertens1874}.
+\end{remark}
+

@@ -1,0 +1,70 @@
+\section{Terminal parameters and positivity}\label{sec:terminal}
+
+Set $K_\sigma=501$.  The constants are chosen in the strict dependency order
+\begin{equation}\label{eq:parameter-order}
+ \eta\longrightarrow C\longrightarrow D_{\mathrm{mp}}
+ \longrightarrow G\longrightarrow k_0.
+\end{equation}
+More precisely:
+\begin{enumerate}[label=\textbf{Step \arabic*.}]
+\item Set
+\begin{equation}\label{eq:eta-choice}
+ \eta=\frac{c_3}{4K_\sigma b}
+ =\frac{c_3}{2004b}.
+\end{equation}
+Apply Theorem~\ref{thm:global-partition} with $c=16/9$, obtaining
+$C_{\mathrm{tail}}$ and a scale threshold.
+\item Choose $C\ge3$ so large that
+\begin{equation}\label{eq:gaussian-quarter}
+ bC_{\mathrm{tail}}e^{-(16/9)C^2/2}
+ <\frac{c_3}{4K_\sigma}.
+\end{equation}
+\item Set
+\begin{equation}\label{eq:Dmp}
+ D_{\mathrm{mp}}
+ =\frac{c_3}{4K_\sigma b(2C+3)}
+ =\frac{c_3}{2004b(2C+3)},
+\end{equation}
+and choose $G$ so that $\beta_b^G\le D_{\mathrm{mp}}$.
+\item Only now choose $k_0$ above the finite maximum of: the common analytic
+threshold $K_{\mathrm{AI}}$; the control-load and deviation thresholds; the
+cold-block, level-set, localization, and Laplace thresholds; the availability
+and size of the $G$ common gadget primes; avoidance of $T$; the pair-pool and
+mass-batch thresholds; the variance comparison; period and main-window
+geometry; the Taylor disk and cubic remainder; and the remaining finite
+cardinality and inverse-square certificates.
+\end{enumerate}
+No later choice changes $\eta,C,D_{\mathrm{mp}}$, or $G$.  Since
+$N=\lceil C/\sctrl\rceil$ and eventually $\sctrl\le1$,
+\begin{equation}\label{eq:N-bound}
+ (2N+1)\sctrl\le2C+3.
+\end{equation}
+Multiplying the minor estimates by $\sctrl$, the three contributions satisfy
+\begin{align}
+ b\eta&=\frac{c_3}{4K_\sigma},\label{eq:quarter-one}\\
+ bC_{\mathrm{tail}}e^{-(16/9)C^2/2}
+ &<\frac{c_3}{4K_\sigma},\label{eq:quarter-two}\\
+ b(2N+1)\sctrl D_{\mathrm{mp}}
+ &\le\frac{c_3}{4K_\sigma}.
+ \label{eq:quarter-three}
+\end{align}
+Here $2004=4\cdot501$.  Therefore
+\begin{equation}\label{eq:strict-minor}
+ \sum_{h\in S_m}|F(h)|
+ <\frac{3c_3}{4K_\sigma\sctrl}
+ <\frac{c_3}{K_\sigma\sctrl}
+ \le\frac{c_3}{\sE}.
+\end{equation}
+The last inequality uses $\sE\le K_\sigma\sctrl$.  By
+\eqref{eq:main-lower}, the real main sum is at least $c_3/\sE$, so
+Lemma~\ref{lem:spectral-positivity} gives a subset $A\subseteq E$ of positive
+weight satisfying the required congruence.  The load bound
+\eqref{eq:theta-window} converts it to
+\[
+ \sum_{e\in A}\frac1e=\frac1b.
+\]
+All denominators are distinct squarefree semiprimes and avoid $T$.  This proves
+Theorem~\ref{thm:structural-construction}; Lemmas~\ref{lem:small-b} and
+\ref{lem:numerator-reduction} prove the sufficiency direction of
+Theorem~\ref{thm:headline}.
+

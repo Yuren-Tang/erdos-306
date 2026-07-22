@@ -1,0 +1,34 @@
+Define the global forcing floor
+\begin{equation}\label{eq:global-floor}
+ \mathcal F_0=
+ \min\{R_w(c_2,k_0),\Pi_{k_0}\}.
+\end{equation}
+After increasing $k_0$, monotonicity gives
+$R_w(c_2,k_0)\le R_w(c_2,k)$ and
+$R_w(c_2,k_0)\le\Pi_k$ for every relevant block and boundary.
+
+\begin{lemma}[Localization]\label{lem:localization}
+For sufficiently large $k_0$, every $a\notin\mathfrak M(C)$ satisfies either
+\[
+ \Qctrl(a)\ge\mathcal F_0
+\]
+or there is one integer $m$ with
+\begin{equation}\label{eq:diagonal-sector}
+ a_p\equiv m\pmod p\quad(p\in\Bset),
+ \qquad |m|>C/\sctrl,
+ \qquad \Qctrl(a)=m^2\sctrl^2.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Suppose $\Qctrl(a)<\mathcal F_0$.  Then no block is hot and no adjacent cold
+labels differ.  The small-$c_2$ refinement following
+\eqref{eq:exception-count} eliminates every exception, so all coordinates
+have one common label $m$.  The final scale also gives $2|m|<pq$ for every
+control pair.  Hence $m$ itself is the centered CRT representative and
+\[
+ \Qctrl(a)=\sum_{(p,q)\in\Cgraph}(m/pq)^2=m^2\sctrl^2.
+\]
+If $|m|\le C/\sctrl$, then $a\in\mathfrak M(C)$; otherwise
+\eqref{eq:diagonal-sector} holds.
+\end{proof}
+

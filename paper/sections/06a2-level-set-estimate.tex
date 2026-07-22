@@ -1,0 +1,29 @@
+\begin{proposition}[Global level-set estimate]\label{prop:level-set}
+For every $0<\varepsilon<1$, there are $A>0$ and $k_\varepsilon$ such that,
+for every admissible block system with $k_0\ge k_\varepsilon$ and every
+$R\ge1$,
+\begin{equation}\label{eq:level-set}
+ \#\mathcal L(R)
+ \le e^{AJ}e^{8\varepsilon R}
+ \left(1+\frac{\sqrt R}{\sctrl}\right).
+\end{equation}
+The constant $A$ is fixed before the block system and before $k_0$.
+\end{proposition}
+\begin{proof}
+The code is injective: the full vectors reconstruct every hot block, while on
+a cold block the segment label, the exceptional-prime set, and the recorded
+residues at those exceptions reconstruct every coordinate.  Fixing the four
+layers above therefore determines an injective code for the assignment.  The weighted sums over hot-block choices and boundary
+choices are controlled by their respective energy charges; shell vectors are
+controlled by their total integer mass; exception choices use the finite
+product identity
+$\sum_A\prod_{j\in A}u_j=\prod_j(1+u_j)$.  The segment-start label count gives
+the final factor $1+\sqrt R/\sctrl$.  Choosing the cold forcing constant and
+then the common block threshold makes the total charge exponent at most
+$8\varepsilon R$, while bounded local encoding entropy contributes one fixed
+factor $e^A$ per block.  Summing the injective fibres gives
+\eqref{eq:level-set}.  The finite integer-window counts and exponential
+rearrangements use only the displayed charge bounds; all energy sources and the
+quantifier order are explicit.
+\end{proof}
+

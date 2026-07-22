@@ -1,0 +1,52 @@
+\section{Reciprocal mass, weights, and variance}\label{sec:mass}
+
+Let
+\[
+ \Pk(k_0)=\bigcup_{k=k_0}^{3k_0}\Pk_k,
+ \qquad
+ S_1=\sum_{p\in\Pk(k_0)}\frac1p,
+ \qquad
+ S_2=\sum_{p\in\Pk(k_0)}\frac1{p^2}.
+\]
+By \eqref{eq:inclusive-window}, this is the prime interval
+$[2^{k_0},2^{3k_0+1})$.  Expanding $S_1^2$ gives the exact identity
+\begin{equation}\label{eq:pair-pool}
+ \sum_{\substack{p,q\in\Pk(k_0)\\p<q}}\frac1{pq}
+ =\frac{S_1^2-S_2}{2}.
+\end{equation}
+The analytic mass input gives $S_1\ge21/20$, and
+\[
+ S_2\le\sum_{n\ge2^{k_0}}\frac1{n^2}
+ \le\frac1{2^{k_0}-1}.
+\]
+For $k_0\ge5$,
+\begin{equation}\label{eq:pool-half}
+ \sum_{p<q}\frac1{pq}\ge\frac12.
+\end{equation}
+The products are distinct squarefree semiprimes by unique factorization.
+
+Before choosing the mass batch, fix the control edges and a finite gadget edge
+set $\Egad$ to be defined in Section~\ref{sec:minor}.  Since the number of
+gadget edges is fixed before $k_0$ and their second prime lies in a high block,
+their reciprocal load tends to zero.  Proposition~\ref{prop:control-estimates}
+therefore gives, at the final scale,
+\begin{equation}\label{eq:base-load}
+ \Lambda_{\mathrm{base}}:=
+ \sum_{e\in\Ectrl\dot\cup\Egad}\frac1e
+ <\frac{3}{2b}.
+\end{equation}
+Set $t=3/(2b)-\Lambda_{\mathrm{base}}>0$.
+
+The pair pool excludes three types of products: the finite obstruction $T$,
+control products, and gadget products.  At large scale, every member of $T$ is
+below the bottom pair scale, so it removes nothing.  The reciprocal load lost
+to control and gadget intersections is at most
+$\Lambda_{\mathrm{base}}$.  Hence
+\[
+ t+\operatorname{load}(\text{forbidden pool terms})
+ \le\frac{3}{2b}\le\frac12,
+\]
+and \eqref{eq:pool-half} shows that the allowed residual pool has load at least
+$t$.  This is an exact cancellation; no surplus beyond the lower bound $1/2$
+is used.
+

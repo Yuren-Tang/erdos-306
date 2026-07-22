@@ -1,0 +1,27 @@
+Put
+\begin{equation}\label{eq:sigmaE}
+ \sE^2=\sum_{e\in E}\frac{\theta(1-\theta)}{e^2}.
+\end{equation}
+Since $2/9\le\theta(1-\theta)\le1/4$ and $\Ectrl\subseteq E$,
+\begin{equation}\label{eq:variance-lower}
+ \sE\ge\sqrt{\frac29}\,\sctrl.
+\end{equation}
+For the upper bound, decompose the inverse-square sum into control, pair-pool,
+and gadget components.  Lemma~\ref{lem:block-upper} gives a convergent dyadic
+upper bound for the prime reciprocal-square load; squaring it bounds the
+pair-pool component.  The finitely many gadget denominators gain the high-block
+factor $2^{-2k_0}$.  Comparing both errors with
+\eqref{eq:sctrl-lower}, after all component cardinalities have been fixed, gives
+the estimate
+\begin{equation}\label{eq:inverse-square-constant}
+ \sum_{e\in E}\frac1{e^2}
+ \le1000001\,\sctrl^2.
+\end{equation}
+A direct summation of the resulting geometric tails, after increasing the
+bottom scale once all finite components have been fixed, gives the stated
+constant.  Therefore
+\begin{equation}\label{eq:variance-comparison}
+ \sqrt{\frac29}\,\sctrl
+ \le\sE\le501\,\sctrl.
+\end{equation}
+

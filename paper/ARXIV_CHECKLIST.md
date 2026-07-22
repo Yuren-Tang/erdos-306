@@ -1,78 +1,57 @@
 # Erdős 306 arXiv checklist
 
-Workstream: `E306-P1-REV1`  
-Branch: `paper/arxiv-v1-revision-v1`  
-Fixed parent: `f04a7ac7064877920890b282c246ffe6867f58bb`
+> Repository-only control record. This file is excluded from the public arXiv source package.
 
-## Overall decision
+Task: `E306-P1-REV2`  
+Branch: `paper/arxiv-v1-revision-v2`  
+Exact base: `84ee55acaa292cf170661cc5fe32936de7d28ccd`
 
-**REVISED-CANDIDATE / READY-FOR-FINAL-FIXED-CANDIDATE-REVIEW / NOT-SUBMISSION-READY.**
+## Current classification
 
-The bounded mathematical revision is complete on the owned manuscript branch. This does not authorize merge, release, tag, DOI mutation, source upload, or arXiv submission.
+**PUBLICATION-BOUNDARY REVISION COMPLETE / AWAITING DIRECTOR RECEPTION AND OWNER REVIEW / NOT SUBMISSION-READY.**
 
-## Mathematical manuscript
+## Public article boundary
 
-- [x] Exact theorem, necessity, and two-way semiprime / `ω=Ω=2` equivalence.
-- [x] Avoiding representation, small-denominator closure, and arbitrary-numerator induction.
-- [x] PNT is the sole load-bearing paper analytic theorem.
-- [x] Abel summation includes the tail-uniform PNT error and exact endpoint conversion.
-- [x] One common `K_AI` supplies density and inclusive mass.
-- [x] Inclusive blocks `k0,...,3k0` equal `[2^k0,2^(3k0+1))`.
-- [x] Exact complete internal/adjacent control graph, assignment space, centered CRT, and product injectivity.
-- [x] Explicit control load `≤32/(k0-1)` and deviation lower bound `1/(100 k0 2^k0)`.
-- [x] Cold-block dominance, exceptions, label bounds, and wrapped/nonwrapped large-label fibres.
-- [x] Exception-aware adjacent-label theorem with all hypotheses.
-- [x] Four-layer global encoder, fixed `exp(AJ)`, localization, Laplace absorption, and Gaussian tail.
-- [x] Exact pair-pool cancellation with no hidden surplus.
-- [x] Greedy mass batch, uniform weight, and variance constants `1000001` and `501`.
-- [x] Bernoulli nonvanishing, principal logarithm branch, aggregate cubic error, and real main sum.
-- [x] Exact Fourier-minor intersections, `b`-fibre, squarefree mismatch, common reservoir, and `b(2N+1)` count.
-- [x] Terminal order `η→C→Dmp→G→k0`, `2004=4·501`, and strict three-quarter comparison.
-- [x] Finite denominator set converted to a finite strictly increasing tuple with dummy anchor excluded from the sum.
-- [x] Review A repairs and RB-01-RB-18 revision obligations synchronized in the support packet.
-- [ ] Final independent review of this exact revised candidate tip.
+- [x] Public article source consists of `main.tex`, `references.bib`, and the semantic section files under `sections/`.
+- [x] Formalization cited through Zenodo DOI `10.5281/zenodo.20767389`.
+- [x] No GitHub SHA or branch appears in the article or bibliography.
+- [x] No proof-development checkpoint, manuscript workstream, internal review, assurance, or workflow record appears in the article.
+- [x] No frozen development-checkpoint reference appears in the article.
+- [x] No Lean theorem/declaration inventory appears in the article.
+- [x] Formalization/code availability is one concise public-facing section.
+- [x] Formalization is not used as a substitute for load-bearing mathematical exposition.
+- [x] Repository-only ledgers and checklists are explicitly excluded from the public source package.
 
-## Sources and bibliography
+## Mathematics and presentation
 
-- [x] Soundararajan modern PNT locator.
-- [x] Ingham, Theorem 23, standard monograph locator.
-- [x] Hadamard historical PNT source.
-- [x] Rosser--Schoenfeld retained only for immutable formal-release correspondence.
-- [x] Mertens classified as historical/background rather than the local backend.
-- [ ] Human publisher-scan comparison of Rosser--Schoenfeld pp. 69-70.
-- [ ] Final independent bibliography and source-package audit.
+- [x] Exact theorem, necessity, and semiprime criterion.
+- [x] PNT/Abel local law, common threshold, and inclusive endpoint.
+- [x] Finite Fourier identity and exact control construction.
+- [x] Cold-block, global-partition, mass, main/minor, reservoir, and terminal arguments.
+- [x] Finite strictly increasing tuple bridge.
+- [x] Internal “immutable companion”, “named residual”, and release-audit prose removed or rewritten as mathematical prose.
+- [x] Title page contains no internal candidate date/status label.
 
-## Formal verification and versioning
+## Sources
 
-- [x] Immutable evidence fixed at `v0.0.3@4582185...` and DOI `10.5281/zenodo.20767390`.
-- [x] Exact released five-item audit stated.
-- [x] Paper PNT backend separated from released Rosser--Schoenfeld backend.
-- [x] PDL checkpoint identified as authorial development source, not released authority.
-- [x] Frozen refactor identified as secondary context only.
-- [x] No claim that the PNT bridge is formalized in the release.
-- [x] RB-20 evidence limitation retained: Review B did not independently rerun kernel/CI.
-- [ ] Final companion-code relation and fixed-candidate review signed off.
+- [x] Soundararajan, Ingham, and Hadamard for PNT context.
+- [x] Mertens retained as historical background.
+- [x] Rosser-Schoenfeld cited as the analytic source used by the archived formalization.
+- [x] Formal Conjectures and Erdős-Graham context cited.
+- [x] Formalization DOI corrected to `10.5281/zenodo.20767389`.
+- [ ] Human publisher-scan comparison of Rosser-Schoenfeld pp. 69-70.
+- [ ] Final source-package and bibliography audit after Owner review.
 
-## TeX and PDF validation for this revision
+## Validation
 
-- [x] `pdflatex`, `bibtex8`, and two final `pdflatex` passes succeed.
-- [x] No undefined citations or references.
-- [x] Final TeX pass has no LaTeX warnings, overfull boxes, or underfull boxes.
-- [x] The 21-page PDF was rendered at 120 dpi and every page visually inspected.
-- [x] No clipped text, overlap, black squares, or broken glyphs were observed.
-- [x] The revision branch was verified identical to the fixed parent before the write pass.
-- [ ] Clean arXiv source archive generated and tested.
+The final `[RETURN E306-P1-REV2]` records fresh source blob hashes, TeX/BibTeX passes, citation/reference checks, PDF hash and page count, rendered-page inspection, and base-to-tip path/history audit.
 
-The source-archive box remains open because packaging and submission are outside this role.
+## Remaining author and submission decisions
 
-## Author and submission decisions
+- [ ] Final author-name form, affiliation, public email, and ORCID display.
+- [ ] Final acknowledgement and AI-assistance wording.
+- [ ] arXiv categories, comments, licence, and source-package metadata.
+- [ ] Portfolio Owner approval.
+- [ ] E306-DIR submission authorization.
 
-- [ ] Final title and author-name form approved.
-- [ ] Affiliation, public contact email, and ORCID display decided.
-- [ ] arXiv categories, comments field, page-count wording, and licence decided.
-- [ ] Acknowledgements and exact AI-assistance disclosure approved.
-- [ ] Ancillary-file policy decided.
-- [ ] Portfolio Owner approves final text and metadata.
-- [ ] `E306-DIR` explicitly authorizes submission.
-
-No fixed candidate, Lean file, proof-development source, review branch, workflow, release, tag, DOI, or arXiv state is modified by this checklist.
+Completion of this checklist authorizes no merge, release, tag, DOI mutation, default-branch movement, source upload, arXiv submission, or publication action.

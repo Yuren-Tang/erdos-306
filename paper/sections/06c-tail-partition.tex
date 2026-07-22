@@ -1,0 +1,73 @@
+\begin{lemma}[High-floor Laplace absorption]\label{lem:laplace}
+For every $c>0$ and $\eta>0$, after increasing $k_0$,
+\begin{equation}\label{eq:laplace}
+ \sum_{\Qctrl(a)\ge\mathcal F_0}e^{-c\Qctrl(a)}
+ \le\frac\eta{\sctrl}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Choose $\varepsilon>0$ and $c'$ with
+\[
+ 8\varepsilon<c'<c.
+\]
+Decomposition into unit energy shells and Proposition~\ref{prop:level-set}
+give a convergent bound
+\[
+ \sum_a e^{-c'\Qctrl(a)}
+ \le e^{AJ}K(c',\varepsilon)
+ \left(1+\frac1{\sctrl}\right).
+\]
+On the sector $\Qctrl\ge\mathcal F_0$, extract
+$e^{-(c-c')\mathcal F_0}$.  The forcing floor grows exponentially in the
+bottom scale, while $J=O(k_0)$ and Proposition~\ref{prop:control-estimates}
+gives only polynomial-exponential growth for $\sctrl^{-1}$.  With
+$c,c',\varepsilon,A$ and $\eta$ fixed first, one final threshold makes the
+extracted factor absorb both $e^{AJ}$ and $1+\sctrl^{-1}$, yielding
+\eqref{eq:laplace}.
+\end{proof}
+
+\begin{lemma}[Diagonal Gaussian tail]\label{lem:gaussian-tail}
+For every $c>0$ there is
+$C_{\mathrm{tail}}=1+6\sqrt2/\sqrt c$ such that, eventually,
+\begin{equation}\label{eq:gaussian-tail}
+ \sum_{\substack{a\text{ satisfying }\eqref{eq:diagonal-sector}}}
+ e^{-c\Qctrl(a)}
+ \le\frac{C_{\mathrm{tail}}e^{-cC^2/2}}{\sctrl}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+A diagonal assignment is determined by its integer label, so the left side
+injects into
+\[
+ \sum_{|m|>C/\sctrl}e^{-cm^2\sctrl^2}.
+\]
+Split the exponent into two equal parts.  The first is at most
+$e^{-cC^2/2}$; the remaining discrete Gaussian is bounded by its central term
+and a comparison with the Gaussian integral, giving
+$C_{\mathrm{tail}}/\sctrl$ once $c\sctrl^2/2\le1$.
+\end{proof}
+
+\begin{theorem}[Global control partition]\label{thm:global-partition}
+For every $c>0$ and $\eta>0$, there are $k_*(c,\eta)$ and
+$C_{\mathrm{tail}}>0$ such that, for every admissible block system with
+$k_0\ge k_*$ and every $C\ge1$,
+\begin{equation}\label{eq:global-partition}
+ \sum_{a\notin\mathfrak M(C)}e^{-c\Qctrl(a)}
+ \le\frac{\eta+C_{\mathrm{tail}}e^{-cC^2/2}}{\sctrl}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Apply Lemma~\ref{lem:localization}; the two alternatives are bounded by
+Lemmas~\ref{lem:laplace} and \ref{lem:gaussian-tail}.
+\end{proof}
+
+The quantifier order in this section is
+\[
+ c,\eta
+ \longrightarrow
+ \varepsilon,c',A,c_2,e_0,C_{\mathrm{tail}}
+ \longrightarrow k_*
+ \longrightarrow \text{block system and }C.
+\]
+No entropy or tail constant is chosen after the bottom scale.
+

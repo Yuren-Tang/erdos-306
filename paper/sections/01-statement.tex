@@ -1,0 +1,81 @@
+\section{Statement, elementary closure, and proof architecture}
+
+An integer is a \emph{squarefree semiprime} if it is a product $pq$ of two
+distinct primes.
+
+\begin{lemma}[Semiprime criterion]\label{lem:semiprime-equivalence}
+For $n\ge1$, the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $n=pq$ for two distinct primes $p,q$;
+\item $\omega(n)=\Omega(n)=2$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+If $n=pq$ with $p\ne q$, then the prime factorization has two factors counted
+with multiplicity and two distinct prime factors.  Conversely,
+$\Omega(n)=2$ says that $n=pq$ for primes $p,q$, allowing equality.  If
+$p=q$, then $\omega(n)=1$, contrary to the second equality.  Thus $p\ne q$.
+\end{proof}
+
+\begin{theorem}[Erd\H{o}s Problem 306]\label{thm:headline}
+Let $q>0$ be rational and write $q=a/b$ in lowest terms.  Then $q$ is a finite
+sum of reciprocals of distinct squarefree semiprimes if and only if $b$ is
+squarefree.
+\end{theorem}
+
+The necessity fixes the exact public scope.  If $S$ is a finite set of
+squarefree integers and $M=\lcmop(S)$, then
+\[
+  \sum_{n\in S}\frac1n
+  =\frac{\sum_{n\in S}M/n}{M}.
+\]
+The reduced denominator divides $M$, and an lcm of squarefree integers is
+squarefree.  Cancellation causes no difficulty, since every divisor of a
+squarefree integer is squarefree.
+
+For a finite set $T\subset\N$, write $\operatorname{Rep}_T(r)$ when there is a
+finite set $S$ of squarefree semiprimes such that
+\[
+ S\cap T=\varnothing,
+ \qquad
+ \sum_{n\in S}\frac1n=r.
+\]
+The obstruction parameter is what preserves distinctness under iteration.
+
+\begin{lemma}[Numerator reduction]\label{lem:numerator-reduction}
+If $\operatorname{Rep}_T(1/b)$ holds for every finite $T$, then
+$\operatorname{Rep}_T(a/b)$ holds for every integer $a\ge1$ and every finite
+$T$.
+\end{lemma}
+\begin{proof}
+Induct on $a$.  Given a set $S_a$ representing $a/b$, apply the unit-numerator
+assertion with obstruction set $T\cup S_a$.  The new set is disjoint from
+$S_a$, and the reciprocal sums add.
+\end{proof}
+
+\begin{lemma}[Small denominators]\label{lem:small-b}
+If the avoiding unit-numerator assertion holds for every squarefree $b\ge3$,
+then it holds for all positive squarefree $b$.
+\end{lemma}
+\begin{proof}
+For $b=2$, take disjoint avoiding representations of $1/3$ and $1/6$ and use
+$1/2=1/3+1/6$.  For $b=1$, take pairwise disjoint avoiding representations of
+$1/2$, $1/3$, and $1/6$, and use
+$1=1/2+1/3+1/6$.
+\end{proof}
+
+It remains to prove the following structural theorem.
+
+\begin{theorem}[Structural avoiding construction]\label{thm:structural-construction}
+Let $b\ge3$ be squarefree and let $T\subset\N$ be finite.  Then
+$\operatorname{Rep}_T(1/b)$ holds.
+\end{theorem}
+
+The proof has four layers.  First, PNT supplies two eventual prime-distribution
+interfaces at one common threshold.  Second, a finite control graph and its
+level-set theorem isolate a short family of main residue assignments.  Third,
+a pair pool, uniform Bernoulli weights, and denominator-sensitive reservoirs
+construct the complete denominator family.  Finally, finite Fourier inversion
+shows that the main frequencies strictly dominate two exact minor-frequency
+lanes.  All constants are chosen before the bottom scale $k_0$.
+

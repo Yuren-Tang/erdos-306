@@ -1,0 +1,150 @@
+\section{Exact dyadic control geometry}\label{sec:control}
+
+Fix squarefree $b\ge3$ and finite $T$.  We shall choose $k_0$ last.  For the concrete construction take $K=3k_0$ and use the full dyadic
+blocks
+\[
+ P_k=\Pk_k,
+ \qquad
+ |P_k|\ge\frac{2^k}{2\log(2^k)}
+ \quad(k_0\le k\le3k_0).
+\]
+The control estimates below remain valid for arbitrary subsets satisfying the
+same lower density, but using the full blocks ensures that the mass-pool primes
+from $k_0,\ldots,3k_0$ are contained in the period support.  The half-open dyadic windows are disjoint, and
+\[
+ \Bset=\bigcup_{k=k_0}^{K}P_k.
+\]
+All block primes are chosen outside the prime support of $b$ and above every
+element of $T$.
+
+The control graph is exactly
+\begin{equation}\label{eq:control-graph}
+ \Cgraph=
+ \bigcup_{k=k_0}^{K}
+ \{(p,q):p,q\in P_k,\ p<q\}
+ \;\cup\;
+ \bigcup_{k=k_0}^{K-1}(P_k\times P_{k+1}).
+\end{equation}
+Thus it contains every internal unordered pair and every adjacent complete
+bipartite pair.  The two indexed pieces are disjoint.  Unique factorization
+shows that the product map $(p,q)\mapsto pq$ is injective on this family; in
+particular
+\[
+ \Ectrl=\{pq:(p,q)\in\Cgraph\}
+\]
+is a set of distinct squarefree semiprimes.
+
+A global assignment is
+\[
+ a=(a_p)_{p\in\Bset},
+ \qquad a_p\in\Z/p\Z.
+\]
+For distinct block primes $p,q$, let $H_{pq}(a)$ be the unique integer with
+\begin{equation}\label{eq:centered-crt}
+ H_{pq}(a)\equiv a_p\pmod p,
+ \qquad
+ H_{pq}(a)\equiv a_q\pmod q,
+ \qquad
+ -\frac{pq}{2}<H_{pq}(a)\le\frac{pq}{2}.
+\end{equation}
+This is the ordinary representative in $[0,pq)$, shifted by $-pq$ precisely
+when it exceeds $pq/2$.  Define
+\begin{equation}\label{eq:Qctrl}
+ \Qctrl(a)=\sum_{(p,q)\in\Cgraph}
+ \left(\frac{H_{pq}(a)}{pq}\right)^2,
+ \qquad
+ \sctrl^2=\sum_{(p,q)\in\Cgraph}\frac1{(pq)^2}.
+\end{equation}
+For a frequency $h$, let $a(h)_p=h\pmod p$.  Then $H_{pq}(a(h))$ is the
+centered residue of $h$ modulo $pq$, so
+\begin{equation}\label{eq:control-energy-identity}
+ \normdist{h/(pq)}=\frac{|H_{pq}(a(h))|}{pq},
+ \qquad
+ \Qctrl(a(h))\le\QE(h):=\sum_{e\in E}\normdist{h/e}^2.
+\end{equation}
+
+We next prove both quantitative control estimates.  The load estimate must
+account for the number of edges; denominator growth alone is insufficient.
+
+\begin{lemma}[Dyadic primorial bound]\label{lem:primorial}
+Let $P_r$ be the product of all primes at most $2^r$.  Then
+$P_r\le4^{2^r}$ for every $r\ge0$.
+\end{lemma}
+\begin{proof}
+Induct on $r$.  For $r=0$ the product is empty.  For $r\ge1$, put
+$n=2^r$ and $m=n/2$.  Every prime $m<p\le n$ divides
+$\binom nm$, so their product is at most $\binom nm\le2^n$.  The induction
+hypothesis bounds the product of primes at most $m$ by $4^m=2^n$.
+Multiplication gives $P_r\le4^n$.
+\end{proof}
+
+\begin{lemma}[One-block reciprocal upper bound]\label{lem:block-upper}
+For every subset $P_k$ of the primes in $[2^k,2^{k+1})$, $k\ge1$,
+\begin{equation}\label{eq:block-recip-upper}
+ S_k:=\sum_{p\in P_k}\frac1p\le\frac4k.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $M_k$ be the number of all primes in the interval.  Every such prime is at
+least $2^k$, while their product is at most the primorial at $2^{k+1}$.
+Lemma~\ref{lem:primorial} gives
+\[
+ (2^k)^{M_k}\le4^{2^{k+1}}=2^{2^{k+2}},
+ \qquad kM_k\le2^{k+2}.
+\]
+Therefore $S_k\le M_k2^{-k}\le4/k$.
+\end{proof}
+
+\begin{proposition}[Control load and deviation scale]\label{prop:control-estimates}
+For $k_0\ge2$,
+\begin{equation}\label{eq:control-load-strong}
+ \sum_{e\in\Ectrl}\frac1e
+ \le\frac{32}{k_0-1}
+ \le\frac{512}{k_0-1}.
+\end{equation}
+For $k_0\ge14$,
+\begin{equation}\label{eq:sctrl-lower}
+ \sctrl\ge\frac1{100k_0 2^{k_0}}.
+\end{equation}
+Consequently, for fixed $b$, the control load is eventually below any
+prescribed positive multiple of $1/b$.
+\end{proposition}
+\begin{proof}
+Internal edges in block $k$ have load at most
+\[
+ \sum_{p<q\in P_k}\frac1{pq}
+ \le S_k^2\le\frac{16}{k^2},
+\]
+and the adjacent bipartite load is exactly
+\[
+ \sum_{p\in P_k,q\in P_{k+1}}\frac1{pq}
+ =S_kS_{k+1}\le\frac{16}{k(k+1)}\le\frac{16}{k^2}.
+\]
+Hence
+\[
+ \sum_{e\in\Ectrl}\frac1e
+ \le32\sum_{k=k_0}^{\infty}\frac1{k^2}
+ \le\frac{32}{k_0-1},
+\]
+where $1/k^2\le1/(k-1)-1/k$.
+
+For the lower bound, put $k=k_0$, $X=2^k$, and $m=|P_k|$.  Density gives
+$m\ge X/(2k\log2)$, and for $k\ge14$ this lower bound is at least $2$.
+Thus $m(m-1)/2\ge m^2/4$.  Every internal pair in the bottom block satisfies
+$p,q<2^{k+1}$, so
+\begin{align*}
+ \sctrl^2
+ &\ge\frac{m(m-1)/2}{2^{4k+4}}
+ \ge\frac1{256(\log2)^2k^2 2^{2k}}.
+\end{align*}
+Taking square roots yields
+$\sctrl\ge1/(16(\log2)k2^k)\ge1/(100k2^k)$.
+\end{proof}
+
+For $C\ge1$, define the main assignment set
+\begin{equation}\label{eq:assignment-main}
+ \mathfrak M(C)=
+ \left\{a:\exists m\in\Z,\ |m|\le C/\sctrl,
+ \ a_p\equiv m\pmod p\ \text{for all }p\in\Bset\right\}.
+\end{equation}
+
