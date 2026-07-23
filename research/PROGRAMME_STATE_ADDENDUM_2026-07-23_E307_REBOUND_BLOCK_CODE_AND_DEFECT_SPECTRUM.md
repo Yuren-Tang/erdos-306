@@ -101,11 +101,41 @@ three-swap repairs of that relay fail.
 
 The opposite side has at least `56` prime factors and the total cycle at least `61`.  An explicit
 `55`-prime relay block and three affine prime values produce a squarefree positive-return relay
-exactly on this minimal support layer.
+exactly on this minimal support layer.  Its recorded relative return margin is approximately
 
-Thus core `858` is currently the cheapest exact-zero lane.  Core `1722` has the same current total
-support lower bound `61` and is the natural comparison lane; an analogous explicit relay has not yet
-been constructed here.
+```text
+1.12663*10^(-3).
+```
+
+### Core 1722
+
+```text
+1722Y-1723D(Y)=1722^2,
+(Y-1722)/1723 prime.
+```
+
+The opposite side again has at least `56` prime factors and the total cycle at least `61`.  Two
+explicit `55`-prime relay blocks now produce squarefree positive-return relays exactly on this
+minimal layer.
+
+The first was selected for a small CRT starting point and has relative return margin approximately
+
+```text
+2.9662*10^(-5).
+```
+
+The second was selected from `143` locally admissible one-replacement blocks for closest reciprocal
+threshold.  It has
+
+```text
+D^2(Y)/Y-1
+ =1.3292369542874746...*10^(-6).                    (3.3)
+```
+
+This is currently the closest explicit minimal-support relay to the exact residual-square surface.
+
+Cores `858` and `1722` are therefore joint first construction lanes.  Support alone does not choose
+between them; return margin and complement-jet geometry are separate optimization coordinates.
 
 ## 4. Block-code theorem
 
@@ -194,6 +224,9 @@ tails   terminal states tested   integral closures
 This establishes a stopping rule: do not extend the ordered-tail tree; switch to balanced jet-code
 matching.
 
+The two core-1722 relays provide an independent pair of minimal-layer reservoirs for the same
+balanced architecture, with substantially smaller positive return margins.
+
 ## 6. Ambient E313 boundary
 
 If `K` is any even squarefree primary pseudoperfect number and `B` is a coprime squarefree block,
@@ -207,7 +240,7 @@ is odd.  Therefore no even PPN ambient core can be filled to any even residual b
 squarefree block.
 
 Known E313 blocks may still enter through nonambient residual-port pencils, but ambient inheritance
-is completely unavailable for `900`, `858^2`, or any other even target.
+is completely unavailable for `900`, `858^2`, `1722^2`, or any other even target.
 
 The standard small `mu`-Sondow constructions often insert `rad(mu)` into the constructed number.
 They are incompatible with primitive squarefree defect states, which satisfy `gcd(N,mu)=1`.
@@ -279,18 +312,28 @@ The following complete bounded tests produced no integral exact-zero closure:
 The failures occur at integral divisor / jet-code support before primality.  They are diagnostics,
 not general exclusions.
 
+The successful affine relay searches show the complementary fact: approximation and sign crossing
+are abundant once the reciprocal window is designed.  Failure is concentrated at exact jet-code
+closure.
+
 ## 9. Corrected research ranking
 
-### First exact-zero lane: core 858
+### Joint first lanes: cores 858 and 1722
 
-Use the minimal-support positive-return relay as a prime reservoir and support template, but do not
-repair it by low swaps or extend its natural ordered-tail tree.  Generate genuinely distant balanced
-complements and match their product and derivative jet syndromes.
+Both have total support lower bound `61` and explicit minimal-layer positive relays.  Core `1722`
+currently has the much smaller recorded positive margin; core `858` has the deeper completed
+ordered-tail diagnostic and existing complement-jet search setup.
 
-### Comparison lane: core 1722
+The next useful comparison is not another relay.  It is a matched experiment/theorem on balanced
+block signatures:
 
-It currently shares the total support lower bound `61`.  Constructing its own minimal-layer relay
-would determine whether core `858` is arithmetically special or merely the first convenient member.
+```text
+product residue mod H,
+derivative residue mod delta(H),
+reciprocal mass,
+support split,
+exact residual check.
+```
 
 ### Structural model: core 30
 
@@ -321,6 +364,7 @@ target move with the partial block.
 more contraction inequalities;
 more random low swaps;
 longer ordered-tail trees;
+more positive-relay examples without a new core or sharper margin;
 more local congruences without a gluing or distribution theorem;
 ambient transfer from even PPN chains.
 ```
@@ -333,12 +377,15 @@ DIRECT TWO-LINEAR-FORM REBOUND — PROVED
 GENERAL GIUGA-CORE RESIDUAL-SQUARE PORT — PROVED
 CORE-30 MINIMAL-LAYER POSITIVE RELAY — PROVED
 CORE-858 MINIMAL-LAYER POSITIVE RELAY — PROVED
-CORE-858 TOTAL SUPPORT LOWER BOUND 61 — PROVED
+CORE-1722 MINIMAL-LAYER POSITIVE RELAYS — PROVED
+CORE-1722 NEAR-ZERO MARGIN 1.32924*10^(-6) — VERIFIED
+CORES 858 AND 1722 TOTAL SUPPORT LOWER BOUND 61 — PROVED
 BLOCK-SYNDROME GLUING — PROVED
 COMPLEMENT JET CODE — PROVED
 AMBIENT EVEN-PPN TO EVEN DEFECT — IMPOSSIBLE
 DEFECT SPECTRUM / INTERMEDIATE LADDER — PROVED
 CORE-858 EXACT RESIDUAL-SQUARE FILLING — OPEN
+CORE-1722 EXACT RESIDUAL-SQUARE FILLING — OPEN
 E307 EXISTENCE OR NONEXISTENCE — OPEN
 ```
 
