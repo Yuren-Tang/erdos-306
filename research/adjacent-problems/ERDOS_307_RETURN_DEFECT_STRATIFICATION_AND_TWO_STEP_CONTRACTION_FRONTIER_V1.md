@@ -1,35 +1,42 @@
-# Erdős 307: return-defect stratification and the two-step contraction frontier
+# Erdős 307: return-defect stratification after the contraction counterexample
 
 **Programme:** `E306-RL-ADJ-14`  
-**Status:** `GENERAL DEFECT IDENTITY / PARTIAL OBSTRUCTION / COMPUTATIONAL FRONTIER`  
+**Status:** `GENERAL DEFECT IDENTITY / CONTRACTION CONJECTURE RETRACTED`  
 **Date:** 2026-07-23  
 **Authority:** research only
 
-## 1. Purpose
+## 0. Mandatory correction
 
-The exact E307 equation is a period-two equation for the arithmetic derivative.  A natural
-obstruction question is whether the squarefree deficient side can ever return far enough on the
-second derivative step.
-
-This note separates three statements:
+The original version of this note proposed the conjecture
 
 ```text
-STRONG ONE-STEP INVARIANCE:
-  D(Y)<Y and Y,D(Y) squarefree
-  =>D^2(Y)<D(Y);
-
-WEAK TWO-STEP CONTRACTION:
-  D(Y)<Y and Y,D(Y) squarefree
-  =>D^2(Y)<Y;
-
-EXACT TWO-CYCLE:
-  D^2(Y)=Y.
+Y squarefree,
+D(Y) squarefree,
+0<D(Y)<Y
+  => D^2(Y)<Y.
 ```
 
-The strong statement is false.  The weak statement remains an open strengthening of a negative
-answer to E307 and has no counterexample in the computation recorded below.
+This conjecture is false.
 
-## 2. One-sided forcing notation
+An explicit squarefree counterexample is proved and independently verified in
+
+```text
+research/adjacent-problems/
+ERDOS_307_GIUGA_CORE_RELAY_AND_TWO_STEP_CONTRACTION_COUNTEREXAMPLE_V1.md
+```
+
+There one has squarefree integers `Y,Z=D(Y)` with
+
+```text
+Z<Y<D(Z).
+```
+
+Consequently all earlier statements describing weak two-step contraction as an open or
+computationally supported conjecture are superseded.
+
+The valid return-defect identities and mass bounds are retained below.
+
+## 1. Return-defect notation
 
 Let `Y>1` be squarefree and put
 
@@ -37,366 +44,197 @@ Let `Y>1` be squarefree and put
 X=D(Y).
 ```
 
-Assume that `X` is also squarefree and
+Assume that `X` is squarefree and `0<X<Y`.  Define
 
 ```text
-X<Y.                                               (2.1)
-```
-
-Define reciprocal masses
-
-```text
-beta =D(Y)/Y=X/Y=sum_(q|Y)1/q,
-alpha=D(X)/X    =sum_(p|X)1/p.                     (2.2)
+beta =X/Y=sum_(q|Y)1/q,
+alpha=D(X)/X=sum_(p|X)1/p.
 ```
 
 Then
 
 ```text
-D^2(Y)/Y=alpha beta.                               (2.3)
+D^2(Y)/Y=alpha beta.                               (1.1)
 ```
 
-Thus the weak contraction statement is exactly
+An E307 two-cycle with `X<Y` is exactly equality in `(1.1)`.
+
+## 2. Strong one-step invariance is false
+
+The smaller example
 
 ```text
-alpha beta<1.                                      (2.4)
+Y=29861=13*2297,
+D(Y)=2310=2*3*5*7*11,
+D^2(Y)=2927>2310
 ```
 
-An E307 cycle with `X<Y` is exactly equality in `(2.4)`.
-
-## 3. Strong invariance is false
-
-Take
-
-```text
-Y=29861=13*2297.
-```
-
-Then
-
-```text
-D(Y)=13+2297=2310=2*3*5*7*11,
-```
-
-which is squarefree and much smaller than `Y`.  However
-
-```text
-D(2310)=2927>2310.
-```
-
-Therefore the implication
+already shows that
 
 ```text
 D(Y)<Y =>D^2(Y)<D(Y)
 ```
 
-fails even in the squarefree-to-squarefree regime.
+fails in the squarefree-to-squarefree regime.
 
-The relevant mechanism, if one exists, is not forward invariance of the deficient set.  It is
-contraction of the two-step product `alpha beta`.
+The Giuga-core relay counterexample now shows the stronger failure
 
-## 4. Exact local-return layer
+```text
+D(Y)<Y but D^2(Y)>Y.
+```
+
+Thus no monotonicity or two-step contraction principle can obstruct E307.
+
+## 3. Exact local-return layers
 
 The congruence
 
 ```text
-D(X) congruent Y mod X                             (4.1)
+D(X) congruent Y mod X                             (3.1)
 ```
 
-is equivalent, because `X` is squarefree, to the primewise conditions
+is equivalent, because `X` is squarefree, to
 
 ```text
-pY congruent X mod p^2        for every p|X.       (4.2)
+pY congruent X mod p^2        for every p|X.       (3.2)
 ```
 
-Indeed,
+Whenever `(3.1)` holds, define the integer return defect
 
 ```text
-D(X) congruent X/p mod p,
-```
-
-so `(4.1)` modulo `p` is equivalent to
-
-```text
-Y congruent X/p mod p,
-```
-
-which is `(4.2)`.
-
-Whenever `(4.1)` holds, define the integer return defect
-
-```text
-k={D(X)-Y}/X in Z.                                 (4.3)
+k={D(X)-Y}/X in Z.                                 (3.3)
 ```
 
 Then
 
 ```text
-D(X)=Y+kX.                                         (4.4)
+D(X)=Y+kX.                                         (3.4)
 ```
 
-The layers have the interpretations
+The layers are:
 
 ```text
-k=0:
-  exact E307 return;
-
-k<0:
-  second derivative undershoots Y by |k| copies of X;
-
-k>0:
-  second derivative overshoots Y by k copies of X.
+k=0: exact E307 return;
+k<0: undershoot by |k| copies of X;
+k>0: overshoot by k copies of X.
 ```
 
-## 5. Return-defect mass identity
+The explicit relay counterexample does not itself lie in an integer `k` layer; it proves that the
+continuous return defect can cross zero while preserving squarefreeness.  Exact `k=0` remains the
+E307 target.
 
-Since `beta=X/Y`, equation `(4.4)` gives
+## 4. Return-defect mass identity
+
+Since `beta=X/Y`, equation `(3.4)` gives
 
 ```text
-alpha=D(X)/X=Y/X+k=beta^(-1)+k.                   (5.1)
+alpha=beta^(-1)+k.
 ```
 
 Therefore the reciprocal mass of the complete union `U=XY` is
 
 ```text
-s(U)
- =alpha+beta
- =beta+beta^(-1)+k.                               (5.2)
+s(U)=alpha+beta=beta+beta^(-1)+k.                  (4.1)
 ```
 
-### Theorem 5.1 — defect-layer mass bound
-
-For `0<beta<1`:
+For `0<beta<1`, strict AM--GM gives
 
 ```text
-s(U)>2+k.                                          (5.3)
+s(U)>2+k.                                          (4.2)
 ```
 
-In particular:
+In particular,
 
 ```text
-k=0 => s(U)>2;
-k>=1 => s(U)>3;
-k>=m => s(U)>2+m.                                (5.4)
+k=0 =>s(U)>2,
+k>=1=>s(U)>3.
 ```
 
-#### Proof
+These support-entropy bounds remain valid.  They explain why exact nonnegative integer-return
+layers are absent from small computations even though nonintegral positive return defects can be
+constructed by CRT relay.
 
-The strict arithmetic-geometric mean inequality gives
-
-```text
-beta+beta^(-1)>2
-```
-
-because `beta!=1`.  Add `k`. `square`
-
-### Interpretation
-
-The absence of nonnegative integer return defects in small computation is not surprising.
-A `k=0` state already requires enough distinct primes for their reciprocal sum to exceed `2`.
-A positive defect requires the much more extreme threshold `2+k`.
-
-For all primes allowed, the sum of the reciprocals of the first `58` primes is less than `2`,
-while including the `59`th prime `277` makes it exceed `2`.  Thus the mass condition alone needs
-at least `59` prime factors; the additional parity restrictions raise the familiar E307 lower
-bound to at least `60` in the unrestricted case.
-
-For an odd union, the first `1411` odd primes have reciprocal sum below `2`, while the first
-`1412`, ending at `11789`, exceed `2`.  Hence an odd--odd cycle would require at least `1412`
-prime factors from the reciprocal-mass condition alone.
-
-The `k>=1` threshold `s(U)>3` is vastly more expensive: the reciprocal sum of all primes first
-exceeds `3` only after hundreds of thousands of prime factors.  This explains why positive
-integer return defects are invisible at ordinary computational scales without proving that they
-never occur.
-
-## 6. Relationship with Bado's local conditions
+## 5. Relationship with Bado's local conditions
 
 Assume the exact one-sided equation
 
 ```text
-D(Y)=X.                                            (6.1)
+D(Y)=X.
 ```
 
-For every prime `q|Y`, reducing `(6.1)` modulo `q` gives
+For every prime `q|Y`,
 
 ```text
-qX congruent Y mod q^2.                            (6.2)
+qX congruent Y mod q^2.                            (5.1)
 ```
 
-If the return congruences `(4.2)` also hold, then for every prime `ell|XY` the union quotient
+If the return congruences `(3.2)` also hold, then for every prime `ell|XY`,
 
 ```text
-(XY/ell | ell)
+(XY/ell | ell)=1.
 ```
 
-is a quadratic residue:
-
-- if `ell=p|X`, then
-  ```text
-  (XY/p)=(X/p)Y congruent Y^2 mod p;
-  ```
-- if `ell=q|Y`, then
-  ```text
-  (XY/q)=X(Y/q) congruent X^2 mod q.
-  ```
-
-Thus the implication hierarchy is
+Thus
 
 ```text
-one-sided exact forcing D(Y)=X
-+ exact return congruences D(X)=Y mod X
-  => union Legendre constraints of Bado.            (6.3)
+one-sided exact forcing
++ exact return congruences
+  => Bado's union Legendre conditions.
 ```
 
-The converse is false in general: the Legendre conditions remember only quadratic-residue
-classes, whereas `(4.2)` is an exact cofactor congruence.
+The converse is false in general.  The Legendre model is an outer local envelope around the exact
+return layers.
 
-Bado's weighted union model therefore counts a weaker local envelope around the integer-return
-layers.  Its expected abundance is compatible with the possibility that the exact quotient
-condition `k=0` remains much rarer.
+## 6. Computational evidence and its corrected meaning
 
-## 7. Computational evidence
+The earlier enumeration through `Y<=500000` found no example with `D^2(Y)>=Y`, and the maximum
+observed ratio was approximately `0.5272717618`.  This was only a small-support phenomenon.
 
-An exact Wolfram-language enumeration tested all squarefree
-
-```text
-2<=Y<=500000
-```
-
-for which
-
-```text
-X=D(Y)
-```
-
-is squarefree, coprime to `Y`, and `X<Y`.
-
-The results were:
-
-```text
-number of deficient squarefree-to-squarefree pairs: 173781;
-number with D^2(Y)>=Y:                              0;
-number with D^2(Y)>=D(Y):                           2582.
-```
-
-Thus the strong statement has many counterexamples, while the weak two-step contraction had no
-counterexample in this range.
-
-The maximum observed value of
+The explicit relay counterexample has roughly `142` decimal digits and
 
 ```text
 D^2(Y)/Y
+ =1.00111634302377485969101049437644597489... .
 ```
 
-in the broader squarefree-to-squarefree sample through `500000` was approximately
+Accordingly the earlier computation has no conjectural force.  It records the scale at which the
+sign change had not yet become accessible.
+
+## 7. Corrected research frontier
+
+The obstruction programme based on universal contraction is closed.
+
+The new frontier is **zero-defect targeting**:
 
 ```text
-0.5272717618,
+construct squarefree families in which
+D^2(Y)-Y takes both signs,
+and force or detect an exact zero.
 ```
 
-attained at
+The useful mechanisms are now:
 
-```text
-Y=282490=2*5*13*41*53,
-X=D(Y)=231693=3*7*11*17*59,
-D(X)=148949.
-```
+1. Giuga-core CRT relays producing controlled positive defects;
+2. small and port-generated families producing negative defects;
+3. residual-C port pencils and block-first closure quadratics;
+4. exact mod-square return congruences;
+5. prime-tuple distribution for affine relay forms.
 
-This evidence has no exclusion force for E307.
+There is no ordinary intermediate-value theorem on this discrete parameter space.  The main
+mathematical problem is to create a congruence or port mechanism that converts sign flexibility
+into exact equality.
 
-A separate enumeration through `Y<=300000` found only `38` cases satisfying the exact return
-congruence `(4.1)`.  Every one had negative return defect `k`; none had `k=0` or `k>0`.
-Again, Theorem 5.1 explains why nonnegative layers have a much larger support threshold.
-
-## 8. The contraction conjecture
-
-### Conjecture 8.1 — squarefree arithmetic-numerator contraction
-
-If
-
-```text
-Y squarefree,
-X=D(Y) squarefree,
-0<X<Y,
-```
-
-then
-
-```text
-D(X)<Y.                                            (8.1)
-```
-
-Equivalently,
-
-```text
-(sum_(q|Y)1/q)(sum_(p|D(Y))1/p)<1.                (8.2)
-```
-
-This conjecture is stronger than a negative answer to E307.  It must not be presented as an
-established theorem.
-
-## 9. Exact remaining difficulty
-
-The conjecture is trivial when
-
-```text
-D(X)<=X,
-```
-
-so the only hard regime is
-
-```text
-D(Y)=X<Y,
-D(X)>X.                                            (9.1)
-```
-
-That is, a deficient squarefree denominator has a squarefree numerator which is itself
-nondeficient, but not nondeficient enough to recover the original denominator.
-
-The example `Y=29861`, `X=2310` shows this regime is nonempty.  The desired inequality is the
-quantitative gap
-
-```text
-1<D(X)/X<Y/X.                                     (9.2)
-```
-
-The programme should therefore seek a relation between:
-
-1. the exact numerator equation `D(Y)=X`;
-2. the small-prime core required for `D(X)/X>1`;
-3. the reciprocal-zero-sum congruences imposed on the primes of `Y` by every small prime of `X`;
-4. a lower bound for `Y/X` forced by those simultaneous congruences.
-
-This is a global numerator-factorization problem.  Bado's union Legendre constraints are a useful
-outer sieve but do not by themselves supply the required quantitative gap.
-
-## 10. Research ranking after the defect split
-
-```text
-HIGHEST UPSIDE:
-  prove Conjecture 8.1 or a strong enough partial contraction theorem;
-
-MOST CONCRETE CONSTRUCTION:
-  find nonambient residual-port-pencil intersections whose closure quadratic has two prime roots;
-
-MOST TRACTABLE ANALYTIC SIDE RESULT:
-  prove unconditional cancellation or collision bounds in Bado's union-character model;
-
-LOWEST VALUE:
-  add further local congruences without connecting them to either contraction or construction.
-```
-
-## 11. Honest classification
+## 8. Corrected classification
 
 ```text
 RETURN-DEFECT IDENTITY — PROVED
 DEFECT-LAYER UNION-MASS LOWER BOUND — PROVED
 EXACT RETURN CONGRUENCE => BADO LEGENDRE CONDITIONS — PROVED
-STRONG DEFICIENT FORWARD-INVARIANCE — FALSE
-WEAK TWO-STEP CONTRACTION — OPEN / COMPUTATIONALLY SUPPORTED ONLY
-E307 EXISTENCE OR NONEXISTENCE — OPEN
+STRONG ONE-STEP INVARIANCE — FALSE
+WEAK TWO-STEP CONTRACTION — FALSE
+EXPLICIT SQUAREFREE POSITIVE-DEFECT RELAY — PROVED
+E307 EXACT ZERO DEFECT — OPEN
 ```
 
-No released E306 theorem, manuscript, Lean authority, review status, DOI, or canonical project
-status is changed by this note.
+No released E306 theorem, manuscript, Lean authority, review status, DOI, arXiv, submission, or
+canonical status is changed by this correction.
