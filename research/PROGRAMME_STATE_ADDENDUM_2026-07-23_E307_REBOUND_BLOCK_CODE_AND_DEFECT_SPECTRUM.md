@@ -1,4 +1,4 @@
-# Programme-state addendum: E307 rebound, block code, and defect spectrum
+# Programme-state addendum: E307 rebound, block code, defect spectrum, and core ranking
 
 **Programme:** `E306-RL`  
 **Date:** 2026-07-23  
@@ -13,8 +13,8 @@ Y and D(Y) squarefree, 0<D(Y)<Y
   =>D^2(Y)<Y
 ```
 
-is false.  Two explicit Giuga-core mechanisms now prove squarefree descent followed by overshoot.
-The shorter construction gives a descending side with `60` prime factors and uses only two affine
+is false.  Explicit Giuga-core mechanisms prove squarefree descent followed by overshoot.  The
+shortest construction gives a descending side with `60` prime factors and uses only two affine
 prime forms.
 
 Therefore no future E307 no-go programme should rely on monotonicity or two-step size contraction.
@@ -59,32 +59,53 @@ once `v` exceeds the exact reciprocal-gap threshold.
 For `C=30`, an explicit `59`-prime block and primes `v=25409` and a `123`-digit prime `m` give an
 unconditional counterexample.  This is the minimal mechanism for disproving contraction.
 
-## 3. Exact core-30 target
+A longer three-affine-form relay remains valuable because it can be placed on the exact minimal
+support layer of a chosen Giuga-core port.
 
-The E307 subproblem with one side `30r` remains
+## 3. Residual-square core family
+
+For every squarefree quotient-one Giuga core `C`, an E307 cycle with one side `Cr`, `r` prime, is
+equivalent to
+
+```text
+CY-(C+1)D(Y)=C^2,
+(Y-C)/(C+1) prime.                                  (3.1)
+```
+
+If `C+1` is prime, the standard coordinate is
+
+```text
+N=(C+1)Y,
+N-D(N)=C^2,                                         (3.2)
+```
+
+with one affine prime-output condition.
+
+### Core 30
 
 ```text
 30Y-31D(Y)=900,
 (Y-30)/31 prime.
 ```
 
-Equivalently, with
+The opposite side has at least `66` prime factors and the total cycle at least `70`.  An explicit
+positive-return relay reaches that minimal core-30 support layer.  Complete one-, two-, and
+three-swap repairs of that relay fail.
+
+### Core 858
 
 ```text
-N=31Y,
+858Y-859D(Y)=858^2,
+(Y-858)/859 prime.
 ```
 
-one seeks
+The opposite side has at least `56` prime factors and the total cycle at least `61`.  An explicit
+`55`-prime relay block and three affine prime values produce a squarefree positive-return relay
+exactly on this minimal support layer.
 
-```text
-N-D(N)=900,
-31 exactly divides N,
-(N-930)/961 prime.
-```
-
-Every eligible standard-coordinate state has at least `67` prime factors.  A previously constructed
-positive-return relay reaches this support layer but lies on the wrong side of the residual-900
-surface.  Complete one-, two-, and three-swap repairs of that relay fail.
+Thus core `858` is currently the cheapest exact-zero lane.  Core `1722` has the same current total
+support lower bound `61` and is the natural comparison lane; an analogous explicit relay has not yet
+been constructed here.
 
 ## 4. Block-code theorem
 
@@ -119,7 +140,61 @@ reciprocal-load positivity.
 The primewise `mu`-Sondow/Korselt criterion is prior literature; the block packaging is the current
 construction interface and is not novelty-audited.
 
-## 5. Ambient E313 boundary
+## 5. Complement jet code
+
+Fix a squarefree partial block `H`, write
+
+```text
+a=H-D(H)>0,
+```
+
+and target defect `T`.  Every squarefree complement `M` satisfies
+
+```text
+aM-HD(M)=T.
+```
+
+Hence its first arithmetic jet lies in the two-coordinate CRT class
+
+```text
+M=T a^(-1) mod H,
+D(M)=-T H^(-1) mod a,                              (5.1)
+```
+
+and on the exact affine line
+
+```text
+D(M)=(aM-T)/H.                                     (5.2)
+```
+
+For a split complement `M=UV`, candidate generation may be indexed by
+
+```text
+UV mod H,
+U D(V)+V D(U) mod a,
+```
+
+followed by one exact residual check.  This is the balanced complement-jet meet-in-the-middle
+architecture.
+
+For core `858`, natural-prefix ordered-tail searches were complete through ten remaining primes:
+
+```text
+tails   terminal states tested   integral closures
+  3             2574                   0
+  4            23605                   0
+  5           120948                   0
+  6           414174                   0
+  7          1053970                   0
+  8          2036237                   0
+  9          3496486                   0
+ 10          5261337                   0.
+```
+
+This establishes a stopping rule: do not extend the ordered-tail tree; switch to balanced jet-code
+matching.
+
+## 6. Ambient E313 boundary
 
 If `K` is any even squarefree primary pseudoperfect number and `B` is a coprime squarefree block,
 then `B` is odd and
@@ -128,16 +203,16 @@ then `B` is odd and
 B-KD(B)
 ```
 
-is odd.  Therefore no even PPN ambient core can be filled to any even residual, including `900`, by
-any coprime squarefree block.
+is odd.  Therefore no even PPN ambient core can be filled to any even residual by any coprime
+squarefree block.
 
 Known E313 blocks may still enter through nonambient residual-port pencils, but ambient inheritance
-is completely unavailable.
+is completely unavailable for `900`, `858^2`, or any other even target.
 
 The standard small `mu`-Sondow constructions often insert `rad(mu)` into the constructed number.
-They are incompatible with primitive defect-900 states, which satisfy `gcd(N,900)=1`.
+They are incompatible with primitive squarefree defect states, which satisfy `gcd(N,mu)=1`.
 
-## 6. Defect spectrum
+## 7. Defect spectrum
 
 If squarefree `N` satisfies
 
@@ -148,7 +223,7 @@ delta(N)=N-D(N)=C>0,
 then for every `p|N`, with `K=N/p`,
 
 ```text
-delta(K)=(K+C)/p=(N+Cp)/p^2.
+delta(K)=(K+C)/p=(N+Cp)/p^2.                      (7.1)
 ```
 
 Hence every final prime is a one-prime terminal port from its cofactor.
@@ -156,7 +231,7 @@ Hence every final prime is a one-prime terminal port from its cofactor.
 For a two-prime tail `N=Hqt`, with `c=delta(H)`, the two factors in
 
 ```text
-(cq-H)(ct-H)=H^2+Cc
+(cq-H)(ct-H)=H^2+Cc                                (7.2)
 ```
 
 are exactly the intermediate defects
@@ -174,7 +249,7 @@ The two-prime divisor port is therefore a defect ladder
 
 not an anonymous factorization.
 
-For the distinguished factor `31`,
+For the distinguished factor `31` in the core-30 coordinate,
 
 ```text
 31 delta(N/31)=N/31+900,
@@ -186,83 +261,84 @@ and the E307 output prime is
 delta(N/31)-30.
 ```
 
-## 7. Computational diagnostics
+The same shifted-cofactor-defect interpretation holds for every residual-square core.
 
-The following complete bounded tests gave no integer two-prime terminal closure:
+## 8. Computational diagnostics
 
-1. the natural support-65 partial block;
-2. `12,020` one-boundary-replacement support-65 blocks;
-3. structured odd tails obtained from all currently used primary-pseudoperfect cores, completed by
-   the smallest admissible primes;
-4. all distinct structured sub-tail variants arising from those known cores.
+The following complete bounded tests produced no integral exact-zero closure:
 
-The failures occur at bounded divisor support / integrality, before primality.
+1. core-30 relay repairs changing one, two, or three factors;
+2. the natural support-65 partial block and its two-prime terminal window;
+3. `12,020` one-boundary-replacement support-65 blocks;
+4. all `66` one-deletion cofactors of the natural overfull 66-prime state, with every integer in
+   every exact two-prime terminal window;
+5. structured odd tails arising from known primary-pseudoperfect cores, completed by the smallest
+   admissible primes;
+6. core-858 natural-prefix ordered tails through ten terminal primes.
 
-These are diagnostics, not general exclusions.
+The failures occur at integral divisor / jet-code support before primality.  They are diagnostics,
+not general exclusions.
 
-## 8. Corrected research ranking
+## 9. Corrected research ranking
 
-### Highest-value constructive mechanism
+### First exact-zero lane: core 858
 
-Build distant block libraries with controlled
+Use the minimal-support positive-return relay as a prime reservoir and support template, but do not
+repair it by low swaps or extend its natural ordered-tail tree.  Generate genuinely distant balanced
+complements and match their product and derivative jet syndromes.
 
-```text
-theta_900(A),
-D(A)/A,
-delta(A),
-distinguished factor 31,
-```
+### Comparison lane: core 1722
 
-and seek mutual block-syndrome collisions rather than low-Hamming repairs.
+It currently shares the total support lower bound `61`.  Constructing its own minimal-layer relay
+would determine whether core `858` is arithmetically special or merely the first convenient member.
 
-### Highest-value terminal mechanism
+### Structural model: core 30
 
-Generate large primitive intermediate quotient-one `d`-Sondow states `K` and test
+Retain core `30` for transparent residual-`900` identities, defect-spectrum interpretation, and
+smallest-core examples.  It is not currently the cheapest exact construction lane.
 
-```text
-(K+900)/d
-```
-
-for a new prime.  The parameter `d` is generally enormous; small OEIS `mu` tables are not the right
-search space.
-
-### Analytic mechanism
+### General analytic mechanism
 
 Develop a multiplicative hot-cold model:
 
 ```text
 hot block:
-  mix product residues;
+  mix product and derivative residues;
 
 cold block:
   supply reciprocal mass;
 
 terminal block:
-  close the finite residual 900 exactly.
+  close the finite residual C^2 exactly.
 ```
 
-The essential new difficulty relative to E306 is self-modularity: the modulus and target both move
-with the selected block.
+The essential difficulty relative to E306 is self-modularity: the modulus, derivative modulus, and
+target move with the partial block.
 
 ### Low-value directions
 
 ```text
 more contraction inequalities;
 more random low swaps;
+longer ordered-tail trees;
 more local congruences without a gluing or distribution theorem;
 ambient transfer from even PPN chains.
 ```
 
-## 9. Honest status
+## 10. Honest status
 
 ```text
 SQUAREFREE TWO-STEP CONTRACTION — FALSE / EXPLICIT COUNTEREXAMPLES
 DIRECT TWO-LINEAR-FORM REBOUND — PROVED
-CORE-30 E307 <=> DEFECT-900 + OUTPUT PRIME — PROVED
+GENERAL GIUGA-CORE RESIDUAL-SQUARE PORT — PROVED
+CORE-30 MINIMAL-LAYER POSITIVE RELAY — PROVED
+CORE-858 MINIMAL-LAYER POSITIVE RELAY — PROVED
+CORE-858 TOTAL SUPPORT LOWER BOUND 61 — PROVED
 BLOCK-SYNDROME GLUING — PROVED
+COMPLEMENT JET CODE — PROVED
 AMBIENT EVEN-PPN TO EVEN DEFECT — IMPOSSIBLE
 DEFECT SPECTRUM / INTERMEDIATE LADDER — PROVED
-EXACT DEFECT-900 E307 FILLING — OPEN
+CORE-858 EXACT RESIDUAL-SQUARE FILLING — OPEN
 E307 EXISTENCE OR NONEXISTENCE — OPEN
 ```
 
