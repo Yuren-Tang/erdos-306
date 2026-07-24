@@ -2,7 +2,7 @@
 
 **Scope:** adversarial self-audit of the proof-development packet.  
 **Authority:** none beyond the ordinary arguments restated in this packet.  
-**Disposition:** no counterexample or missing implication remains at proof-development level; independent audit is still required.
+**Disposition:** bounded `SAS-BR-1` repair incorporated; independent repair verification is still required.
 
 ## 1. Population-floor failures
 
@@ -112,6 +112,46 @@ and the ordered-pair factor `1/2` is absorbed once into the constant.
 
 The threshold `s_0=1024(B_0/Z+1)` and the final label smallness `|m|<=|C|Z/1024` absorb the factor four coming from `pq>=Z^2/4`.
 
+### 5.6 Allowing the old dominant-label range `|m|<Z^2/4`
+
+This is insufficient. Two such labels may differ by almost `Z^2/2`, and a witness product is guaranteed only to be at least `Z^2/4`; moreover `|m|<pq/2` is not automatic. The repaired proof uses
+
+```text
+B_0=A_0sqrt(R_0)Z^2/M=o(Z^2)
+```
+
+and places the terminal threshold beyond the point where
+
+```text
+B_0<Z^2/16.
+```
+
+Every relevant base-prime or dominant label is restricted to `|m|<=B_0`.
+
+### 5.7 Assuming a same-class pair lift equals the label without checking the centred range
+
+For `p,q in [Z/2,Z)` in one repaired label class,
+
+```text
+|m|<=B_0<Z^2/16<pq/2.
+```
+
+The integer `m` is therefore the centred representative modulo `pq`, so `H_(pq)=m`. This fact is stated before the dominant-class energy estimate.
+
+### 5.8 Applying reciprocal dispersion to two labels whose difference might vanish at the target prime
+
+All base-prime labels are congruent modulo the chosen base prime `p_0`. For distinct labels `m_i,m_j` and a target prime `q!=p_0`, if the difference vanished modulo `q`, then `p_0q` would divide a nonzero integer of size
+
+```text
+0<|m_i-m_j|<=2B_0<Z^2/8<p_0q,
+```
+
+which is impossible. Thus the target residue supplied to reciprocal dispersion is nonzero.
+
+### 5.9 Claiming two dominant labels are unique without a product bound
+
+Two dominant coordinate classes overlap in at least two witness primes for large `Z`. Their labels are each bounded by `B_0`, so their difference has absolute value below `Z^2/8`, while the product of two shared primes is at least `Z^2/4`. Divisibility by that product forces equality. This uniqueness is established before class energy and zero-exception.
+
 ## 6. Core-amplification failures
 
 ### 6.1 Replacing actual star phases by formal reciprocal phases
@@ -132,7 +172,7 @@ At the synchronization floor,
 |m|<<Z^(3/2)/(logZ)^(1/2).
 ```
 
-The perturbation norm is `O(1/logZ)`, while the reciprocal-dispersion norm is `>>sqrt(Z)/log^(3/2)Z`.
+The perturbation norm is `O(1/logZ)`, while the reciprocal-dispersion norm is `>>sqrt(Z)/log^(3/2)Z`. This quantitative label is also eventually below the repaired `Z^2/16` threshold.
 
 ### 6.3 Allowing `s` inside the witness set
 
@@ -142,7 +182,7 @@ The perturbation norm is `O(1/logZ)`, while the reciprocal-dispersion norm is `>
 
 ### 7.1 Calling every labelled high-energy assignment diagonal
 
-This is false. A label alone does not imply the centred lifts equal that integer. The packet first separates `T_U>=F_sync` and bounds it energetically. The Gaussian identity is used only below the cold floor, where `|m|=o(Z^2)`.
+This is false. A label alone does not imply the centred lifts equal that integer. The packet first separates `T_U>=F_sync` and bounds it energetically. The Gaussian identity is used only below the cold floor, where the quantitative label bound is eventually `<Z^2/16`, so every retained product, at least `Z^2/4`, has centred lift exactly `m`.
 
 ### 7.2 Calling cold `U!=emptyset` globally coherent
 
@@ -156,7 +196,7 @@ Only cold `U=emptyset` is the genuine global diagonal.
 
 ### 7.3 Assuming uniqueness of the integer label from one sensor
 
-Uniqueness is supplied by the full retained witness block and, equivalently, by products of multiple primes. The label range is much smaller than the relevant prime products.
+Uniqueness is supplied by the full retained witness block and, equivalently, by products of multiple primes. The repaired label range is strictly smaller than half every relevant witness product, and the dominant-label uniqueness proof uses two shared primes explicitly.
 
 ### 7.4 Forgetting `S-S` factors
 
@@ -193,6 +233,8 @@ M_dec<XZ/4<=rs/2
 ```
 
 for every lower prime `r` and large `X`; the candidate lift is actually `m`.
+
+This `M_dec` check and the fixed-`b` range `|m|<=X^2/4` are independent of the repaired robust-cold label range. For large `X`, both lie below `Z^2/16`; neither invokes the discarded `|m|<Z^2/4` allowance.
 
 ### 9.2 Comparing candidate energy only pointwise
 
@@ -234,6 +276,8 @@ For `X^2/4<|m|<=M_dec`,
 
 for large `X`.
 
+The `X^2/4` endpoint here is the analytic Sector II/III split, not a robust-cold dominant-label bound.
+
 ### 10.4 Missing diagonal exclusion
 
 Distinct primes in the adaptive interval are used, and their products lie in `[4|m|,9|m|]`; every pair phase is between `1/9` and `1/4`.
@@ -269,7 +313,7 @@ Each lower row is either its chosen decoder or a sibling. The retained-skeleton 
 
 ### 12.1 Congruence without equality
 
-The reciprocal load is strictly below one. The selected sum lies in `[0,1)`, while `1/b in (0,1)`, so congruence modulo one forces equality.
+The reciprocal load is strictly below one. The selected sum lies in `[0,1)`, while `1/b in (0,1)`, so congruence modulo one forces equality. This terminal no-wrap uses only the total reciprocal load and is unrelated to any label range.
 
 ### 12.2 Empty forbidden set
 
@@ -296,4 +340,4 @@ The route is cleaner in logical hierarchy and eliminates one difficult theorem f
 
 ## 15. Final self-audit disposition
 
-No false step or unclosed implication has been found after the corrections above. The proper next gate is an independent sparse-route ordinary-proof audit, not manuscript adoption or Curator integration.
+No counterexample or unclosed implication has been found after incorporating `SAS-BR-1`. The proper next gate is independent bounded repair verification of the fixed repaired candidate, not manuscript adoption or Curator integration.
