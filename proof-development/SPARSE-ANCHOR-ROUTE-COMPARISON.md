@@ -3,18 +3,27 @@
 **Role:** `Erdős 306 — Sparse-Anchor Proof Development Worker` (`E306-PD-SAS-01`)  
 **Exact base:** `research/e306-frontier-v1@fed38b7d79b2b037ca1d3521a53b2c61c007867d`  
 **Classification:** `VALID STRUCTURAL SIMPLIFICATION; NOT A PROVED LENGTH SIMPLIFICATION`  
-**Assurance:** ready only for an independent sparse-route audit.
+**Assurance:** bounded `SAS-BR-1` repair incorporated; ready only for independent repair verification.
 
 ## 1. Question
 
 The bounded task was to decide whether sparse arithmetic synchronization can replace the dense top-block fingerprint partition in the one-anchor proof, without hiding the same entropy argument in core enumeration, robust cold rigidity, or defect bookkeeping.
 
-The route closes after two explicit repairs:
+The proof-development route required two architectural corrections:
 
 1. high retained energy is bounded as an energetic sector even when the residue pattern happens to admit a label;
 2. cold terms with `U!=emptyset` are top-row defect terms, not genuine global diagonal frequencies.
 
-Both repairs are paid for by the existing `delta^|U|` expansion and do not reintroduce fingerprint entropy.
+The independent sparse audit then identified one local legality defect, `SAS-BR-1`, inside the unchanged robust exact-cold module. It is repaired by using
+
+```text
+B_0=A_0sqrt(R_0)Z^2/M=o(Z^2),
+B_0<Z^2/16
+```
+
+at the terminal threshold and restricting all relevant base-prime/dominant labels to `|m|<=B_0`. Before class energy and zero-exception, the repaired proof establishes same-class centred-lift identification, nonvanishing of differences of distinct base-prime labels at target primes, and uniqueness of dominant labels sharing two primes.
+
+The two architectural corrections are paid for by the existing `delta^|U|` expansion; the bounded legality repair changes no route component and none of the three reintroduces fingerprint entropy.
 
 ## 2. Common arithmetic endpoint
 
@@ -71,6 +80,7 @@ population energy on all rows
  -> row distance D_r(S)>=AlogZ
  -> decoder-defect expansion
  -> robust exact-cold rigidity on G=R\U
+    with repaired label-range legality
  -> amplification of any core mismatch through G
  -> trivial core enumeration dominated by F_sync.
 ```
@@ -112,7 +122,7 @@ Q_G<c_wZ/log^3Z
  -> one exact integer label.
 ```
 
-Its proof uses reciprocal dispersion, a repaired nondominant forcing argument, and elimination of the final exceptional coordinates. It does not enumerate energetic assignments.
+Its proof uses reciprocal dispersion, a repaired nondominant forcing argument, explicit `B_0<Z^2/16` label legality, and elimination of the final exceptional coordinates. It does not enumerate energetic assignments.
 
 ### 5.3 Defect expansion is not hidden independence
 
@@ -138,7 +148,7 @@ Thus the route is not “sparse” in every combinatorial sense. Its synchroniza
 |---|---|---|
 | full-top population distance | same population lemma, then Bernoulli sampling | proved |
 | full-top row sensors | one common core `S` of size `Theta(log^3Z)` | proved |
-| exact-cold theorem on `B` | robust exact-cold theorem on every positive-density `G` | reproved |
+| exact-cold theorem on `B` | robust exact-cold theorem on every positive-density `G` | reproved; `SAS-BR-1` repaired |
 | fingerprint rigidity | absent | removed |
 | fingerprint entropy | core-defect amplification plus energy floor | removed |
 | energetic top level-set sum | trivial `Y_S` count times `e^{-F_sync}` | proved |
@@ -157,6 +167,8 @@ The sparse route adds four nontrivial modules:
 4. core-defect amplification using the exact-cold label-size bound.
 
 It also requires a two-sided size estimate `|S|asymp(log Z)^3`, not merely an upper bound, so that the fixed `r|b` row tails are superpolynomially small.
+
+`SAS-BR-1` adds no new module or parameter: it only tightens the local base-label range already furnished by `B_0=o(Z^2)` and records the three divisibility/centred-lift consequences before they are used.
 
 ## 9. Is the route more concise?
 
@@ -185,8 +197,21 @@ FINGERPRINT ENTROPY GENUINELY REMOVED;
 NO CLAIM OF STRICT PROOF-LENGTH REDUCTION.
 ```
 
-## 10. Relation to the multiblock fallback
+## 10. Range and closure noninterference
+
+The repaired `Z^2/16` bound governs only robust-cold base-prime and dominant labels. It does not alter:
+
+```text
+|m|<=X^2/4       for fixed-b decoding and Sector II,
+X^2/4<|m|<=M_dec for adaptive complete-pair damping,
+M_dec<|m|         for the coherent top-label tail,
+or Lambda<1       for terminal reciprocal no-wrap.
+```
+
+For large `X`, the decoded thresholds and the quantitative cold-label bound all lie inside the repaired robust-cold range. Major/minor estimates, the exact factor partition, and arithmetic closure are unchanged.
+
+## 11. Relation to the multiblock fallback
 
 The sparse route, like the dense one-anchor route, remains a strict structural simplification of the repaired multiblock architecture: it uses no block chain, adjacent-label propagation, shell code, global multiblock level set, localization parameter `eta`, or finite sibling reservoir `G`.
 
-This comparison does not transfer assurance. The repaired multiblock proof and the dense one-anchor packet are providers of local lemmas only; the present packet requires its own independent ordinary-mathematics audit.
+This comparison does not transfer assurance. The repaired multiblock proof and the dense one-anchor packet are providers of local lemmas only; the repaired sparse packet now requires its own independent bounded repair verification.
