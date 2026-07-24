@@ -2,7 +2,7 @@
 
 **Controlling proof:** `proof-development/SPARSE-ANCHOR-HUMAN-PROOF.md`  
 **Frozen source:** `research/e306-frontier-v1@fed38b7d79b2b037ca1d3521a53b2c61c007867d`  
-**Assurance state:** bounded proof-development completion; separate independent audit required.
+**Assurance state:** bounded `SAS-BR-1` repair incorporated; independent repair verification required.
 
 ## 1. Endpoint
 
@@ -49,6 +49,7 @@ full-range population floor
   -> uniform row sibling factor delta<=Z^(-K_0)
   -> decoder-defect expansion by U
   -> positive-density exact-cold rigidity on G=R\U
+     with repaired base-label range and centred-lift legality
   -> one-core-defect amplification through G
   -> low retained energy = complete integer diagonal
   -> high-energy and large-U suppression
@@ -100,7 +101,7 @@ O(ZlogZ)((1+delta)^N-1)=O(Z^2delta).
 
 Only `U=emptyset` and `T_emptyset<F_sync` is the genuine global integer diagonal.
 
-## 6. Robust exact-cold theorem
+## 6. Robust exact-cold theorem and `SAS-BR-1`
 
 For every fixed positive density `c_*`, if
 
@@ -116,7 +117,41 @@ then one integer `m` satisfies `a_r=m mod r` for every `r in G`, with
 |m|<=C_*sqrt(Q_G(a))/sigma_G.
 ```
 
-The proof incorporates all bounded prior repairs:
+The base-prime construction uses
+
+```text
+R_0=Q_G(a),
+B_0=A_0sqrt(R_0)Z^2/|G|.
+```
+
+At the cold threshold,
+
+```text
+B_0/Z^2=O(1/sqrt(ZlogZ))=o(1).
+```
+
+The terminal arithmetic threshold is therefore enlarged so that, uniformly throughout the robust-cold argument,
+
+```text
+B_0<Z^2/16.
+```
+
+Every relevant base-prime and dominant label is restricted to `|m|<=B_0`. Before class energy or zero-exception is invoked, the proof records:
+
+```text
+same class p,q:
+  |m|<pq/2, hence H_(pq)=m;
+
+distinct base-prime labels m_i,m_j and target q!=p_0:
+  p_0|(m_i-m_j) and 0<|m_i-m_j|<p_0q,
+  hence m_i-m_j is nonzero modulo q;
+
+two dominant labels sharing p,q:
+  pq divides their difference and its absolute value is <pq,
+  hence the labels coincide.
+```
+
+The proof also preserves all prior bounded repairs:
 
 1. reciprocal dispersion is applied only with a source class of size at least sixteen;
 2. the zero-energy case is separated before defining the cutoff proportional to `sqrt(Q_G)`;
@@ -130,7 +165,7 @@ If the retained witness block has label `m` and one `s in S` has `y_s!=m mod s`,
 sum_(r in G)||d r^(-1)/s||^2 >> Z/log^3Z.
 ```
 
-The exact-cold label bound makes the perturbation `m/(rs)` negligible in `l^2`. Thus one core defect already costs the synchronization floor.
+The repaired exact-cold range first makes all retained witness lifts legal; the quantitative exact-cold label bound then makes the perturbation `m/(rs)` negligible in `l^2`. Thus one core defect already costs the synchronization floor.
 
 ## 8. Lower-coordinate compression
 
@@ -154,6 +189,14 @@ M_dec=XZ/(log Z)^2.
 
 Every prime coordinate in `P` decodes to `m` for `|m|<=M_dec`. Every prime coordinate of squarefree `b` decodes to `m` for `|m|<=X^2/4`. Hence the actual frequency is the integer `m mod L` throughout the major and full-variance Gaussian ranges.
 
+The occurrence of `X^2/4` here is unrelated to the discarded robust-cold allowance `|m|<Z^2/4`. It is the fixed-`b` decoder and Sector II/III threshold. For large `X`,
+
+```text
+X^2/4<M_dec<Z^2/16,
+```
+
+and the quantitative cold-label bound `O(Z^(3/2)/(logZ)^(1/2))` is also below `Z^2/16`. Thus the repaired robust-cold range contains every later decoded range, while no later decoder or major/minor estimate uses the old `Z^2/4` label allowance.
+
 ## 10. Five exhaustive sectors
 
 ```text
@@ -167,7 +210,8 @@ III. X^2/4<|m|<=M_dec:
      adaptive complete-pair damping on
      [2sqrt(|m|),3sqrt(|m|)].
 
-IV.  M_dec<|m| within the cold-label range:
+IV.  M_dec<|m| within the repaired cold-label range
+     (in particular |m|<Z^2/16):
      sparse-top Gaussian tail.
 
 V.   energetic top assignments, large defect sets,
@@ -194,7 +238,7 @@ The only terminal order is
 C -> X.
 ```
 
-Choose `C` to suppress Sector II, then choose `X` beyond every arithmetic, sampling, rigidity, Taylor, decoder, adaptive-interval, avoidance, and error threshold.
+Choose `C` to suppress Sector II, then choose `X` beyond every arithmetic, sampling, rigidity, Taylor, decoder, adaptive-interval, avoidance, and error threshold, including the uniform terminal inequality `B_0<Z^2/16` at the cold cutoff.
 
 ## 12. Theorem hierarchy and comparison
 
