@@ -2,7 +2,7 @@
 
 **Role:** `Erdős 306 — Sparse-Anchor Proof Development Worker` (`E306-PD-SAS-01`)  
 **Frozen source:** `research/e306-frontier-v1@fed38b7d79b2b037ca1d3521a53b2c61c007867d`  
-**State:** complete bounded proof-development candidate; independent sparse-route audit still required.
+**State:** bounded `SAS-BR-1` repair incorporated; independent repair verification required.
 
 ## 1. Headline theorem and avoiding reduction
 
@@ -450,7 +450,7 @@ sum_(p in F)||d p^(-1)/q||^2 >= c_D s^3/Z^2.
 
 **Proof.** Put `eta=s/(64Z)`. If `||d p^(-1)/q||<=eta`, then for a nonzero integer `v` with `|v|<=s/16` one has `vp=d mod q`. For fixed `v`, this determines one residue class of `p mod q`, and an interval of length at most `q` contains at most two integers in that class. Fewer than `s/2` elements are close; at least `s/2` have norm at least `eta`. ∎
 
-Fix a small `rho_0 in (0,1/8)`. A label `m`, with `|m|<Z^2/4`, is dominant if at least `(1-rho_0)M` coordinates equal `m` modulo their primes. Two dominant labels coincide, since their classes share at least two primes and the product of those primes exceeds the possible difference.
+Fix a small `rho_0 in (0,1/8)`.
 
 ### Proposition 8.2 — repaired nondominant forcing
 
@@ -460,9 +460,9 @@ There is `c_w=c_w(c_*)>0` such that
 Q_G(a)<c_w Z/(log Z)^3
 ```
 
-implies a unique dominant label.
+implies a unique dominant label in the repaired range defined below.
 
-**Proof.** If `Q_G(a)=0`, every pair lift is zero, hence all coordinates are the residue of `0`; handle this case before introducing `sqrt(Q_G)`.
+**Proof.** If `Q_G(a)=0`, every pair lift is zero, hence all coordinates are the residue of `0`; the unique dominant label is `m=0`. Handle this case before introducing `sqrt(Q_G)`.
 
 Assume `0<R_0:=Q_G(a)<cZ/(log Z)^3`. Put
 
@@ -470,19 +470,86 @@ Assume `0<R_0:=Q_G(a)<cZ/(log Z)^3`. Put
 B_0=A_0 sqrt(R_0) Z^2/M
 ```
 
-with fixed large `A_0=A_0(rho_0)`. Call a pair bad if `|H_(pq)|>B_0`. Since `pq<Z^2`,
+with fixed large `A_0=A_0(rho_0)`. Since `M asymp Z/log Z`, uniformly in this cold range
+
+```text
+B_0/Z^2
+ <= C A_0 sqrt(Z/(log Z)^3)/(Z/log Z)
+ = O(1/sqrt(Zlog Z))
+ -> 0.
+```
+
+After fixing the structural constants, enlarge the terminal arithmetic threshold so that throughout the argument
+
+```text
+B_0<Z^2/16.
+```
+
+Call a pair bad if `|H_(pq)|>B_0`. Since `pq<Z^2`,
 
 ```text
 #bad <= R_0 Z^4/B_0^2.
 ```
 
-Averaging gives a base prime `p_0` with bad degree at most `rho_0M/8` when `A_0` is large. For every nonbad neighbour `q`, put `ell(q)=H_(p_0q)`. Then `|ell(q)|<=B_0`, `ell(q)=a_q mod q`, and all labels lie in one residue class modulo `p_0`. Hence the number of possible labels is
+Averaging gives a base prime `p_0` with bad degree at most `rho_0M/8` when `A_0` is large. For every nonbad neighbour `q`, put `ell(q)=H_(p_0q)`. Then
+
+```text
+|ell(q)|<=B_0,
+ell(q)=a_q mod q,
+ell(q)=a_(p_0) mod p_0.
+```
+
+Thus all base-prime labels lie in one residue class modulo `p_0`, and the number of possible integer labels is
 
 ```text
 M_0 <= 4B_0/Z+2.
 ```
 
-For small `c` and large `Z`, `B_0<Z^2/4`. Suppose no dominant class exists. Call a class small if its size is below
+For every such label `m`, let
+
+```text
+C(m)={r in G:a_r=m mod r}.
+```
+
+Call `m` dominant if `|m|<=B_0` and `|C(m)|>=(1-rho_0)M`.
+
+We now record the three legality facts used below.
+
+1. **Same-class centred lift.** If `p,q in C(m)`, then `m` is a CRT representative of the pair residues and
+
+   ```text
+   |m|<=B_0<Z^2/16<pq/2,
+   ```
+
+   because `p,q>=Z/2`. Hence the centred pair lift is exactly
+
+   ```text
+   H_(pq)(a)=m.
+   ```
+
+2. **Distinct base-prime labels give a nonzero target residue.** Let `m_i!=m_j` be two labels produced from `p_0`, and let `q!=p_0` be a target prime carrying `m_j`. Since both labels equal `a_(p_0)` modulo `p_0`, one has `p_0|(m_i-m_j)`. If also `m_i=m_j mod q`, then `p_0q` divides the nonzero difference, whereas
+
+   ```text
+   0<|m_i-m_j|<=2B_0<Z^2/8<p_0q,
+   ```
+
+   a contradiction. Therefore `m_j-m_i` is nonzero modulo `q`, as required by Lemma 8.1.
+
+3. **Uniqueness of a dominant label.** If `m,m'` are dominant, then
+
+   ```text
+   |C(m) intersection C(m')|>=(1-2rho_0)M.
+   ```
+
+   For large `Z` this intersection contains two distinct primes `p,q`. Their product divides `m-m'`, while
+
+   ```text
+   |m-m'|<=2B_0<Z^2/8<pq.
+   ```
+
+   Hence `m=m'`.
+
+Suppose no dominant label exists. Partition the nonbad neighbours of `p_0` into their base-prime label classes. Call a class small if its size is below
 
 ```text
 s_0=1024(B_0/Z+1).
@@ -515,7 +582,7 @@ Now suppose small classes contain fewer than `rho_0M/4` vertices. Remove `p_0` a
 S_0 >= (1-rho_0/2)M.
 ```
 
-Let their sizes be `n_1,...,n_t`. Every `n_i>=s_0`, and the largest is at most `(1-rho_0)M`. For two distinct classes with labels `m,m'`, apply Lemma 8.1 from the class of size `n_i` to all but at most one vertex of the other class. The hypothesis `n_i>=max(16,512B_0/Z)` allows the harmless label term to be absorbed. Summing over ordered class pairs counts each undirected edge twice, so
+Let their sizes be `n_1,...,n_t`. Every `n_i>=s_0`, and the largest is at most `(1-rho_0)M`, since its integer label would otherwise be dominant. For two distinct classes with labels `m_i,m_j`, apply Lemma 8.1 from the class of size `n_i` to all but at most one vertex of the other class. The target residue is nonzero by legality fact 2. The hypothesis `n_i>=max(16,512B_0/Z)` allows the harmless label term to be absorbed. Summing over ordered class pairs counts each undirected edge twice; absorbing the resulting factor `1/2` into the absolute constant gives
 
 ```text
 R_0 >= c/Z^2 sum_i n_i^3 sum_(j!=i)(n_j-1).
@@ -554,7 +621,7 @@ R_0^2 >= c M^6/Z^4,
 R_0 >= c M^3/Z^2 >= c' Z/(log Z)^3.
 ```
 
-Choosing `c=c_w` below the resulting constants gives the contradiction. ∎
+Choosing `c=c_w` below the resulting constants gives the contradiction. Existence and the uniqueness proved in legality fact 3 complete the proof. ∎
 
 ### Proposition 8.3 — robust exact-cold theorem
 
@@ -571,7 +638,7 @@ a_r=m mod r for every r in G,
 |m| <= C_* sqrt(Q_G(a))/sigma_G.
 ```
 
-**Proof.** Proposition 8.2 gives a dominant class `C` and label `m`. On pairs inside `C`, the centred lift is exactly `m`, so
+**Proof.** Proposition 8.2 gives a dominant label `m`. Let `C=C(m)` be its full congruence class. On pairs inside `C`, legality fact 1 gives the exact centred lift `H_(pq)=m`, so
 
 ```text
 Q_G(a)>=m^2 sum_(p<q in C)1/(p^2q^2)
@@ -580,7 +647,7 @@ Q_G(a)>=m^2 sum_(p<q in C)1/(p^2q^2)
 
 This proves the label bound. After reducing `c_w` once more, it also gives `|m|<=|C|Z/1024`; the numerical constant is chosen only to absorb the factor coming from `p,q>=Z/2`.
 
-For an exceptional coordinate `q notin C`, let `d=a_q-m mod q`. Lemma 8.1 applied to `C` and the displayed bound on `m` gives cross energy at least `c|C|^3/Z^2`. These edge sets are disjoint as `q` varies. Hence
+For an exceptional coordinate `q notin C`, put `d=a_q-m mod q`. By definition of `C`, `d!=0 mod q`. Lemma 8.1 applied to `C` and the displayed bound on `m` gives cross energy at least `c|C|^3/Z^2`. These edge sets are disjoint as `q` varies. Hence
 
 ```text
 |G\C| c|C|^3/Z^2 <= Q_G(a).
@@ -590,7 +657,7 @@ Since `|C|>>Z/logZ` and `Q_G(a)<c_wZ/log^3Z`, the right side makes `|G\C|<1` for
 
 ## 9. Core-defect amplification
 
-Assume `|U|<=N/2`, so `G=R\U` has positive density in `B`, and suppose the decoder assignment on `G` is the common label `m` supplied by Proposition 8.3. If some `s in S` has `y_s!=m mod s`, put `d=y_s-m mod s`.
+Assume `|U|<=N/2`, so `G=R\U` has positive density in `B`, and suppose the decoder assignment on `G` is the common label `m` supplied by Proposition 8.3. The repaired robust-cold proof places the relevant label inside `|m|<Z^2/16`. If some `s in S` has `y_s!=m mod s`, put `d=y_s-m mod s`.
 
 Lemma 8.1 gives
 
@@ -600,7 +667,7 @@ sum_(r in G)||d r^(-1)/s||^2
  >= c Z/(log Z)^3.
 ```
 
-For the actual star lift, write `H_(rs)(m,y_s)=m+j_rr`; then `j_r=d r^(-1) mod s`, and
+For the actual star lift, write, modulo integers, `H_(rs)(m,y_s)=m+j_rr`; then `j_r=d r^(-1) mod s`, and
 
 ```text
 H_(rs)/(rs)=j_r/s+m/(rs).
@@ -647,7 +714,7 @@ y_s=m mod s for every s in S,
 
 **Proof.** The internal part of `T_U` is below the robust cold threshold, so Proposition 8.3 gives the common label on `G`. A core defect would contribute at least `c_defZ/log^3Z` to the star part, contradicting the choice of `F_sync`. ∎
 
-For such a low-energy pair, all centred retained lifts equal `m`, because the label bound is `o(Z^2)`. Thus
+For such a low-energy pair, the quantitative label bound is eventually `<Z^2/16`. Every retained top edge joins primes in `[Z/2,Z)`, so its product is at least `Z^2/4` and its half-product at least `Z^2/8`. Thus every retained centred lift is exactly the integer `m`, and
 
 ```text
 T_U(y)=m^2 sigma_(G,S)^2,
@@ -794,6 +861,14 @@ E_r(m)/(D_r^b(S)) <= m^2/Z^2=o(1),
 
 so the `b`-coordinate also decodes to `m mod r`. Squarefreeness of `b` then identifies the single residue `m mod b`.
 
+The threshold `X^2/4` here is the fixed-`b` decoder range, not the former robust-cold allowance `|m|<Z^2/4`. For large `X`,
+
+```text
+X^2/4<M_dec<Z^2/16,
+```
+
+and the quantitative low-energy label bound is also below `Z^2/16`. Hence every later decoder range lies inside the repaired cold-label range, but no decoder estimate uses the discarded `Z^2/4` label statement.
+
 ## 13. Major arc and complete minor decomposition
 
 Choose
@@ -857,7 +932,7 @@ Hence the sector is at most
 C/sigma_E * integral_C^infinity exp(-c_bt^2)dt.
 ```
 
-Choose `C` so this is less than one quarter of the major lower bound.
+Choose `C` so this is less than one quarter of the major lower bound. The endpoint `X^2/4` is the decoded full-variance threshold just established, not a robust-cold label range.
 
 ### Sector III — adaptive complete-pair damping
 
@@ -892,7 +967,7 @@ Summing over `m` makes Sector III `exp(-Omega(X^2/log^2X))`.
 For low-energy coherent top labels with
 
 ```text
-M_dec<|m|<<Z^(3/2)/(log Z)^(1/2),
+M_dec<|m|<<Z^(3/2)/(log Z)^(1/2)<Z^2/16,
 ```
 
 the top retained energy is
@@ -932,7 +1007,7 @@ The five sectors are disjoint after the main/error split and exhaustive because 
 
 ## 14. Positivity, no-wrap, and closure
 
-Fix the structural constants, including `K_0`, the sensor strength `A`, and the robust-cold constants. Then choose `C` for Sector II, and finally choose `X` above every PNT, sampling, rigidity, decoder, Taylor, adaptive-interval, avoidance, and error threshold.
+Fix the structural constants, including `K_0`, the sensor strength `A`, and the robust-cold constants. Then choose `C` for Sector II, and finally choose `X` above every PNT, sampling, rigidity, decoder, Taylor, adaptive-interval, avoidance, and error threshold, including the uniform terminal requirement `B_0<Z^2/16` throughout the cold range.
 
 Sectors II–V have total absolute mass less than the positive real contribution of Sector I. Hence
 
@@ -954,10 +1029,12 @@ and `0<1/b<1`, the congruence
 sum_(e in A)1/e = 1/b mod 1
 ```
 
-is an equality. Distinctness, squarefree-semiprimality, and avoidance were built into `E`. This proves Theorem 2, and the elementary reductions prove Theorem 1. ∎
+is an equality. This terminal no-wrap uses only the reciprocal load `Lambda<1`, not any label range. Distinctness, squarefree-semiprimality, and avoidance were built into `E`. This proves Theorem 2, and the elementary reductions prove Theorem 1. ∎
 
 ## 15. Proof-development verdict
 
-The sparse route is mathematically closed at ordinary-proof level, subject to independent audit. Fingerprint entropy is not used. A trivial core-assignment count `exp(O((log Z)^4))` remains, but it is dominated directly by the deterministic synchronization floor and is not a level-set or fingerprint theorem. Robust exact-cold rigidity remains load-bearing on a positive-density witness block.
+The sparse route is mathematically closed at ordinary-proof level after the bounded `SAS-BR-1` repair and now requires independent repair verification. Fingerprint entropy is not used. A trivial core-assignment count `exp(O((log Z)^4))` remains, but it is dominated directly by the deterministic synchronization floor and is not a level-set or fingerprint theorem. Robust exact-cold rigidity remains load-bearing on a positive-density witness block.
+
+The theorem, denominator family, sparse synchronization mechanism, route architecture, and parameter architecture are unchanged. The repaired proof only tightens the robust-cold base-label range, proves the three centred-lift/divisibility consequences before class energy and zero-exception, and propagates that legality through amplification, the top partition, decoder-range bookkeeping, and terminal threshold selection.
 
 The route is structurally cleaner than the dense one-anchor route in theorem hierarchy, but it is not plainly shorter as a standalone proof: the removed fingerprint-entropy argument is replaced by population sampling, defect expansion, core amplification, and the explicit top-defect sector.
