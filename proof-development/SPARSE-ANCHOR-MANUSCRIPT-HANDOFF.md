@@ -1,6 +1,6 @@
 # E306-PD-SAS-01 — sparse-anchor manuscript handoff
 
-**Status:** proof-development handoff only.  
+**Status:** proof-development handoff after bounded `SAS-BR-1` repair; independent repair verification required.  
 **Not authority for:** manuscript adoption, Curator integration, Lean correspondence, release, arXiv, journal, DOI, or submission.
 
 ## 1. Candidate theorem package
@@ -12,6 +12,7 @@ complete prime-pair denominator family
 + one polylogarithmic actual-prime core S
 + decoder-defect expansion
 + robust positive-density exact-cold witness theorem
+  with repaired label-range legality
 + direct major arc and complete-pair tails.
 ```
 
@@ -19,7 +20,7 @@ The public theorem is unchanged:
 
 > A positive rational in lowest terms is a finite sum of reciprocals of distinct squarefree semiprimes if and only if its denominator is squarefree.
 
-## 2. Recommended manuscript spine after independent pass
+## 2. Recommended manuscript spine after independent repair verification
 
 A manuscript adopting this route should use the following order.
 
@@ -28,7 +29,7 @@ A manuscript adopting this route should use the following order.
 3. Prove reciprocal load, inverse-square mass, compactness of `theta`, and the exact Fourier formula.
 4. Prove the full-range population floor and the deterministic common-core theorem.
 5. Prove the shift-uniform row-tail lemma with the actual Bernoulli kernel.
-6. Prove the robust positive-density exact-cold theorem, including all repaired constants.
+6. Prove the robust positive-density exact-cold theorem, including all repaired constants and the `SAS-BR-1` label-legality lemmas.
 7. Prove decoder-defect expansion and core-defect amplification.
 8. State the exact coherent top-partition theorem, explicitly separating energetic assignments and cold `U!=emptyset` defects.
 9. Give the exact denominator-factor partition and weighted retained-skeleton inequality.
@@ -63,6 +64,21 @@ Q_G(a)<c_wZ/log^3Z
 ```
 
 only for assignments represented by one integer label, with the stated quantitative label bound.
+
+The proof-side cutoff must be displayed:
+
+```text
+B_0=A_0sqrt(Q_G(a))Z^2/|G|=o(Z^2),
+B_0<Z^2/16
+```
+
+for the terminal arithmetic range. All base-prime and dominant labels are restricted to `|m|<=B_0`. Before class-energy or zero-exception arguments, the text must prove:
+
+```text
+same-class centred lift = integer label;
+distinct base-prime labels differ nontrivially modulo each target prime;
+two dominant labels sharing two witness primes are equal.
+```
 
 ### Sparse arithmetic synchronization theorem
 
@@ -99,11 +115,13 @@ T_U>=F_sync:
   energetic, regardless of any formal residue label.
 ```
 
-Likewise, it must not write the Gaussian identity `T_U=m^2sigma^2` before the cold theorem has bounded `|m|=o(Z^2)` and thereby identified the centred lifts with the integer `m`.
+Likewise, it must not write the Gaussian identity `T_U=m^2sigma^2` before the cold theorem has placed the label inside the repaired range—quantitatively, eventually `<Z^2/16`—and thereby identified every retained centred lift with the integer `m`.
+
+A manuscript must not retain the former generic dominant-label allowance `|m|<Z^2/4`. The appearances of `X^2/4` in fixed-`b` decoding and in the Sector II/III split are different, smaller thresholds and should be labelled as such. The prime decoder range `M_dec`, major/minor estimates, adaptive interval, and terminal reciprocal no-wrap are unchanged and do not depend on the discarded robust-label range.
 
 ## 5. What may be removed relative to the dense one-anchor manuscript
 
-After an independent pass, the sparse manuscript need not include:
+After independent repair verification, the sparse manuscript need not include:
 
 ```text
 fingerprint rigidity,
@@ -117,6 +135,7 @@ It must retain:
 ```text
 reciprocal dispersion,
 repaired nondominant forcing,
+SAS-BR-1 label-range and centred-lift legality,
 zero-exception exact-cold rigidity,
 complete internal witness edges,
 weighted retained-skeleton compression,
@@ -136,7 +155,7 @@ The packet does not establish a sparse-graph replacement for the complete intern
 
 ## 7. Fingerprint statement
 
-The manuscript may state, after independent verification:
+The manuscript may state, after independent repair verification:
 
 ```text
 Fingerprint entropy is not load-bearing in this route.
@@ -161,27 +180,27 @@ but its standalone proof burden is comparable because it adds sampling,
 defect expansion, amplification, and explicit top-defect bookkeeping.
 ```
 
-## 9. Suggested audit checkpoints
+`SAS-BR-1` is a bounded legality repair inside the existing exact-cold proof. It does not alter this route comparison.
 
-An independent auditor should recompute, rather than inherit:
+## 9. Suggested independent repair-verification checkpoints
 
-1. both population-floor ranges and the cyclic-packing hypotheses;
-2. concentration constants and the simultaneous test count;
-3. the exact `D/4` row-tail argument;
-4. the robust exact-cold proof with endpoint factors from `[Z/2,Z)`;
-5. the `l^2` perturbation in core-defect amplification;
-6. the energetic/cold and `U=emptyset/U!=emptyset` distinctions;
-7. the exact denominator-factor partition;
-8. `P_top(exp(Delta)-1)`;
-9. the actual-family variance and cubic major-arc remainder;
-10. exhaustive assignment of every frequency to the five sectors.
+An independent verifier should recompute, rather than inherit:
+
+1. the asymptotic implication `B_0=o(Z^2)` and the uniform terminal threshold `B_0<Z^2/16`;
+2. uniqueness of dominant labels sharing two witness primes;
+3. exact identification of a same-class centred lift with its integer label;
+4. nonvanishing modulo a target prime of the difference of distinct base-prime labels;
+5. use of those facts before class energy and zero-exception;
+6. propagation through core-defect amplification and the exact top partition;
+7. separation of the repaired robust-cold range from `X^2/4`, `M_dec`, all five sectors, and terminal no-wrap;
+8. preservation of both population-floor ranges, concentration constants, the exact `D/4` row tail, denominator-factor partition, and `P_top(exp(Delta)-1)`.
 
 ## 10. Current gate
 
-The packet is ready for exactly one next action:
+The repaired packet is ready for exactly one next action:
 
 ```text
-independent sparse-route ordinary-mathematics audit.
+independent bounded SAS repair verification.
 ```
 
 It is not yet ready for manuscript replacement, formal correspondence, Curator promotion, release, or submission.
