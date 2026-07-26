@@ -20,20 +20,29 @@ Legend:
 
 | ID | Required repair | Mathematical class | Status |
 |---|---|---|---|
-| R01 | Rename “conditional row errors” to “anchor-dependent and averaged row errors” unless a sequential conditional-product theorem is actually stated. | exposition / scope | OPEN |
-| R02 | Add eventual positivity of the comparison scale to the asymptotic positivity corollary. | bounded statement repair | OPEN |
-| R03 | Replace the arbitrary-kernel alias sum by measurable alias-event probability, or explicitly assume a discrete countable fibre. | bounded statement repair | OPEN |
-| R04 | State P1–P6 as distinct obligations; allow one underlying theorem to discharge several obligations on disjoint lanes. | logical-interface repair | OPEN |
-| R05 | Replace abstract `mid/out` categories by an arbitrary finite family of minor lanes. | theorem optimization | OPEN |
-| R06 | Require observability sensors to be homomorphisms `H -> R/Z`. | bounded mathematical repair | OPEN |
-| R07 | Separate finite-system injectivity (`delta>0`) from asymptotic quantitative lower bounds. | bounded statement repair | OPEN |
-| R08 | Treat observability as a coverage condition which may operate through decoding or retained residual factors according to the lane. | theorem optimization | OPEN |
-| R09 | Add the variable-uniformity consequence `k^2 V/U^2 -> 0` to complete-family mass. | bounded strengthening from existing proof | OPEN |
-| R10 | Replace frozen decoder normalization by the exact unnormalized weighted theorem. | E306 bridge repair | OPEN |
-| R11 | Replace globally uniform decoder identification by the final sector- and coordinate-dependent ranges. | E306 bridge repair | OPEN |
-| R12 | Place no-wrap and alias removal after quotient Fourier positivity. | architecture repair | OPEN |
+| R01 | Rename “conditional row errors” to “anchor-dependent and averaged row errors” unless a sequential conditional-product theorem is actually stated. | exposition / scope | DRAFTED |
+| R02 | Add eventual positivity of the comparison scale to the asymptotic positivity corollary. | bounded statement repair | DRAFTED |
+| R03 | Replace the arbitrary-kernel alias sum by measurable alias-event probability, or explicitly assume a discrete countable fibre. | bounded statement repair | DRAFTED |
+| R04 | State P1–P6 as distinct obligations; allow one underlying theorem to discharge several obligations on disjoint lanes. | logical-interface repair | DRAFTED |
+| R05 | Replace abstract `mid/out` categories by an arbitrary finite family of minor lanes. | theorem optimization | DRAFTED |
+| R06 | Require observability sensors to be homomorphisms `H -> R/Z`. | bounded mathematical repair | DRAFTED |
+| R07 | Separate finite-system injectivity (`delta>0`) from asymptotic quantitative lower bounds. | bounded statement repair | DRAFTED |
+| R08 | Treat observability as a coverage condition which may operate through decoding or retained residual factors according to the lane. | theorem optimization | DRAFTED |
+| R09 | Add the variable-uniformity consequence `k^2 V/U^2 -> 0` to complete-family mass. | bounded strengthening from existing proof | DRAFTED |
+| R10 | Replace frozen decoder normalization by the exact unnormalized weighted theorem. | E306 bridge repair | DRAFTED |
+| R11 | Replace globally uniform decoder identification by the final sector- and coordinate-dependent ranges. | E306 bridge repair | DRAFTED |
+| R12 | Place no-wrap and alias removal after quotient Fourier positivity. | architecture repair | DRAFTED |
 
-## Principal repaired statements to produce
+## Draft locations
+
+- repaired complete-family, compression, observability, positivity and alias statements:
+  `mathematics/STRUCTURAL_TOOLS_DRAFT.md`
+- final unnormalized, sector-dependent AFT-to-E306 bridge:
+  `mathematics/E306_SPECIALIZATION_BRIDGE_DRAFT.md`
+- causal theorem architecture and article order:
+  `THEOREM_DAG.md`
+
+## Principal repaired statements
 
 ### T1 — Complete-family collision theorem
 
@@ -44,14 +53,14 @@ U=sum_i u_i,
 V=sum_i u_i^2,
 ```
 
-and `k>=2`, prove
+and `k>=2`,
 
 ```text
 0 <= U^k/k! - e_k(u)
    <= U^(k-2)V / (2(k-2)!).
 ```
 
-Record separately:
+The draft records separately:
 
 - `U=0`;
 - fixed-`k` consequence `V/U^2 -> 0`;
@@ -60,27 +69,14 @@ Record separately:
 
 ### T2 — Weighted product-fibre compression
 
-Use the exact unnormalized form as principal theorem:
+The principal theorem is the exact unnormalized form:
 
 ```text
 F(y,x)=W_y product_r a_(r,y)(x_r) H_y(x),
-|H_y(x)|<=1.
+|H_y(x)|<=1,
 ```
 
-For a chosen decoder tuple `d(y)`, define
-
-```text
-alpha_(r,y)=a_(r,y)(d_r(y)),
-beta_(r,y)=sum_(x_r != d_r(y))a_(r,y)(x_r).
-```
-
-Then
-
-```text
-sum_(y,x)F(y,x)=sum_yF(y,d(y))+E_fib
-```
-
-with
+and
 
 ```text
 |E_fib|
@@ -90,81 +86,47 @@ with
    }.
 ```
 
-The theorem must state sharpness from the displayed data and include zero weights, empty row families, nonunique decoders, and complex residual factors.
-
-Normalized and exponential estimates are corollaries only.
+The draft proves sharpness and includes zero weights, empty row families, nonunique decoders, and complex residual factors. Normalized and exponential forms are corollaries only.
 
 ### T3 — Finite-group syndrome separation
 
-Let `H` be a finite abelian group and
+The draft requires
 
 ```text
-psi_j in Hom(H,R/Z).
+psi_j in Hom(H,R/Z)
 ```
 
-Put
-
-```text
-delta^2=min_(0!=h in H) sum_j ||psi_j(h)||^2.
-```
-
-For shifts `a_j`, define
-
-```text
-E_a(h)=sum_j ||a_j+psi_j(h)||^2.
-```
-
-If `h_a` minimizes `E_a`, then for `h!=h_a`,
-
-```text
-E_a(h)>=delta^2/4.
-```
-
-Consequently Gaussian-modulus kernels yield an off-decoder mass bound. State separately:
-
-- the trivial group case;
-- `delta>0` iff the syndrome map is injective;
-- a scale-dependent lower bound is the quantitative input for a sequence;
-- observability is sufficient for this decoder method, not a classification of all cancellation-based Fourier arguments.
+and proves the nearest-syndrome lower bound, Gaussian-modulus tail, qualitative injectivity equivalence, quantitative-sequence distinction, and lane-dependent coverage principle.
 
 ### T4 — Decoded-skeleton positivity proposition
 
-Fuse weighted compression with an arbitrary finite skeleton-lane partition. The main statement should give the exact lower bound
-
-```text
-Re sum_(y,x)F(y,x)
- >= Re sum_(y in Y_maj)F(y,d(y))
-    - sum_j |sum_(y in Y_j)F(y,d(y))|
-    - E_fib.
-```
-
-A label map is optional and introduced only where it improves estimates.
-
-The proposition proves quotient coefficient positivity only. Exact ambient equality is a subsequent application-specific step.
+The draft fuses weighted compression with an arbitrary finite skeleton-lane partition and proves quotient Fourier positivity from a strict displayed budget. Exact ambient equality is kept as a subsequent application-specific step.
 
 ## Final E306 bridge obligations
 
-| Obligation | Final dense provider | Required article form |
+| Obligation | Final dense provider | Drafted article form |
 |---|---|---|
-| P1 weighted anchor partition | one-block exact-cold rigidity, fingerprint high-energy bound, `P_top=O(Z log Z)` | state coherent and energetic anchor weights separately without raw assignment counts |
-| P2 fibre decoding | lower-prime and fixed-`b` row distances; shift-uniform row tails; exact product inequality | invoke T2 unnormalized; use `0<=alpha_r<=1` monotonicity |
-| P3 decoder identification | all `P` coordinates through `M_dec`; `b` coordinates through `X^2/4` | state lane- and coordinate-dependent ranges exactly |
-| P4 residual damping | Gaussian, adaptive lower-lower pair, and top-label lanes | retain every unassigned factor on the skeleton |
-| P5 positive major | exact centering, Taylor remainder, positive real Gaussian major | keep complex phase proof distinct from modulus estimates |
-| P6 exactness | character orthogonality, positivity, then no-wrap | place after T4; do not build no-wrap into transference |
+| P1 weighted anchor partition | one-block exact-cold rigidity, fingerprint high-energy bound, `P_top=O(Z log Z)` | coherent and energetic weights separated; no raw assignment count |
+| P2 fibre decoding | lower-prime and fixed-`b` row distances; shift-uniform row tails; exact product inequality | T2 used unnormalized; `0<=alpha_r<=1` monotonicity displayed |
+| P3 decoder identification | all `P` coordinates through `M_dec`; `b` coordinates through `X^2/4` | lane- and coordinate-dependent ranges stated exactly |
+| P4 residual damping | Gaussian, adaptive lower-lower pair, and top-label lanes | every unassigned factor retained on skeleton |
+| P5 positive major | exact centering, Taylor remainder, positive real Gaussian major | complex phase proof separated from modulus estimates |
+| P6 exactness | character orthogonality, positivity, then no-wrap | no-wrap placed after T4; no quantitative alias theorem imported |
 
 ## Acceptance boundary for M1
 
 M1 is complete only when:
 
-1. T1–T4 are written with full proofs;
-2. R01–R12 are at least `DRAFTED`;
-3. every P1–P6 bridge has exact source, range, and parameter order;
-4. no new E306 estimate or hybrid route has been introduced;
-5. a one-off read-only verifier can check the repaired statements without reconstructing the research genealogy.
+1. T1–T4 are written with full proofs — **drafted**;
+2. R01–R12 are at least `DRAFTED` — **satisfied**;
+3. every P1–P6 bridge has exact source, range, and parameter order — **drafted**;
+4. no new E306 estimate or hybrid route has been introduced — **self-check passed, independent verification pending**;
+5. a one-off read-only verifier checks the repaired statements — **pending**.
 
-Required M1 return:
+## Current state
 
 ```text
 [READY-FOR-AFT-REPAIR-VERIFICATION E306-PAPER-01-M1]
 ```
+
+This is an authorial readiness return, not independent verification and not manuscript adoption.
