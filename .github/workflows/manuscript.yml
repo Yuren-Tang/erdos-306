@@ -1,12 +1,6 @@
 name: verify-e306-manuscript
 
 on:
-  push:
-    branches:
-      - paper/e306-anchor-fibre-v1
-    paths:
-      - "paper/e306-anchor-fibre-v1/manuscript/**"
-      - ".github/workflows/manuscript.yml"
   pull_request:
     paths:
       - "paper/e306-anchor-fibre-v1/manuscript/**"
