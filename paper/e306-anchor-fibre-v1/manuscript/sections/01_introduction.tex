@@ -1,0 +1,94 @@
+\section{Introduction}
+\label{sec:introduction}
+
+An integer is a \emph{squarefree semiprime} if it is the product of two distinct primes.  We prove the following characterization.
+
+\begin{theorem}[Main theorem]
+\label{thm:main}
+Let $q>0$ be rational.  Then there exists a finite set $\mathcal N$ of pairwise distinct squarefree semiprimes such that
+\[
+ q=\sum_{n\in\mathcal N}\frac1n
+\]
+if and only if the denominator of $q$ in lowest terms is squarefree.
+\end{theorem}
+
+The necessity is elementary but structurally important: a sum of rational numbers whose reduced denominators are squarefree again has squarefree reduced denominator.  The content of the theorem is the converse.  Given a fixed squarefree denominator $b$, we construct a finite family of squarefree semiprimes and prove that a suitable subfamily has reciprocal sum exactly $1/b$.  A standard avoidance and numerator induction then yields every positive rational with reduced denominator $b$.
+
+The construction is finite but its natural proof is Fourier-analytic.  We place independent Bernoulli selectors on a complete family of prime pairs, supplement it by rows which see the prime divisors of $b$, and use character orthogonality modulo one squarefree period.  The resulting frequency space is high-dimensional: in Chinese-remainder coordinates it contains one coordinate for every prime used by the denominator family.  The central problem is therefore not merely to estimate a Fourier product, but to show that the local frequency coordinates synchronize around one global integer label.
+
+\subsection{The four mechanisms}
+
+The proof has four layers.
+
+\paragraph{Arithmetic capacity.}
+A complete pair family has reciprocal mass governed by the first two power sums of the reciprocal primes.  This supplies enough total mass to centre a Bernoulli subset-sum model at $1/b$, while keeping the full load below $1$.  The latter inequality is later reused as a no-wrap condition.  The capacity calculation is an instance of a general collision bound for complete weighted families, proved in \cref{sec:structural-tools}.
+
+\paragraph{Information recovery.}
+We choose one block $B$ of large primes as an anchor.  A low-energy assignment on the anchor is forced to arise from a single integer label $m$; assignments which fail this coherence condition have exponentially small total weight.  Conditional on an anchor assignment, each remaining prime coordinate forms a row code.  A shift-uniform distance estimate concentrates that row near a decoder.  The rows associated with primes dividing $b$ also ensure that the target quotient is observable: hidden target coordinates cannot cancel an apparently positive visible contribution.
+
+\paragraph{Weighted fibre compression.}
+Rowwise concentration must not be multiplied by the raw number of anchor assignments.  The correct error is weighted by the actual anchor partition and is tensorized over the rows.  If $W_y$ is the weight of an anchor $y$, $\alpha_{r,y}$ is the decoder mass in row $r$, and $\beta_{r,y}$ is the remaining row mass, then the exact deterministic loss is
+\[
+ \sum_y W_y\left\{
+   \prod_r(\alpha_{r,y}+\beta_{r,y})
+   -\prod_r\alpha_{r,y}
+ \right\}.
+\]
+This sharp compression theorem is stated and proved in \cref{thm:weighted-compression}.  Crucially, factors not assigned to a row remain on the decoded skeleton.  They are not discarded: in the application they provide the damping needed for intermediate coherent labels.
+
+\paragraph{Frequency elimination.}
+On the decoded skeleton the high-dimensional character is represented, in the relevant ranges, by one integer frequency $m$.  Different ranges are suppressed by different mechanisms.  Small $m$ give a positive Gaussian major contribution after exact linear centring.  A Gaussian tail handles the next range.  Retained lower--lower prime-pair factors give adaptive damping farther out.  The top anchor itself controls the remaining large coherent labels, while energetic anchors and nondecoder fibres have already been charged.  Choosing the Gaussian cutoff first and the prime scale afterwards yields a strict positive budget.
+
+Character orthogonality then gives a positive coefficient in a finite quotient.  Exact equality does not belong to the Fourier transference statement: it follows afterwards because the target and every possible subset sum lie in one fundamental interval of length less than the period.
+
+\subsection{General structure and arithmetic providers}
+
+The organization of the paper reflects two kinds of mathematical content.  Some steps are reusable finite-product or finite-group principles.  Others are the difficult arithmetic providers which make those principles effective for reciprocal semiprimes.  We isolate the following general tools before entering the prime construction:
+
+\begin{enumerate}[label=(\roman*)]
+\item a complete-family collision inequality;
+\item an exact weighted product-fibre compression theorem;
+\item a syndrome-distance theorem for finite hidden groups;
+\item a decoded-skeleton positivity proposition with arbitrary minor lanes;
+\item quotient-to-ambient exactness criteria.
+\end{enumerate}
+
+These tools organize the proof but do not hide its arithmetic work.  The principal application-specific inputs remain the one-block rigidity theorem, the weighted fingerprint bound, multiplicity-sensitive cyclic row separation, sector-dependent decoder identification, adaptive retained-pair damping, and the Taylor major estimate with its terminal parameter budget.
+
+This distinction also explains why the general framework is not presented as a separate theorem which reduces the main result to formal verification of hypotheses.  The weighted compression and observability principles have independent mathematical value; the final major-versus-minor comparison is primarily an exact assembly interface.  The arithmetic theorem remains the public and technical centre of the paper.
+
+\subsection{Proof architecture}
+
+Fix a squarefree integer $b\geq 3$.  At a large scale $X$ we put $Z=X^3$, choose a prime set $P$ in $[X,Z)$ and a top block $B$ in $[Z/2,Z)$, and use the denominator families
+\[
+ \mathcal E_{\mathrm{pair}}
+   =\{pq:p,q\in P,\ p<q\},
+ \qquad
+ \mathcal E_b
+   =\{rq:r\mid b\text{ prime},\ q\in B\}.
+\]
+The exact definitions include the exclusions needed to keep every denominator a product of two distinct primes and to satisfy a prescribed finite avoidance set.  Their union is denoted by $\mathcal E$, with reciprocal load
+\[
+ \Lambda=\sum_{e\in\mathcal E}\frac1e.
+\]
+The Bernoulli parameter is chosen exactly as
+\[
+ \theta=\frac{1}{b\Lambda},
+\]
+so that the linear Fourier phase is centred at $1/b$.
+
+Let
+\[
+ L=b\prod_{p\in P}p.
+\]
+The target coefficient is obtained by Fourier inversion modulo $L$.  Chinese-remainder coordinates indexed by $B$ form the anchor.  Coordinates indexed by $P\setminus B$ and by primes dividing $b$ form the rows.  Internal top factors, internal lower factors and the target character are retained as residual factors.  This assignment is an exact partition of the denominator factors.
+
+The anchor theorem divides top assignments into coherent and energetic sectors.  Coherent assignments carry an integer label $m$.  Row separation gives a summable nondecoder error, to which the unnormalized weighted compression theorem is applied.  Decoder identification is deliberately range-dependent: all prime coordinates are identified through the adaptive range, whereas the coordinates dividing $b$ are needed only through the Gaussian range.  On the resulting skeleton we use the five disjoint sectors described above.  The positive major has order $1/\sigma_{\mathcal E}$, and every error is $o(1/\sigma_{\mathcal E})$ after choosing a fixed cutoff $C$ and then taking $X$ sufficiently large.
+
+The cases $b=1,2$ are closed separately.  Finally, an avoiding version of the unit-fraction statement and induction on the numerator prove \cref{thm:main}.
+
+\subsection{Assurance and scope}
+
+The ordinary mathematical proof presented here is based on the independently audited dense one-anchor route.  The structural statements in \cref{sec:structural-tools} were extracted, repaired and independently verified against the final arithmetic provider ranges before being incorporated into the manuscript.  A separate Lean development verifies the headline result along an orthogonal formalization axis; it is not used as a substitute for any argument in the present human proof.
+
+The final section discusses the reach and limits of the method.  In particular, weighted compression permits anchor-dependent averaged errors, but it uses absolute values and therefore does not exploit cancellation among different fibres.  Likewise, complete-family mass alone does not supply higher-uniformity rigidity.  These limitations identify genuine directions for a stronger mechanism rather than reasons to inflate the present framework.
