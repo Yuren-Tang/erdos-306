@@ -1,68 +1,61 @@
-\section{Structural scope and limits}
+\section{Discussion and conclusion}
 \label{sec:scope}
 
-The proof was developed for a specific reciprocal-representation problem, but several of its mechanisms are independent of primes and semiprimes.  This section records their natural scope without turning the article into a separate abstract-framework paper.
+The proof is tailored to reciprocal sums of semiprimes, but several of its mechanisms are independent of the particular prime blocks used above.  Their usefulness lies less in a universal black-box theorem than in making explicit where information is preserved, where it is discarded, and which arithmetic inputs must replace it.
 
-\subsection{What is genuinely reusable}
+\subsection{Reusable mechanisms}
 
-The exact weighted product-fibre theorem, \cref{thm:weighted-compression}, is a deterministic statement about finite product spaces.  It requires no CRT structure, no probability interpretation and no arithmetic input.  Its main content is the normalization: off-decoder mass is averaged against the actual anchor weight, not multiplied by the number of anchor assignments.  The tensorized expression is optimal from the displayed row data alone.  It also preserves every unassigned factor on the decoded skeleton, where that factor may continue to supply cancellation or modulus decay.
+The exact weighted product-fibre theorem, \cref{thm:weighted-compression}, is a deterministic statement about finite product spaces.  It requires neither a CRT decomposition nor a probabilistic interpretation.  Its essential feature is the normalization: off-decoder mass is averaged against the actual anchor weight, rather than multiplied by the cardinality of the anchor space.  The tensorized expression is optimal from the displayed row data alone.  Equally important, every factor not assigned to a row remains on the decoded skeleton and may continue to provide cancellation or modulus decay.
 
-The syndrome theorem, \cref{thm:syndrome-separation,prop:qualitative-observability}, gives a finite-group language for hidden-coordinate sensitivity.  Its invariant is the pseudometric
+The syndrome results, \cref{thm:syndrome-separation,prop:qualitative-observability}, give a finite-group language for hidden-coordinate sensitivity.  Their invariant is the pseudometric
 \[
  d_\Psi(h,h')^2
  =\sum_j\dist{\psi_j(h-h')}^2.
 \]
-The zero-distance subgroup is precisely the common kernel of the sensors.  In the present application the sensors are the top-cross rows, and squarefreeness permits the target group to decompose into prime coordinates, each of which is detected directly.
+The zero-distance subgroup is exactly the common kernel of the sensors.  In the present argument, the top-cross rows are the sensors, and squarefreeness decomposes the hidden target group into prime coordinates which can be detected separately.  Qualitative injectivity alone is not enough for an asymptotic application: the row estimates require a quantitative lower bound for the nonzero syndrome distance.
 
-The decoded-skeleton positivity proposition, \cref{prop:decoded-skeleton-positivity}, is an exact assembly interface.  It allows any finite collection of minor lanes and does not impose a universal distinction between major arcs, middle arcs, energetic anchors or outer frequencies.  Its proof is deliberately short: the difficult work lies in producing the anchor partition, decoders and lane estimates in a concrete problem.
+The decoded-skeleton proposition, \cref{prop:decoded-skeleton-positivity}, is an exact assembly interface.  It permits any finite collection of minor lanes and charges the product-fibre error once.  It imposes no universal taxonomy of major, middle, outer or energetic frequencies; those ranges are chosen by the arithmetic problem.  The substance of an application lies in constructing the anchor partition, identifying the decoders and finding residual factors which control the lanes left over.
 
-Finally, \cref{thm:complete-family-collision} separates complete-family mass from rigidity.  It applies to every nonnegative weighted complete $k$-uniform family.  In the present proof only the exact pair identity is needed, but the collision inequality identifies the moving-uniformity range
+Finally, \cref{thm:complete-family-collision} separates complete-family mass from synchronization.  It applies to every nonnegative weighted complete $k$-uniform family and identifies the moving-uniformity range
 \[
  k^2V/U^2\longrightarrow0
 \]
-in which the first two power sums control the complete-family mass.
+in which the first two power sums determine the total mass asymptotically.  For the present pair family only the exact identity $e_2=(U^2-V)/2$ is used.  No rigidity or decoding principle follows from the collision estimate alone.
 
-\subsection{Product measures beyond Bernoulli selectors}
+\subsection{Other product measures}
 
-The Fourier product formula in \cref{lem:independent-product} extends immediately to independent finite-valued random variables.  Each local Bernoulli factor is replaced by the Fourier transform of the corresponding local probability law.  Whenever the character space admits an anchor--fibre factorization and the local transforms satisfy suitable decoder and residual estimates, the same weighted compression and skeleton assembly apply.
+The Fourier product formula of \cref{lem:independent-product} extends immediately from Bernoulli selectors to independent finite-valued random variables: each Bernoulli factor is replaced by the Fourier transform of the corresponding local law.  Whenever the character space admits an anchor--fibre decomposition and those local transforms satisfy suitable decoder and residual estimates, the same weighted compression and skeleton assembly remain available.
 
-The algebraic decomposition also makes sense for signed or complex local weights after absolute values are assigned to the row kernels and phases are retained in the residual factor.  The probabilistic interpretation must then be replaced by a statement about a nonzero or positive coefficient.  We do not pursue this extension here, because it has no additional role in the semiprime application.
-
-\subsection{Averaged rather than worst-case fibres}
-
-The normalized corollary \cref{cor:normalized-fibre} permits the exact anchor-dependent error
-\[
- \sum_yA_y\left\{\prod_r(1+\varepsilon_{r,y})-1\right\}.
-\]
-Thus a small set of poorly decoded anchors is harmless when its decoded anchor mass is small.  The E306 proof uses a uniform row-tail estimate and then the global top partition, but the general statement does not require one worst-case value of $\Delta_y$.
-
-This flexibility is useful only when the product structure is preserved.  A genuinely sequential kernel
+The algebraic decomposition also makes sense for signed or complex local weights after magnitudes are assigned to the row kernels and all phases are retained in the residual factor.  The probabilistic conclusion must then be replaced by a statement about a nonzero or positive coefficient.  By contrast, a genuinely sequential kernel
 \[
  a_r(x_r\mid x_1,\ldots,x_{r-1},y)
 \]
-would require a different conditional-product theorem; no such theorem is asserted here.
+does not have the product form used in \cref{thm:weighted-compression}; it would require a different conditional theorem.
 
-\subsection{Failure modes}
+\subsection{Where information is lost}
 
-Three failures are structural rather than quantitative.
+The normalized form \cref{cor:normalized-fibre} allows the anchor-dependent error
+\[
+ \sum_yA_y\left\{\prod_r(1+\varepsilon_{r,y})-1\right\}.
+\]
+Thus poorly decoded anchors can be harmless when their decoded anchor mass is small.  The present proof uses uniform row tails followed by the global top partition, but the deterministic statement itself is genuinely averaged rather than worst-case.
 
-\paragraph{Unweighted fibre counting.}
-Multiplying a row error by the raw cardinality of the anchor space may destroy the estimate or simply be false.  The correct object is the weighted tensorized error in \cref{eq:exact-fibre-error}.
+Its principal limitation is also clear: the theorem takes absolute values on every off-decoder tuple.  It cannot exploit cancellation within one fibre or between different fibres.  A result retaining such complex cancellation would be a new mechanism, not merely an improvement in the row-distance constants.
 
-\paragraph{Discarding residual factors.}
-Bounding every unassigned Fourier factor by $1$ before reaching the decoded skeleton can remove the only available damping in an intermediate label range.  Sector III is possible precisely because the lower--lower pair factors remain visible after row decoding.
+Two further losses are easy to make accidentally.  First, replacing the weighted anchor sum by the raw number of anchors can destroy a true estimate.  Second, bounding all unassigned factors by $1$ before the decoder is chosen may remove the only available damping in an intermediate frequency range.  Sector~III works precisely because the lower--lower factors remain visible after the rows have been compressed.
 
-\paragraph{Unsensed target coordinates.}
-If a nontrivial quotient direction lies in the common kernel of all sensors and residual factors, its nontrivial character may cancel an apparently positive visible contribution.  Target sensitivity is therefore a coverage obligation: in each lane, every hidden direction must be fixed, decoded or residually damped.
+Target observability is a third, logically separate issue.  If a nontrivial quotient direction lies in the common kernel of all sensors and retained factors, its character may cancel an apparently positive contribution from the visible coordinates.  Every hidden direction must therefore be fixed by the anchor, resolved by a decoder, or detected by a residual factor in each lane where it matters.
 
-\subsection{Present limitations}
+\subsection{Possible extensions and present limits}
 
-The compression theorem takes absolute values on off-decoder fibres.  It does not exploit cancellation among several nondecoder tuples or among different fibres.  A theorem using genuinely complex fibre cancellation would be a mechanism-level strengthening rather than a sharper provider estimate.
+The one-anchor geometry is especially natural for pair denominators: one prime lies in the anchor block and the other indexes a row, while pairs disjoint from the anchor survive as residual factors.  For denominators with $k>2$ prime factors, the complete-family collision estimate still controls mass in its natural range, but it does not provide the higher-order synchronization or decoding theory that such a construction would need.
 
-Likewise, complete-family mass does not imply higher-uniformity synchronization.  For pairs, the graph of denominator factors interacts naturally with one-anchor row codes.  A $k$-uniform extension would require new rigidity and decoding results; the collision estimate alone does not provide them.
+A broader theory could develop in several directions.  One may seek fibre estimates which preserve complex cancellation, synchronization principles which avoid enumerating low-energy fingerprints, or observability criteria adapted to families of hidden groups whose syndrome distance varies with scale.  A second genuinely different arithmetic application would also clarify which parts of the present architecture are intrinsic and which are artifacts of the semiprime denominator system.  Until then, the structural tools are most naturally read as part of the proof that requires them.
 
-At present, Erd\H{o}s Problem 306 is the first substantive consumer of the full anchor--fibre organization.  A separate framework paper would become mathematically justified only after a second independent application or a genuine strengthening such as complex fibre cancellation, non-enumerative synchronization, or a broader observability classification.  Until then the general tools belong naturally inside the proof which produced and uses them.
+\subsection{Conclusion}
 
-\subsection{Relation to formal verification}
+The theorem is obtained by arranging a complete semiprime family so that reciprocal capacity and Fourier rigidity coexist.  The anchor converts many local residues into one coherent integer label; the rows recover the remaining visible and target coordinates; weighted fibre compression preserves the residual factors; and those factors, together with the full variance and the anchor energy, control all frequencies outside the Gaussian major range.  The final no-wrap step then turns finite-quotient positivity into the exact unit-fraction identity.  This combination proves that squarefreeness is not only necessary but sufficient for representation by reciprocals of distinct squarefree semiprimes.
 
-A separate Lean development establishes the headline representation theorem along an orthogonal formalization axis.  Its analytic trust boundary and proof decomposition are not identical to the dense one-anchor human argument presented here.  Accordingly, the formal development is evidence for the theorem but is not invoked to certify any step of this ordinary proof.  The present article exposes its own complete dependency chain and may be checked independently of the formal source.
+\subsection*{Formal companion}
+
+An earlier independent Lean development proves the same headline theorem by a substantially different dyadic-block circle-method construction.  It is not a formalization or translation of the one-anchor proof in this article, and it does not certify any step of the argument above.  The two proofs should therefore be regarded as separate proofs of the same statement.  A stable archival citation for the formal companion will be supplied once its release metadata is settled.
