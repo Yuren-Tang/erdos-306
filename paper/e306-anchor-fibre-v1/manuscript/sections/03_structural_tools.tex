@@ -1,0 +1,294 @@
+\section{Structural tools}
+\label{sec:structural-tools}
+
+This section contains the general deterministic results used by the arithmetic construction.  The complete-family estimate controls capacity.  The product-fibre theorem performs the load-bearing compression.  The syndrome theorem detects hidden target coordinates.  The final proposition assembles a positive skeleton contribution against finitely many error lanes.  None of these statements supplies the prime-specific rigidity, row distance or minor-arc estimates proved later.
+
+\subsection{Complete weighted families}
+
+Let $I$ be a finite set and let $u_i\geq0$ for $i\in I$.  Put
+\[
+ U=\sum_{i\in I}u_i,
+ \qquad
+ V=\sum_{i\in I}u_i^2.
+\]
+For $k\geq0$, write
+\[
+ e_k(u)=\sum_{\substack{J\subset I\\ |J|=k}}\prod_{j\in J}u_j,
+\]
+with $e_0(u)=1$ and $e_k(u)=0$ for $k>|I|$.
+
+\begin{theorem}[Complete-family collision bound]
+\label{thm:complete-family-collision}
+For every integer $k\geq2$,
+\[
+ 0\leq \frac{U^k}{k!}-e_k(u)
+ \leq \frac{U^{k-2}V}{2(k-2)!}.
+\]
+\end{theorem}
+
+\begin{proof}
+Expand
+\[
+ U^k=\sum_{(i_1,\ldots,i_k)\in I^k}\prod_{a=1}^k u_{i_a}.
+\]
+The ordered tuples with pairwise distinct coordinates contribute exactly $k!e_k(u)$.  Thus $U^k-k!e_k(u)$ is the nonnegative total weight of tuples containing a collision.
+
+For fixed positions $1\leq a<b\leq k$, the total weight of tuples satisfying $i_a=i_b$ is $VU^{k-2}$.  The union bound over the $\binom{k}{2}$ pairs of positions gives
+\[
+ U^k-k!e_k(u)
+ \leq \binom{k}{2}VU^{k-2}.
+\]
+Division by $k!$ proves the assertion.
+\end{proof}
+
+\begin{corollary}[Relative and asymptotic forms]
+\label{cor:complete-family-relative}
+If $U>0$, then
+\[
+ 1-\binom{k}{2}\frac{V}{U^2}
+ \leq \frac{k!e_k(u)}{U^k}
+ \leq1.
+\]
+Consequently, for a sequence of weighted families:
+\begin{enumerate}[label=(\roman*)]
+\item for fixed $k$, the condition $V/U^2\to0$ implies
+\[
+ e_k(u)=\frac{U^k}{k!}(1+o(1));
+\]
+\item for moving integers $k=k_n$, the same conclusion holds whenever
+\[
+ k^2\frac{V}{U^2}\longrightarrow0.
+\]
+\end{enumerate}
+If $U=0$, every $u_i$ vanishes and the assertions for $k\geq1$ are immediate.
+\end{corollary}
+
+For pairs there is an exact identity rather than merely an estimate.
+
+\begin{corollary}[Pair identity]
+\label{cor:pair-identity}
+One has
+\[
+ e_2(u)=\frac{U^2-V}{2}.
+\]
+\end{corollary}
+
+\begin{proof}
+This is the identity
+\[
+ U^2=\sum_i u_i^2+2\sum_{i<j}u_iu_j.
+\]
+\end{proof}
+
+Only \cref{cor:pair-identity} is needed for the dense semiprime family.  The higher-uniformity statement records the natural collision-free range detected by the first two power sums; it does not provide the rigidity or decoding theory required by a higher-uniformity application.
+
+\subsection{Exact weighted product-fibre compression}
+
+Let $Y$ be finite and let $R$ be a finite, possibly empty, coordinate set.  For each $r\in R$, let $X_r$ be finite and nonempty, and put
+\[
+ X=\prod_{r\in R}X_r.
+\]
+For each $y\in Y$, suppose that
+\begin{itemize}
+\item $W_y\geq0$;
+\item $a_{r,y}:X_r\to[0,\infty)$ for $r\in R$;
+\item a decoder $d_r(y)\in X_r$ has been chosen;
+\item $H_y:X\to\mathbb C$ satisfies $|H_y(x)|\leq1$.
+\end{itemize}
+Define
+\[
+ F(y,x)=W_y\prod_{r\in R}a_{r,y}(x_r)H_y(x),
+\]
+and
+\[
+ \alpha_{r,y}=a_{r,y}(d_r(y)),
+ \qquad
+ \beta_{r,y}=\sum_{x_r\neq d_r(y)}a_{r,y}(x_r),
+ \qquad
+ d(y)=(d_r(y))_{r\in R}.
+\]
+Empty products are $1$.
+
+\begin{theorem}[Exact weighted product-fibre compression]
+\label{thm:weighted-compression}
+There is a complex number $E_{\mathrm{fib}}$ such that
+\begin{equation}
+\label{eq:fibre-decomposition}
+ \sum_{y\in Y}\sum_{x\in X}F(y,x)
+ =\sum_{y\in Y}F(y,d(y))+E_{\mathrm{fib}},
+\end{equation}
+and
+\begin{equation}
+\label{eq:exact-fibre-error}
+ |E_{\mathrm{fib}}|
+ \leq
+ \sum_{y\in Y}W_y
+ \left\{
+   \prod_{r\in R}(\alpha_{r,y}+\beta_{r,y})
+   -\prod_{r\in R}\alpha_{r,y}
+ \right\}.
+\end{equation}
+The bound is sharp among deterministic bounds depending only on the displayed values $W_y$, $\alpha_{r,y}$ and $\beta_{r,y}$.
+\end{theorem}
+
+\begin{proof}
+Fix $y$.  Separate the decoder tuple $d(y)$ from the other tuples.  Since $|H_y(x)|\leq1$,
+\[
+ \left|\sum_{x\neq d(y)}F(y,x)\right|
+ \leq W_y\sum_{x\neq d(y)}\prod_r a_{r,y}(x_r).
+\]
+The full nonnegative product sum factorizes as
+\[
+ \sum_{x\in X}\prod_r a_{r,y}(x_r)
+ =\prod_r\sum_{x_r\in X_r}a_{r,y}(x_r)
+ =\prod_r(\alpha_{r,y}+\beta_{r,y}),
+\]
+whereas the decoder tuple has product weight $\prod_r\alpha_{r,y}$.  Their difference is therefore the exact off-decoder product mass.  Summing over $y$ proves \cref{eq:fibre-decomposition,eq:exact-fibre-error}.
+
+For sharpness, choose the off-decoder values of $H_y$ to have a common unit phase.  The complex remainder then attains the entire off-decoder product mass.
+\end{proof}
+
+Several boundary cases are included in the statement.  A zero anchor weight contributes nothing.  If some $\alpha_{r,y}$ vanishes, \cref{thm:weighted-compression} remains valid but no division by that decoder weight is permitted.  If $R$ is empty, then $X$ is a singleton and $E_{\mathrm{fib}}=0$.  Decoder uniqueness is not assumed: other minimizers remain in $\beta_{r,y}$ and are charged as off-decoder mass.  Complex row kernels are handled by placing their magnitudes in $a_{r,y}$ and retaining every phase, together with every factor not assigned to a row, in $H_y$.
+
+When all decoder weights are positive, a normalized form is available.
+
+\begin{corollary}[Anchor-dependent normalized average]
+\label{cor:normalized-fibre}
+Assume $\alpha_{r,y}>0$ for all $r,y$, and put
+\[
+ \varepsilon_{r,y}=\frac{\beta_{r,y}}{\alpha_{r,y}},
+ \qquad
+ A_y=W_y\prod_r\alpha_{r,y},
+ \qquad
+ \Delta_y=\sum_r\varepsilon_{r,y}.
+\]
+Then
+\[
+ |E_{\mathrm{fib}}|
+ \leq\sum_yA_y\left\{\prod_r(1+\varepsilon_{r,y})-1\right\}
+ \leq\sum_yA_y(\e^{\Delta_y}-1).
+\]
+\end{corollary}
+
+This is an anchor-dependent weighted average.  No sequential conditional kernel is asserted.  In the E306 application we use the unnormalized theorem, so zero decoder weights never create a normalization issue.
+
+\subsection{Syndrome separation for hidden finite groups}
+
+Let $H$ be a finite abelian group, let $J$ be a finite sensor set, and let
+\[
+ \psi_j\in\Hom(H,\T)
+ \qquad (j\in J).
+\]
+For $t\in\T$, let $\dist{t}$ be its distance to $0$.  When $H$ is nontrivial, define
+\[
+ \delta^2=\min_{0\neq h\in H}\sum_{j\in J}\dist{\psi_j(h)}^2.
+\]
+For shifts $a_j\in\T$, put
+\[
+ E_a(h)=\sum_{j\in J}\dist{a_j+\psi_j(h)}^2.
+\]
+
+\begin{theorem}[Nearest-syndrome separation]
+\label{thm:syndrome-separation}
+Assume $H$ is nontrivial and choose a minimizer $h_a$ of $E_a$.  Then for every $h\neq h_a$,
+\[
+ E_a(h)\geq\frac{\delta^2}{4}.
+\]
+\end{theorem}
+
+\begin{proof}
+For every $j$, the circle metric and the homomorphism property give
+\[
+ \dist{\psi_j(h-h_a)}
+ \leq \dist{a_j+\psi_j(h)}+\dist{a_j+\psi_j(h_a)}.
+\]
+After squaring and applying $(u+v)^2\leq2u^2+2v^2$, we obtain
+\[
+ \delta^2
+ \leq\sum_j\dist{\psi_j(h-h_a)}^2
+ \leq2E_a(h)+2E_a(h_a).
+\]
+Since $h_a$ minimizes $E_a$, one has $E_a(h_a)\leq E_a(h)$, and hence $\delta^2\leq4E_a(h)$.
+\end{proof}
+
+\begin{corollary}[Gaussian-modulus decoder tail]
+\label{cor:syndrome-tail}
+Suppose $K_j:\T\to\mathbb C$ satisfy
+\[
+ |K_j(t)|\leq\exp(-\kappa\dist{t}^2)
+\]
+for some $\kappa>0$.  Then
+\[
+ \sum_{h\neq h_a}\prod_{j\in J}|K_j(a_j+\psi_j(h))|
+ \leq(|H|-1)\exp(-\kappa\delta^2/4).
+\]
+\end{corollary}
+
+\begin{proposition}[Qualitative observability]
+\label{prop:qualitative-observability}
+For nontrivial finite $H$, the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $\delta>0$;
+\item the syndrome map
+\[
+ \Sigma:H\longrightarrow\T^J,
+ \qquad
+ \Sigma(h)=(\psi_j(h))_{j\in J},
+\]
+is injective;
+\item $\bigcap_{j\in J}\ker\psi_j=\{0\}$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Injectivity of $\Sigma$ is equivalent to triviality of its kernel, which is the common kernel of the sensors.  Since $H$ is finite, injectivity makes every nonzero syndrome have positive squared norm and hence gives $\delta>0$.  Conversely, $\delta=0$ means that some nonzero element lies in every sensor kernel.
+\end{proof}
+
+For one finite system, $\delta>0$ is a qualitative injectivity statement.  For a sequence of systems, an explicit scale-dependent lower bound for $\delta$ is the quantitative input.  The theorem gives a sufficient absolute-value decoding estimate; it does not classify arguments which exploit cancellation inside fibres.  It also does not identify a prescribed decoder without an application-specific comparison of the candidate energy with the competing syndrome distance.  If $H$ is trivial, there is no hidden-coordinate obligation and no minimum over nonzero elements is defined.
+
+We use the following coverage principle.  In each frequency lane, every hidden quotient direction must be fixed by the anchor, resolved by a decoded fibre, or detected by a retained residual factor which damps that lane.  Thus observability is a distinct obligation, although in a concrete lane it may be supplied by row separation, decoder identification or residual damping.
+
+\subsection{Decoded-skeleton positivity}
+
+Retain the notation of \cref{thm:weighted-compression}.  Partition the anchor set into one major set and finitely many minor lanes,
+\[
+ Y=Y_{\mathrm{maj}}\sqcup Y_1\sqcup\cdots\sqcup Y_s.
+\]
+No abstract distinction between ``middle'', ``outer'' or ``energetic'' lanes is imposed.
+
+\begin{proposition}[Decoded-skeleton positivity]
+\label{prop:decoded-skeleton-positivity}
+Put
+\[
+ E_{\mathrm{prod}}=
+ \sum_yW_y\left\{
+   \prod_r(\alpha_{r,y}+\beta_{r,y})
+   -\prod_r\alpha_{r,y}
+ \right\}.
+\]
+Then
+\begin{align*}
+ \RePart\sum_{y,x}F(y,x)
+ \geq{}&
+ \RePart\sum_{y\in Y_{\mathrm{maj}}}F(y,d(y))\\
+ &-\sum_{j=1}^s\left|\sum_{y\in Y_j}F(y,d(y))\right|
+ -E_{\mathrm{prod}}.
+\end{align*}
+In particular, the full sum has positive real part if the displayed major contribution strictly exceeds the sum of the minor-lane bounds and $E_{\mathrm{prod}}$.
+\end{proposition}
+
+\begin{proof}
+By \cref{thm:weighted-compression},
+\[
+ \sum_{y,x}F(y,x)=\sum_yF(y,d(y))+E_{\mathrm{fib}},
+ \qquad
+ |E_{\mathrm{fib}}|\leq E_{\mathrm{prod}}.
+\]
+Split the skeleton sum according to the displayed partition, take the real part of the major lane, and bound every minor-lane sum and the fibre remainder in absolute value.
+\end{proof}
+
+For a sequence of systems, let $M_n>0$ eventually.  If the major real part is at least $cM_n$ for some fixed $c>0$, while the total of all minor-lane and product-fibre errors is $o(M_n)$, then the full sum has positive real part for all sufficiently large $n$.
+
+A coherent label map is optional in \cref{prop:decoded-skeleton-positivity}; it is introduced only when it improves the estimates on the skeleton lanes.  The obligations used to prove the lane bounds remain logically distinct, but one application theorem may discharge several of them on disjoint lanes.  In particular, the same anchor theorem may provide both a weighted partition and a large-label tail without double-counting.
+
+The proposition proves positivity of the finite Fourier sum to which it is applied.  If this sum is the numerator of a finite-group coefficient, it gives a realized quotient target.  Exact ambient equality is obtained afterwards through one of the interfaces in \cref{prop:exactness-interfaces}.  In E306 we use only deterministic no-wrap.
