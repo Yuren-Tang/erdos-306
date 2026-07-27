@@ -1,0 +1,238 @@
+\section{Fibre decoding and target observability}
+\label{sec:fibre-decoding}
+
+Fix a top assignment.  The remaining CRT coordinates are indexed by
+\[
+ R_{\mathrm{rows}}=(P\setminus B)\sqcup S_b.
+\]
+For $r\in R_{\mathrm{rows}}$ and a residue $x\pmod r$, let $u_{rq}(x)\in\T$ be the phase $h/(rq)$ determined by $x$ and the fixed top residue modulo $q\in B$.  If the row residue changes by $d$, CRT subtraction gives
+\begin{equation}
+\label{eq:row-shift}
+ u_{rq}(x+d)-u_{rq}(x)
+ =d q^{-1}/r\pmod1.
+\end{equation}
+Thus the separation of two possible row residues is independent of the anchor shift.
+
+\subsection{Cyclic row distance}
+
+\begin{lemma}[Multiplicity-sensitive cyclic energy]
+\label{lem:cyclic-energy}
+Let $c_1,\ldots,c_M$ be nonzero residues modulo a prime $r$, each occurring at most $\mu$ times.  If $M/\mu$ is sufficiently large, then for every $d\not\equiv0\pmod r$,
+\[
+ \sum_{j=1}^M\dist{dc_j/r}^2
+ \geq c\frac{M^3}{\mu^2r^2}.
+\]
+\end{lemma}
+
+\begin{proof}
+Multiplication by $d$ permutes the nonzero residue classes and preserves the multiplicity bound.  Put
+\[
+ t=\left\lfloor\frac{M}{4\mu}\right\rfloor.
+\]
+For large $M/\mu$, one has $t\geq M/(8\mu)\geq1$.  Fewer than $2\mu t\leq M/2$ terms can lie in residue classes of circle distance below $t/r$.  At least $M/2$ terms therefore have distance at least $M/(8\mu r)$, and the sum of their squares proves the claim.
+\end{proof}
+
+For a row $r$, define its shift-uniform code distance by
+\[
+ D_r=\min_{d\not\equiv0\,(r)}
+ \sum_{q\in B}\dist{dq^{-1}/r}^2.
+\]
+
+\begin{proposition}[Lower-prime row distance]
+\label{prop:lower-row-distance}
+Uniformly for every prime $r\in P\setminus B$,
+\[
+ D_r\gg\frac{Z}{\log^3Z}.
+\]
+\end{proposition}
+
+\begin{proof}
+Inversion permutes the nonzero residues modulo $r$.  The interval $[Z/2,Z)$ contains at most
+\[
+ \mu_r\leq Z/(2r)+1\leq2Z/r
+\]
+integers in one residue class modulo $r$.  Since $M=|B|\gg Z/\log Z$, \cref{lem:cyclic-energy} gives
+\[
+ D_r\gg\frac{M^3}{\mu_r^2r^2}
+ \gg\frac{Z^3/\log^3Z}{Z^2}
+ =\frac{Z}{\log^3Z}.
+\]
+Moreover $M/\mu_r\gg r/\log Z\geq X/\log Z$, so the largeness hypothesis is uniform in $r$.
+\end{proof}
+
+The rows indexed by prime divisors of $b$ admit a stronger and simpler argument.
+
+\begin{proposition}[Target-row distance]
+\label{prop:target-row-distance}
+For every prime $r\mid b$,
+\[
+ D_r\geq\frac{M}{r^2}\gg_b\frac{Z}{\log Z}.
+\]
+\end{proposition}
+
+\begin{proof}
+Every $q\in B$ is coprime to $r$.  If $d\not\equiv0\pmod r$, then $dq^{-1}$ is nonzero modulo $r$, and therefore
+\[
+ \dist{dq^{-1}/r}\geq1/r.
+\]
+Summing over the $M$ top primes proves the result.  No distribution of primes in arithmetic progressions is used.
+\end{proof}
+
+This is the concrete form of target observability.  For fixed $r\mid b$, the maps
+\[
+ d\longmapsto dq^{-1}/r\in\T
+ \qquad(q\in B)
+\]
+are homomorphic sensors on $\mathbb Z/r\mathbb Z$ with trivial common kernel.  Since $b$ is squarefree, detecting every coordinate $r\mid b$ detects the whole hidden target group $\prod_{r\mid b}\mathbb Z/r\mathbb Z$.
+
+\subsection{Row tails}
+
+For $r\in R_{\mathrm{rows}}$, define
+\[
+ E_r(x)=\sum_{q\in B}\dist{u_{rq}(x)}^2
+\]
+and
+\[
+ A_r(x)=\prod_{q\in B}
+ \left|(1-\theta)+\theta\exp(2\pi i u_{rq}(x))\right|.
+\]
+Choose $x_r^*$ minimizing $E_r(x)$.
+
+\begin{lemma}[Shift-uniform row tail]
+\label{lem:row-tail}
+There is $c_b>0$ such that
+\[
+ \delta_r:=\sum_{x\neq x_r^*}A_r(x)
+ \leq r\exp(-c_bD_r).
+\]
+\end{lemma}
+
+\begin{proof}
+By \cref{eq:bernoulli-modulus},
+\[
+ A_r(x)\leq\exp(-\kappa_bE_r(x)).
+\]
+If $x\neq x_r^*$, the squared distance between the two phase vectors is at least $D_r$ by \cref{eq:row-shift}.  The circle triangle inequality and $(u+v)^2\leq2u^2+2v^2$ give
+\[
+ D_r\leq2E_r(x)+2E_r(x_r^*)\leq4E_r(x),
+\]
+because $x_r^*$ minimizes $E_r$.  Thus $E_r(x)\geq D_r/4$.  Sum over at most $r$ nondecoder residues.
+\end{proof}
+
+From \cref{prop:lower-row-distance,prop:target-row-distance,lem:row-tail},
+\begin{equation}
+\label{eq:Delta-row}
+ \Delta:=\sum_{r\in R_{\mathrm{rows}}}\delta_r
+ \leq Z^2\exp(-cZ/\log^3Z)=o(1).
+\end{equation}
+Indeed there are fewer than $Z$ lower-prime rows, each with fewer than $Z$ residues, and the finitely many target rows have the stronger exponent.
+
+\subsection{The exact retained skeleton}
+
+For the fixed top assignment, assign every factor involving one top prime and one row prime to the corresponding $A_r$.  Let $G(x_R)$ be the modulus of the product of all remaining lower--lower denominator factors.  Then
+\[
+ 0\leq G(x_R)\leq1.
+\]
+The internal top factors have already been placed in $T_B$.  Thus the absolute Fourier product has the exact form required by \cref{thm:weighted-compression}, with
+\[
+ W_y=T_B(a_B),
+ \qquad
+ a_{r,y}=A_r,
+ \qquad
+ H_y=\text{the retained complex residual factor}.
+\]
+
+Put
+\[
+ \alpha_r=A_r(x_r^*),
+ \qquad
+ \beta_r=\sum_{x\neq x_r^*}A_r(x)\leq\delta_r.
+\]
+Since every row modulus is at most one,
+\[
+ 0\leq\alpha_r\leq1.
+\]
+The exact unnormalized compression theorem gives an off-decoder error bounded, for each anchor, by
+\[
+ \prod_r(\alpha_r+\beta_r)-\prod_r\alpha_r.
+\]
+Monotonicity in each $\alpha_r\in[0,1]$ yields
+\[
+ \prod_r(\alpha_r+\beta_r)-\prod_r\alpha_r
+ \leq\prod_r(1+\delta_r)-1
+ \leq\exp(\Delta)-1.
+\]
+After multiplication by the actual top weight and summation over all top assignments, \cref{prop:top-partition} gives
+\begin{proposition}[Global weighted fibre error]
+\label{prop:global-fibre-error}
+The total contribution of every nondecoder fibre point is at most
+\begin{equation}
+\label{eq:global-fibre-error}
+ P_{\mathrm{top}}\bigl(\exp(\Delta)-1\bigr)
+ \ll Z\log Z\,\Delta
+ =o(1).
+\end{equation}
+No decoder weight is divided out, and the raw number of top assignments does not occur.
+\end{proposition}
+
+The factors collected in $G$ remain on the decoder tuple.  They will provide the adaptive damping in \cref{sec:decoded-skeleton}.
+
+\subsection{Identification of the decoders}
+
+Suppose the top assignment is coherent with integer label $m$.  The candidate row residue $m\pmod r$ makes each top-cross phase congruent to $m/(rq)$, and hence
+\begin{equation}
+\label{eq:candidate-row-energy}
+ E_r(m\bmod r)
+ \leq\frac{m^2}{r^2}W_B
+ \ll\frac{m^2/r^2}{Z\log Z}.
+\end{equation}
+If the right side is less than $D_r/8$, this candidate is the unique minimizer.  Indeed, for another residue $x$,
+\[
+ D_r\leq2E_r(x)+2E_r(m),
+\]
+so $E_r(x)>E_r(m)$.
+
+Put
+\begin{equation}
+\label{eq:M-dec}
+ M_{\mathrm{dec}}=\frac{XZ}{(\log Z)^2}.
+\end{equation}
+
+\begin{proposition}[Prime-coordinate identification]
+\label{prop:prime-decoder-identification}
+For every $r\in P\setminus B$ and every coherent top label satisfying $|m|\leq M_{\mathrm{dec}}$,
+\[
+ x_r^*=m\pmod r.
+\]
+\end{proposition}
+
+\begin{proof}
+The candidate energy in \cref{eq:candidate-row-energy} is largest at $r=X$.  At $|m|=M_{\mathrm{dec}}$ it is
+\[
+ \ll\frac{M_{\mathrm{dec}}^2/X^2}{Z\log Z}
+ =\frac{Z}{\log^5Z},
+\]
+whereas \cref{prop:lower-row-distance} gives $D_r\gg Z/\log^3Z$ uniformly.
+\end{proof}
+
+\begin{proposition}[Target-coordinate identification]
+\label{prop:target-decoder-identification}
+For every prime $r\mid b$ and every coherent top label satisfying $|m|\leq X^2/4$,
+\[
+ x_r^*=m\pmod r.
+\]
+\end{proposition}
+
+\begin{proof}
+The candidate energy is
+\[
+ \ll_b\frac{X^4}{Z\log Z}=O_b(X/\log X),
+\]
+whereas \cref{prop:target-row-distance} gives $D_r\gg_b Z/\log Z=X^3/\log Z$.
+\end{proof}
+
+Because $b$ is squarefree, agreement modulo every $r\mid b$ is agreement modulo $b$.  Consequently, for $|m|\leq X^2/4$, the entire decoded coordinate tuple is the residue of the genuine integer $m$ modulo $L$.  In the larger range
+\[
+ X^2/4<|m|\leq M_{\mathrm{dec}},
+\]
+all coordinates indexed by $P$ still decode to $m$, while no identification of the coordinates of $b$ is asserted or needed.  The retained lower--lower factors used there depend only on the prime coordinates in $P$.
