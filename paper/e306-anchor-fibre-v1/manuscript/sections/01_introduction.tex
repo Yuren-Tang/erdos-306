@@ -1,7 +1,7 @@
 \section{Introduction}
 \label{sec:introduction}
 
-An integer is a \emph{squarefree semiprime} if it is the product of two distinct primes.  We resolve the reciprocal-representation question recorded as Erd\H{o}s Problem~306~\cite{erdos-problem-306} by proving the following characterization.
+An integer is a \emph{squarefree semiprime} if it is the product of two distinct primes.  We resolve the reciprocal-representation question posed by Erd\H{o}s and Graham~\cite{erdos-graham-1980} and now recorded as Erd\H{o}s Problem~306~\cite{erdos-problem-306} by proving the following characterization.
 
 \begin{theorem}[Main theorem]
 \label{thm:main}
@@ -13,6 +13,12 @@ if and only if the denominator of $q$ in lowest terms is squarefree.
 \end{theorem}
 
 The necessity is elementary but structurally important: a sum of rational numbers whose reduced denominators are squarefree again has squarefree reduced denominator.  The content of the theorem is the converse.  Given a fixed squarefree denominator $b$, we construct a finite family of squarefree semiprimes and prove that a suitable subfamily has reciprocal sum exactly $1/b$.  A standard avoidance and numerator induction then yields every positive rational with reduced denominator $b$.
+
+\subsection{Context and prior work}
+
+Egyptian-fraction representations and their restricted-denominator variants have a long literature; see Bloom and Elsholtz~\cite{bloom-elsholtz-2022} for a recent survey.  For denominators that are products of distinct primes, Butler, Erd\H{o}s and Graham proved that every positive integer is a sum of distinct unit fractions whose denominators have three distinct prime factors, and they explicitly conjectured the corresponding two-prime statement~\cite{butler-erdos-graham-2015}.
+
+A recent preprint of Li proves that two-prime conjecture for every positive integer.  For a general squarefree denominator $b$, it also proves the representation of $a/b$ above an explicit threshold and identifies the remaining below-threshold $\omega=2$ regime as open~\cite{li-2026-semiprime}.  The main theorem above closes that remaining rational regime.  The methods are complementary: Li follows an induction driven by additive-combinatorial subset-sum input, whereas the present proof constructs $1/b$ directly through a finite Fourier coefficient organized by one coherent prime anchor.  Numerator induction enters only after the fixed-denominator Fourier theorem has been established.
 
 The construction is finite but its natural proof is Fourier-analytic.  We place independent Bernoulli selectors on a complete family of prime pairs, supplement it by rows which see the prime divisors of $b$, and use character orthogonality modulo one squarefree period.  The resulting frequency space is high-dimensional: in Chinese-remainder coordinates it contains one coordinate for every prime used by the denominator family.  The central problem is therefore not merely to estimate a Fourier product, but to show that the local frequency coordinates synchronize around one global integer label.
 
