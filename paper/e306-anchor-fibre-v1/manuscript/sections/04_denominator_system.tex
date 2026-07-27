@@ -1,0 +1,257 @@
+\section{The semiprime denominator system}
+\label{sec:denominator-system}
+
+We now specialize the finite selection model to a fixed squarefree denominator.  Throughout this section, let $b\geq3$ be squarefree and let $\mathcal T$ be a finite set of forbidden denominators.  All asymptotic statements are for $X\to\infty$ with $b$ and $\mathcal T$ fixed.
+
+\subsection{Prime blocks}
+
+Put
+\[
+ Z=X^3,
+ \qquad
+ P=\{p\text{ prime}:X\leq p<Z\},
+ \qquad
+ B=\{q\text{ prime}:Z/2\leq q<Z\},
+\]
+and let
+\[
+ S_b=\{r\text{ prime}:r\mid b\}.
+\]
+We always take $X$ so large that every prime in $P$ exceeds every prime divisor of $b$, and every denominator constructed below exceeds every element of $\mathcal T$.
+
+We use the following standard consequence of the prime number theorem.
+
+\begin{lemma}[Prime supply in fixed-ratio intervals]
+\label{lem:fixed-ratio-prime-supply}
+For fixed $0<u<v$, uniformly as $y\to\infty$,
+\[
+ \#\{p\text{ prime}:uy\leq p<vy\}
+ =\bigl(v-u+o(1)\bigr)\frac{y}{\log y}.
+\]
+In particular this quantity lies between positive constant multiples of $y/\log y$ for all sufficiently large $y$.
+\end{lemma}
+
+\begin{proof}
+Write the prime number theorem in the tail-uniform form
+\[
+ \pi(t)=\frac{t}{\log t}(1+\varepsilon(t)),
+ \qquad
+ \sup_{t\geq Y}|\varepsilon(t)|\longrightarrow0.
+\]
+Apply it at $uy$ and $vy$.  Since $u$ and $v$ are fixed, replacing $\log(uy)$ and $\log(vy)$ by $\log y$ introduces only a relative $o(1)$.
+\end{proof}
+
+Define
+\[
+ S_X=\sum_{p\in P}\frac1p,
+ \qquad
+ U_X=\sum_{p\in P}\frac1{p^2},
+ \qquad
+ M=|B|,
+\]
+and
+\[
+ V_B=\sum_{q\in B}\frac1q,
+ \qquad
+ W_B=\sum_{q\in B}\frac1{q^2}.
+\]
+
+\begin{lemma}[Reciprocal prime estimates]
+\label{lem:reciprocal-prime-estimates}
+As $X\to\infty$,
+\[
+ S_X=\log3+o(1),
+ \qquad
+ U_X=O\!\left(\frac1{X\log X}\right),
+\]
+and
+\[
+ M\asymp\frac{Z}{\log Z},
+ \qquad
+ V_B=O\!\left(\frac1{\log Z}\right),
+ \qquad
+ W_B=O\!\left(\frac1{Z\log Z}\right).
+\]
+\end{lemma}
+
+\begin{proof}
+Abel summation and \cref{lem:fixed-ratio-prime-supply} give
+\[
+ \sum_{X\leq p<X^3}\frac1p
+ =\int_X^{X^3}\frac{dt}{t\log t}+o(1)
+ =\log\log(X^3)-\log\log X+o(1)
+ =\log3+o(1).
+\]
+For the square sum, split $[X,X^3)$ into dyadic intervals.  The interval $[2^k,2^{k+1})$ contains $O(2^k/k)$ primes and therefore contributes $O(1/(k2^k))$; summing the geometric tail gives the asserted bound for $U_X$.
+
+The estimate for $M$ follows from \cref{lem:fixed-ratio-prime-supply} on $[Z/2,Z)$.  Since $q\geq Z/2$ on $B$,
+\[
+ W_B\leq\frac{4M}{Z^2}=O\!\left(\frac1{Z\log Z}\right).
+\]
+A final Abel summation on $[Z/2,Z)$ gives
+\[
+ V_B=\log\log Z-\log\log(Z/2)+o(1/\log Z)
+ =O(1/\log Z).
+\]
+\end{proof}
+
+\subsection{The denominator family}
+
+Define
+\[
+ \mathcal E_{\mathrm{pair}}
+ =\{pq:p,q\in P,\ p<q\},
+ \qquad
+ \mathcal E_b
+ =\{rq:r\in S_b,\ q\in B\},
+\]
+and
+\[
+ \mathcal E=\mathcal E_{\mathrm{pair}}\sqcup\mathcal E_b,
+ \qquad
+ L=b\prod_{p\in P}p.
+\]
+The symbol $\sqcup$ is justified by unique factorization: every prime in $P$ exceeds every prime factor of $b$.
+
+Let
+\[
+ \Lambda=\sum_{e\in\mathcal E}\frac1e.
+\]
+
+\begin{proposition}[Arithmetic capacity]
+\label{prop:arithmetic-capacity}
+For all sufficiently large $X$:
+\begin{enumerate}[label=(\roman*)]
+\item every $e\in\mathcal E$ is a squarefree semiprime;
+\item the elements of $\mathcal E$ are pairwise distinct, avoid $\mathcal T$, and divide $L$;
+\item for fixed constants
+\[
+ \frac13<\lambda_-<\frac{(\log3)^2}{2}<\lambda_+<1,
+\]
+one has
+\[
+ \lambda_-<\Lambda<\lambda_+;
+\]
+\item
+\[
+ \sum_{e\in\mathcal E}\frac1{e^2}
+ \asymp\frac1{X^2\log^2X}.
+\]
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+The distinctness and squarefreeness assertions follow from unique factorization and the choice of $X$.  Avoidance follows because every constructed denominator eventually exceeds every element of the fixed set $\mathcal T$, and each denominator divides $L$ by definition.
+
+Apply the exact pair identity \cref{cor:pair-identity} with weights $u_p=1/p$.  The complete-pair load is
+\begin{equation}
+\label{eq:pair-load}
+ \Lambda_{\mathrm{pair}}
+ =\sum_{\substack{p<q\\p,q\in P}}\frac1{pq}
+ =\frac12\left(S_X^2-U_X\right)
+ \longrightarrow\frac{(\log3)^2}{2}.
+\end{equation}
+The factor $1/2$ in \cref{eq:pair-load} is essential: the family contains unordered distinct pairs.  The target-sensitive auxiliary load is
+\[
+ \Lambda_b
+ =\left(\sum_{r\in S_b}\frac1r\right)V_B
+ =O_b(1/\log Z)=o_b(1).
+\]
+This proves the load interval.
+
+For the upper square-load bound,
+\[
+ \sum_{\substack{p<q\\p,q\in P}}\frac1{p^2q^2}
+ \leq\frac{U_X^2}{2}
+ =O\!\left(\frac1{X^2\log^2X}\right).
+\]
+The interval $[X,2X)$ contains $\gg X/\log X$ primes.  Its distinct pairs have product at most $4X^2$, and hence contribute
+\[
+ \gg\frac{(X/\log X)^2}{X^4}
+ =\frac1{X^2\log^2X}.
+\]
+Finally,
+\[
+ \sum_{r\in S_b}\sum_{q\in B}\frac1{r^2q^2}
+ =\left(\sum_{r\in S_b}\frac1{r^2}\right)W_B
+ =O_b\!\left(\frac1{Z\log Z}\right),
+\]
+which is negligible on the displayed scale.
+\end{proof}
+
+\subsection{Bernoulli centring and variance}
+
+Set
+\begin{equation}
+\label{eq:theta-definition}
+ \theta=\frac1{b\Lambda}.
+\end{equation}
+By \cref{prop:arithmetic-capacity}, $\theta$ belongs to the fixed compact interval
+\[
+ I_b=\left[\frac1{b\lambda_+},\frac1{b\lambda_-}\right]\subset(0,1).
+\]
+Moreover,
+\begin{equation}
+\label{eq:exact-centering-load}
+ \theta\sum_{e\in\mathcal E}\frac1e=\frac1b,
+ \qquad
+ \Lambda<1.
+\end{equation}
+Define the actual-family variance scale by
+\begin{equation}
+\label{eq:sigma-E}
+ \sigma_{\mathcal E}^2
+ =\theta(1-\theta)\sum_{e\in\mathcal E}\frac1{e^2}.
+\end{equation}
+Then
+\begin{equation}
+\label{eq:sigma-E-scale}
+ \sigma_{\mathcal E}^2\asymp_b\frac1{X^2\log^2X},
+ \qquad
+ \sigma_{\mathcal E}^{-1}\asymp_b X\log X.
+\end{equation}
+
+The finite Fourier numerator from \cref{eq:reciprocal-fourier} is
+\begin{equation}
+\label{eq:Fh-definition}
+ F(h)=\exp(-2\pi i h/b)
+ \prod_{e\in\mathcal E}
+ \left((1-\theta)+\theta\exp(2\pi i h/e)\right).
+\end{equation}
+For $t\in\mathbb R$,
+\[
+ |(1-\theta)+\theta\exp(2\pi i t)|^2
+ =1-4\theta(1-\theta)\sin^2(\pi t).
+\]
+Since $I_b$ is compact, there is $\kappa_b>0$ such that, uniformly for $\theta\in I_b$,
+\begin{equation}
+\label{eq:bernoulli-modulus}
+ |(1-\theta)+\theta\exp(2\pi i t)|
+ \leq\exp(-\kappa_b\dist{t}^2).
+\end{equation}
+Consequently,
+\begin{equation}
+\label{eq:global-Fourier-energy}
+ |F(h)|\leq\exp(-\kappa_bQ_{\mathcal E}(h)),
+ \qquad
+ Q_{\mathcal E}(h)=\sum_{e\in\mathcal E}\dist{h/e}^2.
+\end{equation}
+
+\subsection{Exact factor partition}
+
+Because $b$ and $\prod_{p\in P}p$ are coprime and squarefree, the period $L$ is squarefree.  Chinese-remainder coordinates split the frequency into the coordinates indexed by $B$, by $P\setminus B$, and by $S_b$.
+
+The denominator factors in \cref{eq:Fh-definition} are assigned exactly once as follows:
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Denominator class & role \\
+\midrule
+$q q'$ with $q,q'\in B$ & top-anchor factor \\
+$r q$ with $r\in P\setminus B$, $q\in B$ & lower-prime row $r$ \\
+$r q$ with $r\in S_b$, $q\in B$ & target row $r$ \\
+$p p'$ with $p,p'\in P\setminus B$ & retained skeleton factor \\
+\bottomrule
+\end{tabular}
+\end{center}
+The target character $\exp(-2\pi ih/b)$ and every phase not absorbed into a row remain in the complex residual factor.  The four denominator classes are disjoint and cover $\mathcal E$.  Thus no Fourier factor is omitted, duplicated, or introduced by the anchor--fibre decomposition.
