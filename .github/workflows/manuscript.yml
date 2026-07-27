@@ -31,9 +31,23 @@ jobs:
             texlive-latex-extra
 
       - name: Clean Biber build
+        shell: bash
         run: |
+          set -o pipefail
           make clean
-          make pdf
+          make pdf 2>&1 | tee build-output.log
+
+      - name: Upload build diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e306-manuscript-diagnostics-${{ github.sha }}
+          path: |
+            paper/e306-anchor-fibre-v1/manuscript/build-output.log
+            paper/e306-anchor-fibre-v1/manuscript/main.log
+            paper/e306-anchor-fibre-v1/manuscript/main.blg
+          if-no-files-found: warn
+          retention-days: 30
 
       - name: Gate bibliography, references, and labels
         run: |
