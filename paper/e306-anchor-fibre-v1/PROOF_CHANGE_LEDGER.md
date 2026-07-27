@@ -69,6 +69,11 @@ These are not changes to the dense E306 proof; they are the verified final inter
 | MC-004 | 2026-07-27 | A | Sections 2 and 9 | no-wrap is proved at terminal closure | general exactness interfaces are recorded in Section 2, while the actual E306 no-wrap proof remains in Section 9 | preserves proof order: positivity first, exactness second | ADOPTED |
 | MC-005 | 2026-07-27 | A | Section 10 | AFT discussion exists as a separate research packet | scope, failure modes and limitations are integrated after the completed application | no provider is used beyond the verified interface | ADOPTED |
 | MC-006 | 2026-07-27 | A | bibliography | formal development described in repository metadata | portable `@misc` BibTeX entry and explicit orthogonality disclaimer | bibliographic/compilation only | ADOPTED |
+| MC-007 | 2026-07-27 | A | bibliography | unprotected `Erd\H{o}s` in a title is altered by `alpha.bst` case conversion | protect the complete proper-name title with braces | compile-only; no prose or mathematics changes | ADOPTED |
+| MC-008 | 2026-07-27 | A | Introduction and bibliography | problem provenance and nearby results were represented only by the online problem record | add Erdős–Graham, Butler–Erdős–Graham, Bloom–Elsholtz and Li, and distinguish the integer, threshold-rational and full-rational results | publication positioning only | ADOPTED |
+| MC-009 | 2026-07-27 | A | Section 2, exactness interface | application prose informally said `M=Q` modulo `1` after stating a finite-quotient proposition | specify `M=L^{-1}Z` and `A=M/Z congruent Z/LZ` | makes the already-used finite quotient literal; no proof step changes | ADOPTED |
+| MC-010 | 2026-07-27 | A | Section 4 | prime-number-theorem input was called standard without a reference | add a standard primary textbook citation at first use | bibliographic only | ADOPTED |
+| MC-011 | 2026-07-27 | A | repository CI | manuscript build was reproducible only by a documented local command | add a pull-request TeX/BibTeX build, reference gate and PDF artifact | verification infrastructure only | ADOPTED |
 
 ## No-change declarations
 
@@ -94,5 +99,7 @@ The manuscript has not changed any of the following source facts:
 
 ```text
 NO UNVERIFIED MATHEMATICAL CHANGE RECORDED
-SOURCE-PRESERVATION AUDIT PENDING
+SOURCE-PRESERVATION AUDIT COMPLETED AT d20199dd192742cd5ef668426ac83897f83fdfa2
+BOUNDED BIBTEX REPAIR APPLIED AT 36860a0ca340a2aaee6a745d5856bde4433be4d3
+REPRODUCIBLE MANUSCRIPT CI INSTALLED; FIXED-TEXT BUILD CHECKPOINT TO BE RECORDED AFTER FINAL EDITORIAL RUN
 ```
