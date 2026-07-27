@@ -15,20 +15,36 @@ The repairs below concern theorem statements, interface optimization and the exa
 
 | ID | Required repair | Mathematical class | Status |
 |---|---|---|---|
-| R01 | Use “anchor-dependent and averaged row errors”; do not assert a sequential conditional-product theorem. | exposition / scope | VERIFIED |
-| R02 | Require the asymptotic comparison scale to be eventually positive. | bounded statement repair | VERIFIED |
-| R03 | Use measurable alias-event probability, with alias sums only in the discrete countable case. | bounded statement repair | VERIFIED |
-| R04 | Treat P1–P6 as distinct obligations while allowing one theorem to discharge several on disjoint lanes. | logical-interface repair | VERIFIED |
-| R05 | Replace `mid/out` by an arbitrary finite family of minor lanes. | theorem optimization | VERIFIED |
-| R06 | Require observability sensors to be homomorphisms `H -> R/Z`. | bounded mathematical repair | VERIFIED |
-| R07 | Separate finite-system injectivity from asymptotic quantitative lower bounds. | bounded statement repair | VERIFIED |
-| R08 | State observability as a lane-dependent coverage condition. | theorem optimization | VERIFIED |
-| R09 | Record the moving-uniformity consequence `k^2 V/U^2 -> 0`. | bounded strengthening from existing proof | VERIFIED |
-| R10 | Use the exact unnormalized weighted theorem in the E306 bridge. | E306 bridge repair | VERIFIED |
-| R11 | Use the final sector- and coordinate-dependent decoder ranges. | E306 bridge repair | VERIFIED |
-| R12 | Apply no-wrap and alias removal only after quotient Fourier positivity. | architecture repair | VERIFIED |
+| R01 | Use “anchor-dependent and averaged row errors”; do not assert a sequential conditional-product theorem. | exposition / scope | ADOPTED |
+| R02 | Require the asymptotic comparison scale to be eventually positive. | bounded statement repair | ADOPTED |
+| R03 | Use measurable alias-event probability, with alias sums only in the discrete countable case. | bounded statement repair | ADOPTED |
+| R04 | Treat P1–P6 as distinct obligations while allowing one theorem to discharge several on disjoint lanes. | logical-interface repair | ADOPTED |
+| R05 | Replace `mid/out` by an arbitrary finite family of minor lanes. | theorem optimization | ADOPTED |
+| R06 | Require observability sensors to be homomorphisms `H -> R/Z`. | bounded mathematical repair | ADOPTED |
+| R07 | Separate finite-system injectivity from asymptotic quantitative lower bounds. | bounded statement repair | ADOPTED |
+| R08 | State observability as a lane-dependent coverage condition. | theorem optimization | ADOPTED |
+| R09 | Record the moving-uniformity consequence `k^2 V/U^2 -> 0`. | bounded strengthening from existing proof | ADOPTED |
+| R10 | Use the exact unnormalized weighted theorem in the E306 bridge. | E306 bridge repair | ADOPTED |
+| R11 | Use the final sector- and coordinate-dependent decoder ranges. | E306 bridge repair | ADOPTED |
+| R12 | Apply no-wrap and alias removal only after quotient Fourier positivity. | architecture repair | ADOPTED |
 
-## Verified structural statements
+## Manuscript adoption map
+
+| Verified object | Manuscript location |
+|---|---|
+| T1 complete-family collision theorem and pair identity | `manuscript/sections/03_structural_tools.tex` and the capacity calculation in Section 4 |
+| T2 exact weighted product-fibre compression | `manuscript/sections/03_structural_tools.tex`; unnormalized specialization in Section 6 |
+| T3 finite-group syndrome separation | `manuscript/sections/03_structural_tools.tex`; target-row realization in Section 6 |
+| T4 decoded-skeleton positivity | `manuscript/sections/03_structural_tools.tex`; five-sector assembly in Section 8 |
+| measurable alias and no-wrap separation | Sections 2 and 9 |
+| P1 weighted anchor partition | Section 5 |
+| P2 row decoding and weighted error | Section 6 |
+| P3 sector-dependent identification | Section 6 |
+| P4 residual damping | Section 7 |
+| P5 positive major | Section 8 |
+| P6 quotient positivity then ambient exactness | Section 9 |
+
+## Adopted structural statements
 
 ### T1 — complete-family collision theorem
 
@@ -39,7 +55,7 @@ For nonnegative `u_i`, with `U=sum_i u_i`, `V=sum_i u_i^2` and `k>=2`,
    <= U^(k-2)V/(2(k-2)!).
 ```
 
-The verified form includes `U=0`, fixed and moving uniformity, and the exact pair identity
+The adopted form includes `U=0`, fixed and moving uniformity, and the exact pair identity
 
 ```text
 e_2(u)=(U^2-V)/2.
@@ -74,13 +90,13 @@ Zero weights, empty row families, nonunique decoders and complex residual factor
 
 ### T3 — finite-group syndrome separation
 
-For `psi_j in Hom(H,R/Z)`, the verified theorem gives nearest-syndrome separation, the Gaussian-modulus tail, qualitative injectivity, the quantitative-sequence distinction and the lane-dependent coverage principle.
+For `psi_j in Hom(H,R/Z)`, the adopted theorem gives nearest-syndrome separation, the Gaussian-modulus tail, qualitative injectivity, the quantitative-sequence distinction and the lane-dependent coverage principle.
 
 ### T4 — decoded-skeleton positivity proposition
 
-The verified assembly proposition combines T2 with an arbitrary finite skeleton-lane partition. It proves positivity of the quotient Fourier coefficient. Ambient exact equality and no-wrap remain subsequent application-specific steps.
+The adopted assembly proposition combines T2 with an arbitrary finite skeleton-lane partition. It proves positivity of the quotient Fourier coefficient. Ambient exact equality and no-wrap remain subsequent application-specific steps.
 
-## Verified final E306 bridge
+## Adopted final E306 bridge
 
 | Obligation | Final dense provider | Adopted article form |
 |---|---|---|
@@ -93,17 +109,15 @@ The verified assembly proposition combines T2 with an arbitrary finite skeleton-
 
 The verifier found no new estimate, stronger range, hidden normalization, omitted target coordinate, circularity or unaudited hybrid.
 
-## M1 disposition
+## Disposition
 
-1. T1–T4 have complete verified proofs.
-2. R01–R12 are `VERIFIED`.
-3. P1–P6 have exact final ranges and parameter order.
+1. T1–T4 have complete independently verified proofs.
+2. R01–R12 are incorporated into the manuscript source.
+3. P1–P6 appear with the final ranges and parameter order.
 4. The dense E306 proof remains unchanged and complete.
-5. The packet is ready to serve as the article's structural foundation.
+5. Any later mathematical deviation must be entered in `PROOF_CHANGE_LEDGER.md` and independently assessed.
 
 ```text
 [PASS E306-AFT-REPAIR-VERIFY-01]
-[M1 COMPLETE / M2-M3 AUTHORIZED E306-PAPER-01]
+[M1 ADOPTED INTO MANUSCRIPT E306-PAPER-01]
 ```
-
-A repair becomes `ADOPTED` when its verified statement is incorporated into the manuscript source.
