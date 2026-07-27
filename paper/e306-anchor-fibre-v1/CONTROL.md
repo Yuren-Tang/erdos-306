@@ -43,13 +43,14 @@
 4. The final major/minor inequality is presented as an assembly interface, not as deeper than its arithmetic providers.
 5. General structural tools occur naturally before their E306 provider verifications.
 6. E306 remains the headline theorem and first substantive application.
-7. The fully abstract viewpoint may be discussed after the concrete semantic setup, but not as an unrelated afterthought.
+7. The fully abstract viewpoint is integrated into the proof architecture and scope discussion, not appended as an unrelated second project.
 
 ## Product rules
 
 - One article, one branch, one draft PR.
 - No task-, auditor-, repair-, review-, or revision-specific branches.
-- Mathematical changes are recorded in `AFT_REPAIR_LEDGER.md` or the later proof-change ledger.
+- Mathematical changes are recorded in `AFT_REPAIR_LEDGER.md` and `PROOF_CHANGE_LEDGER.md`.
+- Every source obligation is tracked in `PROOF_OBLIGATION_LEDGER.md`.
 - Reviewers do not write to the branch.
 - Owner approval is required before ready-for-review, merge, release, DOI, arXiv or journal submission.
 - `lean-graph.yml`, Lean analytic-provider refactoring, E307 and a separate AFT paper are outside scope.
@@ -57,18 +58,37 @@
 ## Milestones
 
 - `M0` control and source freeze — **COMPLETE**
-- `M1` bounded AFT repair and final specialization bridge — **COMPLETE / INDEPENDENT PASS**
-- `M2` theorem DAG and article architecture freeze — **ACTIVE**
-- `M3` general structural tools — **ACTIVE**
-- `M4` E306 arithmetic providers — pending
-- `M5` full manuscript assembly — pending
-- `M6` Owner and independent manuscript review — pending
+- `M1` bounded AFT repair and final specialization bridge — **COMPLETE / INDEPENDENT PASS / MANUSCRIPT-ADOPTED**
+- `M2` theorem DAG and article architecture freeze — **COMPLETE**
+- `M3` general structural tools — **COMPLETE / FIRST MANUSCRIPT FORM**
+- `M4` E306 arithmetic providers — **COMPLETE / FIRST MANUSCRIPT FORM**
+- `M5` full manuscript assembly — **FIRST COMPLETE AUTHORIAL ASSEMBLY**
+- `M6` Owner and independent manuscript review — **PENDING SOURCE-PRESERVATION AND COMPILE CHECKS**
 - `M7` revision and publication disposition — pending
+
+## Current manuscript state
+
+The manuscript source now contains:
+
+- an introduction and proof architecture;
+- finite Fourier selection and exactness interfaces;
+- the independently verified structural tools;
+- the complete denominator, anchor, row, skeleton, major/minor and closure arguments;
+- scope, limitations and the orthogonal formal-verification statement;
+- an initial bibliography;
+- proof-obligation and proof-change ledgers.
+
+Outstanding before independent global manuscript review:
+
+1. line-by-line source-preservation audit against the exact dense and structural checkpoints;
+2. successful TeX/BibTeX compilation and reference check;
+3. Owner review of theorem hierarchy, title, exposition and publication positioning.
 
 ## Current state
 
 ```text
-[M1 COMPLETE / M2-M3 ACTIVE E306-PAPER-01]
+[FIRST COMPLETE AUTHORIAL MANUSCRIPT ASSEMBLY E306-PAPER-01]
+[SOURCE-PRESERVATION AND COMPILE CHECKS PENDING]
 ```
 
-The PR remains draft. No publication or merge authority is implied.
+The PR remains draft. No publication, merge or ready-for-review authority is implied.
