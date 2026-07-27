@@ -1,0 +1,118 @@
+\section{Exact representation and completion of the theorem}
+\label{sec:exact-completion}
+
+We now convert the positive finite Fourier numerator into an exact rational identity and close the elementary reductions from \cref{sec:introduction}.
+
+\subsection{The avoiding unit representation}
+
+Let $W$ be the Bernoulli weight of subsets $A\subset\mathcal E$ satisfying
+\[
+ \sum_{e\in A}\frac{L}{e}\equiv\frac{L}{b}\pmod L.
+\]
+By \cref{eq:reciprocal-fourier,thm:positive-fourier-numerator},
+\[
+ LW=\sum_{h\bmod L}F(h)
+\]
+has positive real part.  The left side is real and nonnegative, so $W>0$.  Hence there exists a subset $A\subset\mathcal E$ with
+\begin{equation}
+\label{eq:target-congruence}
+ \sum_{e\in A}\frac{L}{e}\equiv\frac{L}{b}\pmod L.
+\end{equation}
+Dividing by $L$, the difference
+\[
+ d_A=\sum_{e\in A}\frac1e-\frac1b
+\]
+is an integer.
+
+The exactness step is now deterministic.  By \cref{eq:exact-centering-load},
+\[
+ 0\leq\sum_{e\in A}\frac1e\leq\Lambda<1,
+ \qquad
+ 0<1/b<1.
+\]
+Therefore
+\[
+ -1<d_A<1.
+\]
+Since $d_A\in\mathbb Z$, it follows that $d_A=0$.  Thus
+\begin{equation}
+\label{eq:avoiding-unit-identity}
+ \sum_{e\in A}\frac1e=\frac1b.
+\end{equation}
+By \cref{prop:arithmetic-capacity}, the elements of $A$ are distinct squarefree semiprimes and avoid the prescribed finite set $\mathcal T$.
+
+We have proved the central application theorem.
+
+\begin{theorem}[Avoiding unit representation]
+\label{thm:avoiding-unit}
+Let $b\geq3$ be squarefree and let $\mathcal T$ be a finite set of positive integers.  There is a finite set $A$ of pairwise distinct squarefree semiprimes, disjoint from $\mathcal T$, such that
+\[
+ \sum_{e\in A}\frac1e=\frac1b.
+\]
+\end{theorem}
+
+The proof of \cref{thm:avoiding-unit} is exactly where quotient positivity and ambient equality meet: the Fourier argument establishes \cref{eq:target-congruence}, and only afterwards does the strict interval $[0,\Lambda]\subset[0,1)$ remove all nonzero aliases.
+
+\subsection{Numerators and small denominators}
+
+\begin{lemma}[Numerator induction]
+\label{lem:numerator-induction}
+Suppose an avoiding representation of $1/b$ exists for every finite forbidden set.  Then, for every integer $a\geq1$ and every finite forbidden set $\mathcal T$, there is an avoiding representation of $a/b$ by distinct squarefree semiprimes.
+\end{lemma}
+
+\begin{proof}
+Induct on $a$.  The case $a=1$ is the hypothesis.  Suppose a finite set $A$ represents $a/b$ and avoids $\mathcal T$.  Apply the avoiding unit statement with forbidden set $\mathcal T\cup A$ to obtain a representation $A'$ of $1/b$ disjoint from $A$.  Then $A\cup A'$ consists of distinct squarefree semiprimes, avoids $\mathcal T$, and has reciprocal sum $(a+1)/b$.
+\end{proof}
+
+\begin{lemma}[Denominators $1$ and $2$]
+\label{lem:small-denominators}
+It is enough to prove \cref{thm:avoiding-unit} for squarefree $b\geq3$.
+\end{lemma}
+
+\begin{proof}
+For $b=2$, construct successively disjoint avoiding representations of $1/3$ and $1/6$, and use
+\[
+ \frac12=\frac13+\frac16.
+\]
+For $b=1$, construct three successive avoiding representations of $1/3$ and add them; equivalently, apply \cref{lem:numerator-induction} with numerator and denominator equal to $3$.  At each stage the previously used denominators are added to the forbidden set.  Once an avoiding unit representation for $1$ or $1/2$ is obtained, \cref{lem:numerator-induction} supplies every positive numerator.
+\end{proof}
+
+\subsection{Necessity of squarefreeness}
+
+\begin{lemma}[Squarefree denominator obstruction]
+\label{lem:squarefree-necessity}
+Let $A$ be a finite set of squarefree positive integers.  Then the reduced denominator of
+\[
+ \sum_{n\in A}\frac1n
+\]
+is squarefree.
+\end{lemma}
+
+\begin{proof}
+Let $M=\operatorname{lcm}(A)$.  Then
+\[
+ \sum_{n\in A}\frac1n
+ =\frac{\sum_{n\in A}M/n}{M}.
+\]
+The reduced denominator divides $M$.  Since the least common multiple of squarefree integers is squarefree, every divisor of $M$ is squarefree.
+\end{proof}
+
+\begin{proof}[Proof of \cref{thm:main}]
+If $q$ is a sum of reciprocals of distinct squarefree semiprimes, its reduced denominator is squarefree by \cref{lem:squarefree-necessity}.
+
+Conversely, write $q=a/b>0$ in lowest terms and suppose $b$ is squarefree.  For $b\geq3$, \cref{thm:avoiding-unit,lem:numerator-induction} give a representation of $a/b$ by distinct squarefree semiprimes.  The cases $b=1,2$ follow from \cref{lem:small-denominators}.  This proves the characterization.
+\end{proof}
+
+\subsection{Logical closure}
+
+The proof uses the prime number theorem as its only external analytic input.  All other load-bearing implications have been established within the article:
+\begin{itemize}
+\item the complete-pair load and its factor $1/2$;
+\item the one-block forcing, exact zero-exception theorem and fingerprint partition;
+\item the separate lower-prime and fixed-$r\mid b$ row distances;
+\item the exact factor assignment and weighted off-decoder error;
+\item the sector-dependent decoder ranges and squarefree target observability;
+\item the adaptive interval, five-sector exhaustion and positive Taylor major;
+\item the non-circular parameter order $C\to X$;
+\item positivity, no-wrap, avoidance, numerator induction and the cases $b=1,2$.
+\end{itemize}
