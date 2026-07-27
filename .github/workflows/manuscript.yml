@@ -28,7 +28,8 @@ jobs:
             texlive-bibtex-extra \
             texlive-fonts-extra \
             texlive-fonts-recommended \
-            texlive-latex-extra
+            texlive-latex-extra \
+            texlive-plain-generic
 
       - name: Clean Biber build
         shell: bash
