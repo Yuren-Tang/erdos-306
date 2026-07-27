@@ -20,6 +20,8 @@ Egyptian-fraction representations and their restricted-denominator variants have
 
 A recent preprint of Li proves the two-prime conjecture for every positive integer.  For a general squarefree denominator $b$, it also represents $a/b$ above an explicit threshold and leaves the remaining below-threshold $\omega=2$ regime open~\cite{li-2026-semiprime}.  The theorem above closes that rational regime.  Li's proof is driven by additive-combinatorial subset-sum input and induction; the present argument instead constructs $1/b$ directly as a positive finite Fourier coefficient.  Numerator induction is used only after the fixed-denominator theorem has been proved.
 
+The theorem was first obtained in the author's archived Lean~4 formalization, released as version~0.0.3~\cite{tang-erdos-306-formal}.  The present article grew out of that formal work and extracts from the same Fourier-analytic line of argument a substantially simpler one-anchor proof intended for ordinary mathematical reading.  The archived code does not formalize this exposition line by line, because the proof underwent substantial conceptual refinement after the first formal implementation.
+
 \subsection{The one-anchor construction}
 
 Fix a squarefree integer $b\geq3$.  At a large scale $X$ we take primes in
