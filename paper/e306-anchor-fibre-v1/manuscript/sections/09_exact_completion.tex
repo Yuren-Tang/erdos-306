@@ -1,7 +1,7 @@
 \section{Exact representation and completion of the theorem}
 \label{sec:exact-completion}
 
-We now convert the positive finite Fourier numerator into an exact rational identity and close the elementary reductions from \cref{sec:introduction}.
+We now pass from the positive finite Fourier coefficient to an exact rational identity, and then complete the reductions announced in \cref{sec:introduction}.
 
 \subsection{The avoiding unit representation}
 
@@ -41,7 +41,7 @@ Since $d_A\in\mathbb Z$, it follows that $d_A=0$.  Thus
 \end{equation}
 By \cref{prop:arithmetic-capacity}, the elements of $A$ are distinct squarefree semiprimes and avoid the prescribed finite set $\mathcal T$.
 
-We have proved the central application theorem.
+We have proved the fixed-denominator statement on which the elementary closure rests.
 
 \begin{theorem}[Avoiding unit representation]
 \label{thm:avoiding-unit}
@@ -51,7 +51,7 @@ Let $b\geq3$ be squarefree and let $\mathcal T$ be a finite set of positive inte
 \]
 \end{theorem}
 
-The proof of \cref{thm:avoiding-unit} is exactly where quotient positivity and ambient equality meet: the Fourier argument establishes \cref{eq:target-congruence}, and only afterwards does the strict interval $[0,\Lambda]\subset[0,1)$ remove all nonzero aliases.
+This is the unique point at which quotient positivity and ambient equality meet.  The Fourier argument proves the congruence \cref{eq:target-congruence}; only afterwards does the strict interval $[0,\Lambda]\subset[0,1)$ exclude every nonzero alias.
 
 \subsection{Numerators and small denominators}
 
@@ -103,16 +103,6 @@ If $q$ is a sum of reciprocals of distinct squarefree semiprimes, its reduced de
 Conversely, write $q=a/b>0$ in lowest terms and suppose $b$ is squarefree.  For $b\geq3$, \cref{thm:avoiding-unit,lem:numerator-induction} give a representation of $a/b$ by distinct squarefree semiprimes.  The cases $b=1,2$ follow from \cref{lem:small-denominators}.  This proves the characterization.
 \end{proof}
 
-\subsection{Logical closure}
+\subsection{Analytic input}
 
-The proof uses the prime number theorem as its only external analytic input.  All other load-bearing implications have been established within the article:
-\begin{itemize}
-\item the complete-pair load and its factor $1/2$;
-\item the one-block forcing, exact zero-exception theorem and fingerprint partition;
-\item the separate lower-prime and fixed-$r\mid b$ row distances;
-\item the exact factor assignment and weighted off-decoder error;
-\item the sector-dependent decoder ranges and squarefree target observability;
-\item the adaptive interval, five-sector exhaustion and positive Taylor major;
-\item the non-circular parameter order $C\to X$;
-\item positivity, no-wrap, avoidance, numerator induction and the cases $b=1,2$.
-\end{itemize}
+The prime number theorem is the only external analytic result used in the construction.  It supplies prime counts in fixed-ratio intervals and, by Abel summation, the reciprocal load of the prime blocks.  The synchronization, fibre compression, target observability, five-sector decomposition, positive major estimate, no-wrap step and elementary induction are all proved within the article.
