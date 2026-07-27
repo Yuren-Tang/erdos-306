@@ -1,0 +1,142 @@
+\section{The major contribution and terminal budget}
+\label{sec:major-budget}
+
+We now estimate Sectors I and II and assemble all five sectors.  The order of choices is essential: the Gaussian cutoff $C$ is fixed first, and only then is $X$ taken sufficiently large.
+
+\subsection{A uniform local expansion}
+
+Compactness of the Bernoulli interval $I_b$ gives constants $\rho_b>0$ and $M_b<\infty$ such that, uniformly for $\theta\in I_b$ and $|z|\leq\rho_b$,
+\begin{equation}
+\label{eq:local-log-expansion}
+ \log\bigl((1-\theta)+\theta\exp(2\pi iz)\bigr)
+ =2\pi i\theta z
+ -2\pi^2\theta(1-\theta)z^2
+ +R_\theta(z),
+\end{equation}
+where
+\begin{equation}
+\label{eq:local-log-remainder}
+ |R_\theta(z)|\leq M_b|z|^3.
+\end{equation}
+The logarithm is taken on the branch through $1$; the compactness and small disk ensure that this branch is uniform in $\theta$.
+
+\subsection{Sector I: positive real major}
+
+For $|m|\leq N$, the decoded tuple is the genuine frequency $h=m\pmod L$.  Every denominator in $\mathcal E$ is at least $X^2$ for large $X$, while $N\asymp_C\sigma_{\mathcal E}^{-1}\asymp_b X\log X$.  Hence, uniformly for $|m|\leq N$,
+\[
+ \max_{e\in\mathcal E}|m/e|
+ \ll_C\frac{\log X}{X}\longrightarrow0.
+\]
+Moreover,
+\begin{align}
+\label{eq:aggregate-cubic-remainder}
+ \sum_{e\in\mathcal E}|m/e|^3
+ &\leq\frac{|m|^3}{X^2}
+       \sum_{e\in\mathcal E}\frac1{e^2}\\
+ &\ll_b\frac{C^3}{\sigma_{\mathcal E}X^2}
+ \ll_b C^3\frac{\log X}{X}
+ \longrightarrow0.
+\end{align}
+Thus \cref{eq:local-log-expansion} may be summed over the actual denominator family, and the aggregate remainder is $o_{b,C}(1)$ uniformly in the major range.
+
+The linear term cancels exactly by \cref{eq:exact-centering-load}:
+\[
+ 2\pi i m\theta\sum_{e\in\mathcal E}\frac1e
+ -2\pi i m/b=0.
+\]
+The quadratic term is exactly the actual-family variance.  Consequently,
+\begin{equation}
+\label{eq:major-local-gaussian}
+ F(m)=
+ \exp\bigl(-2\pi^2m^2\sigma_{\mathcal E}^2+\varepsilon_m\bigr),
+ \qquad
+ \max_{|m|\leq N}|\varepsilon_m|\longrightarrow0.
+\end{equation}
+For sufficiently large $X$ the remainder is small enough that
+\[
+ \RePart F(m)
+ \geq a_b\exp(-2\pi^2m^2\sigma_{\mathcal E}^2)
+\]
+with $a_b>0$ fixed.  The terms at $m$ and $-m$ are conjugate, so the major sum is real.  The interval
+\[
+ |m|\leq\frac1{4\sigma_{\mathcal E}}
+\]
+is contained in $|m|\leq N$ for fixed $C\geq1$; on it the Gaussian is bounded below and there are $\gg\sigma_{\mathcal E}^{-1}$ integers.  We have proved:
+
+\begin{proposition}[Positive major]
+\label{prop:positive-major}
+For every fixed $C\geq1$ and all sufficiently large $X$,
+\begin{equation}
+\label{eq:positive-major}
+ \RePart\sum_{|m|\leq N}F(m)
+ \geq\frac{c_{\mathrm{maj}}}{\sigma_{\mathcal E}}
+\end{equation}
+for a constant $c_{\mathrm{maj}}=c_{\mathrm{maj}}(b)>0$ independent of $C$ and $X$.
+\end{proposition}
+
+This is a complex positive-real estimate.  It is not obtained by lower-bounding the moduli of individual Fourier factors.
+
+\subsection{Sector II: the full-variance Gaussian tail}
+
+For
+\[
+ N<|m|\leq X^2/4,
+\]
+the decoded frequency is again the genuine integer $m\pmod L$.  Since every $e\in\mathcal E$ is at least $X^2$,
+\[
+ |m|/e\leq1/4,
+ \qquad
+ \dist{m/e}=|m|/e.
+\]
+The global modulus bound \cref{eq:global-Fourier-energy} and the definition of $\sigma_{\mathcal E}$ give
+\begin{equation}
+\label{eq:full-variance-gaussian}
+ |F(m)|\leq\exp(-c_bm^2\sigma_{\mathcal E}^2)
+\end{equation}
+for a fixed $c_b>0$.  A Gaussian integral comparison yields
+\begin{equation}
+\label{eq:sector-II-tail}
+ \sum_{|m|>N}\exp(-c_bm^2\sigma_{\mathcal E}^2)
+ \leq K_b\sigma_{\mathcal E}^{-1}
+       \exp(-c_bC^2/2).
+\end{equation}
+Choose $C$ so large that the right side is less than
+\begin{equation}
+\label{eq:C-choice}
+ \frac{c_{\mathrm{maj}}}{8\sigma_{\mathcal E}}.
+\end{equation}
+This is the only terminal constant chosen before $X$.
+
+\subsection{Strict assembly}
+
+We now fix the $C$ selected in \cref{eq:C-choice}.  Then choose $X$ above the finite maximum of the thresholds required for:
+\begin{itemize}
+\item the prime counts and Abel summations of \cref{sec:denominator-system};
+\item separation from the support of $b$ and avoidance of $\mathcal T$;
+\item the load interval, variance comparison and no-wrap inequality;
+\item reciprocal dispersion, nondominant forcing, exact cold rigidity and fingerprint entropy;
+\item the weighted top partition;
+\item both row-distance estimates and the row-tail sum;
+\item both decoder-identification ranges;
+\item containment and prime supply in the adaptive interval;
+\item the Taylor disk and the aggregate remainder in \cref{eq:aggregate-cubic-remainder};
+\item the strict $o(\sigma_{\mathcal E}^{-1})$ estimates in \cref{eq:sector-III-total,eq:sector-IV-total,eq:sector-V-total}.
+\end{itemize}
+This order is denoted
+\begin{equation}
+\label{eq:parameter-order}
+ C\longrightarrow X.
+\end{equation}
+No constant depending on $C$ is subsequently treated as absolute.
+
+For this choice of $X$, Sector II contributes at most $c_{\mathrm{maj}}/(8\sigma_{\mathcal E})$, and Sectors III--V together contribute less than, say, $3c_{\mathrm{maj}}/(8\sigma_{\mathcal E})$.  By \cref{prop:positive-major}, Sector I has real part at least $c_{\mathrm{maj}}/\sigma_{\mathcal E}$.  Applying \cref{prop:decoded-skeleton-positivity} to the five-sector partition gives
+\begin{theorem}[Positive Fourier numerator]
+\label{thm:positive-fourier-numerator}
+For every fixed squarefree $b\geq3$ and finite forbidden set $\mathcal T$, there exists a sufficiently large $X$ such that
+\begin{equation}
+\label{eq:positive-full-sum}
+ \RePart\sum_{h\bmod L}F(h)>0.
+\end{equation}
+\end{theorem}
+
+The proof has used the exact weighted product error rather than a union bound over anchor assignments, retained every lower--lower factor needed in Sector III, and required target-coordinate decoding only in the ranges in which those coordinates enter the estimate.
