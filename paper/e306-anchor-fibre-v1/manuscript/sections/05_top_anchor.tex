@@ -1,7 +1,7 @@
-\section{The top anchor}
+\section{The anchor block}
 \label{sec:top-anchor}
 
-The top block has two functions.  At low energy it synchronizes all of its local residue coordinates to one integer label.  Above the synchronization floor it admits a sufficiently small weighted partition.  We prove these facts first for an abstract prime block and then apply them to $B$.
+The anchor block has two functions.  At low energy it synchronizes all of its local residue coordinates to one integer label.  Above the synchronization floor it admits a sufficiently small weighted partition.  We prove these facts first for an abstract prime block and then apply them to $B$.
 
 \subsection{A reciprocal prime code}
 
@@ -153,7 +153,7 @@ Both alternatives contradict the assumed upper bound once $c$ is chosen below th
 
 The next proposition is the zero-exception step: low energy does not merely yield an almost-global label.
 
-\begin{proposition}[Exact cold rigidity]
+\begin{proposition}[Exact anchor rigidity]
 \label{prop:exact-cold-rigidity}
 After decreasing $c_w$ if necessary, every assignment satisfying
 \[
@@ -177,7 +177,7 @@ By \cref{prop:nondominant-forcing}, there is a dominant class $C$ with label $m$
  \geq m^2\sum_{p<q\in C}\frac1{p^2q^2}
  \gg_\rho m^2\sigma_Q^2.
 \]
-This proves the label bound.  Let $E_0=Q\setminus C$.  The label bound and cold upper bound imply $|m|\leq |C|Y/128$ for large $Y$.  For each $q\in E_0$, reciprocal dispersion across $C$ gives cross energy at least $c|C|^3/Y^2$.  These edge sets are disjoint in $q$, hence
+This proves the label bound.  Let $E_0=Q\setminus C$.  The label bound and low-energy upper bound imply $|m|\leq |C|Y/128$ for large $Y$.  For each $q\in E_0$, reciprocal dispersion across $C$ gives cross energy at least $c|C|^3/Y^2$.  These edge sets are disjoint in $q$, hence
 \[
  |E_0|\,c|C|^3/Y^2\leq\mathcal Q(a).
 \]
@@ -195,7 +195,7 @@ denotes the exceptional count, then
 \]
 \end{proof}
 
-\subsection{Fingerprint entropy}
+\subsection{Fingerprint counting}
 
 \begin{lemma}[Fingerprint rigidity]
 \label{lem:fingerprint-rigidity}
@@ -214,7 +214,7 @@ For a fixed absolute $g>0$, at most one residue $w$ satisfies
 If $w\neq w'$, subtraction of the corresponding CRT lifts and \cref{lem:reciprocal-dispersion} show that both energies cannot lie below the displayed threshold when $g$ is sufficiently small.
 \end{proof}
 
-\begin{proposition}[Fingerprint entropy]
+\begin{proposition}[Fingerprint entropy bound]
 \label{prop:fingerprint-entropy}
 For every $\varepsilon>0$, all sufficiently large blocks satisfy
 \[
@@ -244,14 +244,17 @@ vertices are forced to one residue.  Choosing the exceptional vertices and resid
  \exp\bigl(O((s+t)\log Y)\bigr)
  =\exp\bigl(O((RY^2)^{1/4}\log Y)\bigr)
 \]
-possibilities.  Dividing this exponent by $R\geq c_wY/\log^3Y$ gives $O(Y^{-1/4}\log^{13/4}Y)=o(1)$.
+possibilities.  Dividing this exponent by $R\geq c_wY/\log^3Y$ gives
+\[
+ O(Y^{-1/4}\log^{13/4}Y)=o(1).
+\]
 
 If $R>c_*N^4/Y^2$, the total number of assignments is at most $(2Y)^N$, whose logarithm is $O(Y)$, whereas $R\gg Y^2/\log^4Y$.  This again is at most $\varepsilon R$ for large $Y$.
 \end{proof}
 
-\subsection{Application to the top block}
+\subsection{Application to the anchor block}
 
-Apply the preceding results to $B\subset[Z/2,Z)$, with $Y=Z/2$.  For a top assignment $a_B$, put
+Apply the preceding results to $B\subset[Z/2,Z)$, with $Y=Z/2$.  For an anchor assignment $a_B$, put
 \[
  Q_B(a_B)=\sum_{q<q'\in B}
  \left(\frac{H_{qq'}(a_B)}{qq'}\right)^2,
@@ -263,19 +266,19 @@ There is a forcing floor
 \[
  F_B=c_B\frac{Z}{\log^3Z}
 \]
-such that every assignment with $Q_B<F_B$ has one exact integer label $m$.  Moreover,
+such that every anchor assignment with $Q_B<F_B$ has one exact integer label $m$.  Moreover,
 \[
  |m|\ll\frac{\sqrt{F_B}}{\sigma_{B,0}}
  =O\!\left(\frac{Z^{3/2}}{\sqrt{\log Z}}\right)
  =o(Z^2).
 \]
-Consequently $m$ is the centred lift on every internal top pair and
+Consequently $m$ is the centred lift on every internal anchor pair and
 \begin{equation}
 \label{eq:top-exact-energy}
  Q_B(a_B)=m^2\sigma_{B,0}^2.
 \end{equation}
 
-Define the top modulus
+Define the anchor modulus
 \[
  T_B(a_B)=
  \prod_{q<q'\in B}
@@ -292,7 +295,7 @@ Choosing $\varepsilon<\kappa_b/2$ in \cref{prop:fingerprint-entropy} and summing
  \sum_{Q_B\geq F_B}T_B(a_B)
  \ll\exp(-cF_B).
 \end{equation}
-Below the floor, distinct assignments have distinct labels, because two such labels are $o(Z^2)$ and agreement modulo two top primes forces equality.  Hence
+Below the floor, distinct anchor assignments have distinct labels, because two such labels are $o(Z^2)$ and agreement modulo two anchor primes forces equality.  Hence
 \[
  \sum_{Q_B<F_B}T_B(a_B)
  \leq\sum_{m\in\mathbb Z}
@@ -300,16 +303,17 @@ Below the floor, distinct assignments have distinct labels, because two such lab
  \ll\sigma_{B,0}^{-1}
  \ll Z\log Z.
 \]
-We have proved the weighted partition estimate
-\begin{proposition}[Top partition]
+We have proved the weighted partition estimate.
+
+\begin{proposition}[Anchor partition]
 \label{prop:top-partition}
-The complete top weight satisfies
+The complete anchor weight satisfies
 \begin{equation}
 \label{eq:P-top}
- P_{\mathrm{top}}:=\sum_{a_B}T_B(a_B)
+ P_{\mathrm{anc}}:=\sum_{a_B}T_B(a_B)
  \ll Z\log Z,
 \end{equation}
-while its noncoherent part satisfies \cref{eq:noncoherent-top-tail}.  Every coherent top assignment carries a unique exact integer label and obeys \cref{eq:top-exact-energy}.
+while its noncoherent part satisfies \cref{eq:noncoherent-top-tail}.  Every coherent anchor assignment carries a unique exact integer label and obeys \cref{eq:top-exact-energy}.
 \end{proposition}
 
-The top theorem will be used in three logically distinct places: to supply the actual anchor weights in the fibre average, to control noncoherent anchors, and to control the large coherent-label tail.  These uses concern disjoint contributions and do not double-count a frequency.
+The anchor theorem will be used in three logically distinct places: to supply the actual anchor weights in the fibre average, to control noncoherent anchor assignments, and to control the large coherent-label tail.  These uses concern disjoint contributions and do not double-count a frequency.  With synchronization established, the next section turns to the anchor-cross rows and their decoders.

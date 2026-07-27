@@ -1,14 +1,27 @@
-\documentclass[11pt]{article}
+\documentclass[11pt,a4paper,reqno]{amsart}
 
 \usepackage[T1]{fontenc}
-\usepackage{lmodern}
-\usepackage{microtype}
-\usepackage[a4paper,margin=32mm]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{newpxtext,newpxmath}
+\usepackage{microtype}
 \usepackage{enumitem}
 \usepackage{booktabs}
 \usepackage[hidelinks]{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage[
+  backend=biber,
+  style=alphabetic,
+  sorting=nyt,
+  giveninits=true,
+  maxbibnames=99,
+  doi=true,
+  url=true,
+  eprint=true
+]{biblatex}
+\addbibresource{references.bib}
+
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}[theorem]{Proposition}
@@ -30,15 +43,18 @@
 
 \title{Reciprocal Sums of Distinct Squarefree Semiprimes}
 \author{Yuren Tang}
+\thanks{ORCID: \href{https://orcid.org/0009-0006-0847-3330}{0009-0006-0847-3330}.}
+\subjclass[2020]{Primary 11D68; Secondary 11B75, 11P05}
+\keywords{Egyptian fractions, squarefree semiprimes, reciprocal sums, finite Fourier analysis, Chinese remainder theorem}
 \date{}
 
 \begin{document}
 
-\maketitle
-
 \begin{abstract}
-We prove that a positive rational number is a finite sum of reciprocals of distinct integers, each the product of two distinct primes, if and only if its reduced denominator is squarefree.  For the converse, we first represent $1/b$ for each squarefree $b$ by a finite Fourier selection argument on a complete family of semiprime denominators.  One block of large primes serves as an anchor: low-energy anchor assignments synchronize to a single integer frequency, while the remaining prime coordinates concentrate in rows around canonical decoders.  An exact weighted product-fibre inequality compresses the Fourier sum to a decoded skeleton without discarding the lower--lower factors needed to damp intermediate frequencies.  A positive Gaussian major contribution then dominates four disjoint minor ranges.  Character orthogonality gives the desired subset sum modulo one, and a strict no-wrap bound converts it to an exact rational identity.  Avoidance and induction on the numerator complete the characterization.
+We prove that a positive rational number is a finite sum of reciprocals of distinct integers, each the product of two distinct primes, if and only if its reduced denominator is squarefree.  For the converse, we first represent $1/b$ for each squarefree $b$ by a finite Fourier selection argument on a complete family of semiprime denominators.  A block of large primes serves as an anchor: low-energy anchor assignments synchronize to a single integer frequency, while the remaining prime coordinates concentrate in rows around canonical decoders.  An exact weighted product-fibre inequality compresses the Fourier sum to a decoded skeleton without discarding the lower--lower factors needed to damp intermediate frequencies.  A positive Gaussian major contribution then dominates four disjoint minor ranges.  Character orthogonality gives the desired subset sum modulo one, and a strict no-wrap bound converts it to an exact rational identity.  Avoidance and induction on the numerator complete the characterization.
 \end{abstract}
+
+\maketitle
 
 \input{sections/01_introduction}
 \input{sections/02_fourier_selection}
@@ -51,7 +67,9 @@ We prove that a positive rational number is a finite sum of reciprocals of disti
 \input{sections/09_exact_completion}
 \input{sections/10_scope}
 
-\bibliographystyle{alpha}
-\bibliography{references}
+\section*{Acknowledgements}
+Generative-AI systems were used as research and editorial assistants during proof exploration, Lean development, source checking, and manuscript revision.  The author is solely responsible for the final mathematical content, citations, and wording.
+
+\printbibliography
 
 \end{document}

@@ -1,7 +1,7 @@
-\section{The decoded skeleton and its minor lanes}
+\section{The decoded skeleton and its minor ranges}
 \label{sec:decoded-skeleton}
 
-After \cref{prop:global-fibre-error}, it remains to estimate the single decoded tuple attached to each top assignment.  Coherent top assignments are indexed by an integer label $m$; noncoherent assignments are treated directly by the top partition.  The essential point is that the lower--lower pair factors were not discarded during fibre compression.
+After \cref{prop:global-fibre-error}, it remains to estimate the single decoded tuple attached to each anchor assignment.  Coherent anchor assignments are indexed by an integer label $m$; noncoherent assignments are treated directly by the anchor partition.  The essential point is that the lower--lower pair factors were not discarded during fibre compression.
 
 \subsection{Adaptive retained-pair damping}
 
@@ -61,7 +61,7 @@ By \cref{prop:prime-decoder-identification}, the $p$- and $q$-coordinates of the
 The argument is unchanged for negative $m$, since circle distance is even.
 \end{proof}
 
-The interval depends on $m$, but the estimate is pointwise at each decoded frequency; overlap between intervals belonging to different labels is irrelevant.
+The adaptive estimate is summarized in \cref{prop:adaptive-prime-interval}.  The interval depends on $m$, but the estimate is pointwise at each decoded frequency; overlap between intervals belonging to different labels is irrelevant.
 
 \subsection{The exhaustive frequency partition}
 
@@ -83,31 +83,31 @@ Fix a constant $C\geq1$, to be chosen before $X$, and put
 \label{eq:N-major}
  N=\left\lfloor\frac{C}{\sigma_{\mathcal E}}\right\rfloor.
 \end{equation}
-For sufficiently large $X$,
+For sufficiently large $X$, the definition \cref{eq:N-major} gives
 \[
  N<X^2/4<M_{\mathrm{dec}},
 \]
 and the residues of the integers $|m|\leq N$ are distinct modulo $L$.
 
-Every top assignment is either noncoherent, meaning $Q_B\geq F_B$, or coherent with a unique integer label $m$.  For a coherent assignment exactly one of the following disjoint ranges holds:
+Every anchor assignment is either noncoherent, meaning $Q_B\geq F_B$, or coherent with a unique integer label $m$.  For a coherent assignment exactly one of the following disjoint ranges holds:
 \begin{align*}
  \mathrm{I}.\quad &|m|\leq N,\\
  \mathrm{II}.\quad &N<|m|\leq X^2/4,\\
  \mathrm{III}.\quad &X^2/4<|m|\leq M_{\mathrm{dec}},\\
  \mathrm{IV}.\quad &|m|>M_{\mathrm{dec}}.
 \end{align*}
-For each top assignment, \cref{thm:weighted-compression} separates its single decoded tuple from all nondecoder tuples.  Thus every frequency belongs to exactly one of the following five sectors:
+For each anchor assignment, \cref{thm:weighted-compression} separates its single decoded tuple from all nondecoder tuples.  Thus every frequency belongs to exactly one of the following five sectors:
 
 \begin{center}
-\begin{tabular}{lll}
+\begin{tabular}{@{}c p{5.1cm} p{5.0cm}@{}}
 \toprule
 Sector & skeleton condition & control \\
 \midrule
 I & coherent, $|m|\leq N$ & positive Taylor major \\
 II & coherent, $N<|m|\leq X^2/4$ & full-variance Gaussian tail \\
 III & coherent, $X^2/4<|m|\leq M_{\mathrm{dec}}$ & adaptive retained pairs \\
-IV & coherent, $|m|>M_{\mathrm{dec}}$ & internal top energy \\
-V & noncoherent anchors or nondecoder tuples & top entropy and fibre error \\
+IV & coherent, $|m|>M_{\mathrm{dec}}$ & internal anchor energy \\
+V & noncoherent anchor assignments or nondecoder tuples & anchor entropy and fibre error \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -118,12 +118,12 @@ The five sectors above are pairwise disjoint and exhaust all frequencies modulo 
 \end{proposition}
 
 \begin{proof}
-The CRT coordinate map is a bijection.  The top assignment is either below or above the forcing floor.  Below the floor it has exactly one label by \cref{prop:exact-cold-rigidity}, and the four displayed label ranges are disjoint and exhaustive.  For each fixed top assignment, the row-coordinate product is partitioned into its single decoder tuple and the complementary tuples.  Hence every frequency occurs exactly once.
+The CRT coordinate map is a bijection.  The anchor assignment is either below or above the forcing floor.  Below the floor it has exactly one label by \cref{prop:exact-cold-rigidity}, and the four displayed label ranges are disjoint and exhaustive.  For each fixed anchor assignment, the row-coordinate product is partitioned into its single decoder tuple and the complementary tuples.  Hence every frequency occurs exactly once.
 \end{proof}
 
-There is no residual sibling sector.  In Sectors I and II, \cref{prop:prime-decoder-identification,prop:target-decoder-identification} identify the complete coordinate tuple with the genuine integer $m$ modulo $L$.  In Sector III, only the $P$-coordinates are needed for \cref{eq:adaptive-energy}.  Sectors IV and V are controlled without any further decoder identification.
+The exhaustion statement \cref{prop:five-sector-exhaustion} leaves no residual sibling sector.  In Sectors I and II, \cref{prop:prime-decoder-identification,prop:target-decoder-identification} identify the complete coordinate tuple with the genuine integer $m$ modulo $L$.  In Sector III, only the $P$-coordinates are needed for \cref{eq:adaptive-energy}.  Sectors IV and V are controlled without any further decoder identification.
 
-\subsection{Pointwise bounds on the minor skeleton lanes}
+\subsection{Pointwise bounds on the minor skeleton ranges}
 
 For a coherent label in Sector III, the retained pair factors and \cref{eq:bernoulli-modulus,eq:adaptive-energy} give
 \begin{equation}
@@ -131,7 +131,7 @@ For a coherent label in Sector III, the retained pair factors and \cref{eq:berno
  |F(h_m)|
  \leq\exp\left(-c\frac{|m|}{(\log|m|)^2}\right).
 \end{equation}
-Throughout this range $\log|m|\asymp\log X$, so each term is at most $\exp(-cX^2/\log^2X)$.  Since there are $O(M_{\mathrm{dec}})=O(X^4)$ labels,
+By \cref{eq:sector-III-pointwise}, throughout this range $\log|m|\asymp\log X$, so each term is at most $\exp(-cX^2/\log^2X)$.  Since there are $O(M_{\mathrm{dec}})=O(X^4)$ labels,
 \begin{equation}
 \label{eq:sector-III-total}
  \sum_{\mathrm{III}}|F(h_m)|
@@ -140,7 +140,7 @@ Throughout this range $\log|m|\asymp\log X$, so each term is at most $\exp(-cX^2
 \end{equation}
 No coordinate of $b$ is identified in this argument.
 
-For a coherent label in Sector IV, the internal top factor and \cref{eq:top-exact-energy} give
+For a coherent label in Sector IV, the internal anchor factor and \cref{eq:top-exact-energy} give
 \[
  |F(h_m)|\leq\exp(-\kappa_bm^2\sigma_{B,0}^2).
 \]
@@ -165,8 +165,8 @@ Finally, the noncoherent decoded-skeleton contribution is bounded by \cref{eq:no
 \label{eq:sector-V-total}
  \sum_{\mathrm{V}}|F|
  \ll \exp(-cF_B)
- +P_{\mathrm{top}}(\exp(\Delta)-1)
+ +P_{\mathrm{anc}}(\exp(\Delta)-1)
  =o(\sigma_{\mathcal E}^{-1}).
 \end{equation}
 
-Sector II and the positive Sector I are treated together in the next section, because both use the actual-family variance rather than only the top or retained-pair energies.
+Sector II and the positive Sector I are treated together in the next section, because both use the actual-family variance rather than only the anchor or retained-pair energies.

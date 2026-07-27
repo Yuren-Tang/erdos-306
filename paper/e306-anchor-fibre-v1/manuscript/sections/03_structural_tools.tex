@@ -1,7 +1,7 @@
 \section{Structural tools}
 \label{sec:structural-tools}
 
-This section isolates the deterministic statements used by the arithmetic construction.  The complete-family estimate controls reciprocal capacity; the product-fibre theorem performs the compression to one decoder tuple per anchor; the syndrome theorem detects hidden finite-group directions; and the final proposition assembles a positive skeleton contribution against finitely many error lanes.  The prime-specific rigidity, row distance and minor-frequency estimates are supplied only in the later sections.
+This section isolates the deterministic statements used by the arithmetic construction.  The complete-family estimate controls reciprocal capacity; the product-fibre theorem performs the compression to one decoder tuple per anchor assignment; the syndrome theorem detects otherwise unobserved finite-group directions; and the final proposition assembles a positive skeleton contribution against finitely many error lanes.  The prime-specific rigidity, row distance and minor-frequency estimates are supplied only in the later sections.
 
 \subsection{Complete weighted families}
 
@@ -80,7 +80,7 @@ This is the identity
 \]
 \end{proof}
 
-Only \cref{cor:pair-identity} is needed for the dense semiprime family.  The higher-uniformity statement records the natural collision-free range detected by the first two power sums; it does not provide the rigidity or decoding theory required by a higher-uniformity application.
+Only \cref{cor:pair-identity} is needed for the dense semiprime family; \cref{cor:complete-family-relative} records the corresponding relative and asymptotic forms.  The higher-uniformity statement records the natural collision-free range detected by the first two power sums; it does not provide the rigidity or decoding theory required by a higher-uniformity application.
 
 \subsection{Exact weighted product-fibre compression}
 
@@ -172,7 +172,7 @@ Then
 
 This is an anchor-dependent weighted average.  No sequential conditional kernel is asserted.  In the semiprime application we use the unnormalized theorem, so zero decoder weights never create a normalization issue.
 
-\subsection{Syndrome separation for hidden finite groups}
+\subsection{Syndrome separation for finite target groups}
 
 Let $H$ be a finite abelian group, let $J$ be a finite sensor set, and let
 \[
@@ -244,13 +244,13 @@ is injective;
 Injectivity of $\Sigma$ is equivalent to triviality of its kernel, which is the common kernel of the sensors.  Since $H$ is finite, injectivity makes every nonzero syndrome have positive squared norm and hence gives $\delta>0$.  Conversely, $\delta=0$ means that some nonzero element lies in every sensor kernel.
 \end{proof}
 
-For one finite system, $\delta>0$ is a qualitative injectivity statement.  For a sequence of systems, an explicit scale-dependent lower bound for $\delta$ is the quantitative input.  The theorem gives a sufficient absolute-value decoding estimate; it does not classify arguments which exploit cancellation inside fibres.  It also does not identify a prescribed decoder without an application-specific comparison of the candidate energy with the competing syndrome distance.  If $H$ is trivial, there is no hidden-coordinate obligation and no minimum over nonzero elements is defined.
+The explicit Gaussian tail is \cref{cor:syndrome-tail}.  For one finite system, $\delta>0$ is a qualitative injectivity statement.  For a sequence of systems, an explicit scale-dependent lower bound for $\delta$ is the quantitative input.  The theorem gives a sufficient absolute-value decoding estimate; it does not classify arguments which exploit cancellation inside fibres.  It also does not identify a prescribed decoder without an application-specific comparison of the candidate energy with the competing syndrome distance.  If $H$ is trivial, there is no target-coordinate obligation and no minimum over nonzero elements is defined.
 
-We use the following coverage principle.  In each frequency lane, every hidden quotient direction must be fixed by the anchor, resolved by a decoded fibre, or detected by a retained residual factor which damps that lane.  Thus observability is a distinct obligation, although in a concrete lane it may be supplied by row separation, decoder identification or residual damping.
+We use the following coverage principle.  In each frequency lane, every otherwise unobserved quotient direction must be fixed by the anchor assignment, resolved by a decoded fibre, or detected by a retained residual factor which damps that lane.  Thus observability is a distinct obligation, although in a concrete lane it may be supplied by row separation, decoder identification or residual damping.
 
 \subsection{Decoded-skeleton positivity}
 
-Retain the notation of \cref{thm:weighted-compression}.  Partition the anchor set into one major set and finitely many minor lanes,
+Retain the notation of \cref{thm:weighted-compression}.  Partition the anchor-assignment set into one major set and finitely many minor lanes,
 \[
  Y=Y_{\mathrm{maj}}\sqcup Y_1\sqcup\cdots\sqcup Y_s.
 \]

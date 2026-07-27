@@ -1,11 +1,11 @@
 \section{Fibre decoding and target observability}
 \label{sec:fibre-decoding}
 
-Fix a top assignment.  The remaining CRT coordinates are indexed by
+Fix an anchor assignment.  The remaining CRT coordinates are indexed by
 \[
  R_{\mathrm{rows}}=(P\setminus B)\sqcup S_b.
 \]
-For $r\in R_{\mathrm{rows}}$ and a residue $x\pmod r$, let $u_{rq}(x)\in\T$ be the phase $h/(rq)$ determined by $x$ and the fixed top residue modulo $q\in B$.  If the row residue changes by $d$, CRT subtraction gives
+For $r\in R_{\mathrm{rows}}$ and a residue $x\pmod r$, let $u_{rq}(x)\in\T$ be the phase $h/(rq)$ determined by $x$ and the fixed anchor residue modulo $q\in B$.  If the row residue changes by $d$, CRT subtraction gives
 \begin{equation}
 \label{eq:row-shift}
  u_{rq}(x+d)-u_{rq}(x)
@@ -75,7 +75,7 @@ Every $q\in B$ is coprime to $r$.  If $d\not\equiv0\pmod r$, then $dq^{-1}$ is n
 \[
  \dist{dq^{-1}/r}\geq1/r.
 \]
-Summing over the $M$ top primes proves the result.  No distribution of primes in arithmetic progressions is used.
+Summing over the $M$ anchor primes proves the result.  No distribution of primes in arithmetic progressions is used.
 \end{proof}
 
 This is the concrete form of target observability.  For fixed $r\mid b$, the maps
@@ -83,7 +83,7 @@ This is the concrete form of target observability.  For fixed $r\mid b$, the map
  d\longmapsto dq^{-1}/r\in\T
  \qquad(q\in B)
 \]
-are homomorphic sensors on $\mathbb Z/r\mathbb Z$ with trivial common kernel.  Since $b$ is squarefree, detecting every coordinate $r\mid b$ detects the whole hidden target group $\prod_{r\mid b}\mathbb Z/r\mathbb Z$.
+are homomorphic sensors on $\mathbb Z/r\mathbb Z$ with trivial common kernel.  Since $b$ is squarefree, detecting every coordinate $r\mid b$ detects the whole target group $\prod_{r\mid b}\mathbb Z/r\mathbb Z$, which the complete prime-pair family by itself does not observe.
 
 \subsection{Row tails}
 
@@ -125,15 +125,15 @@ From \cref{prop:lower-row-distance,prop:target-row-distance,lem:row-tail},
  \Delta:=\sum_{r\in R_{\mathrm{rows}}}\delta_r
  \leq Z^2\exp(-cZ/\log^3Z)=o(1).
 \end{equation}
-Indeed there are fewer than $Z$ lower-prime rows, each with fewer than $Z$ residues, and the finitely many target rows have the stronger exponent.
+The row-tail estimate \cref{eq:Delta-row} follows because there are fewer than $Z$ lower-prime rows, each with fewer than $Z$ residues, and the finitely many target rows have the stronger exponent.
 
 \subsection{The exact retained skeleton}
 
-For the fixed top assignment, assign every factor involving one top prime and one row prime to the corresponding $A_r$.  Let $G(x_R)$ be the modulus of the product of all remaining lower--lower denominator factors.  Then
+For the fixed anchor assignment, assign every factor involving one anchor prime and one row prime to the corresponding $A_r$.  Let $G(x_R)$ be the modulus of the product of all remaining lower--lower denominator factors.  Then
 \[
  0\leq G(x_R)\leq1.
 \]
-The internal top factors have already been placed in $T_B$.  Thus the absolute Fourier product has the exact form required by \cref{thm:weighted-compression}, with
+The internal anchor factors have already been placed in $T_B$.  Thus the absolute Fourier product has the exact form required by \cref{thm:weighted-compression}, with
 \[
  W_y=T_B(a_B),
  \qquad
@@ -152,7 +152,7 @@ Since every row modulus is at most one,
 \[
  0\leq\alpha_r\leq1.
 \]
-The exact unnormalized compression theorem gives an off-decoder error bounded, for each anchor, by
+The exact unnormalized compression theorem gives an off-decoder error bounded, for each anchor assignment, by
 \[
  \prod_r(\alpha_r+\beta_r)-\prod_r\alpha_r.
 \]
@@ -162,24 +162,25 @@ Monotonicity in each $\alpha_r\in[0,1]$ yields
  \leq\prod_r(1+\delta_r)-1
  \leq\exp(\Delta)-1.
 \]
-After multiplication by the actual top weight and summation over all top assignments, \cref{prop:top-partition} gives
+After multiplication by the actual anchor weight and summation over all anchor assignments, \cref{prop:top-partition}, specifically \cref{eq:P-top}, gives the following global estimate.
+
 \begin{proposition}[Global weighted fibre error]
 \label{prop:global-fibre-error}
 The total contribution of every nondecoder fibre point is at most
 \begin{equation}
 \label{eq:global-fibre-error}
- P_{\mathrm{top}}\bigl(\exp(\Delta)-1\bigr)
+ P_{\mathrm{anc}}\bigl(\exp(\Delta)-1\bigr)
  \ll Z\log Z\,\Delta
  =o(1).
 \end{equation}
-No decoder weight is divided out, and the raw number of top assignments does not occur.
+No decoder weight is divided out, and the raw number of anchor assignments does not occur.
 \end{proposition}
 
 The factors collected in $G$ remain on the decoder tuple.  They will provide the adaptive damping in \cref{sec:decoded-skeleton}.
 
 \subsection{Identification of the decoders}
 
-Suppose the top assignment is coherent with integer label $m$.  The candidate row residue $m\pmod r$ makes each top-cross phase congruent to $m/(rq)$, and hence
+Suppose the anchor assignment is coherent with integer label $m$.  The candidate row residue $m\pmod r$ makes each anchor-cross phase congruent to $m/(rq)$, and hence
 \begin{equation}
 \label{eq:candidate-row-energy}
  E_r(m\bmod r)
@@ -198,9 +199,11 @@ Put
  M_{\mathrm{dec}}=\frac{XZ}{(\log Z)^2}.
 \end{equation}
 
+With the cutoff fixed by \cref{eq:M-dec}, we obtain the following identification.
+
 \begin{proposition}[Prime-coordinate identification]
 \label{prop:prime-decoder-identification}
-For every $r\in P\setminus B$ and every coherent top label satisfying $|m|\leq M_{\mathrm{dec}}$,
+For every $r\in P\setminus B$ and every coherent anchor label satisfying $|m|\leq M_{\mathrm{dec}}$,
 \[
  x_r^*=m\pmod r.
 \]
@@ -217,7 +220,7 @@ whereas \cref{prop:lower-row-distance} gives $D_r\gg Z/\log^3Z$ uniformly.
 
 \begin{proposition}[Target-coordinate identification]
 \label{prop:target-decoder-identification}
-For every prime $r\mid b$ and every coherent top label satisfying $|m|\leq X^2/4$,
+For every prime $r\mid b$ and every coherent anchor label satisfying $|m|\leq X^2/4$,
 \[
  x_r^*=m\pmod r.
 \]
@@ -235,4 +238,4 @@ Because $b$ is squarefree, agreement modulo every $r\mid b$ is agreement modulo 
 \[
  X^2/4<|m|\leq M_{\mathrm{dec}},
 \]
-all coordinates indexed by $P$ still decode to $m$, while no identification of the coordinates of $b$ is asserted or needed.  The retained lower--lower factors used there depend only on the prime coordinates in $P$.
+all coordinates indexed by $P$ still decode to $m$, while no identification of the target coordinates is asserted or needed.  The retained lower--lower factors used there depend only on the prime coordinates in $P$.  This distinction fixes the exact boundary between the full-coordinate and prime-coordinate parts of the final frequency partition.

@@ -3,7 +3,7 @@
 
 An integer is a \emph{squarefree semiprime} if it is the product of two distinct primes.  We resolve the reciprocal-representation question posed by Erd\H{o}s and Graham~\cite{erdos-graham-1980} and now recorded as Erd\H{o}s Problem~306~\cite{erdos-problem-306}.
 
-\begin{theorem}[Main theorem]
+\begin{theorem}[Squarefree-denominator characterization]
 \label{thm:main}
 Let $q>0$ be rational.  Then there exists a finite set $\mathcal N$ of pairwise distinct squarefree semiprimes such that
 \[
@@ -22,6 +22,12 @@ A recent preprint of Li proves the two-prime conjecture for every positive integ
 
 The theorem was first obtained in the author's archived Lean~4 formalization, released as version~0.0.3~\cite{tang-erdos-306-formal}.  The present article grew out of that formal work and extracts from the same Fourier-analytic line of argument a substantially simpler one-anchor proof intended for ordinary mathematical reading.  The archived code does not formalize this exposition line by line, because the proof underwent substantial conceptual refinement after the first formal implementation.
 
+\subsection{External input and proof architecture}
+
+The prime number theorem is the sole non-elementary external theorem used in the proof; a standard reference is Montgomery and Vaughan~\cite[Chapter~1]{montgomery-vaughan-2007}.  It supplies prime counts in fixed-ratio intervals and, through Abel summation, the reciprocal mass of the prime blocks.  All problem-specific estimates---anchor synchronization, row separation, fibre compression, target observability, the five-range Fourier budget, and the no-wrap passage to exact equality---are proved here.  Standard finite-group Fourier inversion, the Chinese remainder theorem, Taylor expansion, and elementary manipulations are used in their usual forms.
+
+The argument proceeds causally.  A finite Fourier coefficient encodes the reciprocal subset-sum problem.  General deterministic tools then isolate the information that survives fibre compression.  The arithmetic construction supplies a denominator family with enough reciprocal mass, an anchor block that synchronizes local residues, rows that recover the remaining coordinates, and residual factors that damp the intermediate range.  A positive Gaussian major term dominates the four minor ranges, after which deterministic no-wrap and elementary induction complete the theorem.
+
 \subsection{The one-anchor construction}
 
 Fix a squarefree integer $b\geq3$.  At a large scale $X$ we take primes in
@@ -32,7 +38,7 @@ and designate the upper block
 \[
  B=\{q:X^3/2\leq q<X^3\}
 \]
-as an anchor.  The denominator family consists of all products $pq$ with distinct $p,q\in P$, together with the products $rq$ for primes $r\mid b$ and $q\in B$.  Its reciprocal load $\Lambda$ is greater than $1/b$ and less than $1$.  Independent Bernoulli selectors with parameter
+as the anchor block.  The denominator family consists of all products $pq$ with distinct $p,q\in P$, together with the products $rq$ for primes $r\mid b$ and $q\in B$.  Its reciprocal load $\Lambda$ is greater than $1/b$ and less than $1$.  Independent Bernoulli selectors with parameter
 \[
  \theta=\frac1{b\Lambda}
 \]
@@ -44,9 +50,9 @@ Let
 \]
 Character orthogonality modulo $L$ expresses the probability of selecting a subset with reciprocal sum congruent to $1/b$ modulo one as a finite Fourier sum.  Since $L$ is squarefree, a frequency modulo $L$ is a tuple of local residues, one for each prime dividing $L$.  The proof must show that these local residues do not behave independently: on the part of the Fourier sum which can matter, they synchronize around a single integer frequency.
 
-The anchor supplies that synchronization.  If the energy carried by pairs of primes in $B$ is small, all anchor residues are represented by one exact integer label $m$.  Anchor assignments which do not have this form have exponentially small total weight.  Once the anchor is fixed, each remaining prime coordinate is coupled to it through a row of factors indexed by $q\in B$.  A shift-uniform row-distance estimate concentrates that row near a decoder.  The rows indexed by primes dividing $b$ have an additional purpose: they detect the target coordinates which the complete prime-pair family alone would not see.
+The anchor block supplies that synchronization.  If the energy carried by pairs of primes in $B$ is small, every anchor coordinate is represented by one exact integer label $m$.  Anchor assignments which do not have this form have exponentially small total weight.  Once the anchor assignment is fixed, each remaining prime coordinate is coupled to it through a row of factors indexed by $q\in B$.  A shift-uniform row-distance estimate concentrates that row near a decoder.  The rows indexed by primes dividing $b$ have an additional purpose: they detect target coordinates which the complete prime-pair family alone does not observe.
 
-The row estimates cannot simply be multiplied by the number of anchor assignments.  The decisive deterministic step is instead a weighted product-fibre identity.  If $W_y$ is the actual weight of an anchor $y$, and $\alpha_{r,y}$ and $\beta_{r,y}$ are respectively the decoder and off-decoder masses in row $r$, then the total loss in replacing every fibre by its decoder tuple is bounded exactly by
+The row estimates cannot simply be multiplied by the number of anchor assignments.  The decisive deterministic step is instead a weighted product-fibre identity.  If $W_y$ is the actual anchor weight, and $\alpha_{r,y}$ and $\beta_{r,y}$ are respectively the decoder and off-decoder masses in row $r$, then the total loss in replacing every fibre by its decoder tuple is bounded exactly by
 \[
  \sum_y W_y\left\{
    \prod_r(\alpha_{r,y}+\beta_{r,y})
@@ -55,27 +61,30 @@ The row estimates cannot simply be multiplied by the number of anchor assignment
 \]
 All Fourier factors not assigned to rows remain on the decoded skeleton.  In particular, the lower--lower prime-pair factors survive the compression and provide the damping required for intermediate labels.
 
-The skeleton is divided into five disjoint ranges.  Small labels yield a positive Gaussian major contribution after exact linear centring.  The next range is controlled by the full variance of the denominator family.  Farther out, retained lower--lower factors give a scale adapted to the label $m$.  Still larger coherent labels are damped by the anchor energy, while noncoherent anchors and nondecoder tuples have already been charged.  A fixed Gaussian cutoff is chosen first; the prime scale is then taken sufficiently large so that the major term strictly dominates every error.
+The skeleton is divided into five disjoint ranges.  Small labels yield a positive Gaussian major contribution after exact linear centring.  The next range is controlled by the full variance of the denominator family.  Farther out, retained lower--lower factors give a scale adapted to the label $m$.  Still larger coherent labels are damped by the anchor energy, while noncoherent anchor assignments and nondecoder tuples have already been charged.  A fixed Gaussian cutoff is chosen first; the prime scale is then taken sufficiently large so that the major term strictly dominates every error.
 
 The resulting positive coefficient gives a subset whose reciprocal sum is congruent to $1/b$ modulo one.  Exact equality is obtained only afterwards: every subset sum lies in $[0,\Lambda]$ with $\Lambda<1$, and $1/b\in(0,1)$, so no nonzero integer alias is possible.
 
-\subsection{Reader's dictionary and conventions}
+\subsection{Terminology and conventions}
 
-The terminology used below is local to this decomposition.
+The following terms describe fixed parts of the decomposition.
 
-\begin{description}[style=nextline,leftmargin=2.8cm]
-\item[anchor] the tuple of CRT coordinates indexed by the top prime block $B$;
-\item[coherent label] the integer $m$ whose residues agree with every coordinate of a low-energy anchor;
-\item[row] the factors joining one non-anchor prime coordinate to all primes in $B$;
+\begin{description}[style=nextline,leftmargin=3.2cm]
+\item[anchor block] the upper prime block $B$;
+\item[anchor assignment] the tuple of CRT coordinates indexed by $B$;
+\item[anchor weight] the product modulus contributed by factors internal to $B$;
+\item[coherent label] the integer $m$ whose residues agree with every coordinate of a low-energy anchor assignment;
+\item[anchor-cross row] the factors joining one non-anchor prime coordinate to all primes in $B$;
 \item[decoder] a row residue minimizing the associated quadratic phase energy;
-\item[fibre] the set of all row-coordinate tuples above a fixed anchor;
-\item[skeleton] the single decoder tuple retained from each fibre, together with all factors not assigned to rows;
+\item[fibre] the set of all row-coordinate tuples above a fixed anchor assignment;
+\item[decoded skeleton] the decoder tuple retained from each fibre, together with every factor not assigned to a row;
 \item[retained factor] such an unassigned factor, principally a lower--lower prime-pair factor;
-\item[hidden target coordinate] a CRT coordinate indexed by a prime divisor of $b$, which must be detected separately from the complete prime-pair system.
+\item[target coordinate] a CRT coordinate indexed by a prime divisor of $b$; the complete prime-pair family does not observe it, so it is detected by a dedicated anchor-cross row;
+\item[sector] one of the five disjoint frequency ranges used in the final major--minor comparison.
 \end{description}
 
-Throughout the analytic construction, $b$ and the finite forbidden set are fixed and $X\to\infty$.  Implied constants may depend on $b$ and on fixed numerical choices, but not on $X$.  The terminal cutoff $C$ is chosen before $X$; this order of quantifiers is never reversed.  Circle distance is denoted by $\dist{\cdot}$.
+The terms \emph{energy} and \emph{fingerprint} retain their literal mathematical meanings: energy is a displayed sum of squared circle distances, while a fingerprint is a fixed subset of coordinates whose residues determine all but a controlled exceptional set.  Throughout the analytic construction, $b$ and the finite forbidden set are fixed and $X\to\infty$.  Implied constants may depend on $b$ and on fixed numerical choices, but not on $X$.  The terminal cutoff $C$ is chosen before $X$; this order of quantifiers is never reversed.  Circle distance is denoted by $\dist{\cdot}$.
 
 \subsection{Organization}
 
-\Cref{sec:fourier-selection} records the finite Fourier identity and separates quotient realization from exact equality.  \Cref{sec:structural-tools} proves the deterministic collision, compression, syndrome and skeleton principles.  \Cref{sec:denominator-system,sec:top-anchor,sec:fibre-decoding} construct the denominator family and establish anchor rigidity, weighted partition bounds, row separation and decoder identification.  \Cref{sec:decoded-skeleton,sec:major-budget} estimate the five frequency ranges and prove positivity.  \Cref{sec:exact-completion} converts that positivity into the exact representation and closes the elementary reductions.  The final section discusses which mechanisms persist beyond this particular semiprime problem and where the method presently loses information.
+\Cref{sec:fourier-selection} records the finite Fourier identity and separates quotient realization from exact equality.  \Cref{sec:structural-tools} proves the deterministic collision, compression, syndrome and skeleton principles.  \Cref{sec:denominator-system,sec:top-anchor,sec:fibre-decoding} construct the denominator family and establish anchor rigidity, weighted partition bounds, row separation and decoder identification.  \Cref{sec:decoded-skeleton,sec:major-budget} estimate the five frequency ranges and prove positivity.  \Cref{sec:exact-completion} converts that positivity into the exact representation and closes the elementary reductions.  \Cref{sec:scope} discusses which mechanisms persist beyond this particular semiprime problem and where the method presently loses information.

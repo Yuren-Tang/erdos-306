@@ -1,7 +1,7 @@
 \section{The semiprime denominator system}
 \label{sec:denominator-system}
 
-We now specialize the finite selection model to a fixed squarefree denominator.  Throughout this section, let $b\geq3$ be squarefree and let $\mathcal T$ be a finite set of forbidden denominators.  All asymptotic statements are for $X\to\infty$ with $b$ and $\mathcal T$ fixed.
+We now specialize the finite selection model to a fixed squarefree denominator.  This section supplies the arithmetic family, its reciprocal capacity, the exact Bernoulli centring, and the factor partition on which the later anchor and row estimates act.  Throughout, let $b\geq3$ be squarefree and let $\mathcal T$ be a finite set of forbidden denominators.  All asymptotic statements are for $X\to\infty$ with $b$ and $\mathcal T$ fixed.
 
 \subsection{Prime blocks}
 
@@ -143,7 +143,7 @@ one has
 \begin{proof}
 The distinctness and squarefreeness assertions follow from unique factorization and the choice of $X$.  Avoidance follows because every constructed denominator eventually exceeds every element of the fixed set $\mathcal T$, and each denominator divides $L$ by definition.
 
-Apply the exact pair identity \cref{cor:pair-identity} with weights $u_p=1/p$.  The complete-pair load is
+By \cref{lem:reciprocal-prime-estimates}, the first two power sums have the required asymptotics.  Apply the exact pair identity \cref{cor:pair-identity} with weights $u_p=1/p$.  The complete-pair load is
 \begin{equation}
 \label{eq:pair-load}
  \Lambda_{\mathrm{pair}}
@@ -197,7 +197,7 @@ Moreover,
  \qquad
  \Lambda<1.
 \end{equation}
-Define the actual-family variance scale by
+This realizes the abstract centring condition \cref{eq:theta-centering}.  Define the actual-family variance scale by
 \begin{equation}
 \label{eq:sigma-E}
  \sigma_{\mathcal E}^2
@@ -210,6 +210,7 @@ Then
  \qquad
  \sigma_{\mathcal E}^{-1}\asymp_b X\log X.
 \end{equation}
+The definitions \cref{eq:theta-definition,eq:sigma-E} and the scale comparison \cref{eq:sigma-E-scale} will be used throughout the frequency estimates.
 
 The finite Fourier numerator from \cref{eq:reciprocal-fourier} is
 \begin{equation}
@@ -247,11 +248,13 @@ The denominator factors in \cref{eq:Fh-definition} are assigned exactly once as 
 \toprule
 Denominator class & role \\
 \midrule
-$q q'$ with $q,q'\in B$ & top-anchor factor \\
-$r q$ with $r\in P\setminus B$, $q\in B$ & lower-prime row $r$ \\
-$r q$ with $r\in S_b$, $q\in B$ & target row $r$ \\
+$q q'$ with $q,q'\in B$ & internal anchor factor \\
+$r q$ with $r\in P\setminus B$, $q\in B$ & lower-prime anchor-cross row $r$ \\
+$r q$ with $r\in S_b$, $q\in B$ & target-coordinate row $r$ \\
 $p p'$ with $p,p'\in P\setminus B$ & retained skeleton factor \\
 \bottomrule
 \end{tabular}
 \end{center}
 The target character $\exp(-2\pi ih/b)$ and every phase not absorbed into a row remain in the complex residual factor.  The four denominator classes are disjoint and cover $\mathcal E$.  Thus no Fourier factor is omitted, duplicated, or introduced by the anchor--fibre decomposition.
+
+The arithmetic family is now fixed.  The next section proves that its anchor assignments either synchronize to one exact integer label or have negligible total weight; the subsequent row analysis then recovers the remaining coordinates.
