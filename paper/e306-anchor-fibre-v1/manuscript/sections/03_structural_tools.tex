@@ -1,7 +1,7 @@
 \section{Structural tools}
 \label{sec:structural-tools}
 
-This section contains the general deterministic results used by the arithmetic construction.  The complete-family estimate controls capacity.  The product-fibre theorem performs the load-bearing compression.  The syndrome theorem detects hidden target coordinates.  The final proposition assembles a positive skeleton contribution against finitely many error lanes.  None of these statements supplies the prime-specific rigidity, row distance or minor-arc estimates proved later.
+This section isolates the deterministic statements used by the arithmetic construction.  The complete-family estimate controls reciprocal capacity; the product-fibre theorem performs the compression to one decoder tuple per anchor; the syndrome theorem detects hidden finite-group directions; and the final proposition assembles a positive skeleton contribution against finitely many error lanes.  The prime-specific rigidity, row distance and minor-frequency estimates are supplied only in the later sections.
 
 \subsection{Complete weighted families}
 
@@ -170,7 +170,7 @@ Then
 \]
 \end{corollary}
 
-This is an anchor-dependent weighted average.  No sequential conditional kernel is asserted.  In the E306 application we use the unnormalized theorem, so zero decoder weights never create a normalization issue.
+This is an anchor-dependent weighted average.  No sequential conditional kernel is asserted.  In the semiprime application we use the unnormalized theorem, so zero decoder weights never create a normalization issue.
 
 \subsection{Syndrome separation for hidden finite groups}
 
@@ -291,4 +291,4 @@ For a sequence of systems, let $M_n>0$ eventually.  If the major real part is at
 
 A coherent label map is optional in \cref{prop:decoded-skeleton-positivity}; it is introduced only when it improves the estimates on the skeleton lanes.  The obligations used to prove the lane bounds remain logically distinct, but one application theorem may discharge several of them on disjoint lanes.  In particular, the same anchor theorem may provide both a weighted partition and a large-label tail without double-counting.
 
-The proposition proves positivity of the finite Fourier sum to which it is applied.  If this sum is the numerator of a finite-group coefficient, it gives a realized quotient target.  Exact ambient equality is obtained afterwards through one of the interfaces in \cref{prop:exactness-interfaces}.  In E306 we use only deterministic no-wrap.
+The proposition proves positivity of the finite Fourier sum to which it is applied.  If this sum is the numerator of a finite-group coefficient, it gives a realized quotient target.  Exact ambient equality is obtained afterwards through one of the interfaces in \cref{prop:exactness-interfaces}.  For the semiprime theorem we use only deterministic no-wrap.
