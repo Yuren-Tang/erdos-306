@@ -1,7 +1,7 @@
 \section{Finite Fourier selection and exactness}
 \label{sec:fourier-selection}
 
-We record the finite-group selection identity used throughout the proof and separate quotient realization from exact equality in the ambient group.
+The construction begins with a finite-group coefficient.  We record the selection identity in a form suited to reciprocal subset sums, and we keep the later passage from a quotient congruence to an exact rational equality logically separate.
 
 \subsection{Character orthogonality}
 
@@ -76,7 +76,7 @@ The linear phase is centred by choosing
 \label{eq:theta-centering}
  \theta\sum_{e\in\mathcal E}\frac1e=\frac1b.
 \end{equation}
-For the E306 family this is achieved by $\theta=1/(b\Lambda)$, where $\Lambda$ is its total reciprocal load.
+For the semiprime family constructed in \cref{sec:denominator-system}, this is achieved by $\theta=1/(b\Lambda)$, where $\Lambda$ is the total reciprocal load.
 
 \subsection{Quotient realization and ambient equality}
 
@@ -125,7 +125,7 @@ We use only the fundamental-domain criterion.  For the fixed-denominator constru
 
 \subsection{Chinese-remainder coordinates}
 
-For the E306 construction the period $L$ is squarefree.  Hence the Chinese remainder theorem identifies
+For the semiprime construction the period $L$ is squarefree.  Hence the Chinese remainder theorem identifies
 \[
  \mathbb Z/L\mathbb Z
  \cong \prod_{p\mid L}\mathbb Z/p\mathbb Z,
@@ -134,4 +134,4 @@ and similarly for the character group.  This coordinate system reveals the ancho
 
 A chosen block of large prime coordinates forms the anchor.  The remaining prime coordinates are grouped into rows whose kernels depend on the anchor assignment.  Denominator factors involving two anchor primes contribute to the anchor weight; factors involving one anchor prime and one row prime contribute to that row; every other factor remains in a residual term on the decoded skeleton.  This is an exact partition of the original Fourier product, not an inequality or a heuristic decomposition.
 
-The structural results of the next section explain how a product over these coordinates can be compressed to one coherent skeleton and then assembled into a positive coefficient.  The arithmetic sections verify the required anchor partition, row separation, decoder identification and skeleton damping for the concrete prime family.
+The next section isolates the finite-product and finite-group principles behind this compression.  The later arithmetic sections then prove the rigidity, row separation, decoder identification and residual damping required by the concrete prime family.
