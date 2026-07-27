@@ -1,9 +1,12 @@
 # Manuscript build
 
+## Local build
+
 Run all commands from this directory:
 
 ```bash
 cd paper/e306-anchor-fibre-v1/manuscript
+make clean
 make pdf
 ```
 
@@ -18,6 +21,18 @@ Expected product:
 ```text
 main.pdf
 ```
+
+## Pull-request build
+
+The workflow
+
+```text
+.github/workflows/manuscript.yml
+```
+
+runs on manuscript changes in PR #9.  It installs a clean standard TeX Live toolchain, executes the same clean build, fails on unresolved citations or cross-references, verifies that `main.pdf` is nonempty, and uploads the PDF as a thirty-day GitHub Actions artifact.
+
+The workflow is a reproducibility gate.  It does not replace mathematical review or source-preservation review.
 
 ## Validation boundary
 
