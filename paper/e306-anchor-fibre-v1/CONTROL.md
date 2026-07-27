@@ -35,6 +35,16 @@
 - verification return: `[PASS E306-AFT-REPAIR-VERIFY-01]`
 - effect: all bounded statement and bridge repairs pass; no defect or change in the final dense E306 proof
 
+### Manuscript source and build assurance
+
+- source/compile auditor: `E306-MANUSCRIPT-SOURCE-COMPILE-AUDIT-01`
+- audited head: `d20199dd192742cd5ef668426ac83897f83fdfa2`
+- return: `[BOUNDED-REPAIR E306-MANUSCRIPT-SOURCE-COMPILE-AUDIT-01]`
+- disposition: no mathematical or source-preservation defect; one BibTeX title-protection defect
+- compile repair: `36860a0ca340a2aaee6a745d5856bde4433be4d3`
+- reproducible gate: `.github/workflows/manuscript.yml`
+- status: clean TeX/BibTeX build, reference gate and PDF artifact pass on the editorial manuscript
+
 ## Governing mathematical disposition
 
 1. The dense one-anchor route remains the preferred complete E306 proof.
@@ -60,10 +70,10 @@
 - `M0` control and source freeze — **COMPLETE**
 - `M1` bounded AFT repair and final specialization bridge — **COMPLETE / INDEPENDENT PASS / MANUSCRIPT-ADOPTED**
 - `M2` theorem DAG and article architecture freeze — **COMPLETE**
-- `M3` general structural tools — **COMPLETE / FIRST MANUSCRIPT FORM**
-- `M4` E306 arithmetic providers — **COMPLETE / FIRST MANUSCRIPT FORM**
-- `M5` full manuscript assembly — **FIRST COMPLETE AUTHORIAL ASSEMBLY**
-- `M6` Owner and independent manuscript review — **PENDING SOURCE-PRESERVATION AND COMPILE CHECKS**
+- `M3` general structural tools — **COMPLETE / MANUSCRIPT-ADOPTED**
+- `M4` E306 arithmetic providers — **COMPLETE / MANUSCRIPT-ADOPTED**
+- `M5` full manuscript assembly and writer editorial pass — **COMPLETE**
+- `M6` independent fixed-text review and Owner reading — **INDEPENDENT REVIEW PENDING**
 - `M7` revision and publication disposition — pending
 
 ## Current manuscript state
@@ -71,24 +81,26 @@
 The manuscript source now contains:
 
 - an introduction and proof architecture;
-- finite Fourier selection and exactness interfaces;
+- exact historical and current related-work positioning;
+- finite Fourier selection and a literal finite-quotient exactness interface;
 - the independently verified structural tools;
 - the complete denominator, anchor, row, skeleton, major/minor and closure arguments;
 - scope, limitations and the orthogonal formal-verification statement;
-- an initial bibliography;
-- proof-obligation and proof-change ledgers.
+- a publication-facing initial bibliography;
+- proof-obligation and proof-change ledgers;
+- a reproducible pull-request build which uploads the review PDF.
 
-Outstanding before independent global manuscript review:
+Outstanding before Owner review:
 
-1. line-by-line source-preservation audit against the exact dense and structural checkpoints;
-2. successful TeX/BibTeX compilation and reference check;
-3. Owner review of theorem hierarchy, title, exposition and publication positioning.
+1. one independent fixed-text mathematical and expository review at the frozen checkpoint;
+2. bounded same-branch repair, if the reviewer returns concrete defects;
+3. Owner review of title, theorem hierarchy, exposition and publication positioning.
 
 ## Current state
 
 ```text
-[FIRST COMPLETE AUTHORIAL MANUSCRIPT ASSEMBLY E306-PAPER-01]
-[SOURCE-PRESERVATION AND COMPILE CHECKS PENDING]
+[FIXED-TEXT AUTHORIAL CHECKPOINT E306-PAPER-01]
+[READY-FOR-INDEPENDENT-FIXED-TEXT-REVIEW E306-PAPER-01]
 ```
 
 The PR remains draft. No publication, merge or ready-for-review authority is implied.
