@@ -1,7 +1,7 @@
 \section{Introduction}
 \label{sec:introduction}
 
-An integer is a \emph{squarefree semiprime} if it is the product of two distinct primes.  We prove the following characterization.
+An integer is a \emph{squarefree semiprime} if it is the product of two distinct primes.  We resolve the reciprocal-representation question recorded as Erd\H{o}s Problem~306~\cite{erdos-problem-306} by proving the following characterization.
 
 \begin{theorem}[Main theorem]
 \label{thm:main}
@@ -89,6 +89,6 @@ The cases $b=1,2$ are closed separately.  Finally, an avoiding version of the un
 
 \subsection{Assurance and scope}
 
-The ordinary mathematical proof presented here is based on the independently audited dense one-anchor route.  The structural statements in \cref{sec:structural-tools} were extracted, repaired and independently verified against the final arithmetic provider ranges before being incorporated into the manuscript.  A separate Lean development verifies the headline result along an orthogonal formalization axis; it is not used as a substitute for any argument in the present human proof.
+The ordinary mathematical proof presented here is based on the independently audited dense one-anchor route.  The structural statements in \cref{sec:structural-tools} were extracted, repaired and independently verified against the final arithmetic provider ranges before being incorporated into the manuscript.  A separate Lean development verifies the headline result along an orthogonal formalization axis~\cite{tang-erdos-306-formal}; it is not used as a substitute for any argument in the present human proof.
 
 The final section discusses the reach and limits of the method.  In particular, weighted compression permits anchor-dependent averaged errors, but it uses absolute values and therefore does not exploit cancellation among different fibres.  Likewise, complete-family mass alone does not supply higher-uniformity rigidity.  These limitations identify genuine directions for a stronger mechanism rather than reasons to inflate the present framework.
