@@ -1,0 +1,172 @@
+\section{The decoded skeleton and its minor lanes}
+\label{sec:decoded-skeleton}
+
+After \cref{prop:global-fibre-error}, it remains to estimate the single decoded tuple attached to each top assignment.  Coherent top assignments are indexed by an integer label $m$; noncoherent assignments are treated directly by the top partition.  The essential point is that the lower--lower pair factors were not discarded during fibre compression.
+
+\subsection{Adaptive retained-pair damping}
+
+For an integer $m$ with
+\[
+ X^2/4<|m|\leq M_{\mathrm{dec}},
+\]
+put
+\[
+ I_m=[2\sqrt{|m|},3\sqrt{|m|}].
+\]
+
+\begin{proposition}[Adaptive prime interval]
+\label{prop:adaptive-prime-interval}
+For every such $m$, the interval $I_m$ lies in $[X,Z/2)$ and contains
+\[
+ K_m\gg\frac{\sqrt{|m|}}{\log|m|}
+\]
+primes.  On the decoded skeleton, the retained complete-pair energy satisfies
+\begin{equation}
+\label{eq:adaptive-energy}
+ Q_{\mathrm{pair}}(m)\gg\frac{|m|}{(\log|m|)^2}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Write $y=\sqrt{|m|}$.  The strict lower inequality gives $2y>X$.  At the upper endpoint,
+\[
+ 3y\leq\frac{3\sqrt{XZ}}{\log Z}
+ =\frac{3X^2}{\log Z}<Z/2
+\]
+for large $X$, using the definition of $M_{\mathrm{dec}}$.  Thus $I_m\subset P\setminus B$.  By \cref{lem:fixed-ratio-prime-supply},
+\[
+ K_m=\pi(3y)-\pi(2y)\gg y/\log y
+\]
+uniformly in the whole range.
+
+For distinct primes $p,q\in I_m$,
+\[
+ 4|m|\leq pq\leq9|m|,
+\]
+so
+\[
+ 1/9\leq |m|/(pq)\leq1/4.
+\]
+This number already lies in $[0,1/2]$, and hence
+\[
+ \dist{m/(pq)}\geq1/9.
+\]
+By \cref{prop:prime-decoder-identification}, the $p$- and $q$-coordinates of the decoded skeleton equal $m$.  Every such $pq$ is a retained lower--lower denominator, so
+\[
+ Q_{\mathrm{pair}}(m)
+ \gg\binom{K_m}{2}
+ \gg K_m^2
+ \gg\frac{|m|}{(\log|m|)^2}.
+\]
+The argument is unchanged for negative $m$, since circle distance is even.
+\end{proof}
+
+The interval depends on $m$, but the estimate is pointwise at each decoded frequency; overlap between intervals belonging to different labels is irrelevant.
+
+\subsection{The exhaustive frequency partition}
+
+The squarefree period has the exact CRT decomposition
+\[
+ L=\prod_{r\in S_b}r\prod_{p\in P}p,
+\]
+and therefore
+\[
+ h\pmod L
+ \longleftrightarrow
+ \bigl((h\bmod q)_{q\in B},
+       (h\bmod r)_{r\in R_{\mathrm{rows}}}\bigr).
+\]
+There is no extra lift multiplicity.
+
+Fix a constant $C\geq1$, to be chosen before $X$, and put
+\begin{equation}
+\label{eq:N-major}
+ N=\left\lfloor\frac{C}{\sigma_{\mathcal E}}\right\rfloor.
+\end{equation}
+For sufficiently large $X$,
+\[
+ N<X^2/4<M_{\mathrm{dec}},
+\]
+and the residues of the integers $|m|\leq N$ are distinct modulo $L$.
+
+Every top assignment is either noncoherent, meaning $Q_B\geq F_B$, or coherent with a unique integer label $m$.  For a coherent assignment exactly one of the following disjoint ranges holds:
+\begin{align*}
+ \mathrm{I}.\quad &|m|\leq N,\\
+ \mathrm{II}.\quad &N<|m|\leq X^2/4,\\
+ \mathrm{III}.\quad &X^2/4<|m|\leq M_{\mathrm{dec}},\\
+ \mathrm{IV}.\quad &|m|>M_{\mathrm{dec}}.
+\end{align*}
+For each top assignment, \cref{thm:weighted-compression} separates its single decoded tuple from all nondecoder tuples.  Thus every frequency belongs to exactly one of the following five sectors:
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Sector & skeleton condition & control \\
+\midrule
+I & coherent, $|m|\leq N$ & positive Taylor major \\
+II & coherent, $N<|m|\leq X^2/4$ & full-variance Gaussian tail \\
+III & coherent, $X^2/4<|m|\leq M_{\mathrm{dec}}$ & adaptive retained pairs \\
+IV & coherent, $|m|>M_{\mathrm{dec}}$ & internal top energy \\
+V & noncoherent anchors or nondecoder tuples & top entropy and fibre error \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{proposition}[Five-sector exhaustion]
+\label{prop:five-sector-exhaustion}
+The five sectors above are pairwise disjoint and exhaust all frequencies modulo $L$.
+\end{proposition}
+
+\begin{proof}
+The CRT coordinate map is a bijection.  The top assignment is either below or above the forcing floor.  Below the floor it has exactly one label by \cref{prop:exact-cold-rigidity}, and the four displayed label ranges are disjoint and exhaustive.  For each fixed top assignment, the row-coordinate product is partitioned into its single decoder tuple and the complementary tuples.  Hence every frequency occurs exactly once.
+\end{proof}
+
+There is no residual sibling sector.  In Sectors I and II, \cref{prop:prime-decoder-identification,prop:target-decoder-identification} identify the complete coordinate tuple with the genuine integer $m$ modulo $L$.  In Sector III, only the $P$-coordinates are needed for \cref{eq:adaptive-energy}.  Sectors IV and V are controlled without any further decoder identification.
+
+\subsection{Pointwise bounds on the minor skeleton lanes}
+
+For a coherent label in Sector III, the retained pair factors and \cref{eq:bernoulli-modulus,eq:adaptive-energy} give
+\begin{equation}
+\label{eq:sector-III-pointwise}
+ |F(h_m)|
+ \leq\exp\left(-c\frac{|m|}{(\log|m|)^2}\right).
+\end{equation}
+Throughout this range $\log|m|\asymp\log X$, so each term is at most $\exp(-cX^2/\log^2X)$.  Since there are $O(M_{\mathrm{dec}})=O(X^4)$ labels,
+\begin{equation}
+\label{eq:sector-III-total}
+ \sum_{\mathrm{III}}|F(h_m)|
+ \ll X^4\exp(-cX^2/\log^2X)
+ =o(\sigma_{\mathcal E}^{-1}).
+\end{equation}
+No coordinate of $b$ is identified in this argument.
+
+For a coherent label in Sector IV, the internal top factor and \cref{eq:top-exact-energy} give
+\[
+ |F(h_m)|\leq\exp(-\kappa_bm^2\sigma_{B,0}^2).
+\]
+The decoded row and residual factors have modulus at most one.  Hence
+\begin{align}
+\label{eq:sector-IV-total}
+ \sum_{|m|>M_{\mathrm{dec}}}|F(h_m)|
+ &\ll \sigma_{B,0}^{-1}
+ \exp(-cM_{\mathrm{dec}}^2\sigma_{B,0}^2)\\
+ &=o(\sigma_{\mathcal E}^{-1}),
+\end{align}
+because
+\[
+ M_{\mathrm{dec}}^2\sigma_{B,0}^2
+ \gg\frac{X^2}{\log^6Z},
+ \qquad
+ \sigma_{B,0}^{-1}\ll Z\log Z.
+\]
+
+Finally, the noncoherent decoded-skeleton contribution is bounded by \cref{eq:noncoherent-top-tail}, while every nondecoder tuple is charged by \cref{eq:global-fibre-error}.  Therefore
+\begin{equation}
+\label{eq:sector-V-total}
+ \sum_{\mathrm{V}}|F|
+ \ll \exp(-cF_B)
+ +P_{\mathrm{top}}(\exp(\Delta)-1)
+ =o(\sigma_{\mathcal E}^{-1}).
+\end{equation}
+
+Sector II and the positive Sector I are treated together in the next section, because both use the actual-family variance rather than only the top or retained-pair energies.
