@@ -4,6 +4,7 @@
 
 - **Repository:** `Yuren-Tang/erdos-306`
 - **Control issue:** `#8`
+- **Draft PR:** `#9`
 - **Lifecycle:** persistent single-product manuscript lane
 - **Sole branch:** `paper/e306-anchor-fibre-v1`
 - **Exact base:** `main@5a6207a493067f02c67b1cfa69fa8c5498f2c005`
@@ -25,43 +26,49 @@
 - source: `research/e306-anchor-fibre-transference-v1@2f49ab25c36326e9ea39e3fc0ed1d22a22b11693`
 - status before adoption audit: authorial general theorem packet
 
-### Independent adoption audit
+### Independent adoption and repair assurance
 
-- role ID: `E306-AFT-AUDIT-02`
-- lifecycle: `ONE-OFF / READ-ONLY / CLOSED AFTER RETURN`
-- terminal return: `[BOUNDED-REPAIR E306-AFT-AUDIT-02]`
-- mathematical effect: no defect in the final dense E306 proof; bounded statement and bridge repairs only
+- adoption audit: `E306-AFT-AUDIT-02`
+- adoption return: `[BOUNDED-REPAIR E306-AFT-AUDIT-02]`
+- repair-verification role: `E306-AFT-REPAIR-VERIFY-01`
+- verified head: `5945a2b9d3c596bed13f42201be11a39d4a0068c`
+- verification return: `[PASS E306-AFT-REPAIR-VERIFY-01]`
+- effect: all bounded statement and bridge repairs pass; no defect or change in the final dense E306 proof
 
 ## Governing mathematical disposition
 
 1. The dense one-anchor route remains the preferred complete E306 proof.
-2. The exact weighted decoded-skeleton inequality is retained as a genuine general theorem.
-3. Finite-group syndrome observability is retained after bounded statement repair.
-4. The abstract final major/minor budget is treated as an assembly interface, not advertised as deeper than its arithmetic providers.
-5. General structural tools are introduced naturally before their E306 provider verifications.
-6. E306 remains the headline theorem and first substantive application; it is not demoted to a nominal corollary whose hypotheses contain the hard work.
-7. The fully abstract framework may appear after the concrete semantic setup or in an appendix, but not as an unrelated afterthought.
+2. The exact weighted product-fibre compression theorem is retained as genuine general structure.
+3. Finite-group syndrome observability is retained as a general hidden-coordinate separation theorem.
+4. The final major/minor inequality is presented as an assembly interface, not as deeper than its arithmetic providers.
+5. General structural tools occur naturally before their E306 provider verifications.
+6. E306 remains the headline theorem and first substantive application.
+7. The fully abstract viewpoint may be discussed after the concrete semantic setup, but not as an unrelated afterthought.
 
 ## Product rules
 
 - One article, one branch, one draft PR.
 - No task-, auditor-, repair-, review-, or revision-specific branches.
-- All mathematical changes are recorded in `AFT_REPAIR_LEDGER.md` or the later proof-change ledger.
+- Mathematical changes are recorded in `AFT_REPAIR_LEDGER.md` or the later proof-change ledger.
 - Reviewers do not write to the branch.
-- Owner approval is required before ready-for-review, merge, release, DOI, arXiv, or journal submission.
-- `lean-graph.yml`, Lean analytic-provider refactoring, E307, and a separate AFT paper are outside scope.
+- Owner approval is required before ready-for-review, merge, release, DOI, arXiv or journal submission.
+- `lean-graph.yml`, Lean analytic-provider refactoring, E307 and a separate AFT paper are outside scope.
 
 ## Milestones
 
-- `M0` control and source freeze
-- `M1` bounded AFT repair and final specialization bridge
-- `M2` theorem DAG and article architecture freeze
-- `M3` general structural tools
-- `M4` E306 arithmetic providers
-- `M5` full manuscript assembly
-- `M6` Owner and independent manuscript review
-- `M7` revision and publication disposition
+- `M0` control and source freeze — **COMPLETE**
+- `M1` bounded AFT repair and final specialization bridge — **COMPLETE / INDEPENDENT PASS**
+- `M2` theorem DAG and article architecture freeze — **ACTIVE**
+- `M3` general structural tools — **ACTIVE**
+- `M4` E306 arithmetic providers — pending
+- `M5` full manuscript assembly — pending
+- `M6` Owner and independent manuscript review — pending
+- `M7` revision and publication disposition — pending
 
 ## Current state
 
-`M0 ACTIVE / M1 AUTHORIZED`
+```text
+[M1 COMPLETE / M2-M3 ACTIVE E306-PAPER-01]
+```
+
+The PR remains draft. No publication or merge authority is implied.
