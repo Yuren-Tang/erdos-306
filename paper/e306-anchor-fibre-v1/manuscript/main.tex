@@ -6,7 +6,6 @@
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage[etbb]{newtx}
 \usepackage{newtxtt}
-\usepackage{textalpha}
 \usepackage{microtype}
 \usepackage{enumitem}
 \usepackage{booktabs}
@@ -40,6 +39,12 @@
      \clearfield{urlmonth}%
      \clearfield{urlday}}}
 
+\DeclareFontEncoding{LGR}{}{}
+\DeclareFontSubstitution{LGR}{udidot}{m}{n}
+\ifdefined\pdfglyphtounicode
+  \pdfglyphtounicode{Omega}{03A9}
+\fi
+
 \setlength{\emergencystretch}{2em}
 \numberwithin{equation}{section}
 
@@ -67,9 +72,9 @@
 \thanks{ORCID: \href{https://orcid.org/0009-0006-0847-3330}{0009-0006-0847-3330}.}
 \dedicatory{%
   {\normalfont\normalsize
-   \fontencoding{LGR}\fontfamily{cmr}\fontseries{m}\fontshape{n}\selectfont
-   ΤΟΙΣ ΕΜΕ ΦΙΛΟΥΣΙΝ\\
-   ΚΑΙ ΤΟΙΣ ΟΥΣ ΦΙΛΩ}}
+   \fontencoding{LGR}\fontfamily{udidot}\fontseries{m}\fontshape{n}\selectfont
+   TOIS EME FILOUSIN\\
+   KAI TOIS OUS FILW}}
 \subjclass[2020]{Primary 11D68; Secondary 11B75, 11P05}
 \keywords{Egyptian fractions, squarefree semiprimes, reciprocal sums, finite Fourier analysis, Chinese remainder theorem}
 \hypersetup{
