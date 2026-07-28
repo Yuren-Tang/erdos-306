@@ -5,7 +5,19 @@ Fix an anchor assignment.  The remaining CRT coordinates are indexed by
 \[
  R_{\mathrm{rows}}=(P\setminus B)\sqcup S_b.
 \]
-For $r\in R_{\mathrm{rows}}$ and a residue $x\pmod r$, let $u_{rq}(x)\in\T$ be the phase $h/(rq)$ determined by $x$ and the fixed anchor residue modulo $q\in B$.  If the row residue changes by $d$, CRT subtraction gives
+For $r\in R_{\mathrm{rows}}$, a residue $x\pmod r$, and $q\in B$, let $H_{rq}(x,a_q)$ be the unique centred CRT lift satisfying
+\[
+ H_{rq}(x,a_q)\equiv x\pmod r,
+ \qquad
+ H_{rq}(x,a_q)\equiv a_q\pmod q,
+ \qquad
+ -\frac{rq}{2}<H_{rq}(x,a_q)\leq\frac{rq}{2},
+\]
+and put
+\[
+ u_{rq}(x)=\frac{H_{rq}(x,a_q)}{rq}\pmod1.
+\]
+If the row residue changes by $d$, the lift difference is congruent to $d$ modulo $r$ and to $0$ modulo $q$.  Writing $q^{-1}$ for the unique residue in $\{1,\ldots,r-1\}$ such that $qq^{-1}\equiv1\pmod r$, division by $rq$ therefore gives
 \begin{equation}
 \label{eq:row-shift}
  u_{rq}(x+d)-u_{rq}(x)
