@@ -177,7 +177,15 @@ By \cref{prop:nondominant-forcing}, there is a dominant class $C$ with label $m$
  \geq m^2\sum_{p<q\in C}\frac1{p^2q^2}
  \gg_\rho m^2\sigma_Q^2.
 \]
-This proves the label bound.  Let $E_0=Q\setminus C$.  The label bound and low-energy upper bound imply $|m|\leq |C|Y/128$ for large $Y$.  For each $q\in E_0$, reciprocal dispersion across $C$ gives cross energy at least $c|C|^3/Y^2$.  These edge sets are disjoint in $q$, hence
+This proves the label bound.  Let $E_0=Q\setminus C$.  The label bound, the low-energy upper bound and the scale estimates for $\sigma_Q$ and $C$ give
+\[
+ |m|
+ \ll_\rho\frac{\sqrt{\mathcal Q(a)}}{\sigma_Q}
+ \ll_{\rho,c_w}\sqrt{\frac{Y}{\log^3Y}}\,Y\log Y
+ =O_{\rho,c_w}\!\left(\frac{Y^{3/2}}{\sqrt{\log Y}}\right)
+ =o(|C|Y),
+\]
+since $|C|\asymp Y/\log Y$.  Hence $|m|\leq |C|Y/128$ for sufficiently large $Y$.  For each $q\in E_0$, reciprocal dispersion across $C$ gives cross energy at least $c|C|^3/Y^2$.  These edge sets are disjoint in $q$, hence
 \[
  |E_0|\,c|C|^3/Y^2\leq\mathcal Q(a).
 \]
@@ -227,19 +235,23 @@ uniformly for
 \end{proposition}
 
 \begin{proof}
-First suppose $R\leq c_*N^4/Y^2$, where $c_*>0$ is small.  Choose a predetermined fingerprint of size
+First suppose $R\leq c_*N^4/Y^2$, where $c_*>0$ is small.  Choose once and for all a set
 \[
- s=\left\lceil A(RY^2)^{1/4}\right\rceil.
+ \mathcal F\subset Q,
+ \qquad
+ |\mathcal F|=s,
+ \qquad
+ s=\left\lceil A(RY^2)^{1/4}\right\rceil,
 \]
-The lower range gives $s\geq16$, while small $c_*$ gives $s\leq N/2$.  There are at most $(2Y)^s$ assignments on the fingerprint.  For a complete assignment,
+independently of the residue assignment being enumerated.  The lower range gives $s\geq16$, while small $c_*$ gives $s\leq N/2$.  There are at most $(2Y)^s$ assignments on $\mathcal F$.  Once these residues are enumerated, the functions $t_q$ are determined.  For a complete assignment,
 \[
  \sum_{q\notin\mathcal F}t_q(a_q)\leq R.
 \]
-By \cref{lem:fingerprint-rigidity}, all but at most
+By \cref{lem:fingerprint-rigidity}, these fixed functions force all but at most
 \[
  t\leq\frac{RY^2}{gs^3}\ll_A s
 \]
-vertices are forced to one residue.  Choosing the exceptional vertices and residues gives at most
+vertices to one residue.  Choosing the exceptional vertices and residues gives at most
 \[
  \exp\bigl(O((s+t)\log Y)\bigr)
  =\exp\bigl(O((RY^2)^{1/4}\log Y)\bigr)
