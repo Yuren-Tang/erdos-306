@@ -28,15 +28,17 @@ For $|m|\leq N$, the decoded tuple is the genuine frequency $h=m\pmod L$.  Every
  \ll_C\frac{\log X}{X}\longrightarrow0.
 \]
 Moreover,
-\begin{align}
+\begin{equation}
 \label{eq:aggregate-cubic-remainder}
+\begin{aligned}
  \sum_{e\in\mathcal E}|m/e|^3
  &\leq\frac{|m|^3}{X^2}
        \sum_{e\in\mathcal E}\frac1{e^2}\\
  &\ll_b\frac{C^3}{\sigma_{\mathcal E}X^2}
  \ll_b C^3\frac{\log X}{X}
  \longrightarrow0.
-\end{align}
+\end{aligned}
+\end{equation}
 The remainder bound \cref{eq:local-log-remainder} shows that \cref{eq:local-log-expansion} may be summed over the actual denominator family, and the aggregate remainder is $o_{b,C}(1)$ uniformly in the major range.
 
 The linear term cancels exactly by \cref{eq:exact-centering-load}:
