@@ -107,7 +107,7 @@ I & coherent, $|m|\leq N$ & positive Taylor major \\
 II & coherent, $N<|m|\leq X^2/4$ & full-variance Gaussian tail \\
 III & coherent, $X^2/4<|m|\leq M_{\mathrm{dec}}$ & adaptive retained pairs \\
 IV & coherent, $|m|>M_{\mathrm{dec}}$ & internal anchor energy \\
-V & noncoherent anchor assignments or nondecoder tuples & anchor entropy and fibre error \\
+V & noncoherent anchor assignments\newline or nondecoder tuples & anchor entropy and fibre error \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -145,13 +145,15 @@ For a coherent label in Sector IV, the internal anchor factor and \cref{eq:top-e
  |F(h_m)|\leq\exp(-\kappa_bm^2\sigma_{B,0}^2).
 \]
 The decoded row and residual factors have modulus at most one.  Hence
-\begin{align}
+\begin{equation}
 \label{eq:sector-IV-total}
+\begin{aligned}
  \sum_{|m|>M_{\mathrm{dec}}}|F(h_m)|
  &\ll \sigma_{B,0}^{-1}
  \exp(-cM_{\mathrm{dec}}^2\sigma_{B,0}^2)\\
  &=o(\sigma_{\mathcal E}^{-1}),
-\end{align}
+\end{aligned}
+\end{equation}
 because
 \[
  M_{\mathrm{dec}}^2\sigma_{B,0}^2
