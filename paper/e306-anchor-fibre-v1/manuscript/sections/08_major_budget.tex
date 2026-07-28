@@ -1,7 +1,7 @@
 \section{The major contribution and terminal budget}
 \label{sec:major-budget}
 
-We now estimate Sectors I and II and assemble all five sectors.  The order of choices is essential: the Gaussian cutoff $C$ is fixed first, and only then is $X$ taken sufficiently large.
+We now estimate Sectors I and II and assemble all five sectors.  The order of choices is essential: the Gaussian cutoff $C$ is fixed first, and only then is $X$ taken sufficiently large.  All constants introduced in the preceding sections are fixed once $b$ and the stated fixed numerical choices are fixed; none depends on $C$, and only the final threshold for $X$ may depend on $C$.
 
 \subsection{A uniform local expansion}
 
@@ -39,7 +39,6 @@ Moreover,
  \longrightarrow0.
 \end{aligned}
 \end{equation}
-\addtocounter{equation}{1}
 The remainder bound \cref{eq:local-log-remainder} shows that \cref{eq:local-log-expansion} may be summed over the actual denominator family, and the aggregate remainder is $o_{b,C}(1)$ uniformly in the major range.
 
 The linear term cancels exactly by \cref{eq:exact-centering-load}:
@@ -96,13 +95,19 @@ The global modulus bound \cref{eq:global-Fourier-energy} and the definition of $
 \label{eq:full-variance-gaussian}
  |F(m)|\leq\exp(-c_bm^2\sigma_{\mathcal E}^2)
 \end{equation}
-for a fixed $c_b>0$.  Applying \cref{eq:full-variance-gaussian} and a Gaussian integral comparison yields
+for a fixed $c_b>0$.  Since $N+1>C/\sigma_{\mathcal E}$, monotonicity and a Gaussian integral comparison give, for fixed $C\geq1$,
 \begin{equation}
 \label{eq:sector-II-tail}
+\begin{aligned}
  \sum_{|m|>N}\exp(-c_bm^2\sigma_{\mathcal E}^2)
- \leq K_b\sigma_{\mathcal E}^{-1}
-       \exp(-c_bC^2/2).
+ &\leq 2\exp\bigl(-c_b(N+1)^2\sigma_{\mathcal E}^2\bigr)
+      +2\int_{N+1}^{\infty}
+        \exp(-c_bt^2\sigma_{\mathcal E}^2)\,dt\\
+ &\leq K_b\sigma_{\mathcal E}^{-1}
+       \exp(-c_bC^2/2),
+\end{aligned}
 \end{equation}
+where $K_b$ is independent of $C$ and $X$; here $C$ is fixed before $X$.
 By \cref{eq:sector-II-tail}, choose $C$ so large that the right side is less than
 \begin{equation}
 \label{eq:C-choice}
