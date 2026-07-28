@@ -6,6 +6,7 @@
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage[etbb]{newtx}
 \usepackage{newtxtt}
+\usepackage{textalpha}
 \usepackage{microtype}
 \usepackage{enumitem}
 \usepackage{booktabs}
@@ -62,7 +63,13 @@
 
 \title{Reciprocal Sums of Distinct Squarefree Semiprimes}
 \author{Yuren Tang}
+\address{Freie Universität Berlin}
 \thanks{ORCID: \href{https://orcid.org/0009-0006-0847-3330}{0009-0006-0847-3330}.}
+\dedicatory{%
+  {\normalfont\normalsize
+   \fontencoding{LGR}\fontfamily{cmr}\fontseries{m}\fontshape{n}\selectfont
+   ΤΟΙΣ ΕΜΕ ΦΙΛΟΥΣΙΝ\\
+   ΚΑΙ ΤΟΙΣ ΟΥΣ ΦΙΛΩ}}
 \subjclass[2020]{Primary 11D68; Secondary 11B75, 11P05}
 \keywords{Egyptian fractions, squarefree semiprimes, reciprocal sums, finite Fourier analysis, Chinese remainder theorem}
 \hypersetup{
@@ -76,7 +83,7 @@
 \begin{document}
 
 \begin{abstract}
-We prove that a positive rational number is a finite sum of reciprocals of distinct integers, each the product of two distinct primes, if and only if its reduced denominator is squarefree.  For the converse, we first represent $1/b$ for each squarefree $b$ by a finite Fourier selection argument on a complete family of semiprime denominators.  A block of large primes serves as an anchor: low-energy anchor assignments synchronize to a single integer frequency, while the remaining prime coordinates concentrate in rows around canonical decoders.  An exact weighted product-fibre inequality compresses the Fourier sum to a decoded skeleton without discarding the lower--lower factors needed to damp intermediate frequencies.  A positive Gaussian major contribution then dominates four disjoint minor ranges.  Character orthogonality gives the desired subset sum modulo one, and a strict no-wrap bound converts it to an exact rational identity.  Avoidance and induction on the numerator complete the characterization.
+We prove that a positive rational number is a finite sum of reciprocals of distinct integers, each the product of two distinct primes, if and only if its reduced denominator is squarefree.  For the converse, it is enough to represent $1/b$ for each squarefree $b$ while avoiding finitely many denominators.  We choose a complete family of semiprime denominators and express the subset-sum problem as a finite Fourier coefficient.  A block of large primes forces the relevant local residues to arise from one integer frequency, while rows across that block determine the remaining coordinates.  A weighted compression estimate preserves the unused prime-pair factors, whose decay controls intermediate frequencies.  The Gaussian contribution near zero then dominates the four complementary sectors.  Character orthogonality produces the required congruence modulo one, and the fact that the total reciprocal mass is less than one makes this congruence an exact equality.  Avoidance and induction on the numerator complete the characterization.
 \end{abstract}
 
 \maketitle
@@ -93,7 +100,7 @@ We prove that a positive rational number is a finite sum of reciprocals of disti
 \input{sections/10_scope}
 
 \section*{Acknowledgements}
-Generative-AI systems were used as research and editorial assistants during proof exploration, Lean development, source checking, and manuscript revision.  The author is solely responsible for the final mathematical content, citations, and wording.
+Generative-AI systems assisted proof exploration, Lean development, source checking, and editorial revision.  The author takes full responsibility for the mathematics, citations, and text.
 
 \printbibliography
 \thispagestyle{plain}
