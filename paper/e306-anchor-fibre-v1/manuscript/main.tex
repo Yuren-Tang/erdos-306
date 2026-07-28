@@ -1,6 +1,7 @@
 \documentclass[11pt,a4paper,reqno]{amsart}
 
 \usepackage[T1]{fontenc}
+\usepackage[british]{babel}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{newpxtext,newpxmath}
 \usepackage{microtype}
@@ -16,9 +17,24 @@
   maxbibnames=99,
   doi=true,
   url=true,
-  eprint=true
+  eprint=true,
+  urldate=long
 ]{biblatex}
 \addbibresource{references.bib}
+\AtEveryBibitem{%
+  \iffieldundef{doi}
+    {\iffieldundef{eprint}
+       {}
+       {\clearfield{url}%
+        \clearfield{urldate}%
+        \clearfield{urlyear}%
+        \clearfield{urlmonth}%
+        \clearfield{urlday}}}
+    {\clearfield{url}%
+     \clearfield{urldate}%
+     \clearfield{urlyear}%
+     \clearfield{urlmonth}%
+     \clearfield{urlday}}}
 
 \setlength{\emergencystretch}{2em}
 \numberwithin{equation}{section}
@@ -46,6 +62,12 @@
 \thanks{ORCID: \href{https://orcid.org/0009-0006-0847-3330}{0009-0006-0847-3330}.}
 \subjclass[2020]{Primary 11D68; Secondary 11B75, 11P05}
 \keywords{Egyptian fractions, squarefree semiprimes, reciprocal sums, finite Fourier analysis, Chinese remainder theorem}
+\hypersetup{
+  pdftitle={Reciprocal Sums of Distinct Squarefree Semiprimes},
+  pdfauthor={Yuren Tang},
+  pdfsubject={Characterization of positive rationals representable as sums of reciprocals of distinct squarefree semiprimes},
+  pdfkeywords={Egyptian fractions, squarefree semiprimes, reciprocal sums, finite Fourier analysis, Chinese remainder theorem}
+}
 \date{}
 
 \begin{document}
@@ -69,6 +91,7 @@ We prove that a positive rational number is a finite sum of reciprocals of disti
 
 \section*{Acknowledgements}
 Generative-AI systems were used as research and editorial assistants during proof exploration, Lean development, source checking, and manuscript revision.  The author is solely responsible for the final mathematical content, citations, and wording.
+\thispagestyle{plain}
 
 \printbibliography
 
