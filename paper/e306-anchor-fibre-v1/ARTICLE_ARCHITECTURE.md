@@ -1,221 +1,215 @@
-# E306-PAPER-01 — article architecture freeze
+# E306-PAPER-01 — article architecture and editorial control
 
 ## Status
 
-`M2 ARTICLE ARCHITECTURE FROZEN`
+`M7 / GLOBAL EDITORIAL INTEGRATION COMPLETE / OWNER HOLD`
 
-This document fixes the causal and expository order of the article. It does not freeze sentence-level prose, notation refinements or theorem numbering.
+This document records the maintained architecture of the article.  The exact current branch head is recorded in controlling issue `#8`, draft PR `#9`, and the latest durable return; no commit attempts to contain its own hash.
 
-## Working title
+## Article identity
 
-**Reciprocal Representations by Distinct Squarefree Semiprimes**
+Title:
 
-Working subtitle:
+**Reciprocal Sums of Distinct Squarefree Semiprimes**
 
-**An Anchor–Fibre Fourier Method**
+The article has no subtitle.  Its headline result is the squarefree-denominator characterization with finite avoidance:
 
-The title keeps the arithmetic theorem public-facing. The subtitle identifies the reusable mechanism without promoting the final budget lemma above the arithmetic providers.
+> A positive rational number is a finite sum of reciprocals of distinct integers, each the product of two distinct primes, if and only if its reduced denominator is squarefree; moreover, every prescribed finite set of denominators may be avoided.
 
-## Headline theorem
-
-The article proves the following characterization.
-
-> A positive rational number is a finite sum of reciprocals of distinct integers, each the product of two distinct primes, if and only if its reduced denominator is squarefree.
-
-The affirmative direction is proved by the dense one-anchor Fourier construction. The necessity of squarefreeness and the numerator/avoidance closure are stated explicitly rather than hidden in the construction.
+The theorem was first obtained in the author's archived Lean 4 formalization, release `0.0.3`.  The present article grew out of that formal work and refines the same Fourier-analytic lineage into a substantially simpler one-anchor proof for ordinary mathematical reading.  The archived code does not formalize the present exposition line by line.
 
 ## Governing order
 
-The paper follows the logical cycle
+The article follows the causal cycle
 
 ```text
-arithmetic target
- -> finite selection model
- -> reusable structural tools
- -> concrete denominator system
- -> anchor rigidity
- -> fibre decoding and observability
- -> decoded skeleton and minor lanes
- -> positive major and strict budget
- -> quotient realization
- -> no-wrap and arithmetic closure.
+arithmetic characterization and target
+ -> finite Fourier selection
+ -> general structural tools
+ -> concrete squarefree-semiprime denominator system
+ -> anchor-block synchronization and weighted partition
+ -> fibre decoding and target observability
+ -> retained decoded skeleton and exhaustive minor sectors
+ -> positive major and strict terminal budget
+ -> quotient realization and no-wrap exact equality
+ -> finite extension, disjoint realization and common refinement
+ -> sharp coefficient, multiplicity, diversity and quantitative transfer
+ -> discussion and conclusion.
 ```
 
-Generality appears exactly where it controls the proof. It is neither postponed as an appendix-only afterthought nor placed before the reader has a semantic model for anchors, fibres and targets.
+Generality appears where it controls the proof.  The mathematical order of Sections 2--8 is retained without redesign.
 
-## Section plan
+## Normalized manuscript source tree
+
+```text
+manuscript/
+├── BUILD.md
+├── Makefile
+├── main.tex
+├── references.bib
+└── sections/
+    ├── 01_introduction.tex
+    ├── 02_fourier_selection.tex
+    ├── 03_structural_tools.tex
+    ├── 04_denominator_system.tex
+    ├── 05_anchor_block.tex
+    ├── 06_fibre_decoding.tex
+    ├── 07_decoded_skeleton.tex
+    ├── 08_major_budget.tex
+    ├── 09_exact_completion.tex
+    ├── 10_quantitative_multiplicity.tex
+    └── 11_discussion_conclusion.tex
+```
+
+`main.tex` inputs these eleven files once each and in this order.  Bibliography processing uses `biblatex` with Biber.
+
+## Eleven-section plan
 
 ### 1. Introduction
 
-Purpose:
-
-- state the characterization;
-- explain why squarefreeness is both an arithmetic necessity and a target-observability boundary;
-- describe the dense one-anchor route;
-- distinguish the structural tools from the hard arithmetic providers;
-- give the theorem-dependency map and parameter order.
-
-No proof estimate is deferred to an informal roadmap claim.
+- headline characterization and finite avoidance;
+- historical and literature context;
+- external input and proof architecture;
+- the one-anchor construction;
+- terminology, parameter order and organizational roadmap.
 
 ### 2. Finite Fourier selection and exactness
 
-Contents:
-
-- finite abelian character orthogonality;
-- independent Bernoulli subset sums;
-- the exact coefficient used for reciprocal selection;
+- character orthogonality;
+- reciprocal subset sums;
 - quotient realization versus ambient equality;
 - injective-support, fundamental-domain and measurable-alias interfaces;
-- explicit declaration that E306 uses deterministic no-wrap only after positivity.
+- Chinese-remainder coordinates.
+
+E306 uses deterministic no-wrap only after positivity.
 
 ### 3. Structural tools
 
-#### 3.1 Complete-family collision theorem
+- complete-family collision theorem;
+- exact weighted product-fibre compression;
+- finite-group syndrome separation;
+- decoded-skeleton positivity.
 
-State and prove the all-`k` collision inequality. Record the exact pair identity used later. The moving-uniformity consequence is included as a remark/corollary, not advertised as a higher-uniformity rigidity theorem.
+The unnormalized compression statement retains zero weights, empty coordinate sets, nonunique decoders and complex residual factors.
 
-#### 3.2 Exact weighted product-fibre compression
+### 4. The semiprime denominator system
 
-State the sharp unnormalized theorem as the principal result. Treat zero weights, empty coordinate sets, nonunique decoders and complex residual factors. Normalized exponential estimates are corollaries.
+- prime blocks and the complete denominator family;
+- target-sensitive rows;
+- reciprocal load and Bernoulli centring;
+- variance and squarefree CRT period;
+- exact partition of every Fourier factor into anchor, row or retained-skeleton roles.
 
-#### 3.3 Finite-group syndrome separation
+### 5. The anchor block
 
-State the theorem for homomorphic sensors. Separate finite injectivity from quantitative asymptotic distance. Explain the lane-dependent coverage principle.
+- reciprocal prime code;
+- low energy forces one exact integer label;
+- fingerprint counting above the forcing floor;
+- application to the anchor block;
+- weighted anchor partition and noncoherent tail.
 
-#### 3.4 Decoded-skeleton positivity
+### 6. Fibre decoding and target observability
 
-Fuse exact compression with an arbitrary finite minor-lane partition. Present it as an assembly proposition. Labels are optional; no-wrap is outside the proposition.
-
-### 4. The E306 denominator system
-
-Contents:
-
-- reduction to an avoiding unit representation;
-- fixed squarefree denominator `b`;
-- scales `X`, `Z=X^3`;
-- prime sets `P` and top block `B`;
-- complete-pair family `E_pair` and target-sensitive rows `E_b`;
-- reciprocal load and exact Bernoulli centering;
-- variance;
-- squarefree period and CRT factorization;
-- exact assignment of every denominator factor to top, row or retained skeleton.
-
-### 5. The top anchor
-
-Contents:
-
-- top energy;
-- nondominant forcing;
-- zero-exception rigidity;
-- exact cold integer label;
-- fingerprint entropy above the cold floor;
-- weighted top partition `P_top=O(Z log Z)`;
-- coherent and energetic top sectors.
-
-This is one of the principal application-specific mathematical sections.
-
-### 6. Fibre decoding and hidden-coordinate observability
-
-Contents:
-
-- multiplicity-sensitive cyclic row distance for lower prime rows;
-- elementary fixed-`r|b` row distance;
+- cyclic row distance;
+- target-row observability;
 - shift-uniform row tails;
-- exact unnormalized product-fibre error;
-- decoder identification for all `P` coordinates through `M_dec`;
-- decoder identification for coordinates dividing `b` only through `X^2/4`;
-- explicit explanation of why the adaptive lane needs no stronger target-coordinate claim.
+- exact retained skeleton;
+- identification of the decoded skeleton.
 
-### 7. The decoded skeleton and its minor lanes
+All prime coordinates are identified through the required range: coordinates in the anchor block are fixed by the coherent anchor label, while the remaining prime coordinates are supplied by row decoding.  Coordinates dividing the target denominator are decoded only through the range where they are needed.
 
-Contents:
+### 7. The decoded skeleton and its minor ranges
 
-- exact retained-skeleton formula;
-- major lane;
-- Gaussian lane;
-- adaptive lower–lower complete-pair lane;
-- large cold-label/top lane;
-- energetic-anchor lane;
-- nondecoder fibre error;
-- disjoint and exhaustive sector table.
+- adaptive retained-pair damping;
+- exhaustive five-sector partition;
+- pointwise bounds on all minor skeleton ranges;
+- separate accounting for noncoherent anchor assignments and nondecoder fibres.
 
-Every unassigned factor remains visible on the decoded skeleton.
+Every factor not assigned to a row remains visible on the decoded skeleton.
 
-### 8. Major contribution and terminal budget
+### 8. The major contribution and terminal budget
 
-Contents:
-
-- actual-family variance;
-- exact linear centering;
-- aggregate cubic Taylor remainder;
+- uniform local expansion;
 - positive real major contribution;
-- choose `C` first, then `X`;
-- bound every minor lane against the major scale;
-- invoke decoded-skeleton positivity.
+- full-variance Gaussian tail;
+- aggregate Taylor remainder;
+- strict assembly in the order `C -> X`.
 
-Complex major positivity is kept separate from absolute minor estimates.
+Complex major positivity remains distinct from absolute minor estimates.
 
-### 9. Exact representation and completion of the theorem
+### 9. Exact representation, extension and refinement
 
-Contents:
+- quotient positivity and deterministic no-wrap;
+- avoiding unit representation;
+- numerator induction and the explicit denominator `1` and `2` closures;
+- necessity and the strengthened characterization;
+- finite extension and disjoint realization;
+- common refinements and iterated proper refinement.
 
-- positive finite Fourier coefficient;
-- realized target congruence;
-- total reciprocal load `<1`;
-- deterministic no-wrap;
-- avoiding unit theorem;
-- numerator induction;
-- cases `b=1,2`;
-- squarefree necessity;
-- proof of the headline characterization.
+### 10. Quantitative multiplicity, diversity and transfer
 
-### 10. Structural scope and limits
+1. fixed-target coefficient and multiplicity;
+2. cardinality concentration, macroscopic diversity and balanced relations;
+3. denominator height and quantitative refinement;
+4. transfer to every admissible rational.
 
-Contents:
+The balanced signed reciprocal relations are the additive consequence of the equal-cardinality macroscopically separated family.  Their non-minimality disclaimer remains part of the controlled statement.
 
-- what is genuinely reusable;
-- finite-valued product measures;
-- averaged fibre errors;
-- target-observability failure modes;
-- why absolute compression does not exploit cancellation among fibres;
-- why complete-family mass does not provide higher-uniformity rigidity;
-- conditions under which a separate AFT paper would become justified.
+### 11. Discussion and conclusion
 
-This section explains the reach of tools already used in the proof; it does not launch a new research programme.
+- what the proof preserves;
+- three bounded open directions;
+- conclusion.
 
-## Theorem hierarchy
+This section states the scope of the proved mechanisms without asserting a general black-box representation theorem.
+
+## Theorem and dependency hierarchy
 
 ### General structural results
 
 - `G1` complete-family collision theorem;
 - `G2` exact weighted product-fibre compression;
 - `G3` finite-group syndrome separation;
-- `G4` decoded-skeleton positivity proposition;
-- `G5` finite-group quotient coefficient and exactness interfaces.
+- `G4` decoded-skeleton positivity;
+- `G5` quotient coefficient and exactness interfaces.
 
-### E306 providers
+### E306 analytic providers
 
 - `A1` complete-pair load and variance;
-- `A2` top-anchor rigidity and weighted partition;
-- `A3` lower-prime row distance;
-- `A4` target-row distance;
-- `A5` sector-dependent decoder identification;
-- `A6` retained complete-pair damping;
-- `A7` actual-family Taylor major;
-- `A8` five-sector strict budget;
-- `A9` no-wrap and arithmetic closure.
+- `A2` Bernoulli centring and no-wrap capacity;
+- `A3` anchor-block rigidity and weighted partition;
+- `A4` lower-prime row distance;
+- `A5` target-row distance;
+- `A6` sector-dependent decoder identification;
+- `A7` retained complete-pair damping;
+- `A8` actual-family Taylor major;
+- `A9` exhaustive five-sector strict budget.
 
-### Main results
+### Exactness and representation structure
 
-- `M1` avoiding unit representation for a fixed squarefree denominator;
-- `M2` positive-rational representation theorem;
-- `M3` squarefree-denominator characterization.
+- `R1` positive quotient coefficient and no-wrap equality;
+- `R2` avoiding unit representation;
+- `R3` numerator and small-denominator closure;
+- `R4` squarefree-denominator characterization;
+- `R5` finite extension and disjoint realization;
+- `R6` common-refinement theorem and proper refinement chains.
 
-The final numbering in TeX may differ, but the dependency order may not.
+### Quantitative branch
+
+- `Q1` quantitative coefficient lower bound;
+- `Q2` sharp fixed-target coefficient;
+- `Q3` exponential multiplicity;
+- `Q4` entropy-optimal cardinality concentration;
+- `Q5` exact-cardinality extraction and macroscopic diversity;
+- `Q6` balanced signed reciprocal relations;
+- `Q7` denominator-height and refinement branching;
+- `Q8` transfer to every admissible rational.
+
+The final TeX numbering may differ, but this dependency order is controlling.
 
 ## Parameter order
 
-The article must preserve:
+The article preserves
 
 ```text
 fixed rational data and squarefree denominator b
@@ -225,35 +219,19 @@ fixed rational data and squarefree denominator b
  -> set Z=X^3 and construct the finite family.
 ```
 
-No estimate may choose `C` after `X` or hide moving dependence in an absolute constant.
+No estimate chooses `C` after `X` or hides moving dependence in an absolute constant.
 
-## Non-negotiable proof statements
+## Protected mathematical boundary
 
-The manuscript must display, not paraphrase away:
+The global editorial integration changes no theorem, proposition, lemma, corollary, definition, remark, proof, displayed equation, quantitative constant, asymptotic, quantifier or mathematical disclaimer.  It changes only source identities, navigation, two Section 10 headings, minimal roadmap wording, build documentation, bibliography page transition and control metadata.
 
-- `s>=16` in the reciprocal rigidity input;
-- the zero-exception conclusion `R=0`;
-- the exact complete-pair load with the factor `1/2`;
-- the direct fixed-`r|b` row argument;
-- the product-fibre error `P_top(exp(Delta)-1)` obtained without decoder normalization;
-- the exact denominator-factor partition;
-- sector-dependent decoder ranges;
-- squarefree target observability;
-- the aggregate Taylor remainder;
-- parameter order `C -> X`;
-- the strict no-wrap interval;
-- the avoiding-set numerator induction.
+## Current control
 
-## Source discipline
+- repository: `Yuren-Tang/erdos-306`;
+- controlling issue: `#8`;
+- sole branch: `paper/e306-anchor-fibre-v1`;
+- draft PR: `#9`;
+- publication state: Owner hold;
+- exact current head and exact-head workflow evidence: PR `#9` body and the latest durable issue return.
 
-- The final dense candidate and its independent audit control all E306 provider statements.
-- The repaired structural packet and its independent PASS control the general tools and final bridge.
-- Older manuscripts may supply bibliography, TeX conventions and historical exposition only.
-- The authorial AFT packet is not cited as an independent black box.
-- Lean is discussed as an orthogonal formal verification axis; it is not used to certify the human dense proof.
-
-## M2 return
-
-```text
-[M2 ARTICLE ARCHITECTURE FROZEN E306-PAPER-01]
-```
+No ready-for-review, merge, tag, release, DOI, Zenodo, arXiv or journal action is implied by this architecture record.
