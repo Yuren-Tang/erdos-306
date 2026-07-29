@@ -9,19 +9,51 @@ The validation is source-comparative and mathematical.  No manuscript build, Lea
 
 ## 1. Control and branch validation
 
-- Authorised starting head: `f03105e95dc2ec5595a931293f6ca951e4bc424a`.
-- Dedicated branch checked before mutation: `research/e306-post-v1-restricted-primes-v1`.
-- Comparison before ACK: branch and authorised head were identical (`ahead_by=0`, `behind_by=0`).
-- ACK posted to `Yuren-Tang/research-workbench#116` before the first write.
-- Write scope is confined to the four files under `research/post-v1/restricted-primes/` named in the role packet.
+### Authorial dossier
+
+- Original authorised starting head: `f03105e95dc2ec5595a931293f6ca951e4bc424a`.
+- Dedicated branch checked before original mutation: `research/e306-post-v1-restricted-primes-v1`.
+- Original comparison before ACK: branch and authorised head were identical (`ahead_by=0`, `behind_by=0`).
+- Original ACK posted to `Yuren-Tang/research-workbench#116` before the first authorial write.
+- Original authorial final head: `1290c4124df0626bba3f3715e469bb7cc70e93a6`, four commits ahead of and zero behind `f03105e...`.
+
+### Bounded source repair
+
+- Independent audit return: `Yuren-Tang/research-workbench#116#issuecomment-5112349809`, ending `[BOUNDED-REPAIR E306-POST-V1-AP-AUDIT-01]`.
+- Director disposition: `Yuren-Tang/research-workbench#116#issuecomment-5112456388`.
+- Source-repair packet: `Yuren-Tang/research-workbench#116#issuecomment-5112461304`, ending `[START AUTHORIZED E306-POST-V1-AP-SOURCE-REPAIR-01]`.
+- Exact source-repair starting head: `1290c4124df0626bba3f3715e469bb7cc70e93a6`.
+- Before the source-repair ACK, the branch was verified identical to that head and still four commits ahead of and zero behind `f03105e...`, with exactly the four authorised files.
+- Source-repair ACK: `Yuren-Tang/research-workbench#116#issuecomment-5112808544`.
+- Source-repair write scope remains confined to the same four authorised files under `research/post-v1/restricted-primes/`.
 
 ## 2. Arithmetic-input validation
 
 Let `delta=|C|/phi(m)`.
 
+### Authoritative source and quantifiers
+
+The independently checked source is:
+
+Harold Davenport, *Multiplicative Number Theory*, second edition, revised by Hugh L. Montgomery, Graduate Texts in Mathematics 74, Springer-Verlag, New York, 1980.
+
+Exact locator:
+
+- Chapter 22, “The Prime Number Theorem for Arithmetic Progressions (II)”, formula (4), p. 133, for the progression estimate for `psi(x;q,a)`;
+- the paragraph immediately following formula (4), p. 133, for the derivation by partial summation of the corresponding `pi(x;q,a)` estimate with main term `Li(x)/phi(q)`;
+- Chapter 20, “The Prime Number Theorem for Arithmetic Progressions (I)”, pp. 121–125, for the preceding notation and progression estimates.
+
+The application fixes `m` and the finite set `C subset (Z/mZ)^×` before `X->infinity`.  It invokes only the fixed-`q=m` consequence
+
+`pi(x;m,c)=Li(x)/phi(m)+o(x/log x)`
+
+for each fixed `c in C`.  Uniformity is needed only over this finite fixed set and follows by taking the maximum of finitely many error thresholds.  The stronger uniform range present in the source is not imported into the proof.
+
+This progression theorem is distinct from the ordinary prime number theorem cited in the exact E306 article.  No varying-modulus theorem, Siegel–Walfisz uniformity in a growing modulus, Bombieri–Vinogradov theorem, GRH, or moving-row-prime distribution theorem is used.
+
 ### Fixed-ratio count
 
-The fixed-modulus PNT/AP gives, after summing over `C`,
+After summing over fixed `C`,
 
 `pi_C(x)=delta Li(x)+o(x/log x)`.
 
@@ -33,7 +65,7 @@ Only fixed ratios occur: the anchor interval, the variance interval, and the ada
 
 ### Reciprocal first moment
 
-Partial summation gives
+Abel/partial summation gives
 
 `S_1=sum_{X<=p<X^A,p in P_C}1/p=delta log A+o(1)`.
 
@@ -172,7 +204,7 @@ All follow from fixed `delta>0`, fixed `A>2`, and `Z=X^A`.
 
 - **Sector I:** `N=floor(C/sigma_E)=Theta(XlogX)`.  Exact centring removes the linear phase.  The cubic Taylor remainder is `O_{b,m,C}(C^3 log X/X)=o(1)`.
 - **Sector II:** all lower and target rows are decoded through `X^2/4`; the actual-family variance gives the Gaussian tail.
-- **Sector III:** for `y=sqrt|n|`, fixed-ratio PNT/AP supplies `Theta(delta y/log y)` allowed primes in `[2y,3y]`; complete retained pairs give `Omega(delta^2|n|/log^2|n|)` energy.
+- **Sector III:** for `y=sqrt|n|`, fixed-`m` PNT/AP supplies `K_n=Theta(delta y/log y)` allowed primes in `[2y,3y]`.  For distinct such `p,q`, `4|n|<=pq<=9|n|`, hence `1/9<=|n|/(pq)<=1/4` and `||n/(pq)||>=1/9`.  The `binom(K_n,2)` retained pairs therefore give `Q_pair(n)>=c delta^2|n|/log^2|n|`.  This is the exact adaptive-interval phase calculation from the article source; no formula or boundary is changed.
 - **Sector IV:** the exponent `M_dec^2 sigma_{B,0}^2` tends to infinity.
 - **Sector V:** the noncoherent anchor tail and summed fibre error decay exponentially in `c_delta Z/log^3Z`, dominating polynomial partition factors.
 
@@ -190,7 +222,20 @@ The sectors are disjoint and exhaust all frequency labels after CRT fibre compre
 
 The least common multiple of all chosen denominators is squarefree and has prime support contained in `P_C`.  The reduced denominator divides this LCM.  Hence squarefreeness and allowed-prime support are both necessary.  No converse condition has been omitted.
 
-## 11. Exclusion audit
+## 11. Mathematical-invariance diff audit
+
+Relative to source-repair starting head `1290c412...`, every changed line is confined to:
+
+- bibliographic completion for the fixed-modulus PNT/AP;
+- explicit fixed-`m`, fixed-`C` and order-of-limits wording;
+- identification of Abel/partial summation for reciprocal-prime estimates;
+- distinction from the ordinary PNT and exclusion of varying-modulus inputs;
+- replacement of the indirect Sector III source description by the exact already-present adaptive-interval phase calculation;
+- validation and recovery-state synchronisation.
+
+There is no change to Theorem A, any hypothesis, `delta`, `A`, `Z`, `M_dec`, any estimate, constant, inequality, denominator family, sector boundary, closure argument, finite-avoidance argument, or exclusion.
+
+## 12. Exclusion audit
 
 The dossier does not claim:
 
@@ -204,6 +249,4 @@ The dossier does not claim:
 
 ## Validation disposition
 
-All required source mechanisms admit the displayed fixed-density substitutions, and every scale inequality closes for the load-calibrated fixed exponent `A=exp(sqrt(3/2)/delta)>2`.  No exact remaining mathematical obstruction was found for the stated fixed-progression theorem.
-
-**Disposition: proved at authorial-dossier level; ready for independent mathematical audit.**
+The bounded external-source defect identified by the independent audit has been repaired with an independently checked authoritative source and exact locator.  The authorised Sector III source-fidelity clarification has been made without altering any mathematical content.  The result remains confined to the dedicated post-v1 research branch and is ready for independent exact-diff source-repair verification.
