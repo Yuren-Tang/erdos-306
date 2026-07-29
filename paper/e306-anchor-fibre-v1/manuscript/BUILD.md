@@ -16,6 +16,8 @@ The build entrypoint executes:
 latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error main.tex
 ```
 
+`latexmk` runs the configured Biber cycle and repeats LaTeX to stabilization.
+
 Expected product:
 
 ```text
@@ -30,7 +32,7 @@ The workflow
 .github/workflows/manuscript.yml
 ```
 
-runs on manuscript changes in PR #9.  It installs a clean standard TeX Live toolchain, executes the same clean build, fails on unresolved citations or cross-references, verifies that `main.pdf` is nonempty, and uploads the PDF as a thirty-day GitHub Actions artifact.
+runs for pull requests that change the manuscript paths or the workflow itself; PR #9 is the present instance.  It installs a clean standard TeX Live toolchain, executes the same clean build, fails on unresolved citations or cross-references, verifies that `main.pdf` is nonempty, and uploads the PDF as a thirty-day GitHub Actions artifact.
 
 The workflow is a reproducibility gate.  It does not replace mathematical review or source-preservation review.
 
@@ -39,7 +41,7 @@ The workflow is a reproducibility gate.  It does not replace mathematical review
 A successful build must establish:
 
 1. every `\input` target is present;
-2. BibTeX completes;
+2. Biber completes;
 3. no undefined control sequence occurs;
 4. no undefined citation remains after the final pass;
 5. no undefined cross-reference remains after the final pass;
