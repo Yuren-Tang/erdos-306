@@ -1,0 +1,171 @@
+\section{Quantitative multiplicity and cardinality}
+\label{sec:quantitative-multiplicity}
+
+The strict Fourier budget contains more information than the positivity needed for existence.  We record the resulting count in the direct one-anchor family.  Throughout this section, $b\geq3$ is squarefree, the forbidden set $\mathcal T$ is fixed, and $X\to\infty$ after the terminal cutoff $C$ has been fixed as in \cref{eq:parameter-order}.  No assertion in this section is made for $b=1,2$.
+
+Retain the denominator family $\mathcal E=\mathcal E_X$, modulus $L=L_X$, load $\Lambda=\Lambda_X$, Bernoulli parameter $\theta=\theta_X$ and variance $\sigma_{\mathcal E}^2=\sigma_X^2$ of \cref{sec:denominator-system}.  Put
+\[
+ M_X=|\mathcal E_X|,
+ \qquad
+ \mathcal R_X(b)
+ =\left\{\mathcal A\subseteq\mathcal E_X:
+       \sum_{e\in\mathcal A}\frac1e=\frac1b\right\},
+\]
+and let $P_X$ denote the Bernoulli probability of the exact target event.  By character orthogonality and no-wrap,
+\begin{equation}
+\label{eq:quantitative-weighted-count}
+ P_X
+ =\sum_{\mathcal A\in\mathcal R_X(b)}
+   \theta_X^{|\mathcal A|}(1-\theta_X)^{M_X-|\mathcal A|}.
+\end{equation}
+The estimates already used above give
+\begin{equation}
+\label{eq:quantitative-basic-asymptotics}
+ \theta_X\longrightarrow
+ \alpha_b:=\frac{2}{b(\log 3)^2}\in(0,1),
+ \qquad
+ \log L_X=o(M_X),
+ \qquad
+ \log\sigma_X=o(M_X).
+\end{equation}
+Here and below logarithms are natural.
+
+\begin{corollary}[Quantitative target coefficient]
+\label{cor:quantitative-coefficient}
+For all sufficiently large $X$,
+\begin{equation}
+\label{eq:quantitative-coefficient}
+ L_XP_X\geq\frac{c_{\mathrm{maj}}}{2\sigma_X}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The strict assembly in \cref{sec:major-budget} assigns at most
+$c_{\mathrm{maj}}/(8\sigma_X)$ to Sector~II and less than
+$3c_{\mathrm{maj}}/(8\sigma_X)$ to Sectors~III--V, whereas Sector~I has real part at least $c_{\mathrm{maj}}/\sigma_X$.  Thus the real part of the full Fourier numerator is bounded below by
+\[
+ \left(1-\frac18-\frac38\right)
+ \frac{c_{\mathrm{maj}}}{\sigma_X}
+ =\frac{c_{\mathrm{maj}}}{2\sigma_X}.
+\]
+The numerator is $L_XP_X$, which is real and nonnegative.
+\end{proof}
+
+Put
+\[
+ q_X=\max(\theta_X,1-\theta_X),
+ \qquad
+ q_b=\max(\alpha_b,1-\alpha_b).
+\]
+
+\begin{corollary}[Exponential multiplicity]
+\label{cor:exponential-multiplicity}
+For all sufficiently large $X$,
+\begin{equation}
+\label{eq:raw-exponential-multiplicity}
+ |\mathcal R_X(b)|
+ \geq
+ \frac{c_{\mathrm{maj}}}{2L_X\sigma_X}\,q_X^{-M_X}.
+\end{equation}
+Consequently,
+\begin{equation}
+\label{eq:exponential-multiplicity-rate}
+ \log|\mathcal R_X(b)|
+ \geq\bigl[-\log q_b+o_b(1)\bigr]M_X.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Every summand in \cref{eq:quantitative-weighted-count} is at most $q_X^{M_X}$.  Hence
+$P_X\leq|\mathcal R_X(b)|q_X^{M_X}$, and \cref{eq:raw-exponential-multiplicity} follows from \cref{eq:quantitative-coefficient}.  Since $q_X\to q_b$, the two logarithmic losses in \cref{eq:quantitative-basic-asymptotics} are $o(M_X)$, which gives \cref{eq:exponential-multiplicity-rate}.
+\end{proof}
+
+For the sharper cardinality statement, let
+\[
+ K_X=\sum_{e\in\mathcal E_X}\xi_e
+ \sim\operatorname{Bin}(M_X,\theta_X),
+ \qquad
+ w_X=\left\lceil2\sqrt{M_X\log L_X}\right\rceil,
+\]
+and write
+\[
+ H(t)=-t\log t-(1-t)\log(1-t)
+ \qquad(0<t<1).
+\]
+By \cref{eq:quantitative-basic-asymptotics},
+\begin{equation}
+\label{eq:mesoscopic-window-size}
+ \sqrt{M_X}\ll w_X=o(M_X).
+\end{equation}
+
+\begin{theorem}[Entropy-optimal mesoscopic window]
+\label{thm:mesoscopic-entropy}
+One has
+\begin{equation}
+\label{eq:mesoscopic-entropy-lower}
+ \#\left\{\mathcal A\in\mathcal R_X(b):
+   \bigl||\mathcal A|-\theta_XM_X\bigr|\leq w_X\right\}
+ \geq
+ \exp\bigl([H(\alpha_b)-o_b(1)]M_X\bigr).
+\end{equation}
+The number of all subsets of $\mathcal E_X$ in the same window is at most
+\begin{equation}
+\label{eq:mesoscopic-entropy-upper}
+ \exp\bigl([H(\alpha_b)+o_b(1)]M_X\bigr).
+\end{equation}
+Thus the lower bound has the optimal exponential rate for this window.
+\end{theorem}
+
+\begin{proof}
+Hoeffding's inequality gives
+\begin{equation}
+\label{eq:hoeffding-cardinality}
+ \Prob\bigl(|K_X-\theta_XM_X|>w_X\bigr)
+ \leq2\exp(-2w_X^2/M_X)
+ \leq2L_X^{-8}.
+\end{equation}
+By \cref{eq:quantitative-coefficient},
+$P_X\gg_b(L_X\sigma_X)^{-1}$.  The estimates in
+\cref{eq:quantitative-basic-asymptotics} therefore imply
+$2L_X^{-8}=o(P_X)$.  Consequently the exact target mass lying in the displayed cardinality window is $(1-o(1))P_X$.
+
+For an integer $k$ in the window, write $k=\theta_XM_X+d$, where $|d|\leq w_X$.  The logarithm of its Bernoulli atom is
+\[
+ -M_XH(\theta_X)
+ +d\log\frac{\theta_X}{1-\theta_X}.
+\]
+Since $\theta_X$ remains in a fixed compact subinterval of $(0,1)$, every such atom is at most
+\begin{equation}
+\label{eq:window-atom-bound}
+ \exp\bigl(-M_XH(\theta_X)+O_b(w_X)\bigr).
+\end{equation}
+Dividing the target mass in the window by \cref{eq:window-atom-bound}, and using \cref{eq:quantitative-basic-asymptotics,eq:mesoscopic-window-size}, gives \cref{eq:mesoscopic-entropy-lower}.  Finally, the elementary bound
+$\binom{M}{k}\leq\exp(MH(k/M))$, uniformly for
+$k/M_X=\theta_X+o(1)$, together with the $2w_X+1=\exp(o(M_X))$ possible values of $k$, gives \cref{eq:mesoscopic-entropy-upper}.
+\end{proof}
+
+\begin{corollary}[Exact-cardinality extraction]
+\label{cor:exact-cardinality-extraction}
+There is an integer
+\begin{equation}
+\label{eq:extracted-cardinality}
+ k_X=\theta_XM_X+O(w_X)
+\end{equation}
+such that
+\begin{equation}
+\label{eq:exact-cardinality-count}
+ \#\{\mathcal A\in\mathcal R_X(b):|\mathcal A|=k_X\}
+ \geq
+ \exp\bigl([H(\alpha_b)-o_b(1)]M_X\bigr).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The window in \cref{thm:mesoscopic-entropy} contains at most
+$2w_X+1=\exp(o(M_X))$ integers.  Partition its representations by cardinality and apply the pigeonhole principle.
+\end{proof}
+
+\begin{remark}[Boundary of the quantitative statement]
+\label{rem:quantitative-boundary}
+The direct family used here is available only for fixed squarefree $b\geq3$.  The closure arguments for $b=1,2$ prove existence and finite avoidance, but do not supply one common family $\mathcal E_X$, parameter $\theta_X$ or cardinality variable $M_X$; none of the preceding quantitative assertions is transferred to those denominators.  Nor do the results above assert a conditional central limit theorem, a bivariate local limit theorem, an asymptotic at every prescribed cardinality, or any deletion-resilience property.
+\end{remark}
