@@ -1,7 +1,7 @@
-\section{Exact representation and completion of the theorem}
+\section{Exact representation, extension and refinement}
 \label{sec:exact-completion}
 
-We now pass from the positive finite Fourier coefficient to an exact rational identity, and then complete the reductions announced in \cref{sec:introduction}.  The first theorem is the fixed-denominator statement on which the elementary closure rests.
+We now pass from the positive finite Fourier coefficient to an exact rational identity, complete the characterization, and draw out the finite extension and refinement structure already contained in the avoiding theorem.
 
 \subsection{The avoiding unit representation}
 
@@ -82,7 +82,7 @@ Thus an avoiding representation of $1/2$ exists for every finite forbidden set. 
 For $b=1$, apply \cref{lem:numerator-induction} with denominator $3$, numerator $3$, and forbidden set $\mathcal T$.  Its hypothesis is supplied by \cref{thm:avoiding-unit} for $b=3$, and it produces an avoiding representation of $3/3=1$.  Since this construction works for every finite forbidden set, a second application of \cref{lem:numerator-induction}, now with denominator $1$, gives an avoiding representation of every positive integer.  Both small-denominator closures therefore preserve distinctness and the prescribed avoidance.
 \end{proof}
 
-\subsection{Necessity of squarefreeness}
+\subsection{Necessity and the strengthened characterization}
 
 \begin{lemma}[Squarefree denominator obstruction]
 \label{lem:squarefree-necessity}
@@ -103,7 +103,139 @@ The reduced denominator divides $M$.  Since the least common multiple of squaref
 \end{proof}
 
 \begin{proof}[Proof of \cref{thm:main}]
-If $q$ is a sum of reciprocals of distinct squarefree semiprimes, its reduced denominator is squarefree by \cref{lem:squarefree-necessity}.
+If the avoiding representation exists for every finite set, it exists in particular when the forbidden set is empty; \cref{lem:squarefree-necessity} then makes the reduced denominator squarefree.
 
-Conversely, write $q=a/b>0$ in lowest terms and suppose $b$ is squarefree.  For $b\geq3$, \cref{thm:avoiding-unit,lem:numerator-induction} give a representation of $a/b$ by distinct squarefree semiprimes.  The cases $b=1,2$ follow from \cref{lem:small-denominators}.  This proves the characterization.
+Conversely, write $q=a/b>0$ in lowest terms and suppose $b$ is squarefree.  Let $\mathcal T$ be an arbitrary finite set.  For $b\geq3$, \cref{thm:avoiding-unit,lem:numerator-induction} give a representation of $a/b$ avoiding $\mathcal T$.  The cases $b=1,2$ follow from \cref{lem:small-denominators}, with the same prescribed avoidance.  Since $\mathcal T$ was arbitrary, this proves the stated finite-avoidance characterization.
+\end{proof}
+
+\subsection{Finite extension and disjoint realization}
+
+Let
+\[
+ \mathbb Q_{\mathrm{sf}}^+
+ =\{q\in\mathbb Q_{\geq0}:\text{the reduced denominator of $q$ is squarefree}\}.
+\]
+This set is closed under finite addition: after passage to the least common multiple of the reduced denominators, the resulting denominator is squarefree.
+
+\begin{theorem}[Finite prescription and avoidance]
+\label{thm:finite-extension}
+Let $q>0$ belong to $\mathbb Q_{\mathrm{sf}}^+$.  Let $S$ be a finite set of squarefree semiprimes and let $\mathcal T$ be a finite set of positive integers.  Suppose that $S\cap\mathcal T=\varnothing$ and
+\[
+ \sum_{s\in S}\frac1s\leq q.
+\]
+Then there is a finite set $N$ of pairwise distinct squarefree semiprimes such that
+\[
+ S\subseteq N,
+ \qquad
+ N\cap\mathcal T=\varnothing,
+ \qquad
+ \sum_{n\in N}\frac1n=q.
+\]
+\end{theorem}
+
+\begin{proof}
+If equality already holds, take $N=S$.  Otherwise put
+\[
+ r=q-\sum_{s\in S}\frac1s>0.
+\]
+A common denominator for $q$ and the fractions $1/s$ is the least common multiple of squarefree integers, hence is squarefree.  The reduced denominator of $r$ divides this common denominator, so $r\in\mathbb Q_{\mathrm{sf}}^+$.  Apply \cref{thm:main} to $r$ with forbidden set $S\cup\mathcal T$, obtaining a representation $A$ disjoint from that set.  Then $N=S\cup A$ has the required properties.
+\end{proof}
+
+\begin{corollary}[Qualitative flexibility]
+\label{cor:qualitative-flexibility}
+Every $q>0$ in $\mathbb Q_{\mathrm{sf}}^+$ has the following properties.
+\begin{enumerate}[label=(\roman*)]
+\item For every real $Y$, it has a representation using only denominators greater than $Y$.
+\item For every integer $K\geq1$, it has a representation with at least $K$ terms.
+\item It has infinitely many pairwise disjoint finite representation sets.
+\item Deleting any finite set of squarefree-semiprime denominators does not alter the class of represented positive rationals.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+For~(i), apply \cref{thm:main} after forbidding the finitely many positive integers at most $Y$.  For~(ii), choose $K$ distinct squarefree semiprimes so large that their reciprocal sum is less than $q$, and prescribe them in \cref{thm:finite-extension}.  For~(iii), construct representations successively, each time forbidding the union of all preceding supports.  Assertion~(iv) is precisely the finite-avoidance conclusion of \cref{thm:main} restricted to the permitted denominator set.
+\end{proof}
+
+\begin{theorem}[Row--column refinement in $\mathbb Q_{\mathrm{sf}}^+$]
+\label{thm:squarefree-row-column}
+Suppose
+\[
+ x_1+\cdots+x_r=y_1+\cdots+y_s,
+ \qquad
+ x_i,y_j\in\mathbb Q_{\mathrm{sf}}^+.
+\]
+Then there are $z_{ij}\in\mathbb Q_{\mathrm{sf}}^+$ whose row sums are the $x_i$ and whose column sums are the $y_j$:
+\[
+ \sum_{j=1}^s z_{ij}=x_i,
+ \qquad
+ \sum_{i=1}^r z_{ij}=y_j.
+\]
+\end{theorem}
+
+\begin{proof}
+Choose one squarefree integer $L$ divisible by every reduced denominator occurring among the $x_i$ and $y_j$.  Put $R_i=Lx_i$ and $C_j=Ly_j$.  These are nonnegative integers with equal total sum.  There is a nonnegative integer matrix $(m_{ij})$ with row sums $R_i$ and column sums $C_j$: one may fill the first row greedily against the successive remaining column demands and then induct on the number of rows.  Set $z_{ij}=m_{ij}/L$.  Its reduced denominator divides the squarefree integer $L$, and the required sums follow after division by $L$.
+\end{proof}
+
+\begin{remark}
+The preceding closure and row--column property say, in standard algebraic language, that $\mathbb Q_{\mathrm{sf}}^+$ is a refinement monoid.  No monoid terminology is needed in what follows; the explicit matrix statement is the operative fact.
+\end{remark}
+
+\begin{corollary}[Disjoint realization of finite decompositions]
+\label{cor:disjoint-realization}
+Let
+\[
+ q=q_1+\cdots+q_r,
+ \qquad
+ q_i\in\mathbb Q_{\mathrm{sf}}^+,
+\]
+and let $\mathcal T$ be finite.  There are pairwise disjoint finite sets $A_i$ of squarefree semiprimes, all disjoint from $\mathcal T$, such that
+\[
+ \sum_{n\in A_i}\frac1n=q_i
+ \qquad(1\leq i\leq r).
+\]
+Here $A_i=\varnothing$ is permitted when $q_i=0$.
+\end{corollary}
+
+\begin{proof}
+Proceed successively through the positive $q_i$.  At each stage apply \cref{thm:main}, enlarging the forbidden set by all supports already chosen.  The resulting supports are pairwise disjoint and all avoid $\mathcal T$.
+\end{proof}
+
+\subsection{Common refinements of representation fibres}
+
+\begin{definition}
+Let $A$ and $C$ be finite squarefree-semiprime representations of the same rational.  We say that $C$ \emph{refines} $A$ if there is a partition
+\[
+ C=\bigsqcup_{a\in A}C_a
+\]
+such that
+\[
+ \sum_{c\in C_a}\frac1c=\frac1a
+ \qquad(a\in A).
+\]
+\end{definition}
+
+Refinement is transitive: partitions may be composed by taking the unions of the finer blocks lying over each coarser block.
+
+\begin{theorem}[Common refinement]
+\label{thm:common-refinement}
+Any finite family of finite representations of the same admissible positive rational has a common refinement.  Given any finite forbidden set, the common refinement may be chosen to avoid it and to be disjoint from every original support.  Moreover, every representation has a proper refinement, and there are refinement chains of arbitrary finite depth.
+\end{theorem}
+
+\begin{proof}
+First consider two representations
+\[
+ A=\{a_1,\ldots,a_r\},
+ \qquad
+ B=\{b_1,\ldots,b_s\}.
+\]
+Apply \cref{thm:squarefree-row-column} to the equal decompositions
+\[
+ \sum_{i=1}^r\frac1{a_i}
+ =\sum_{j=1}^s\frac1{b_j}.
+\]
+This gives $z_{ij}\in\mathbb Q_{\mathrm{sf}}^+$ with row sums $1/a_i$ and column sums $1/b_j$.  By \cref{cor:disjoint-realization}, all positive $z_{ij}$ may be represented on pairwise disjoint squarefree-semiprime supports, while avoiding the prescribed finite set together with $A\cup B$.  Let $C$ be the union of these cell supports.  Grouping the cells by rows partitions $C$ over $A$, while grouping them by columns partitions the same $C$ over $B$.  Thus $C$ is a common refinement, disjoint from both original supports.
+
+For finitely many representations, take a common refinement of the first two, then refine it jointly with the third, and continue.  At each step include all original supports in the forbidden set.  Transitivity preserves refinement of every earlier representation.
+
+Finally, let $A$ be one representation and choose $a\in A$.  Apply \cref{thm:main} to $1/a$, forbidding the whole set $A$.  The resulting support $D$ is disjoint from $A$ and has at least two elements: a singleton representation of $1/a$ would have to be $\{a\}$.  Replacing $a$ by $D$ gives a proper refinement.  Repeating this operation gives chains of arbitrary depth.
 \end{proof}
