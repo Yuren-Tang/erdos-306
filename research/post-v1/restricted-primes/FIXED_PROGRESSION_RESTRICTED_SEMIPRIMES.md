@@ -57,7 +57,9 @@ This proves both necessary conditions.  Notice that the support conclusion is st
 
 ## 2. Fixed-modulus prime input
 
-The only distributional input is the prime number theorem in the fixed reduced residue classes comprising `C`.
+The only distributional input is the prime number theorem in the fixed reduced residue classes comprising `C`.  A precise authoritative source is Harold Davenport, *Multiplicative Number Theory*, second edition, revised by Hugh L. Montgomery, Graduate Texts in Mathematics 74, Springer-Verlag, New York, 1980: Chapter 22, “The Prime Number Theorem for Arithmetic Progressions (II)”, formula (4) on p. 133, together with the partial-summation passage immediately following it on p. 133.  Formula (4) gives the progression estimate for `psi(x;q,a)`, and that passage states that partial summation gives the corresponding estimate for `pi(x;q,a)` with main term `Li(x)/phi(q)`.
+
+Here `m` and the finite set `C` are fixed before `x`, `y`, or `X` tends to infinity.  We use only the fixed-`q=m` consequence of the cited result, uniformly over the finitely many fixed classes `c in C`; no uniformity for a modulus varying with the scale is invoked.  This is a new external input for the restricted-prime application and is distinct from the ordinary prime number theorem used in the source E306 article.
 
 ### Proposition 2.1 (fixed-ratio supply)
 
@@ -75,11 +77,11 @@ For each `c in C`, the fixed-modulus PNT in arithmetic progressions gives
 
 `pi(x;m,c) = Li(x)/phi(m) + o(x/log x)`.
 
-Summing over the fixed finite set `C` gives
+Because `m` and `C` are fixed, summing over the fixed finite set `C` gives
 
 `pi_C(x) = delta Li(x) + o(x/log x)`.
 
-Evaluation at `uy` and `vy` yields the fixed-ratio assertion.  No short-interval theorem, Bombieri–Vinogradov estimate, Siegel–Walfisz uniformity in a growing modulus, or distribution modulo any moving prime is used.
+Evaluation at `uy` and `vy` yields the fixed-ratio assertion.  No short-interval theorem, varying-modulus theorem, Bombieri–Vinogradov estimate, Siegel–Walfisz uniformity in a growing modulus, GRH, or distribution modulo any moving prime is used.
 
 ### Proposition 2.2 (reciprocal and reciprocal-square estimates)
 
@@ -107,7 +109,7 @@ and
 
 ### Proof
 
-Partial summation applied to `pi_C(t)=delta Li(t)+o(t/log t)` gives
+Abel/partial summation applied to `pi_C(t)=delta Li(t)+o(t/log t)` gives
 
 `sum 1/p = int_X^{X^A} dt/(t log t) * delta + o(1)`
 
@@ -412,9 +414,21 @@ The fixed-modulus PNT gives
 
 `K_n := # (P_C intersect [2y,3y]) = Theta(delta y/log y)`.
 
-All unordered pairs of these primes are retained residual edges.  For such an edge `e=pp'`, one has `e` comparable to `|n|`, and the source residual-energy lemma gives a fixed positive contribution per nontrivial phase after excluding only the bounded collision multiplicity already handled there.  Consequently
+All unordered pairs of these primes are retained residual edges.  For distinct `p,q in P_C intersect [2y,3y]`,
 
-`Q_pair(n) >= c delta^2 |n|/log^2|n|`.
+`4|n| <= pq <= 9|n|`,
+
+so
+
+`1/9 <= |n|/(pq) <= 1/4`.
+
+This lies in `[0,1/2]`; because the decoded `p`- and `q`-coordinates equal the common label `n`, the corresponding retained factor has
+
+`||n/(pq)|| >= 1/9`.
+
+Thus the exact adaptive-interval phase calculation from the article source gives
+
+`Q_pair(n) >= (1/81) binom(K_n,2) >= c delta^2 |n|/log^2|n|`.
 
 This is the sole Sector III density loss: two independently counted allowed endpoints produce `delta^2`.
 
@@ -450,7 +464,7 @@ Thus the whole sector is bounded by
 
 `O(M_dec) exp(-c delta^2 X^2/log^2 X)=o(sigma_E^{-1})`.
 
-No moving-modulus prime theorem is involved; only the fixed-ratio count in `[2sqrt|n|,3sqrt|n|]` is used.
+No moving-modulus prime theorem is involved; only the fixed-`m`, fixed-ratio count in `[2sqrt|n|,3sqrt|n|]` is used.
 
 ### Sector IV: coherent anchor labels beyond `M_dec`
 
@@ -533,7 +547,7 @@ This also covers the possibility `r_0=2`; alternatively one may choose an allowe
 | Target-row distance | elementary nonzero residue bound | `D_r~delta Z/log Z` |
 | Weighted fibre compression | unchanged exact partition | none |
 | Decoder identification | unchanged comparison | `M_dec~delta XZ/log^2Z` |
-| Adaptive retained pairs | complete allowed residual graph | energy `~delta^2|n|/log^2|n|` |
+| Adaptive retained pairs | exact adaptive-interval phase calculation on the complete allowed residual graph | energy `~delta^2|n|/log^2|n|` |
 | Five-sector exhaustion | unchanged | density constants as displayed |
 | Gaussian major | unchanged | `sigma_E^{-1}~_{delta}XlogX` |
 | Avoidance | choose `X` beyond finite set | unchanged |
