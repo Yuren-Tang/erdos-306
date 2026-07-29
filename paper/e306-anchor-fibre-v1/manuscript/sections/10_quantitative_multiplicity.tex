@@ -239,6 +239,45 @@ members.  Apply the greedy packing algorithm to the exact-cardinality family in 
 Taking, for example, $\eta_b=(H(\alpha_b)-H(\rho_b))/2$ for all sufficiently large $X$ proves the claim.
 \end{proof}
 
+\begin{corollary}[Balanced signed reciprocal relations]
+\label{cor:balanced-signed-relations}
+There are constants $c_b,\eta_b'>0$ such that, for all sufficiently large $X$, there are at least $\exp(\eta_b'M_X)$ distinct ordered pairs $(\mathcal P,\mathcal N)$ of disjoint subsets of $\mathcal E_X$ satisfying
+\[
+ \sum_{e\in\mathcal P}\frac1e
+ =\sum_{e\in\mathcal N}\frac1e,
+ \qquad
+ |\mathcal P|=|\mathcal N|\geq c_bM_X.
+\]
+Equivalently, there are at least $\exp(\eta_b'M_X)$ distinct nonzero vectors
+$(\varepsilon_e)_{e\in\mathcal E_X}\in\{-1,0,1\}^{\mathcal E_X}$ such that
+\[
+ \sum_{e\in\mathcal E_X}\frac{\varepsilon_e}{e}=0,
+ \qquad
+ |\{e:\varepsilon_e=1\}|=|\{e:\varepsilon_e=-1\}|\geq c_bM_X.
+\]
+With $D=X^6$, both support sizes are $\gg_b D/(\log D)^2$.
+\end{corollary}
+
+\begin{proof}
+Fix $\mathcal A_0\in\mathcal F_X$.  For each
+$\mathcal B\in\mathcal F_X\setminus\{\mathcal A_0\}$, put
+\[
+ \mathcal P=\mathcal A_0\setminus\mathcal B,
+ \qquad
+ \mathcal N=\mathcal B\setminus\mathcal A_0.
+\]
+The sets $\mathcal P$ and $\mathcal N$ are disjoint.  Since both $\mathcal A_0$ and $\mathcal B$ represent $1/b$, subtracting their common intersection gives equal reciprocal sums over $\mathcal P$ and $\mathcal N$.  Their equal cardinalities and the separation in \cref{cor:hamming-separated-family} give
+\[
+ |\mathcal P|=|\mathcal N|
+ =\frac12|\mathcal A_0\mathbin\triangle\mathcal B|
+ \geq\frac{\rho_b}{2}M_X.
+\]
+The map $\mathcal B\mapsto(\mathcal P,\mathcal N)$ is injective, since $\mathcal A_0$ is fixed and $\mathcal B=(\mathcal A_0\setminus\mathcal P)\cup\mathcal N$.  As $M_X\to\infty$, for all sufficiently large $X$ one has
+$|\mathcal F_X|-1\geq\exp(\eta_bM_X/2)$.  Thus one may take $c_b=\rho_b/2$ and $\eta_b'=\eta_b/2$.  Assigning coefficients $1$ on $\mathcal P$, $-1$ on $\mathcal N$ and $0$ elsewhere gives the equivalent vector form; the height statement follows from \cref{eq:quantitative-basic-asymptotics}.
+\end{proof}
+
+This is the additive-relation form of the macroscopic fibre diversity supplied by \cref{cor:hamming-separated-family}.  No assertion is made that these signed relations are minimal, primitive or shortest.
+
 \subsection{Denominator height and quantitative refinement}
 
 \begin{corollary}[Direct denominator-height form]
