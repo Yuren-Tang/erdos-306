@@ -95,28 +95,18 @@ The Makefile, workflow, bibliography database and Lean sources are outside the g
 - `M4` E306 arithmetic providers — **COMPLETE / MANUSCRIPT-ADOPTED**
 - `M5` full manuscript assembly — **COMPLETE**
 - `M6` mathematical, source, build, publication-text and visual reviews — **COMPLETE THROUGH THE ACCEPTED GLOBAL REPAIR MAP**
-- `M7` revision and publication disposition — **GLOBAL EDITORIAL INTEGRATION COMPLETE / VERIFICATION PENDING / OWNER HOLD**
+- `M7` revision and publication disposition — **PRE-ARXIV EXTERNAL-READER REPAIR COMPLETE / INDEPENDENT VERIFICATION PENDING / OWNER HOLD**
 
-## Global editorial integration state
+## Pre-arXiv external-reader repair state
 
-The accepted seven-item repair map has been integrated within its bounded source surface:
-
-- Section 11 source identity normalized;
-- Section 5 source identity and section label normalized to `anchor block`;
-- obsolete live checkpoint removed;
-- article architecture, theorem DAG and control records synchronized;
-- Biber build documentation corrected;
-- bibliography transition separated by a page break so running matter remains accurate;
-- Section 10 exposed as four subsections, with balanced signed relations identified as the additive consequence of macroscopic diversity.
-
-No theorem, proposition, lemma, corollary, definition, remark, proof, displayed equation, quantitative constant, asymptotic, quantifier or mathematical disclaimer was reopened.  The abstract, Section 11 prose, bibliography data, Sections 2--4 and 6--9, Makefile, workflow and Lean sources remain protected.
+The bounded clean external-reader repair has been integrated within its authorized source surface.  It awaits a one-off independent verification.  This state records no self-referential commit hash and grants no publication authority.
 
 ## Current state
 
 ```text
-[GLOBAL EDITORIAL INTEGRATION COMPLETE E306-PAPER-01]
+[PRE-ARXIV EXTERNAL-READER REPAIR COMPLETE E306-PAPER-01]
+[INDEPENDENT VERIFICATION PENDING]
 [OWNER HOLD / PR #9 REMAINS DRAFT]
-[AWAITING ONE-OFF EDITORIAL-INTEGRATION VERIFICATION]
 ```
 
 This control state does not mark PR `#9` ready, authorize merge, create or move a tag, authorize a release or DOI action, or authorize arXiv or journal submission.

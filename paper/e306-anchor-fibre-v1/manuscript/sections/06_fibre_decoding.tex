@@ -141,17 +141,22 @@ The row-tail estimate \cref{eq:Delta-row} follows because there are fewer than $
 
 \subsection{The exact retained skeleton}
 
-For the fixed anchor assignment, assign every factor involving one anchor prime and one row prime to the corresponding $A_r$.  Let $G(x_R)$ be the modulus of the product of all remaining lower--lower denominator factors.  Then
-\[
- 0\leq G(x_R)\leq1.
-\]
-The internal anchor factors have already been placed in $T_B$.  Thus the absolute Fourier product has the exact form required by \cref{thm:weighted-compression}, with
+For the fixed anchor assignment, assign every factor involving one anchor prime and one row prime to the corresponding $A_r$.  Write $F(a_B,x_R)$ for the complete complex Fourier product at the resulting coordinate tuple.  The internal anchor factors occur exactly in $T_B(a_B)$, every anchor-cross factor occurs exactly in one row modulus $A_r(x_r)$, and every retained lower--lower factor together with every phase is collected in a residual factor.  Thus
+\begin{equation}
+\label{eq:concrete-fibre-factorization}
+ F(a_B,x_R)
+ =T_B(a_B)\prod_{r\in R_{\mathrm{rows}}}A_r(x_r)
+  H_{a_B}(x_R),
+ \qquad
+ |H_{a_B}(x_R)|\leq1.
+\end{equation}
+If the full modulus vanishes, set $H_{a_B}(x_R)=0$; then \cref{eq:concrete-fibre-factorization} still holds, and no phase choice or division by a decoder weight is required.  In the notation of \cref{thm:weighted-compression}, this is
 \[
  W_y=T_B(a_B),
  \qquad
  a_{r,y}=A_r,
  \qquad
- H_y=\text{the retained complex residual factor}.
+ H_y=H_{a_B}.
 \]
 
 Put
@@ -188,7 +193,7 @@ The total contribution of every nondecoder fibre point is at most
 No decoder weight is divided out, and the raw number of anchor assignments does not occur.
 \end{proposition}
 
-The factors collected in $G$ remain on the decoder tuple.  They will provide the adaptive damping in \cref{sec:decoded-skeleton}.
+The factors collected in $H_{a_B}$ remain on the decoder tuple.  Their lower--lower components will provide the adaptive damping in \cref{sec:decoded-skeleton}.
 
 \subsection{Identification of the decoders}
 

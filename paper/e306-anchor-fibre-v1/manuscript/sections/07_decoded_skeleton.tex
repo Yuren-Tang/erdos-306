@@ -89,25 +89,25 @@ For sufficiently large $X$, the definition \cref{eq:N-major} gives
 \]
 and the residues of the integers $|m|\leq N$ are distinct modulo $L$.
 
-Every anchor assignment is either noncoherent, meaning $Q_B\geq F_B$, or coherent with a unique integer label $m$.  For a coherent assignment exactly one of the following disjoint ranges holds:
+Apply the decoder/nondecoder split first for every anchor assignment.  Every nondecoder tuple, over any anchor assignment, belongs to Sector~V.  It remains to classify the single decoded tuple.  If its anchor assignment is noncoherent, meaning $Q_B\geq F_B$, that decoded tuple also belongs to Sector~V.  If the anchor assignment is coherent with its unique integer label $m$, exactly one of the following disjoint ranges holds:
 \begin{align*}
  \mathrm{I}.\quad &|m|\leq N,\\
  \mathrm{II}.\quad &N<|m|\leq X^2/4,\\
  \mathrm{III}.\quad &X^2/4<|m|\leq M_{\mathrm{dec}},\\
  \mathrm{IV}.\quad &|m|>M_{\mathrm{dec}}.
 \end{align*}
-For each anchor assignment, \cref{thm:weighted-compression} separates its single decoded tuple from all nondecoder tuples.  Thus every frequency belongs to exactly one of the following five sectors:
+Thus every frequency belongs to exactly one of the following five sectors:
 
 \begin{center}
 \begin{tabular}{@{}c p{5.1cm} p{5.0cm}@{}}
 \toprule
 Sector & skeleton condition & control \\
 \midrule
-I & coherent, $|m|\leq N$ & positive Taylor major \\
-II & coherent, $N<|m|\leq X^2/4$ & full-variance Gaussian tail \\
-III & coherent, $X^2/4<|m|\leq M_{\mathrm{dec}}$ & adaptive retained pairs \\
-IV & coherent, $|m|>M_{\mathrm{dec}}$ & internal anchor energy \\
-V & noncoherent \mbox{anchor assignments}\newline or \mbox{nondecoder tuples} & anchor entropy and fibre error \\
+I & decoded; coherent, $|m|\leq N$ & positive Taylor major \\
+II & decoded; coherent, $N<|m|\leq X^2/4$ & full-variance Gaussian tail \\
+III & decoded; coherent, $X^2/4<|m|\leq M_{\mathrm{dec}}$ & adaptive retained pairs \\
+IV & decoded; coherent, $|m|>M_{\mathrm{dec}}$ & internal anchor energy \\
+V & decoded with a noncoherent anchor assignment; or nondecoder with any anchor assignment & anchor entropy and fibre error \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -118,7 +118,7 @@ The five sectors above are pairwise disjoint and exhaust all frequencies modulo 
 \end{proposition}
 
 \begin{proof}
-The CRT coordinate map is a bijection.  The anchor assignment is either below or above the forcing floor.  Below the floor it has exactly one label by \cref{prop:exact-cold-rigidity}, and the four displayed label ranges are disjoint and exhaustive.  For each fixed anchor assignment, the row-coordinate product is partitioned into its single decoder tuple and the complementary tuples.  Hence every frequency occurs exactly once.
+The CRT coordinate map is a bijection.  The decoder/nondecoder split is applied first and is disjoint for each anchor assignment.  All nondecoder tuples enter Sector~V.  Among decoded tuples, a noncoherent anchor assignment enters Sector~V, whereas a coherent assignment has exactly one label by \cref{prop:exact-cold-rigidity} and enters exactly one of the four disjoint and exhaustive displayed label ranges.  Hence every frequency occurs exactly once.
 \end{proof}
 
 The exhaustion statement \cref{prop:five-sector-exhaustion} leaves no residual sibling sector.  In Sectors I and II, \cref{prop:prime-decoder-identification,prop:target-decoder-identification} identify the complete coordinate tuple with the genuine integer $m$ modulo $L$.  In Sector III, only the $P$-coordinates are needed for \cref{eq:adaptive-energy}.  Sectors IV and V are controlled without any further decoder identification.

@@ -219,7 +219,13 @@ For a fixed absolute $g>0$, at most one residue $w$ satisfies
 \end{lemma}
 
 \begin{proof}
-If $w\neq w'$, subtraction of the corresponding CRT lifts and \cref{lem:reciprocal-dispersion} show that both energies cannot lie below the displayed threshold when $g$ is sufficiently small.
+Let $w\neq w'$ and put $d=w-w'\not\equiv0\pmod q$.  For each $p\in\mathcal F$, subtraction of the two centred CRT lifts is divisible by $p$ and congruent to $d$ modulo $q$; after division by $pq$, its circle residue is therefore $dp^{-1}/q$.  The circle triangle inequality and $(u+v)^2\leq2u^2+2v^2$ give
+\[
+ c_D\frac{s^3}{Y^2}
+ \leq\sum_{p\in\mathcal F}\dist{dp^{-1}/q}^2
+ \leq2t_q(w)+2t_q(w'),
+\]
+where the first inequality is \cref{lem:reciprocal-dispersion}.  Choose the fixed absolute constant $g$ with $4g<c_D$.  Then two residues cannot both have energy below $gs^3/Y^2$.
 \end{proof}
 
 \begin{proposition}[Fingerprint entropy bound]
@@ -301,7 +307,15 @@ By \cref{eq:bernoulli-modulus},
 \[
  T_B(a_B)\leq\exp(-\kappa_bQ_B(a_B)).
 \]
-Choosing $\varepsilon<\kappa_b/2$ in \cref{prop:fingerprint-entropy} and summing unit energy shells gives
+Fix $\varepsilon<\kappa_b$ in \cref{prop:fingerprint-entropy}.  On the unit shell $j\leq Q_B<j+1$, the number of assignments is at most $\exp(\varepsilon(j+1))$, while each weight is at most $\exp(-\kappa_bj)$.  Hence
+\[
+ \sum_{Q_B\geq F_B}T_B(a_B)
+ \leq e^\varepsilon
+ \sum_{j\geq\lfloor F_B\rfloor}
+ \exp\bigl(- (\kappa_b-\varepsilon)j\bigr)
+ \ll\exp(-cF_B),
+\]
+which is the geometric-series estimate
 \begin{equation}
 \label{eq:noncoherent-top-tail}
  \sum_{Q_B\geq F_B}T_B(a_B)

@@ -218,7 +218,7 @@ Refinement is transitive: partitions may be composed by taking the unions of the
 
 \begin{theorem}[Common refinement]
 \label{thm:common-refinement}
-Any finite family of finite representations of the same admissible positive rational has a common refinement.  Given any finite forbidden set, the common refinement may be chosen to avoid it and to be disjoint from every original support.  Moreover, every representation has a proper refinement, and there are refinement chains of arbitrary finite depth.
+Any finite family of finite representations of the same admissible positive rational has a common refinement.  Given any finite forbidden set, the common refinement may be chosen to avoid it and to be disjoint from every original support.  Such a common refinement is proper over every term of every original representation.  Moreover, every representation has a proper refinement, and there are refinement chains of arbitrary finite depth.
 \end{theorem}
 
 \begin{proof}
@@ -235,7 +235,7 @@ Apply \cref{thm:squarefree-row-column} to the equal decompositions
 \]
 This gives $z_{ij}\in\mathbb Q_{\mathrm{sf}}^+$ with row sums $1/a_i$ and column sums $1/b_j$.  By \cref{cor:disjoint-realization}, all positive $z_{ij}$ may be represented on pairwise disjoint squarefree-semiprime supports, while avoiding the prescribed finite set together with $A\cup B$.  Let $C$ be the union of these cell supports.  Grouping the cells by rows partitions $C$ over $A$, while grouping them by columns partitions the same $C$ over $B$.  Thus $C$ is a common refinement, disjoint from both original supports.
 
-For finitely many representations, take a common refinement of the first two, then refine it jointly with the third, and continue.  At each step include all original supports in the forbidden set.  Transitivity preserves refinement of every earlier representation.
+For finitely many representations, take a common refinement of the first two, then refine it jointly with the third, and continue.  At each step include all original supports in the forbidden set.  Transitivity preserves refinement of every earlier representation.  Because the final common refinement is disjoint from every original support, each block over a term $a$ is proper: a singleton block representing $1/a$ would have to be $\{a\}$, contrary to disjointness.
 
 Finally, let $A$ be one representation and choose $a\in A$.  Apply \cref{thm:main} to $1/a$, forbidding the whole set $A$.  The resulting support $D$ is disjoint from $A$ and has at least two elements: a singleton representation of $1/a$ would have to be $\{a\}$.  Replacing $a$ by $D$ gives a proper refinement.  Repeating this operation gives chains of arbitrary depth.
 \end{proof}

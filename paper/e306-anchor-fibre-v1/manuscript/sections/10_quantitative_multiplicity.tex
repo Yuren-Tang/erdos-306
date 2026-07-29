@@ -168,7 +168,7 @@ Thus the lower bound has the optimal exponential rate for this window.
 \begin{proof}
 Hoeffding's inequality gives
 \begin{equation}
-\label{eq:hoeffing-cardinality}
+\label{eq:hoeffding-cardinality}
  \Prob\bigl(|K_X-\theta_XM_X|>w_X\bigr)
  \leq2\exp(-2w_X^2/M_X)
  \leq2L_X^{-8}.
@@ -311,6 +311,8 @@ supports the same lower bound.  Moreover, an exponential subfamily at that cardi
 If $p,q<X^3$, then $pq<D$; the target-row denominators $rq$ are also below $D$ for fixed $r\mid b$ and large $X$.  The conversion of $M_X$ follows from \cref{eq:quantitative-basic-asymptotics} and $\log D=6\log X$.  Apply \cref{thm:mesoscopic-entropy,cor:exact-cardinality-extraction,cor:hamming-separated-family}, using $\theta_X\to\alpha_b$ and $w_X=o(M_X)$.
 \end{proof}
 
+For an arbitrary sufficiently large height $D$, apply the construction with the real parameter $X=D^{1/6}$; then every constructed denominator is at most $X^6=D$.  This is a direct reparametrization, not an interpolation between prime scales.  A fixed forbidden set affects only the threshold from which $X$ is sufficiently large, not the sharp coefficient, entropy exponent or any other leading constant, because every constructed denominator eventually exceeds every element of that set.
+
 \begin{corollary}[Exponential branching of refinements]
 \label{cor:quantitative-refinement-branching}
 Let $A_0$ be any finite squarefree-semiprime representation, and choose $a\in A_0$.  Then $A_0$ has exponentially many further refinements of denominator height at most $D$.  More precisely, for all sufficiently large $D$ there are at least
@@ -362,6 +364,11 @@ Apply the direct quantitative family for $1/d$ with forbidden set $\mathcal T\cu
 \]
 of $q$.  For large $D$, the fixed set $\mathcal B_0$ also lies below the height bound.  Union with it shifts every cardinality by $|\mathcal B_0|$ and preserves all symmetric differences, hence changes neither the exponential rate nor the asymptotic cardinality scale.  This argument includes reduced denominators $1$ and $2$ without treating them as direct one-family cases.
 \end{proof}
+
+\begin{remark}[Optimizing the direct choice within the transferred lower bound]
+\label{rem:optimal-transfer-choice}
+Within the lower bound proved in \cref{cor:global-quantitative-transfer}, if $q\geq1/3$, the choice $d=3$ maximizes the displayed entropy exponent among the allowed direct choices.  If $q<1/3$, the maximizing choice is the least squarefree integer $d\geq1/q$.  Indeed, $\alpha_d=2/(d(\log3)^2)$ decreases with $d$; for $d\geq5$ it lies in $(0,1/2)$, where binary entropy is increasing, so $H(\alpha_d)$ decreases with $d$, while the separate comparison $H(\alpha_3)>H(\alpha_5)$ handles the allowed choice $d=3$.  This optimizes only the displayed transferred lower bound, not all possible constructions or all representations.
+\end{remark}
 
 \begin{remark}[Finite avoidance versus in-family deletion]
 \label{rem:deletion-boundary}
