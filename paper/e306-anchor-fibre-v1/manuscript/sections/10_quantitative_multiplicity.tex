@@ -1,7 +1,7 @@
-\section{Quantitative multiplicity and cardinality}
+\section{Quantitative multiplicity, diversity and transfer}
 \label{sec:quantitative-multiplicity}
 
-The strict Fourier budget contains more information than the positivity needed for existence.  We record the resulting count in the direct one-anchor family.  Throughout this section, $b\geq3$ is squarefree, the forbidden set $\mathcal T$ is fixed, and $X\to\infty$ after the terminal cutoff $C$ has been fixed as in \cref{eq:parameter-order}.  No assertion in this section is made for $b=1,2$.
+The strict Fourier budget contains more information than the positivity needed for existence.  We first record the exact coefficient in the direct one-anchor family, then pass successively to multiplicity, cardinality, macroscopic support diversity, denominator height, refinement branching and arbitrary admissible targets.  Throughout the direct-family statements, $b\geq3$ is squarefree, the forbidden set $\mathcal T$ is fixed, and $X\to\infty$.  Whenever a Gaussian cutoff $C$ occurs, $X\to\infty$ is taken with $C$ fixed; only afterwards may $C\to\infty$.
 
 Retain the denominator family $\mathcal E=\mathcal E_X$, modulus $L=L_X$, load $\Lambda=\Lambda_X$, Bernoulli parameter $\theta=\theta_X$ and variance $\sigma_{\mathcal E}^2=\sigma_X^2$ of \cref{sec:denominator-system}.  Put
 \[
@@ -18,17 +18,21 @@ and let $P_X$ denote the Bernoulli probability of the exact target event.  By ch
  =\sum_{\mathcal A\in\mathcal R_X(b)}
    \theta_X^{|\mathcal A|}(1-\theta_X)^{M_X-|\mathcal A|}.
 \end{equation}
-The estimates already used above give
+The prime number theorem and partial summation used in \cref{sec:denominator-system} also give
 \begin{equation}
 \label{eq:quantitative-basic-asymptotics}
+\begin{gathered}
  \theta_X\longrightarrow
  \alpha_b:=\frac{2}{b(\log 3)^2}\in(0,1),
  \qquad
- \log L_X=o(M_X),
+ M_X=(1+o(1))\frac{X^6}{18\log^2X},\\
+ \log L_X=(1+o(1))X^3=o(M_X),
  \qquad
- \log\sigma_X=o(M_X).
+ \sigma_X^2\sim
+ \frac{\alpha_b(1-\alpha_b)}{2X^2\log^2X}.
+\end{gathered}
 \end{equation}
-Here and below logarithms are natural.
+Indeed, $|P|\sim X^3/(3\log X)$, so the complete pair family contributes $\binom{|P|}{2}$, while the finitely many target rows have only $O_b(X^3/\log X)$ members.  Similarly, partial summation gives $\sum_{p\in P}p^{-2}\sim1/(X\log X)$; the pair square-load is half its square up to a negligible diagonal, and the target rows are again smaller.  Here and below logarithms are natural.
 
 \begin{corollary}[Quantitative target coefficient]
 \label{cor:quantitative-coefficient}
@@ -49,6 +53,47 @@ $3c_{\mathrm{maj}}/(8\sigma_X)$ to Sectors~III--V, whereas Sector~I has real par
  =\frac{c_{\mathrm{maj}}}{2\sigma_X}.
 \]
 The numerator is $L_XP_X$, which is real and nonnegative.
+\end{proof}
+
+\begin{theorem}[Sharp fixed-target coefficient]
+\label{thm:sharp-target-coefficient}
+For fixed squarefree $b\geq3$ and fixed finite $\mathcal T$,
+\begin{equation}
+\label{eq:sharp-target-coefficient}
+ L_XP_X\sim\frac1{\sqrt{2\pi}\,\sigma_X}
+ \sim\frac{X\log X}{\sqrt{\pi\alpha_b(1-\alpha_b)}}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Fix $C\geq1$ and retain it while $X\to\infty$.  With $N=\lfloor C/\sigma_X\rfloor$, the uniform complex expansion \cref{eq:major-local-gaussian}, including the aggregate remainder \cref{eq:aggregate-cubic-remainder}, gives the Riemann-sum limit
+\[
+ \sigma_X\sum_{|m|\leq C/\sigma_X}F(m)
+ \longrightarrow
+ \int_{-C}^{C}\exp(-2\pi^2u^2)\,du.
+\]
+The normalized Sector~II estimate \cref{eq:sector-II-tail} yields
+\[
+ \limsup_{X\to\infty}
+ \sigma_X\sum_{\mathrm{II}}|F|
+ \leq K_b\exp(-c_bC^2/2),
+\]
+where $K_b$ is independent of $C$.  For this fixed $C$, \cref{eq:sector-III-total,eq:sector-IV-total,eq:sector-V-total} give
+\[
+ \sigma_X\sum_{\mathrm{III}\text{--}\mathrm{V}}|F|\longrightarrow0.
+\]
+Consequently
+\[
+ \limsup_{X\to\infty}
+ \left|\sigma_XL_XP_X-
+ \int_{-C}^{C}\exp(-2\pi^2u^2)\,du\right|
+ \leq K_b\exp(-c_bC^2/2).
+\]
+Only now let $C\to\infty$.  Since
+\[
+ \int_{\mathbb R}\exp(-2\pi^2u^2)\,du=\frac1{\sqrt{2\pi}},
+\]
+the first asymptotic follows.  The second is \cref{eq:quantitative-basic-asymptotics}.  No diagonal choice $C=C(X)$ and no moving-target uniformity is used.
 \end{proof}
 
 Put
@@ -77,7 +122,7 @@ Consequently,
 
 \begin{proof}
 Every summand in \cref{eq:quantitative-weighted-count} is at most $q_X^{M_X}$.  Hence
-$P_X\leq|\mathcal R_X(b)|q_X^{M_X}$, and \cref{eq:raw-exponential-multiplicity} follows from \cref{eq:quantitative-coefficient}.  Since $q_X\to q_b$, the two logarithmic losses in \cref{eq:quantitative-basic-asymptotics} are $o(M_X)$, which gives \cref{eq:exponential-multiplicity-rate}.
+$P_X\leq|\mathcal R_X(b)|q_X^{M_X}$, and \cref{eq:raw-exponential-multiplicity} follows from \cref{eq:quantitative-coefficient}.  Since $q_X\to q_b$, while $\log L_X$ and $|\log\sigma_X|$ are $o(M_X)$, \cref{eq:exponential-multiplicity-rate} follows.
 \end{proof}
 
 For the sharper cardinality statement, let
@@ -119,7 +164,7 @@ Thus the lower bound has the optimal exponential rate for this window.
 \begin{proof}
 Hoeffding's inequality gives
 \begin{equation}
-\label{eq:hoeffding-cardinality}
+\label{eq:hoeffing-cardinality}
  \Prob\bigl(|K_X-\theta_XM_X|>w_X\bigr)
  \leq2\exp(-2w_X^2/M_X)
  \leq2L_X^{-8}.
@@ -165,7 +210,126 @@ The window in \cref{thm:mesoscopic-entropy} contains at most
 $2w_X+1=\exp(o(M_X))$ integers.  Partition its representations by cardinality and apply the pigeonhole principle.
 \end{proof}
 
+\begin{corollary}[Macroscopic diversity at one cardinality]
+\label{cor:hamming-separated-family}
+There are constants $\rho_b,\eta_b>0$ and, for all sufficiently large $X$, a family
+$\mathcal F_X\subseteq\mathcal R_X(b)$ such that
+\[
+ |\mathcal F_X|\geq\exp(\eta_bM_X),
+ \qquad
+ |\mathcal A|=k_X\quad(\mathcal A\in\mathcal F_X),
+\]
+and, for distinct $\mathcal A,\mathcal B\in\mathcal F_X$,
+\[
+ |\mathcal A\mathbin\triangle\mathcal B|\geq\rho_bM_X.
+\]
+Thus exponentially many exact representations are macroscopically distinct, rather than local perturbations of one support.
+\end{corollary}
+
+\begin{proof}
+Choose $0<\rho_b<1/2$ so small that $H(\rho_b)<H(\alpha_b)$.  In the full cube $2^{\mathcal E_X}$, a symmetric-difference ball of radius $\lfloor\rho_bM_X\rfloor$ has at most
+\[
+ \sum_{j\leq\rho_bM_X}\binom{M_X}{j}
+ \leq\exp\bigl([H(\rho_b)+o(1)]M_X\bigr)
+\]
+members.  Apply the greedy packing algorithm to the exact-cardinality family in \cref{cor:exact-cardinality-extraction}: select one support and remove its ball, then repeat.  The number selected is at least
+\[
+ \exp\bigl([H(\alpha_b)-H(\rho_b)-o_b(1)]M_X\bigr).
+\]
+Taking, for example, $\eta_b=(H(\alpha_b)-H(\rho_b))/2$ for all sufficiently large $X$ proves the claim.
+\end{proof}
+
+\subsection{Denominator height and quantitative refinement}
+
+\begin{corollary}[Direct denominator-height form]
+\label{cor:direct-height-form}
+Let $D=X^6$.  For all sufficiently large $X$, every member of the direct denominator family is at most $D$, and
+\[
+ M_X=(2+o(1))\frac{D}{(\log D)^2}.
+\]
+Consequently $1/b$ has at least
+\begin{equation}
+\label{eq:direct-height-count}
+ \exp\left(\left[2H(\alpha_b)-o_b(1)\right]
+ \frac{D}{(\log D)^2}\right)
+\end{equation}
+representations by denominators at most $D$.  One cardinality
+\begin{equation}
+\label{eq:direct-height-cardinality}
+ k_D=\left[2\alpha_b+o_b(1)\right]\frac{D}{(\log D)^2}
+\end{equation}
+supports the same lower bound.  Moreover, an exponential subfamily at that cardinality has pairwise symmetric difference at least
+\[
+ \left[2\rho_b+o_b(1)\right]\frac{D}{(\log D)^2}.
+\]
+\end{corollary}
+
+\begin{proof}
+If $p,q<X^3$, then $pq<D$; the target-row denominators $rq$ are also below $D$ for fixed $r\mid b$ and large $X$.  The conversion of $M_X$ follows from \cref{eq:quantitative-basic-asymptotics} and $\log D=6\log X$.  Apply \cref{thm:mesoscopic-entropy,cor:exact-cardinality-extraction,cor:hamming-separated-family}, using $\theta_X\to\alpha_b$ and $w_X=o(M_X)$.
+\end{proof}
+
+\begin{corollary}[Exponential branching of refinements]
+\label{cor:quantitative-refinement-branching}
+Let $A_0$ be any finite squarefree-semiprime representation, and choose $a\in A_0$.  Then $A_0$ has exponentially many further refinements of denominator height at most $D$.  More precisely, for all sufficiently large $D$ there are at least
+\[
+ \exp\left(\left[2H(\alpha_a)-o_a(1)\right]
+ \frac{D}{(\log D)^2}\right)
+\]
+such refinements; one total cardinality
+\[
+ |A_0|-1+\left[2\alpha_a+o_a(1)\right]
+ \frac{D}{(\log D)^2}
+\]
+carries the same exponential rate, and an exponential equal-cardinality subfamily is Hamming-separated on the same linear scale.  The same conclusion applies to any common refinement of finitely many representations.
+\end{corollary}
+
+\begin{proof}
+The chosen denominator $a$ is squarefree and at least $3$.  Apply the direct family for $1/a$ with forbidden set $A_0$.  Each direct representation $A$ gives the refinement
+\[
+ (A_0\setminus\{a\})\cup A.
+\]
+This map is injective, and a fixed surrounding support changes cardinality only by $|A_0|-1$ and does not change symmetric differences.  For large $D$ it also lies below the height bound.  Now use \cref{cor:direct-height-form}.  A common refinement is itself a finite representation, so the same argument applies.
+\end{proof}
+
+\subsection{Transfer to every admissible rational}
+
+\begin{corollary}[Global quantitative transfer]
+\label{cor:global-quantitative-transfer}
+Let $q>0$ have squarefree reduced denominator, and let $\mathcal T$ be finite.  Choose any squarefree integer $d\geq3$ with $1/d\leq q$.  Then, for all sufficiently large $D$, there are at least
+\begin{equation}
+\label{eq:global-height-count}
+ \exp\left(\left[2H(\alpha_d)-o_d(1)\right]
+ \frac{D}{(\log D)^2}\right)
+\end{equation}
+representations of $q$ by distinct squarefree semiprimes at most $D$, all avoiding $\mathcal T$.  Exponentially many lie in a shifted mesoscopic cardinality window, and one cardinality
+\begin{equation}
+\label{eq:global-height-cardinality}
+ |\mathcal B_0|+
+ \left[2\alpha_d+o_d(1)\right]\frac{D}{(\log D)^2}
+\end{equation}
+supports the same lower bound, where $\mathcal B_0$ is a fixed representation of $q-1/d$.  An exponentially large equal-cardinality Hamming-separated subfamily also transfers.  The displayed exponent is not asserted to be optimal over the possible choices of $d$.
+\end{corollary}
+
+\begin{proof}
+The residual $q-1/d$ is either zero or belongs to $\mathbb Q_{\mathrm{sf}}^+$: a reduced denominator for the difference divides the squarefree least common multiple of the two denominators.  If the residual is positive, use \cref{thm:main} once to choose a finite representation $\mathcal B_0$ avoiding $\mathcal T$; if it is zero, put $\mathcal B_0=\varnothing$.
+
+Apply the direct quantitative family for $1/d$ with forbidden set $\mathcal T\cup\mathcal B_0$.  Every $\mathcal A\in\mathcal R_X(d)$ then gives the distinct representation
+\[
+ \mathcal B_0\cup\mathcal A
+\]
+of $q$.  For large $D$, the fixed set $\mathcal B_0$ also lies below the height bound.  Union with it shifts every cardinality by $|\mathcal B_0|$ and preserves all symmetric differences, hence changes neither the exponential rate nor the asymptotic cardinality scale.  This argument includes reduced denominators $1$ and $2$ without treating them as direct one-family cases.
+\end{proof}
+
+\begin{remark}[Finite avoidance versus in-family deletion]
+\label{rem:deletion-boundary}
+Finite avoidance means that the construction may be carried out after a fixed forbidden set has been prescribed.  It does not make one already-built family resilient under arbitrary sparse deletion.  Indeed, fix a prime $r\mid b$ and delete the target row
+\[
+ \mathcal D_{r,X}=\{rq:q\in B\}.
+\]
+This removes only $|B|=o(M_X)$ candidates.  Every remaining integer weight $L_X/e$ is nevertheless $0$ modulo $r$, whereas $L_X/b$ is nonzero modulo $r$; the target is therefore destroyed even in the quotient.  Structural resilience would require hypotheses preserving target observability and the other analytic mechanisms.
+\end{remark}
+
 \begin{remark}[Boundary of the quantitative statement]
 \label{rem:quantitative-boundary}
-The direct family used here is available only for fixed squarefree $b\geq3$.  The closure arguments for $b=1,2$ prove existence and finite avoidance, but do not supply one common family $\mathcal E_X$, parameter $\theta_X$ or cardinality variable $M_X$; none of the preceding quantitative assertions is transferred to those denominators.  Nor do the results above assert a conditional central limit theorem, a bivariate local limit theorem, an asymptotic at every prescribed cardinality, or any deletion-resilience property.
+The direct coefficient and one-family results are proved only for fixed squarefree $b\geq3$.  The global transfer covers all admissible rationals by adjoining a fixed residual representation; it does not turn the separate closure arguments for $b=1,2$ into direct-family asymptotics.  Nor does this article assert a moving-target local limit, a conditional central limit theorem, a joint value--cardinality local limit, an asymptotic at every prescribed cardinality, or a structural deletion-resilience theorem.
 \end{remark}
