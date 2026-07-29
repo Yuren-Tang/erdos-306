@@ -3,9 +3,14 @@
 ## Control records
 
 - Authorised role packet: `Yuren-Tang/research-workbench#116`, ending `[START AUTHORIZED E306-POST-V1-AP-01]`.
+- Authorial durable return: `Yuren-Tang/research-workbench#116#issuecomment-5112092315`.
+- Independent audit return: `Yuren-Tang/research-workbench#116#issuecomment-5112349809`, ending `[BOUNDED-REPAIR E306-POST-V1-AP-AUDIT-01]`.
+- Director disposition: `Yuren-Tang/research-workbench#116#issuecomment-5112456388`, ending `[DIRECTOR-ACCEPTED-BOUNDED-REPAIR E306-POST-V1-AP-AUDIT-01]`.
+- Authorised source-repair packet: `Yuren-Tang/research-workbench#116#issuecomment-5112461304`, ending `[START AUTHORIZED E306-POST-V1-AP-SOURCE-REPAIR-01]`.
 - Controlling feasibility return: `Yuren-Tang/research-workbench#110#issuecomment-5110977295`.
 - Exact mathematical source: `Yuren-Tang/erdos-306@9790763ab11a4406a7a15f79218e0d96efb81172`.
 - Later source-preserving clarification candidate: `Yuren-Tang/erdos-306@f03105e95dc2ec5595a931293f6ca951e4bc424a`.
+- Exact source-repair starting head: `1290c4124df0626bba3f3715e469bb7cc70e93a6`.
 
 The later candidate is seven commits ahead of the exact source and zero commits behind.  It changes only presentation and explicit clarification in the article source; the proof dossier treats it as context and preserves the mathematical architecture of `9790763...`.
 
@@ -20,7 +25,7 @@ The later candidate is seven commits ahead of the exact source and zero commits 
 | CRT coordinate decomposition | `sections/02_fourier_selection.tex`, Chinese-remainder coordinates | anchor, rows, residual factors | unchanged |
 | Product identities and weighted fibre compression | `sections/03_structural_tools.tex` | complete-pair load and exact row factorisation | unchanged on the complete graph induced by allowed primes |
 | Prime blocks and fixed-ratio supply | `sections/04_denominator_system.tex`, prime blocks | define `P`, `B` | replace all primes by `P_C`; invoke fixed-modulus PNT/AP |
-| Reciprocal prime estimates | `sections/04_denominator_system.tex`, reciprocal prime estimates | first and second reciprocal moments | `S_1=delta log A+o(1)`; density in all moments |
+| Reciprocal prime estimates | `sections/04_denominator_system.tex`, reciprocal prime estimates | first and second reciprocal moments | `S_1=delta log A+o(1)`; density in all moments; Abel/partial summation recorded below |
 | Denominator family | `sections/04_denominator_system.tex`, denominator family | complete bulk pairs plus target rows | both factors remain allowed because `supp(b) subset P_C` |
 | Arithmetic capacity | `sections/04_denominator_system.tex`, arithmetic capacity | distinctness, avoidance, divisibility, load, square load | replace `Z=X^3` by load-calibrated `Z=X^A` |
 | Bernoulli modulus and variance | `sections/04_denominator_system.tex`, Bernoulli centring and variance | uniform Gaussian and tail constants | unchanged once `theta` stays compactly in `(0,1)` |
@@ -36,7 +41,7 @@ The later candidate is seven commits ahead of the exact source and zero commits 
 | Target-row distance | `sections/06_fibre_decoding.tex` | observe coordinates indexed by `r|b` | full star gives trivial kernel and `D_r >= M/r^2` |
 | Decoder identification | `sections/06_fibre_decoding.tex` | identify common integer label through cutoffs | choose `M_dec=c_0 delta XZ/(log Z)^2`; target ratio uses `A>2` |
 | Decoded skeleton | `sections/07_decoded_skeleton.tex` | preserve residual pair factors | complete restricted residual graph remains available |
-| Adaptive retained-pair interval | `sections/07_decoded_skeleton.tex` and `sections/08_major_budget.tex` | Sector III damping | fixed-modulus PNT in `[2sqrt|n|,3sqrt|n|]`; energy loses `delta^2` |
+| Adaptive retained-pair interval | `sections/07_decoded_skeleton.tex`, Proposition “Adaptive prime interval”, proof and equations `adaptive-energy`, `sector-III-pointwise`, `sector-III-total` | Sector III damping | for `y=sqrt|n|` and `p,q in [2y,3y]`, `4|n|<=pq<=9|n|`, hence `1/9<=|n|/(pq)<=1/4` and `||n/(pq)||>=1/9`; `binom(K_n,2)` retained allowed pairs give the exact `delta^2` energy loss |
 | Gaussian major and five-sector budget | `sections/08_major_budget.tex` | positivity | unchanged after substituting displayed density-dependent scales |
 | Avoiding representation and numerator induction | `sections/09_exact_completion.tex` | all positive numerators and finite avoidance | unchanged |
 | Small denominators | `sections/09_exact_completion.tex` | `b=1,2` closure | direct calibrated proof for supported `b=2`; auxiliary allowed prime for `b=1` |
@@ -65,15 +70,29 @@ No theorem statement or numerical scale in the dossier is obtained by altering t
 
 ## External arithmetic input
 
-The sole new external theorem required for the fixed-progression application is the prime number theorem in arithmetic progressions for a **fixed** modulus:
+The sole new external theorem required for the fixed-progression application is the prime number theorem in arithmetic progressions for a **fixed** modulus.
+
+**Authoritative source.** Harold Davenport, *Multiplicative Number Theory*, second edition, revised by Hugh L. Montgomery, Graduate Texts in Mathematics 74, Springer-Verlag, New York, 1980.  Exact locator: Chapter 22, “The Prime Number Theorem for Arithmetic Progressions (II)”, formula (4), p. 133; the paragraph immediately following formula (4), also on p. 133, states that partial summation gives the corresponding result for `pi(x;q,a)` with main term `Li(x)/phi(q)`.  Chapter 20, “The Prime Number Theorem for Arithmetic Progressions (I)”, pp. 121–125, gives the preceding progression estimates and notation.
+
+For every **fixed** integer `m>=1` and every reduced residue class `c mod m`, the fixed-`q=m` consequence is
 
 `pi(x;m,c) = Li(x)/phi(m) + o(x/log x)`
 
-for every reduced residue class `c mod m`.  Summing over `c in C` gives density
+as `x->infinity`.  The set `C subset (Z/mZ)^×` is also fixed before the scale tends to infinity.  Because `C` is finite, the error may be taken uniformly over exactly these finitely many fixed classes, and summing gives
+
+`pi_C(x)=delta Li(x)+o(x/log x)`,
+
+where
 
 `delta=|C|/phi(m)`.
 
-Abel/partial summation then supplies the reciprocal estimate; fixed-ratio counting and dyadic decomposition supply all reciprocal-square estimates.  No theorem uniform in `m`, no short-interval distribution beyond fixed ratios, and no distribution modulo moving row primes is used.
+Abel/partial summation then gives
+
+`sum_{X<=p<X^A, p in P_C} 1/p = delta log A+o(1)`
+
+for fixed `A>1`; fixed-ratio counting and dyadic decomposition give the reciprocal-square estimates.  This input is distinct from the ordinary prime number theorem cited and used in the exact E306 article.
+
+Only the fixed-modulus consequence is invoked.  The dossier uses no modulus depending on `X`, no Siegel–Walfisz uniformity in a growing modulus, no Bombieri–Vinogradov theorem, no GRH, no short-interval distribution beyond fixed ratios, and no distribution theorem modulo a moving row prime.
 
 ## Exclusion map
 
