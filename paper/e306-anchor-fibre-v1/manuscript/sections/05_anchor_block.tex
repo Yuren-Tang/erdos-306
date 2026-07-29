@@ -1,0 +1,331 @@
+\section{The anchor block}
+\label{sec:anchor-block}
+
+The anchor block has two functions.  At low energy it synchronizes all of its local residue coordinates to one integer label.  Above the synchronization floor it admits a sufficiently small weighted partition.  We prove these facts first for an abstract prime block and then apply them to $B$.
+
+\subsection{A reciprocal prime code}
+
+Let $Y$ be large and let $Q$ be a set of primes in $[Y,2Y)$ satisfying
+\[
+ c\frac{Y}{\log Y}\leq N:=|Q|\leq C\frac{Y}{\log Y}.
+\]
+For an assignment $a=(a_p)_{p\in Q}$ and distinct $p,q\in Q$, let $H_{pq}(a)$ be the unique centred CRT lift with
+\[
+ H_{pq}\equiv a_p\pmod p,
+ \qquad
+ H_{pq}\equiv a_q\pmod q,
+ \qquad
+ -\frac{pq}{2}<H_{pq}\leq\frac{pq}{2}.
+\]
+Put
+\[
+ \mathcal Q(a)=\sum_{p<q}\left(\frac{H_{pq}(a)}{pq}\right)^2,
+ \qquad
+ \sigma_Q^2=\sum_{p<q}\frac1{p^2q^2}\asymp\frac1{Y^2\log^2Y}.
+\]
+Fix once and for all $\rho\in(0,1/4)$.
+
+The basic separation estimate is deliberately stated with the exact lower threshold used later.
+
+\begin{lemma}[Reciprocal dispersion]
+\label{lem:reciprocal-dispersion}
+Let $q$ be prime with $Y\leq q<4Y$, let $\mathcal F$ be a set of $s\geq16$ primes in $[Y,2Y)$ not containing $q$, and let $d\not\equiv0\pmod q$.  Then
+\[
+ \sum_{p\in\mathcal F}\dist{d p^{-1}/q}^2
+ \geq c_D\frac{s^3}{Y^2}
+\]
+for an absolute constant $c_D>0$.
+\end{lemma}
+
+\begin{proof}
+Put $\delta=s/(64Y)$.  If $\dist{dp^{-1}/q}\leq\delta$, choose an integer $\ell$ such that
+\[
+ v=dp^{-1}-\ell q,
+ \qquad
+ |v|\leq\delta q\leq s/16.
+\]
+Then $vp\equiv d\pmod q$.  For each fixed nonzero $v$, this determines one residue class of $p$ modulo $q$, and an interval of length at most $q$ contains at most two integers in such a class.  There are at most $2(s/16)+1$ possible values of $v$, so fewer than $s/2$ primes can satisfy the small-distance condition.  At least $s/2$ summands are therefore larger than $\delta^2$, which proves the claim.
+\end{proof}
+
+Call an integer $m$ a \emph{dominant label} for $a$ if
+\[
+ |m|\leq Y^2/2
+\]
+and at least $(1-\rho)N$ coordinates satisfy $a_p\equiv m\pmod p$.  A dominant label is unique: two dominant classes intersect in at least two primes, whose product would divide the difference of the labels, while that difference has absolute value at most $Y^2$.
+
+\begin{lemma}[Cross-label energy]
+\label{lem:cross-label-energy}
+Let $C_m,C_{m'}$ be disjoint label classes with $m\neq m'$ and $|m|,|m'|\leq B_0<Y^2/4$.  Suppose
+\[
+ |C_m|\geq\max(16,128B_0/Y),
+ \qquad
+ |C_{m'}|\geq2.
+\]
+Then
+\[
+ \sum_{p\in C_m}\sum_{q\in C_{m'}}
+ \left(\frac{H_{pq}}{pq}\right)^2
+ \geq c_E\frac{|C_m|^3(|C_{m'}|-1)}{Y^2}.
+\]
+\end{lemma}
+
+\begin{proof}
+Put $d=m'-m$.  At most one prime in $C_{m'}$ divides $d$, since two such primes would have product larger than $Y^2$, whereas $0<|d|<Y^2/2$.  Fix any remaining $q\in C_{m'}$.  For $p\in C_m$, write $H_{pq}=m+jp$.  Reduction modulo $q$ gives $jp\equiv d\pmod q$, and therefore
+\[
+ \dist{dp^{-1}/q}
+ \leq\frac{|H_{pq}|}{pq}+\frac{|m|}{pq}.
+\]
+By \cref{lem:reciprocal-dispersion}, at least half of the left-hand sides exceed $|C_m|/(64Y)$.  The size hypothesis gives
+\[
+ \frac{|m|}{pq}\leq\frac{B_0}{Y^2}
+ \leq\frac{|C_m|}{128Y}.
+\]
+Hence at least half the $p$ satisfy $|H_{pq}|/(pq)\geq |C_m|/(128Y)$, contributing $\gg |C_m|^3/Y^2$ for this $q$.  Sum over all but at most one $q$.
+\end{proof}
+
+\subsection{Low energy forces one exact label}
+
+\begin{proposition}[Nondominant forcing]
+\label{prop:nondominant-forcing}
+There is $c_w>0$ such that, for all sufficiently large $Y$,
+\[
+ \mathcal Q(a)<c_w\frac{Y}{\log^3Y}
+\]
+implies that $a$ has a unique dominant label.
+\end{proposition}
+
+\begin{proof}
+The case $\mathcal Q(a)=0$ is immediate: every centred pair lift is zero and all coordinates have label $0$.  Assume
+\[
+ 0<R:=\mathcal Q(a)<cY/\log^3Y,
+\]
+where $c$ will be chosen small.  Put
+\[
+ B_0=A_\rho\frac{\sqrt R\,Y^2}{N}
+\]
+with $A_\rho$ a sufficiently large fixed constant, and call a pair bad if $|H_{pq}|>B_0$.  Since $pq<4Y^2$, the number of bad pairs is at most $16RY^4/B_0^2$.  Some base prime $p_0$ consequently has bad degree at most
+\[
+ \frac{32RY^4}{B_0^2N}=\frac{32N}{A_\rho^2}\leq\rho N/8.
+\]
+For every nonbad neighbour $q$, the lift $H_{p_0q}$ is a label for $a_q$, has absolute value at most $B_0$, and lies in one residue class modulo $p_0$.  Thus the number $M_0$ of possible labels is at most $2B_0/Y+2$.
+
+For small enough $c$ and large enough $Y$, one has $B_0<Y^2/4$.  Suppose no dominant label exists.  Call a label class small if its size is less than
+\[
+ s_0=256(B_0/Y+1),
+\]
+so $s_0\geq16$ and $s_0\geq128B_0/Y$.
+
+If small classes contain at least $\rho N/4$ vertices, then
+\[
+ \rho N/4\leq M_0s_0\ll_\rho(B_0/Y+1)^2.
+\]
+When $B_0/Y<1$ this contradicts $N\to\infty$; otherwise it yields
+\[
+ R\gg N^3/Y^2\gg Y/\log^3Y.
+\]
+
+Otherwise, after removing $p_0$, its bad neighbours and all small classes, the substantial classes have total size $S\geq(1-\rho/2)N$.  Let their sizes be $n_1,\ldots,n_t$.  Each is at least $s_0$, and the largest is at most $(1-\rho)N$.  Applying \cref{lem:cross-label-energy} to ordered pairs of distinct classes gives
+\[
+ R\gg\frac1{Y^2}\sum_i n_i^3\sum_{j\neq i}(n_j-1).
+\]
+Because every other class has size at least $s_0$,
+\[
+ \sum_{j\neq i}(n_j-1)
+ =(S-n_i)-(t-1)
+ \geq(1-1/s_0)(S-n_i).
+\]
+If one class has size at least $S/2$, its term is $\gg_\rho N^4$; otherwise $S-n_i\geq S/2$ for every $i$, and power mean gives
+\[
+ \sum_i n_i^3\geq S^3/t^2\geq S^3/M_0^2.
+\]
+In either case
+\[
+ R\gg_\rho\frac{N^4}{M_0^2Y^2}.
+\]
+If $B_0/Y<1$ this is already too large.  Otherwise $M_0^2\ll B_0^2/Y^2=RY^2/N^2$, so
+\[
+ R^2\gg N^6/Y^4,
+ \qquad
+ R\gg N^3/Y^2\gg Y/\log^3Y.
+\]
+Both alternatives contradict the assumed upper bound once $c$ is chosen below the resulting constants.
+\end{proof}
+
+The next proposition is the zero-exception step: low energy does not merely yield an almost-global label.
+
+\begin{proposition}[Exact anchor rigidity]
+\label{prop:exact-cold-rigidity}
+After decreasing $c_w$ if necessary, every assignment satisfying
+\[
+ \mathcal Q(a)<c_w\frac{Y}{\log^3Y}
+\]
+is exactly represented by one integer $m$:
+\[
+ a_p\equiv m\pmod p
+ \qquad(p\in Q).
+\]
+Moreover,
+\[
+ |m|\ll_\rho\frac{\sqrt{\mathcal Q(a)}}{\sigma_Q}.
+\]
+\end{proposition}
+
+\begin{proof}
+By \cref{prop:nondominant-forcing}, there is a dominant class $C$ with label $m$.  For $p,q\in C$, the centred lift is exactly $m$, so
+\[
+ \mathcal Q(a)
+ \geq m^2\sum_{p<q\in C}\frac1{p^2q^2}
+ \gg_\rho m^2\sigma_Q^2.
+\]
+This proves the label bound.  Let $E_0=Q\setminus C$.  The label bound, the low-energy upper bound and the scale estimates for $\sigma_Q$ and $C$ give
+\[
+ |m|
+ \ll_\rho\frac{\sqrt{\mathcal Q(a)}}{\sigma_Q}
+ \ll_{\rho,c_w}\sqrt{\frac{Y}{\log^3Y}}\,Y\log Y
+ =O_{\rho,c_w}\!\left(\frac{Y^{3/2}}{\sqrt{\log Y}}\right)
+ =o(|C|Y),
+\]
+since $|C|\asymp Y/\log Y$.  Hence $|m|\leq |C|Y/128$ for sufficiently large $Y$.  For each $q\in E_0$, reciprocal dispersion across $C$ gives cross energy at least $c|C|^3/Y^2$.  These edge sets are disjoint in $q$, hence
+\[
+ |E_0|\,c|C|^3/Y^2\leq\mathcal Q(a).
+\]
+Since $|C|\gg Y/\log Y$,
+\[
+ |E_0|\ll\mathcal Q(a)Y^2/N^3<C'c_w.
+\]
+Choose $c_w$ so that $C'c_w<1$.  The integer $|E_0|$ must then be zero.  Equivalently, if
+\[
+ R_{\mathrm{exc}}:=|E_0|,
+\]
+denotes the exceptional count, then
+\[
+ R_{\mathrm{exc}}=0.
+\]
+\end{proof}
+
+\subsection{Fingerprint counting}
+
+\begin{lemma}[Fingerprint rigidity]
+\label{lem:fingerprint-rigidity}
+Fix $\mathcal F\subset Q$ with $|\mathcal F|=s\geq16$ and fix its residues.  For $q\in Q\setminus\mathcal F$ and a residue $w\pmod q$, put
+\[
+ t_q(w)=\sum_{p\in\mathcal F}
+ \left(\frac{H_{pq}(a_p,w)}{pq}\right)^2.
+\]
+For a fixed absolute $g>0$, at most one residue $w$ satisfies
+\[
+ t_q(w)<g\frac{s^3}{Y^2}.
+\]
+\end{lemma}
+
+\begin{proof}
+If $w\neq w'$, subtraction of the corresponding CRT lifts and \cref{lem:reciprocal-dispersion} show that both energies cannot lie below the displayed threshold when $g$ is sufficiently small.
+\end{proof}
+
+\begin{proposition}[Fingerprint entropy bound]
+\label{prop:fingerprint-entropy}
+For every $\varepsilon>0$, all sufficiently large blocks satisfy
+\[
+ \#\{a:\mathcal Q(a)\leq R\}\leq\exp(\varepsilon R)
+\]
+uniformly for
+\[
+ R\geq c_wY/\log^3Y.
+\]
+\end{proposition}
+
+\begin{proof}
+First suppose $R\leq c_*N^4/Y^2$, where $c_*>0$ is small.  Choose once and for all a set
+\[
+ \mathcal F\subset Q,
+ \qquad
+ |\mathcal F|=s,
+ \qquad
+ s=\left\lceil A(RY^2)^{1/4}\right\rceil,
+\]
+independently of the residue assignment being enumerated.  The lower range gives $s\geq16$, while small $c_*$ gives $s\leq N/2$.  There are at most $(2Y)^s$ assignments on $\mathcal F$.  Once these residues are enumerated, the functions $t_q$ are determined.  For a complete assignment,
+\[
+ \sum_{q\notin\mathcal F}t_q(a_q)\leq R.
+\]
+By \cref{lem:fingerprint-rigidity}, these fixed functions force all but at most
+\[
+ t\leq\frac{RY^2}{gs^3}\ll_A s
+\]
+vertices to one residue.  Choosing the exceptional vertices and residues gives at most
+\[
+ \exp\bigl(O((s+t)\log Y)\bigr)
+ =\exp\bigl(O((RY^2)^{1/4}\log Y)\bigr)
+\]
+possibilities.  Dividing this exponent by $R\geq c_wY/\log^3Y$ gives
+\[
+ O(Y^{-1/4}\log^{13/4}Y)=o(1).
+\]
+
+If $R>c_*N^4/Y^2$, the total number of assignments is at most $(2Y)^N$, whose logarithm is $O(Y)$, whereas $R\gg Y^2/\log^4Y$.  This again is at most $\varepsilon R$ for large $Y$.
+\end{proof}
+
+\subsection{Application to the anchor block}
+
+Apply the preceding results to $B\subset[Z/2,Z)$, with $Y=Z/2$.  For an anchor assignment $a_B$, put
+\[
+ Q_B(a_B)=\sum_{q<q'\in B}
+ \left(\frac{H_{qq'}(a_B)}{qq'}\right)^2,
+ \qquad
+ \sigma_{B,0}^2=\sum_{q<q'\in B}\frac1{q^2q'^2}
+ \asymp\frac1{Z^2\log^2Z}.
+\]
+There is a forcing floor
+\[
+ F_B=c_B\frac{Z}{\log^3Z}
+\]
+such that every anchor assignment with $Q_B<F_B$ has one exact integer label $m$.  Moreover,
+\[
+ |m|\ll\frac{\sqrt{F_B}}{\sigma_{B,0}}
+ =O\!\left(\frac{Z^{3/2}}{\sqrt{\log Z}}\right)
+ =o(Z^2).
+\]
+Consequently $m$ is the centred lift on every internal anchor pair and
+\begin{equation}
+\label{eq:top-exact-energy}
+ Q_B(a_B)=m^2\sigma_{B,0}^2.
+\end{equation}
+
+Define the anchor modulus
+\[
+ T_B(a_B)=
+ \prod_{q<q'\in B}
+ \left|(1-\theta)+\theta
+ \exp\left(2\pi i\frac{H_{qq'}(a_B)}{qq'}\right)\right|.
+\]
+By \cref{eq:bernoulli-modulus},
+\[
+ T_B(a_B)\leq\exp(-\kappa_bQ_B(a_B)).
+\]
+Choosing $\varepsilon<\kappa_b/2$ in \cref{prop:fingerprint-entropy} and summing unit energy shells gives
+\begin{equation}
+\label{eq:noncoherent-top-tail}
+ \sum_{Q_B\geq F_B}T_B(a_B)
+ \ll\exp(-cF_B).
+\end{equation}
+Below the floor, distinct anchor assignments have distinct labels, because two such labels are $o(Z^2)$ and agreement modulo two anchor primes forces equality.  Hence
+\[
+ \sum_{Q_B<F_B}T_B(a_B)
+ \leq\sum_{m\in\mathbb Z}
+ \exp(-\kappa_bm^2\sigma_{B,0}^2)
+ \ll\sigma_{B,0}^{-1}
+ \ll Z\log Z.
+\]
+We have proved the weighted partition estimate.
+
+\begin{proposition}[Anchor partition]
+\label{prop:top-partition}
+The complete anchor weight satisfies
+\begin{equation}
+\label{eq:P-top}
+ P_{\mathrm{anc}}:=\sum_{a_B}T_B(a_B)
+ \ll Z\log Z,
+\end{equation}
+while its noncoherent part satisfies \cref{eq:noncoherent-top-tail}.  Every coherent anchor assignment carries a unique exact integer label and obeys \cref{eq:top-exact-energy}.
+\end{proposition}
+
+The anchor theorem will be used in three logically distinct places: to supply the actual anchor weights in the fibre average, to control noncoherent anchor assignments, and to control the large coherent-label tail.  These uses concern disjoint contributions and do not double-count a frequency.  With synchronization established, the next section turns to the anchor-cross rows and their decoders.
