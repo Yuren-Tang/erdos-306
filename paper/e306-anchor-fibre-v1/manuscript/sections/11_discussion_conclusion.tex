@@ -1,0 +1,29 @@
+\section{Discussion and conclusion}
+\label{sec:scope}
+
+Erd\H{o}s Problem~306 is the historical point of entry, but the completed result is more naturally read as a theorem about reciprocal representation from one restricted denominator system.  The allowed set here is the set of squarefree semiprimes.  For this set the article determines exactly which positive rationals are represented, proves that the represented class survives every finite deletion, organizes finite representation fibres by common refinement, and exhibits quantitative diversity within those fibres.  These conclusions belong to this particular arithmetic system; no general transference theorem for arbitrary denominator sets is asserted.
+
+\subsection{What the proof preserves}
+
+The analytic argument is tailored to pair denominators, yet its successful components identify the information that a further application would have to retain.  Squarefreeness supplies independent CRT coordinates.  The upper prime block synchronizes many of them to one integer label; anchor-cross rows recover the remaining prime and target coordinates; weighted product-fibre compression averages row errors against the actual anchor mass; and the unassigned lower--lower factors remain available to damp intermediate labels.  The final no-wrap step is separate from all of these quotient estimates.
+
+The deterministic tools have wider formal statements, but they are not by themselves a black-box representation theorem.  The weighted compression theorem requires an application to construct useful decoders and residual factors.  Syndrome injectivity must be accompanied by a quantitative distance.  The complete-family collision bound controls reciprocal mass but supplies neither synchronization nor target observability.  In the present semiprime system these obligations happen to fit one another; elsewhere each would need new arithmetic input.
+
+The refinement results reveal a second, elementary layer.  Once finite avoidance is known, finite decompositions can be realized disjointly.  The squarefree common-denominator transportation argument then directs any two representations to a common refinement, and iteration treats any finite family.  The quantitative theorem shows that this directed structure branches exponentially: after one term is chosen for replacement, the fixed surrounding support costs only $O(1)$ terms and does not alter the exponential rate or the macroscopic separation of the new supports.
+
+The sharp coefficient should likewise be read at its proper scale.  General Egyptian fractions admit exponential multiplicity among all denominators up to a height bound~\cite{conlon-et-al-2025}.  Here the denominator restriction is severe, and the natural entropy variable is the number $M_X$ of available squarefree-semiprime candidates, equivalently $2D/(\log D)^2$ at height $D$.  The article proves a fixed-target asymptotic and substantial diversity on that restricted scale, not a uniform theorem for moving targets or arbitrary denominator families.
+
+\subsection{Three open directions}
+
+\paragraph{Restricted-denominator and prime-graph transference.}
+For which structured sets of allowed denominators can one obtain an arithmetic characterization of the represented rationals together with stability under finite deletion?  In the pair case one may ask more specifically which graphs on prime vertices, with an edge $pq$ representing the denominator $pq$, admit an anchor--fibre argument and a comparable common-refinement structure.  The present article proves no general criterion, and does not cover arbitrary positive-density prime sets, shifted primes, polynomial values, Chebotarev sets or varying moduli.
+
+\paragraph{Local profiles and length spectra.}
+For a fixed admissible rational, what are the attainable cardinalities of finite representations, and are they eventually cofinite?  On the direct family, a moving-target local limit or a joint local limit for value and cardinality would refine the fixed-target coefficient and could yield asymptotics at prescribed central lengths.  These additional uniform quantifiers are not supplied by the present five-sector analysis.
+
+\paragraph{Structural resilience.}
+Which deletions or sparsifications preserve target observability, sufficient variance, anchor synchronization and retained-pair damping?  The target-row example in \cref{rem:deletion-boundary} shows that a cardinality condition such as deletion of $o(M_X)$ candidates is insufficient by itself.  A positive theorem would have to formulate and verify structural hypotheses rather than count deleted denominators alone.
+
+\subsection{Conclusion}
+
+The proof shows why squarefreeness is sufficient, not merely that it is.  It gives the CRT coordinate system in which the anchor block synchronizes local residues, the anchor-cross rows recover every required target direction, and weighted fibre compression preserves the factors needed beyond the central range.  The resulting positive coefficient yields exact equality and, on retaining its full size, a sharp target asymptotic and entropy-optimal exponential multiplicity.  Finite avoidance then converts one construction into a representation-refinement structure: partial representations extend, finite decompositions lift disjointly, common refinements exist, and quantitative branching transfers to every admissible positive rational.  Thus a positive rational is representable by reciprocals of distinct squarefree semiprimes exactly when its reduced denominator is squarefree, and every such representation fibre remains both directed and quantitatively abundant.
