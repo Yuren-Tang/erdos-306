@@ -35,7 +35,7 @@ The repairs below concern theorem statements, interface optimization and the exa
 | T1 complete-family collision theorem and pair identity | `manuscript/sections/03_structural_tools.tex` and the capacity calculation in Section 4 |
 | T2 exact weighted product-fibre compression | `manuscript/sections/03_structural_tools.tex`; unnormalized specialization in Section 6 |
 | T3 finite-group syndrome separation | `manuscript/sections/03_structural_tools.tex`; target-row realization in Section 6 |
-| T4 decoded-skeleton positivity | `manuscript/sections/03_structural_tools.tex`; five-sector assembly in Section 8 |
+| T4 decoded-skeleton positivity | `manuscript/sections/03_structural_tools.tex`; universal six-sector assembly in Sections 7–8 |
 | measurable alias and no-wrap separation | Sections 2 and 9 |
 | P1 weighted anchor partition | Section 5 |
 | P2 row decoding and weighted error | Section 6 |
@@ -102,7 +102,7 @@ The adopted assembly proposition combines T2 with an arbitrary finite skeleton-l
 |---|---|---|
 | P1 weighted anchor partition | one-block exact-cold rigidity, fingerprint high-energy bound, `P_top=O(Z log Z)` | coherent and energetic weights separated; no raw assignment count |
 | P2 fibre decoding | lower-prime and fixed-`b` row distances; shift-uniform tails; exact product inequality | T2 invoked without normalization; `0<=alpha_r<=1` monotonicity displayed |
-| P3 decoder identification | all `P` coordinates through `M_dec`; `b` coordinates through `X^2/4` | lane- and coordinate-dependent ranges stated exactly |
+| P3 decoder identification | all `P` coordinates through `M_dec`; target coordinates indexed by `S_b` through `T_0=kappa_0 min(X^2,Z)` | transition and adaptive ranges beyond `T_0` use only prime coordinates |
 | P4 residual damping | Gaussian, adaptive lower–lower pair and top-label lanes | every unassigned factor retained on the skeleton |
 | P5 positive major | exact centering, Taylor remainder and positive real Gaussian major | complex phase proof kept distinct from modulus estimates |
 | P6 exactness | character orthogonality, positivity, then no-wrap | no-wrap placed after T4; no quantitative alias theorem imported |

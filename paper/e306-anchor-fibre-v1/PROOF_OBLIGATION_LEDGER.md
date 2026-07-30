@@ -2,107 +2,93 @@
 
 ## Status vocabulary
 
-- `SOURCE-PASS` — independently verified in the frozen dense or structural source.
-- `TRANSCRIBED` — incorporated into the manuscript with the same mathematical content.
-- `SOURCE-CHECK-PENDING` — manuscript transcription has not yet received an independent line-by-line source-preservation audit.
-- `MANUSCRIPT-PASS` — independently checked in the assembled manuscript.
+- `SOURCE-PASS` — independently verified in the controlling mathematical source.
+- `MANUSCRIPT-VERIFIED` — independently checked in the assembled manuscript at exact head `544d42d510bcab3ad0ddd7855525770e0d4b0926`.
+- `CONTROL-SYNCED` — the control ledger now agrees with the verified manuscript.
+- `CONTROL-VERIFY-PENDING` — the synchronized metadata successor still requires independent exact-head control-surface verification.
+- `PUBLICATION-GATE-PENDING` — a later exact-head publication gate would require separate Owner authorization; no earlier gate transfers.
 
-The current manuscript is an authorial assembly. Every item below is `SOURCE-PASS`; manuscript-level source preservation and global readability remain to be audited.
+The manuscript obligations below were independently verified at `#issuecomment-5128463117`. The exact-head checks found no mathematical, TeX, bibliography, workflow, font or visual defect; `verify-erdos-306` run `#639` and `verify-e306-manuscript` run `#78` succeeded, and the manuscript stabilized at 39 pages. This role synchronizes control metadata only.
 
-## A. Elementary closure
+## A. Parameterized arithmetic capacity
 
-| ID | Obligation | Frozen source | Manuscript location | Current status |
-|---|---|---|---|---|
-| A1 | squarefree-denominator necessity | dense proof §1 | §9 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| A2 | avoiding unit formulation | dense proof Theorem 2 | §§1, 9 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| A3 | numerator induction with forbidden-set enlargement | dense proof Lemma 3 | §9 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| A4 | closure of `b=1,2` from denominators `>=3` | dense proof Lemma 4 | §9 | TRANSCRIBED / SOURCE-CHECK-PENDING |
+| ID | Obligation | Manuscript location | Current status |
+|---|---|---|---|
+| A1 | fixed reduced `t=a/b in (0,1)`, squarefree `b`, fixed `gamma>1`, `Z=X^gamma`, and sharp admissible region | §§1, 4 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| A2 | fixed-ratio prime supply and reciprocal power sums | §4 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| A3 | exact complete-pair load and square-load identities, including factor `1/2` | §§3–4 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| A4 | target rows indexed by the prime-divisor set `S_b`; corrected `tau(b)=sum_(r in S_b)r^-2` | §4 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| A5 | exact Bernoulli centring `theta Lambda=t`, compact parameter interval and limit `alpha_(t,gamma)` | §4 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| A6 | total actual-family variance with pair and target-row contributions | §4 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| A7 | explicit variance regimes: pair provider for `gamma>2`, target-row provider for `gamma=2` and `1<gamma<2` | §4 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| A8 | exact finite Fourier coefficient, Bernoulli modulus bound, squarefree CRT period and no-wrap capacity | §§2, 4 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
 
-## B. Arithmetic capacity and finite coefficient
+## B. Anchor, rows, fibres and coordinate identification
 
-| ID | Obligation | Frozen source | Manuscript location | Current status |
-|---|---|---|---|---|
-| B1 | fixed-ratio prime supply from PNT | dense proof Lemma 5 | §4 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| B2 | reciprocal and square-reciprocal prime estimates | dense proof Lemma 6 | §4 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| B3 | exact complete-pair identity with factor `1/2` | dense proof Lemma 7; structural T1 | §§3–4 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| B4 | auxiliary `b`-row load is `o(1)` | dense proof Lemma 7 | §4 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| B5 | distinctness, squarefreeness, avoidance and divisibility by `L` | dense proof Lemma 7 | §4 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| B6 | actual inverse-square load and variance scale | dense proof Lemma 7 | §4 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| B7 | exact Bernoulli centring and compact parameter interval | dense proof after Lemma 7 | §4 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| B8 | exact finite Fourier coefficient | dense proof §3 | §§2, 4 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| B9 | uniform Bernoulli modulus bound | dense proof §3 | §4 | TRANSCRIBED / SOURCE-CHECK-PENDING |
+| ID | Obligation | Manuscript location | Current status |
+|---|---|---|---|
+| B1 | reciprocal dispersion with `s>=16`, exact cold rigidity and zero-exception conclusion | §5 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| B2 | fingerprint rigidity, coherent label, noncoherent tail and weighted anchor partition | §5 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| B3 | restored multiplicity-sensitive cyclic-energy lemma | §6 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| B4 | uniform lower-prime row distance derived from cyclic energy | §6 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| B5 | target-row distance and observability over `S_b`; numerator creates no new decoder direction | §6 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| B6 | shift-uniform row tails and summed row error | §6 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| B7 | exact denominator-factor partition and unnormalized weighted fibre error | §§4, 6 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| B8 | all prime coordinates identified through `M_dec` | §6 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| B9 | target coordinates identified through `T_0=kappa_0 min(X^2,Z)` | §6 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
 
-## C. General structural tools
+## C. Universal six-sector positivity
 
-| ID | Obligation | Frozen source | Manuscript location | Current status |
-|---|---|---|---|---|
-| C1 | complete-family collision theorem, including moving uniformity | verified AFT repair T1 | §3 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| C2 | exact weighted product-fibre compression and sharpness | verified AFT repair T2 | §3 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| C3 | zero, empty, nonunique and complex boundary cases | verified AFT repair T2 | §3 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| C4 | homomorphic syndrome separation | verified AFT repair T3 | §3 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| C5 | qualitative injectivity versus quantitative distance | verified AFT repair T3 | §3 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| C6 | arbitrary-lane decoded-skeleton positivity | verified AFT repair T4 | §3 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| C7 | measurable alias interface; no-wrap after quotient positivity | verified repairs R03, R12 | §§2, 9 | TRANSCRIBED / SOURCE-CHECK-PENDING |
+| ID | Obligation | Manuscript location | Current status |
+|---|---|---|---|
+| C1 | `N=floor(C/sigma_E)=o(T_0)` for every fixed admissible parameter set | §7 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| C2 | total-variance Gaussian sector `N<|m|<=T_0` | §§7–8 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| C3 | prime-only transition `T_0<|m|<=X^2/4` | §7 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| C4 | adaptive retained-pair damping `X^2/4<|m|<=M_dec` | §7 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| C5 | anchor-energy range `|m|>M_dec` and terminal noncoherent/nondecoder sector | §7 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| C6 | pairwise-disjoint exhaustive six-sector partition for every fixed `gamma>1` | §7 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| C7 | aggregate Taylor remainder, exact linear cancellation and total-variance Gaussian major | §8 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| C8 | strict terminal budget in parameter order `C -> X` and positive Fourier numerator | §8 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
 
-## D. Top-anchor mechanism
+## D. Exactness, characterization and qualitative refinement
 
-| ID | Obligation | Frozen source | Manuscript location | Current status |
-|---|---|---|---|---|
-| D1 | reciprocal dispersion with `s>=16` | dense proof Lemma 8 | §5 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| D2 | repaired cross-label energy and exact hypotheses | dense proof Lemma 9 | §5 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| D3 | nondominant forcing below `c_wY/log^3Y` | dense proof Proposition 10 | §5 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| D4 | exact zero-exception conclusion | dense proof Proposition 11 | §5 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| D5 | fingerprint rigidity and entropy | dense proof Lemma 12, Proposition 13 | §5 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| D6 | exact coherent label and energy on `B` | dense proof §5 | §5 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| D7 | noncoherent top tail | dense proof §5 | §5 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| D8 | full weighted partition `P_top << Z log Z` | dense proof §5 | §5 | TRANSCRIBED / SOURCE-CHECK-PENDING |
+| ID | Obligation | Manuscript location | Current status |
+|---|---|---|---|
+| D1 | positive quotient coefficient followed by deterministic no-wrap direct fixed-target exactness | §9 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| D2 | squarefree least-common-multiple obstruction | §9 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| D3 | prime-dilution characterization with successive disjoint finite avoidance; no numerator induction or special `b=1,2` case | §9 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| D4 | finite prescription with explicit zero-residual branch and positive-residual extension | §9 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| D5 | disjoint realization of finite decompositions | §9 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| D6 | row--column transportation and common refinement of finite families | §9 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| D7 | local one-block replacement refines but need not be globally proper | §9 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| D8 | simultaneous disjoint replacement of every block yields a globally proper refinement | §9 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| D9 | countably infinite pairwise-disjoint proper refinement chain with finite prescriptions | §9 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
 
-## E. Rows, fibres and observability
+## E. Quantitative consequences
 
-| ID | Obligation | Frozen source | Manuscript location | Current status |
-|---|---|---|---|---|
-| E1 | multiplicity-sensitive cyclic energy | dense proof Lemma 14 | §6 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| E2 | lower-prime row distance uniformly in `r` | dense proof Proposition 15 | §6 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| E3 | direct fixed-`r|b` row distance | dense proof Proposition 16 | §6 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| E4 | shift-uniform row tails and summed `Delta` | dense proof Lemma 17 | §6 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| E5 | exact denominator-factor partition | dense proof §7 | §§4, 6 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| E6 | unnormalized tensor monotonicity | dense proof Lemma 18; verified bridge | §6 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| E7 | global error `P_top(exp Delta - 1)` | dense proof after Lemma 18 | §6 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| E8 | prime-coordinate decoding through `M_dec` | dense proof Proposition 19 | §6 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| E9 | `b`-coordinate decoding only through `X^2/4` | dense proof Proposition 20 | §6 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| E10 | squarefree target observability and lane coverage | dense proof §8; verified T3 bridge | §6 | TRANSCRIBED / SOURCE-CHECK-PENDING |
+| ID | Obligation | Manuscript location | Current status |
+|---|---|---|---|
+| E1 | quantitative coefficient lower bound from the strict six-sector assembly | §10 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| E2 | sharp fixed-target coefficient from total variance and explicit regime corollaries | §10 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| E3 | exponential multiplicity and entropy-optimal mesoscopic window | §10 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| E4 | exact entropy optimization over fixed admissible `gamma` | §10 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| E5 | exact-cardinality extraction and Hamming-separated macroscopic diversity | §10 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| E6 | balanced signed reciprocal relations with non-minimality boundary | §10 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| E7 | direct denominator-height bounds | §10 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| E8 | quantitative globally proper refinement branching | §10 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
+| E9 | global quantitative transfer with universal leading rate `2 log 2` | §10 | MANUSCRIPT-VERIFIED / CONTROL-SYNCED |
 
-## F. Skeleton lanes and positivity
+## F. Verification and lifecycle obligations
 
-| ID | Obligation | Frozen source | Manuscript location | Current status |
-|---|---|---|---|---|
-| F1 | adaptive interval containment, prime count and pair energy | dense proof Proposition 21 | §7 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| F2 | exact CRT and five-sector exhaustion | dense proof §10 | §7 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| F3 | Sector III adaptive damping | dense proof §13 | §7 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| F4 | Sector IV top-label tail | dense proof §13 | §7 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| F5 | Sector V noncoherent and fibre bounds | dense proof §13 | §7 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| F6 | aggregate Taylor remainder | dense proof §11 | §8 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| F7 | exact linear cancellation and actual-variance Gaussian | dense proof §11 | §8 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| F8 | positive real major of scale `1/sigma_E` | dense proof §11 | §8 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| F9 | full-variance Gaussian tail and choice of `C` | dense proof §12 | §8 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| F10 | strict parameter order `C -> X` | dense proof §14 | §8 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| F11 | strict total budget and positive Fourier numerator | dense proof §14 | §8 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-
-## G. Exactness and theorem completion
-
-| ID | Obligation | Frozen source | Manuscript location | Current status |
-|---|---|---|---|---|
-| G1 | positive coefficient yields a represented quotient target | dense proof §§3, 14 | §9 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| G2 | strict no-wrap interval and exact equality | dense proof §14 | §9 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| G3 | avoiding unit theorem | dense proof Theorem 2 | §9 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| G4 | numerator and small-denominator closure | dense proof Lemmas 3–4 | §9 | TRANSCRIBED / SOURCE-CHECK-PENDING |
-| G5 | headline characterization | dense proof Theorem 1 | §§1, 9 | TRANSCRIBED / SOURCE-CHECK-PENDING |
+| ID | Obligation | Evidence | Current status |
+|---|---|---|---|
+| F1 | independent mathematical, build and visual verification of manuscript baseline | `#issuecomment-5128463117`; runs `#639`, `#78`; 39-page build | MANUSCRIPT-VERIFIED |
+| F2 | metadata-only synchronization leaves manuscript, Lean, workflow, Makefile and bibliography byte-identical to baseline | exhaustive Git tree comparison in the synchronization return | CONTROL-SYNCED |
+| F3 | synchronized exact head receives independent control-surface verification | later one-off read-only role | CONTROL-VERIFY-PENDING |
+| F4 | any refreeze or publication gate is separately authorized at its exact head | Owner disposition | PUBLICATION-GATE-PENDING |
 
 ## Acceptance boundary
 
-The manuscript may advance to a global independent review only after:
+The manuscript-mathematical, source, build, bibliography, font and visual obligations are complete at `544d42d510bcab3ad0ddd7855525770e0d4b0926`. The synchronized successor changes control metadata only. It may advance only to independent exact-head control-surface verification and then to a separate Owner disposition.
 
-1. a source-preservation auditor checks every row above against the exact frozen source;
-2. TeX compilation succeeds without undefined control sequences, missing inputs or broken references;
-3. every source-level mathematical change, if any, appears in `PROOF_CHANGE_LEDGER.md`;
-4. the draft PR remains at the reviewed exact head during the audit.
+The former 44-page technical publication gate at `79a43178bdc4919677375362ef58b9c127da18b0` is historical and nontransferable. No synchronized head is refrozen, ready for review, merged, licensed, released, uploaded or submitted by this ledger.

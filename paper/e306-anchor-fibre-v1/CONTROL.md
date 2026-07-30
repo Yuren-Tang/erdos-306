@@ -13,7 +13,7 @@
 - **Shared writer allocation:** none
 - **Publication state:** Owner hold
 
-The exact current branch head is recorded in PR `#9` and the latest durable issue return.  A committed control document does not attempt to contain its own commit hash.
+The exact current branch head is recorded in PR `#9` and the latest durable issue return. A committed control document does not attempt to contain its own commit hash.
 
 ## Mathematical source hierarchy
 
@@ -29,25 +29,26 @@ The exact current branch head is recorded in PR `#9` and the latest durable issu
 - adoption audit: `E306-AFT-AUDIT-02`
 - repair verification: `E306-AFT-REPAIR-VERIFY-01`
 - verified repair head: `5945a2b9d3c596bed13f42201be11a39d4a0068c`
-- disposition: all bounded statement and specialization-bridge repairs passed; the ordinary E306 proof was unchanged.
+- disposition: all bounded statement and specialization-bridge repairs passed.
 
 ### Formal lineage
 
-The headline theorem was first obtained in the author's archived Lean 4 release `0.0.3`.  The present article grew out of that formal work and develops the same Fourier-analytic lineage into a conceptually refined one-anchor exposition.  The archived code does not formalize the article line by line.
+The headline theorem was first obtained in the author's archived Lean 4 release `0.0.3`. The present article grew out of that formal work and develops the same Fourier-analytic lineage into a conceptually refined one-anchor exposition. The archived code does not formalize the article line by line.
 
 ## Governing mathematical disposition
 
-1. The one-anchor route remains the preferred complete ordinary proof.
-2. Exact weighted product-fibre compression is retained as genuine general structure.
-3. Finite-group syndrome observability is retained as a general hidden-coordinate separation theorem.
-4. The direct analytic theorem is parameterized by a fixed reduced target `t=a/b in (0,1)` with squarefree `b` and a fixed exponent `gamma>1`.
-5. The sharp fixed-parameter region is `t < (log gamma)^2/2 < 1`, with exact centring `theta Lambda=t` and limiting parameter `2t/(log gamma)^2`.
-6. The target rows are indexed by the prime-divisor set `S_b`, with `tau(b)=sum_{r in S_b} 1/r^2`.
-7. The total actual-family variance is the sum of the prime-pair and target-row square loads.  Its leading provider changes at `gamma=2`, but the proof uses one universal cutoff `T_0=kappa_0 min(X^2,Z)` and one exhaustive six-sector architecture for every fixed `gamma>1`.
-8. The multiplicity-sensitive cyclic-energy lemma is an explicit provider for the lower-prime row distance.
-9. The full characterization follows from the direct fixed-target theorem by prime dilution; no avoiding-unit, numerator-induction or special-denominator chain is retained.
-10. Local one-block replacement is distinguished from simultaneous globally proper replacement.  Exactness, finite prescription, disjoint realization, common refinement and countably infinite proper refinement form the elementary post-analytic branch.
-11. The retained coefficient supplies the total-variance fixed-target asymptotic, explicit regime corollaries, exact entropy optimization, exponential multiplicity, exact-cardinality extraction, macroscopic diversity, balanced signed relations, height bounds, globally proper refinement branching and global transfer.
+1. The direct analytic theorem fixes a reduced target `t=a/b in (0,1)` with squarefree `b` and a fixed exponent `gamma>1`.
+2. Put `Z=X^gamma`; the sharp admissible region is `t<(log gamma)^2/2<1`, with exact centring `theta Lambda=t` and limiting parameter `2t/(log gamma)^2`.
+3. Target rows are indexed by the prime-divisor set `S_b`, with `tau(b)=sum_(r in S_b)1/r^2`.
+4. The total actual-family variance contains both prime-pair and target-row square loads. Its leading provider changes at `gamma=2`.
+5. The multiplicity-sensitive cyclic-energy lemma is the explicit lower-prime row-distance provider.
+6. The universal full-coordinate cutoff is `T_0=kappa_0 min(X^2,Z)`.
+7. One pairwise-disjoint exhaustive six-sector architecture applies for every fixed `gamma>1`.
+8. Quotient positivity is followed by deterministic no-wrap to give direct fixed-target exactness.
+9. The full characterization follows by prime dilution, not by avoiding-unit representation, numerator induction or special denominators `1,2`.
+10. Finite prescription includes the zero-residual case explicitly.
+11. Local one-block replacement is distinguished from simultaneous globally proper replacement; common refinement and countably infinite proper refinement remain valid.
+12. The retained coefficient supplies the total-variance asymptotic, explicit regime corollaries, entropy optimization, exponential multiplicity, exact-cardinality extraction, diversity, balanced relations, height bounds, globally proper refinement branching and global transfer with leading rate `2 log 2`.
 
 ## Maintained manuscript architecture
 
@@ -65,53 +66,77 @@ The live manuscript remains an eleven-section article:
 10. Quantitative multiplicity, optimization and transfer.
 11. Discussion and conclusion.
 
-The normalized source paths and detailed section structure are controlled by `ARTICLE_ARCHITECTURE.md`; theorem dependencies are controlled by `THEOREM_DAG.md`.  Those ledgers are outside this bounded source-only repair surface and are not rewritten by this role.
+The detailed architecture and theorem dependencies are controlled by `ARTICLE_ARCHITECTURE.md` and `THEOREM_DAG.md`.
+
+## Independently verified manuscript baseline
+
+The manuscript baseline is
+
+```text
+544d42d510bcab3ad0ddd7855525770e0d4b0926
+```
+
+and was independently checked at `#issuecomment-5128463117`.
+
+The verifier confirmed:
+
+- the repaired fixed-target/fixed-`gamma` mathematics and all bounded simplifications;
+- successful `verify-erdos-306` run `#639`;
+- successful `verify-e306-manuscript` run `#78`;
+- a stabilized 39-page exact-head build;
+- no manuscript-mathematical, TeX, bibliography, workflow, font or visual defect.
+
+That verification did not refreeze the head and did not transfer any earlier publication gate.
+
+## Metadata-only synchronization
+
+Role `E306-MANUSCRIPT-PARAMETER-TARGET-CONTROL-SYNC-01` synchronizes top-level control ledgers and the PR body with the verified manuscript baseline. It changes no manuscript source, theorem, Lean source, workflow, Makefile, bibliography, generated PDF or source archive.
+
+The resulting exact head is recorded in PR `#9` and the durable issue return. It remains pending independent control-surface verification and Owner disposition. No previous refreeze or publication gate transfers automatically.
 
 ## Source and build assurance
 
 - manuscript entry point: `paper/e306-anchor-fibre-v1/manuscript/main.tex`;
 - local entry point: `make clean && make pdf`;
-- bibliography backend: Biber, invoked through the configured `latexmk` cycle;
+- bibliography backend: Biber through the configured `latexmk` cycle;
 - controlling arXiv environment: TeX Live 2025;
 - TeX Live 2023/Debian workflow: secondary compatibility check;
 - reproducibility workflow: `.github/workflows/manuscript.yml`;
-- pull-request trigger: path-based changes to the manuscript tree or manuscript workflow;
-- gates: stabilized PDF build, bibliography/reference/duplicate-label checks, embedded-font verification, page inspection and theorem/dependency comparison;
-- exact-head workflow results are recorded in PR `#9` and the latest durable issue return.
-
-The Makefile, workflow, bibliography database and Lean sources remain unchanged.
+- exact-head workflow and visual evidence: `#issuecomment-5128463117` and the successful runs above.
 
 ## Product rules
 
 - One article, one branch, one draft PR.
 - No task-, auditor-, repair-, review- or revision-specific branches.
-- Mathematical changes are recorded in `AFT_REPAIR_LEDGER.md` and `PROOF_CHANGE_LEDGER.md` only under separately authorized roles; this bounded role modifies only its stated source surface.
+- Mathematical changes require an explicit `PROOF_CHANGE_LEDGER.md` entry and independent verification.
 - Source obligations are tracked in `PROOF_OBLIGATION_LEDGER.md`.
 - Read-only reviewers do not write to the branch.
-- Owner approval is required before ready-for-review, merge, release, DOI action, arXiv upload or journal submission.
+- Owner approval is required before ready-for-review, merge, refreeze, release, DOI action, licence selection, arXiv upload or journal submission.
 - `lean-graph.yml`, Lean analytic-provider refactoring, E307 and a future general transference project remain outside this workstream.
 
 ## Milestones
 
 - `M0` control and source freeze — **COMPLETE**
 - `M1` bounded structural repair and specialization bridge — **COMPLETE / VERIFIED / MANUSCRIPT-ADOPTED**
-- `M2` theorem DAG and article architecture — **COMPLETE / SYNCHRONIZED THROUGH THE PRE-INTEGRATION HEAD; LEDGER UPDATE NOT AUTHORIZED IN THIS ROLE**
+- `M2` theorem DAG and article architecture — **SYNCHRONIZED TO THE VERIFIED PARAMETERIZED MANUSCRIPT / CONTROL VERIFICATION PENDING**
 - `M3` general structural tools — **COMPLETE / MANUSCRIPT-ADOPTED**
-- `M4` E306 arithmetic providers — **COMPLETE / PARAMETERIZED FIXED-TARGET EXTENSION REPAIRED**
+- `M4` E306 arithmetic providers — **COMPLETE / PARAMETERIZED REPAIR VERIFIED**
 - `M5` full manuscript assembly — **COMPLETE**
-- `M6` mathematical, source, build, publication-text and visual reviews — **BOUNDED PARAMETER-TARGET REPAIR COMPLETE / EXACT-HEAD WORKFLOW VERIFICATION REQUIRED**
-- `M7` revision and publication disposition — **OWNER HOLD / NO PUBLICATION GATE TRANSFERRED**
+- `M6` mathematical, source, build, bibliography, font and visual review — **COMPLETE AT 544d42d510bcab3ad0ddd7855525770e0d4b0926**
+- `M7` revision and publication disposition — **METADATA SYNCHRONIZATION CANDIDATE / OWNER HOLD / NO PUBLICATION GATE TRANSFERRED**
 
-## Unified parameterized repair state
+## Historical gate boundary
 
-The fixed-target and fixed-exponent package is synchronized around one total-variance formula and one universal six-sector architecture.  Prime-divisor indexing, the cyclic-energy provider, zero-residual prescription, constant dependence, prime dilution and the replacement hierarchy are explicit.  The admissible ranges, fixed-target/fixed-`gamma` quantifiers, entropy results, denominator-height results, global `2 log 2` transfer and countably infinite refinement theorem are unchanged.  This state grants no publication authority and does not refreeze any head.
+The refrozen candidate `79a43178bdc4919677375362ef58b9c127da18b0` and its 44-page technical publication gate are historical. That gate does not transfer to the integration head, the verified 39-page manuscript baseline, or the metadata-only synchronization successor.
 
 ## Current state
 
 ```text
-[UNIFIED PARAMETERIZED PROOF REPAIR COMPLETE E306-PAPER-01]
-[EXACT-HEAD WORKFLOW VERIFICATION REQUIRED]
-[OWNER HOLD / PR #9 REMAINS DRAFT]
+[MANUSCRIPT BASELINE VERIFIED @ 544d42d510bcab3ad0ddd7855525770e0d4b0926]
+[CONTROL SURFACE SYNCHRONIZED / INDEPENDENT CONTROL-SURFACE VERIFICATION PENDING]
+[NOT REFROZEN / NO PUBLICATION GATE TRANSFERRED]
+[OWNER HOLD / PR #9 REMAINS OPEN, DRAFT AND UNMERGED]
+[NO LICENCE, UPLOAD OR SUBMISSION AUTHORIZED]
 ```
 
-This control state does not mark PR `#9` ready, authorize merge, create or move a tag, authorize a release or DOI action, select a licence, or authorize arXiv or journal submission.
+This control state does not mark PR `#9` ready, authorize merge, create or move a tag, authorize a release or DOI action, invoke Zenodo, select a licence, authorize arXiv upload or journal submission, or authorize external contact.
