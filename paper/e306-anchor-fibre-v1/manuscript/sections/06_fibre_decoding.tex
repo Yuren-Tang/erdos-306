@@ -79,7 +79,7 @@ For every $r\in S_b$,
 Every $q\in B$ is coprime to $r$.  If $d\not\equiv0\pmod r$, then $dq^{-1}$ is nonzero modulo $r$, so each circle distance is at least $1/r$.
 \end{proof}
 
-The target-row sensors depend only on the reduced denominator $b$.  Their common kernel on $\prod_{r\in S_b}\mathbb Z/r\mathbb Z$ is trivial.  The numerator $a$ of the fixed target does not enter these sensors and creates no additional decoder or CRT obstruction.
+The target-row sensors depend only on the reduced denominator $b$.  Their common kernel on $\prod_{r\in S_b}\mathbb Z/r\mathbb Z$ is trivial.  Apart from its scalar effect through $\theta=t/\Lambda$, the numerator $a$ does not enter these sensors and creates no additional decoder or CRT obstruction.
 
 \subsection{Row tails}
 
@@ -130,7 +130,19 @@ For the fixed anchor assignment, assign every factor involving one anchor prime 
   H_{a_B}(x_R),
  \qquad |H_{a_B}(x_R)|\leq1.
 \end{equation}
-If the full modulus vanishes, set $H_{a_B}=0$.  The exact weighted compression theorem and \cref{eq:P-top,eq:Delta-row} give:
+If the full modulus vanishes, set $H_{a_B}=0$.  For a fixed anchor assignment, put
+\[
+ \alpha_r=A_r(x_r^*),
+ \qquad
+ \beta_r=\sum_{x\neq x_r^*}A_r(x).
+\]
+Then $0\leq\alpha_r\leq1$ and $0\leq\beta_r\leq\delta_r$.  The exact weighted compression theorem bounds the nondecoder contribution above this anchor assignment by
+\begin{align*}
+ T_B\left(\prod_r(\alpha_r+\beta_r)-\prod_r\alpha_r\right)
+ &\leq T_B\left(\prod_r(1+\delta_r)-1\right)\\
+ &\leq T_B\left(\exp\left(\sum_r\delta_r\right)-1\right).
+\end{align*}
+Summing against the unnormalized anchor weights and using \cref{eq:P-top,eq:Delta-row} gives:
 
 \begin{proposition}[Global weighted fibre error]
 \label{prop:global-fibre-error}
@@ -142,7 +154,7 @@ The total contribution of every nondecoder fibre point is at most
 \end{equation}
 \end{proposition}
 
-No decoder weight is divided out, and the raw number of anchor assignments does not occur.
+This argument is unnormalized and remains valid when a decoder weight $\alpha_r$ is zero; no decoder weight is divided out, and the raw number of anchor assignments does not occur.
 
 \subsection{Identification ranges}
 
@@ -153,7 +165,11 @@ Suppose the anchor assignment is coherent with integer label $m$.  The candidate
  \leq\frac{m^2}{r^2}W_B
  \ll\frac{m^2/r^2}{Z\log Z}.
 \end{equation}
-If this is less than $D_r/8$, the candidate is the unique minimizer.
+If this is less than $D_r/8$, the candidate is the unique minimizer.  Indeed, if a distinct residue $x$ were also a minimizer, then \cref{eq:row-shift} and the circle triangle inequality would give
+\[
+ D_r\leq2E_r(x)+2E_r(m)\leq4E_r(m)<D_r/2,
+\]
+a contradiction.
 
 Put
 \begin{equation}
@@ -170,7 +186,7 @@ For every $r\in P\setminus B$ and every coherent anchor label satisfying $|m|\le
 \end{proposition}
 
 \begin{proof}
-At $r=X$ and $|m|=M_{\mathrm{dec}}$, \cref{eq:candidate-row-energy} is $O(Z/\log^5Z)$, whereas \cref{prop:lower-row-distance} gives $D_r\gg Z/\log^3Z$.
+The upper bound in \cref{eq:candidate-row-energy} increases with $|m|$ and decreases with $r$, so the worst permitted endpoint is $r=X$ and $|m|=M_{\mathrm{dec}}$.  There the candidate energy is $O(Z/\log^5Z)$, whereas \cref{prop:lower-row-distance} gives $D_r\gg Z/\log^3Z$.  Their ratio is $O((\log Z)^{-2})$, and is therefore below $1/8$ for all sufficiently large $X$, uniformly for every permitted $r$ and $m$.
 \end{proof}
 
 Fix once and for all a sufficiently small constant

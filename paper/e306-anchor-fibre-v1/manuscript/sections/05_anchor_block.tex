@@ -185,7 +185,21 @@ This proves the label bound.  Let $E_0=Q\setminus C$.  The label bound, the low-
  =O_{\rho,c_w}\!\left(\frac{Y^{3/2}}{\sqrt{\log Y}}\right)
  =o(|C|Y),
 \]
-since $|C|\asymp Y/\log Y$.  Hence $|m|\leq |C|Y/128$ for sufficiently large $Y$.  For each $q\in E_0$, reciprocal dispersion across $C$ gives cross energy at least $c|C|^3/Y^2$.  These edge sets are disjoint in $q$, hence
+since $|C|\asymp Y/\log Y$.  Hence $|m|\leq |C|Y/128$ for sufficiently large $Y$.  Fix $q\in E_0$ and set
+\[
+ d\equiv a_q-m\pmod q,
+ \qquad d\not\equiv0\pmod q.
+\]
+For $p\in C$, write the centred lift as $H_{pq}=m+jp$.  Reducing modulo $q$ gives $jp\equiv d\pmod q$, and therefore
+\[
+ \dist{dp^{-1}/q}
+ \leq \frac{|H_{pq}|}{pq}+\frac{|m|}{pq}.
+\]
+By reciprocal dispersion, at least $|C|/2$ of the left-hand sides exceed $|C|/(64Y)$.  Since $p,q\geq Y$ and $|m|\leq |C|Y/128$,
+\[
+ \frac{|m|}{pq}\leq\frac{|C|}{128Y},
+\]
+so those $p$ satisfy $|H_{pq}|/(pq)\geq |C|/(128Y)$.  The cross edges incident with this exceptional $q$ consequently contribute at least $c|C|^3/Y^2$.  The edge sets obtained from distinct $q\in E_0$ are disjoint, whence
 \[
  |E_0|\,c|C|^3/Y^2\leq\mathcal Q(a).
 \]

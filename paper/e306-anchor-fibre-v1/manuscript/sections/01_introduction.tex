@@ -11,7 +11,7 @@ Let $q>0$ be rational.  The denominator of $q$ in lowest terms is squarefree if 
 \]
 \end{theorem}
 
-Thus the visible arithmetic boundary is the simple squarefree-denominator condition, while the construction is stronger than bare existence.  It survives every finite deletion.  Partial representations may be completed, finite decompositions may be realized on disjoint supports, and finite families of representations have common refinements.  These refinements may be iterated through a countably infinite proper chain whose successive supports are pairwise disjoint.  The converse direction in \cref{thm:main} is obtained directly from the fixed-target theorem by prime dilution, without numerator induction or separate treatment of reduced denominators $1$ and $2$.
+Thus the visible arithmetic boundary is the squarefree-denominator condition, strengthened by finite deletion.  The fixed-target theorem also yields finite prescription, disjoint realization, common refinements, and countably infinite proper refinement chains.  Prime dilution then gives the converse direction in \cref{thm:main} without numerator induction or special reduced-denominator cases.
 
 Fix a reduced rational
 \[
@@ -21,7 +21,7 @@ with squarefree $b$, and fix $\gamma>1$.  At scale $X$ we take primes in $[X,X^\
 \[
  \lambda_\gamma=\frac{(\log\gamma)^2}{2}.
 \]
-The sharp fixed-parameter region is
+The exact admissible range for the present centred no-wrap construction is
 \begin{equation}
 \label{eq:intro-admissible-region}
  t<\lambda_\gamma<1,
@@ -58,7 +58,7 @@ The actual-family variance has the single asymptotic
   +\frac{\tau(b)}{Z\log Z}
  \right).
 \]
-There remains one genuine phase boundary: prime pairs supply the leading variance when $\gamma>2$, whereas the target rows supply it at and below $\gamma=2$.  This change of provider does not split the proof architecture.  A universal full-coordinate cutoff
+There remains one genuine phase boundary: prime pairs supply the leading variance when $\gamma>2$, whereas the target rows supply it at and below $\gamma=2$.  This change in the dominant contribution does not split the proof architecture.  A universal full-coordinate cutoff
 \[
  T_0=\kappa_0\min(X^2,Z)
 \]
@@ -80,7 +80,7 @@ A recent preprint of Li proves the two-prime conjecture for every positive integ
 
 Quantitative multiplicity is known in the unrestricted setting on its natural ambient scale.  Conlon, Fox, He, Mubayi, Pham, Suk and Verstra\"ete prove that, for every fixed positive rational $q$, there are $2^{(c_q+o(1))N}$ representations by distinct denominators at most $N$~\cite{conlon-et-al-2025}.  The quantitative results here concern the much thinner squarefree-semiprime denominator system and are measured instead by the size of the constructed restricted family.
 
-The theorem was first obtained in the author's archived Lean~4 formalization, released as version~0.0.3~\cite{tang-erdos-306-formal}.  The present article grew out of that formal work and extracts from the same Fourier-analytic line a conceptually simpler one-anchor proof intended for ordinary mathematical reading.  The archived code does not formalize this exposition line by line, because the proof underwent substantial conceptual refinement after the first formal implementation.  The archived formalization obtains its prime-distribution input from explicit Rosser--Schoenfeld estimates, whereas the present exposition derives the corresponding prime-counting and reciprocal-mass consequences from the prime number theorem.
+The archived Lean~4 version~0.0.3 formalization machine-checks the headline existence theorem~\cite{tang-erdos-306-formal}.  The present one-anchor argument is a later conceptual reorganization and is not formalized line by line; in particular, the parameterized fixed-target theorem, the Gaussian coefficient asymptotic, and the entropy, Hamming, and refinement consequences are not claimed to be covered by that formalization.
 
 \subsection{External input and proof architecture}
 
@@ -106,9 +106,9 @@ Let
 \[
  L=b\prod_{p\in P}p.
 \]
-Character orthogonality modulo $L$ expresses the probability of selecting a subset with reciprocal sum congruent to $t$ modulo one as a finite Fourier sum whose target character is $\exp(-2\pi i a h/b)$.  The numerator $a$ enters only there.  Target-coordinate rows depend solely on the reduced denominator $b$.
+Character orthogonality modulo $L$ expresses the probability of selecting a subset with reciprocal sum congruent to $t$ modulo one as a finite Fourier sum whose target character is $\exp(-2\pi i a h/b)$.  Apart from its scalar effect through the centring parameter $\theta=t/\Lambda$, the numerator $a$ enters the Fourier geometry only through this target character; the target-row system depends solely on the reduced denominator $b$.
 
-The anchor block synchronizes low-energy local residues to one exact integer label $m$.  Once an anchor assignment is fixed, each remaining prime coordinate is coupled to it through a row of factors indexed by $q\in B$.  The restored multiplicity-sensitive cyclic-energy lemma supplies the lower-prime row distance, while the finitely many rows indexed by $S_b$ have a stronger direct distance.  These estimates concentrate each row near a decoder and detect target directions which the complete prime-pair family alone does not observe.
+The anchor block synchronizes low-energy local residues to one exact integer label $m$.  Once an anchor assignment is fixed, each remaining prime coordinate is coupled to it through a row of factors indexed by $q\in B$.  The multiplicity-sensitive cyclic-energy lemma supplies the lower-prime row distance, while the finitely many rows indexed by $S_b$ have a stronger direct distance.  These estimates concentrate each row near a decoder and detect target directions which the complete prime-pair family alone does not observe.
 
 The row estimates cannot simply be multiplied by the number of anchor assignments.  The decisive deterministic step is instead the exact weighted product-fibre identity of \cref{thm:weighted-compression}.  Every factor not assigned to a row remains on the decoded skeleton.  In particular, the lower--lower prime-pair factors survive the compression and provide both the universal transition damping and the adaptive damping farther out.
 

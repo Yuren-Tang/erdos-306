@@ -99,7 +99,7 @@ Every positive $q\in\mathbb Q_{\mathrm{sf}}^+$ has representations above every p
 \end{corollary}
 
 \begin{proof}
-Use finite avoidance and finite prescription.
+For a prescribed threshold, apply \cref{thm:main} while forbidding the finitely many squarefree semiprimes below it.  To obtain arbitrarily many terms, fix $k$ and choose $k$ distinct squarefree semiprimes so large that the sum of their reciprocals is less than $q$; prescribe these terms and apply \cref{thm:finite-extension} to the positive residual.  Finally, construct infinitely many supports recursively, at each stage applying finite avoidance with the union of all earlier supports as the forbidden set.  The resulting finite supports are pairwise disjoint.
 \end{proof}
 
 \begin{theorem}[Row--column refinement in $\mathbb Q_{\mathrm{sf}}^+$]
@@ -168,7 +168,13 @@ Any finite family of finite representations of the same admissible positive rati
 \end{theorem}
 
 \begin{proof}
-For two representations, use \cref{thm:squarefree-row-column} on the two decompositions and realize all positive matrix entries on pairwise disjoint avoiding supports by \cref{cor:disjoint-realization}.  Iterate for a finite family.  Disjointness from the original support makes every block proper.  The row--column theorem is essential here: local replacement alone does not align two different decompositions.
+Consider first two representations $A=\{a_1,\ldots,a_r\}$ and $B=\{b_1,\ldots,b_s\}$.  Choose a squarefree common denominator $L$ for all numbers $1/a_i$ and $1/b_j$, and write
+\[
+ R_i=\frac{L}{a_i},
+ \qquad
+ C_j=\frac{L}{b_j}.
+\]
+These are nonnegative integers with $\sum_iR_i=\sum_jC_j$.  Choose a nonnegative integral transportation matrix $(c_{ij})$ with row sums $R_i$ and column sums $C_j$, and put $z_{ij}=c_{ij}/L$.  Every positive $z_{ij}$ belongs to $\mathbb Q_{\mathrm{sf}}^+$.  Realize all positive entries on pairwise disjoint squarefree-semiprime supports, successively avoiding the prescribed forbidden set and both original supports.  Grouping these supports by rows gives a refinement of $A$, while grouping them by columns gives the same support as a refinement of $B$.  Avoidance of the original denominators makes every original block proper.  Iterating the two-family construction gives a common proper refinement for any finite family.  The row--column theorem is essential: local replacement alone need not align two different decompositions.
 \end{proof}
 
 \begin{theorem}[Countably infinite proper refinement chain]

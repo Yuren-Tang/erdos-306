@@ -60,7 +60,7 @@ The lower inclusion follows from $2\sqrt{|m|}>X$.  At the upper endpoint,
 \[
  3\sqrt{|m|}\leq\frac{3\sqrt{XZ}}{\log Z}<Z/2
 \]
-for every fixed $\gamma>1$ and large $X$.  Fixed-ratio prime supply gives the count.  For distinct $p,q\in I_m$, one has $1/9\leq|m|/(pq)\leq1/4$, so each retained pair contributes a fixed positive amount of energy; summing over the pairs proves \cref{eq:adaptive-energy}.
+for every fixed $\gamma>1$ and large $X$.  Here $y=\sqrt{|m|}\geq X/2\to\infty$ throughout the relevant range, so the fixed-ratio prime-supply estimate applies uniformly over all such $m$ and gives the count.  For distinct $p,q\in I_m$, one has $1/9\leq|m|/(pq)\leq1/4$, so each retained pair contributes a fixed positive amount of energy; summing over the pairs proves \cref{eq:adaptive-energy}.
 \end{proof}
 
 Consequently,
@@ -87,7 +87,17 @@ By the total variance \cref{eq:total-variance}, for every fixed $C$,
 \label{eq:N-below-full}
  N=o(T_0).
 \end{equation}
-For $\gamma>2$ this is $X\log X=o(X^2)$; for $1<\gamma\leq2$ it is $\sqrt{Z\log Z}=o(Z)$.
+For $\gamma>2$ this is $X\log X=o(X^2)$; for $1<\gamma\leq2$ it is $\sqrt{Z\log Z}=o(Z)$.  Hence, for sufficiently large $X$,
+\[
+ N<T_0<\frac{X^2}{4}<M_{\mathrm{dec}}.
+\]
+The first inequality is \cref{eq:N-below-full}; the second follows from $\kappa_0<1/4$ and $\min(X^2,Z)\leq X^2$; and the last follows from
+\[
+ \frac{M_{\mathrm{dec}}}{X^2/4}
+ =\frac{4Z}{X(\log Z)^2}
+ \asymp\frac{X^{\gamma-1}}{(\log Z)^2}
+ \longrightarrow\infty.
+\]
 
 Apply the decoder/nondecoder split first.  Every nondecoder tuple belongs to the terminal error sector.  Among decoded tuples, a noncoherent anchor assignment belongs to that same sector.  A coherent assignment has one unique label $m$.  For every fixed $\gamma>1$, the following six sectors are pairwise disjoint and exhaustive:
 \begin{center}
@@ -111,7 +121,7 @@ For every fixed $\gamma>1$, the six displayed sectors are pairwise disjoint and 
 \end{proposition}
 
 \begin{proof}
-The CRT coordinate map is a bijection.  The decoder/nondecoder split is disjoint for each anchor assignment.  A decoded coherent assignment has exactly one label and therefore lies in exactly one of the displayed disjoint label ranges.  No residual sibling sector remains.
+The CRT coordinate map is a bijection.  The decoder/nondecoder split is disjoint for each anchor assignment.  A decoded coherent assignment has exactly one label and therefore lies in exactly one of the displayed disjoint label ranges.  These cases exhaust all decoded coherent assignments.
 \end{proof}
 
 \subsection{Outer totals}
