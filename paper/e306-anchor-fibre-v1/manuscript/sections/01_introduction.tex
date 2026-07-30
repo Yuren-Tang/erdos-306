@@ -11,89 +11,111 @@ Let $q>0$ be rational.  The denominator of $q$ in lowest terms is squarefree if 
 \]
 \end{theorem}
 
-Thus the visible arithmetic boundary is the simple squarefree-denominator condition, while the construction is stronger than bare existence.  It survives every finite deletion.  From this one obtains a finite extension principle: any prescribed finite partial representation whose sum does not exceed an admissible target can be completed while avoiding a second finite set.  Finite decompositions can consequently be realized on disjoint supports, and any finite family of representations of the same rational has a common refinement disjoint from all its original supports.  Proper refinements may be iterated indefinitely.
+Thus the visible arithmetic boundary is the simple squarefree-denominator condition, while the construction is stronger than bare existence.  It survives every finite deletion.  Partial representations may be completed, finite decompositions may be realized on disjoint supports, and finite families of representations have common refinements.  These refinements may be iterated through a countably infinite proper chain whose successive supports are pairwise disjoint.
 
-The necessity in \cref{thm:main} is immediate from least common multiples.  For the converse, it is enough to construct $1/b$ for each squarefree $b$ while avoiding finitely many denominators.  Repeated avoidance preserves distinctness, and induction on the numerator then gives every positive rational with reduced denominator $b$.  The cases $b=1,2$ are closed by short decompositions into direct cases with denominator at least~$3$.
+The analytic theorem underlying this characterization is more flexible than the unit target needed for numerator induction.  Fix a reduced rational
+\[
+ t=\frac ab\in(0,1),
+\]
+with squarefree $b$, and fix $\gamma>1$.  At scale $X$ we take primes in $[X,X^\gamma)$, designate the upper fixed-ratio block as an anchor, and use all unordered distinct prime pairs together with the target rows indexed by the primes dividing $b$.  The pair load tends to
+\[
+ \lambda_\gamma=\frac{(\log\gamma)^2}{2}.
+\]
+The sharp fixed-parameter region is
+\begin{equation}
+\label{eq:intro-admissible-region}
+ t<\lambda_\gamma<1,
+ \qquad\text{equivalently}\qquad
+ \exp(\sqrt{2t})<\gamma<\exp(\sqrt2).
+\end{equation}
+Exact centring chooses $\theta\Lambda=t$, and hence
+\[
+ \theta\longrightarrow
+ \alpha_{t,\gamma}
+ =\frac{t}{\lambda_\gamma}
+ =\frac{2t}{(\log\gamma)^2}.
+\]
 
-The same Fourier coefficient carries quantitative information.  For each fixed squarefree $b\geq3$, the fixed-target value of this Fourier coefficient has a Gaussian asymptotic.  The associated representation fibre contains exponentially many supports at the natural restricted-family scale; the optimal entropy exponent already occurs in a mesoscopic cardinality window and at one exact cardinality, and an exponential subfamily at that cardinality has pairwise symmetric difference of linear size.  A denominator-height form and a fixed finite residual transfer carry these conclusions to every admissible positive rational, including those with reduced denominator $1$ or~$2$.  The direct one-family asymptotic itself remains confined to $b\geq3$.
+\begin{theorem}[Parameterized direct fixed-target theorem]
+\label{thm:parameterized-direct-target-intro}
+Let $t=a/b\in(0,1)$ be reduced with squarefree $b$, let $\gamma$ satisfy \cref{eq:intro-admissible-region}, and let $\mathcal T$ be finite.  For all sufficiently large $X$, the parameterized family of \cref{sec:denominator-system} contains a subset $\mathcal A$, disjoint from $\mathcal T$, such that
+\[
+ \sum_{e\in\mathcal A}\frac1e=t.
+\]
+Its exact target coefficient satisfies the sharp Gaussian asymptotic of \cref{thm:sharp-target-coefficient}; no moving-target uniformity is asserted.
+\end{theorem}
+
+The proof has one genuine phase boundary.  When $\gamma>2$, the prime-pair square load dominates and the original five-sector architecture survives after systematic reparameterization.  At $\gamma=2$, the target-row square load is larger by a logarithmic factor; the boundary is therefore not obtained by continuity or by replacing the exponent $3$ formally.  The same target-row variance dominates for $1<\gamma<2$.  In those two regimes a prime-only Gaussian transition range is inserted between full target-coordinate decoding and the adaptive retained-pair range.  This gives a pairwise-disjoint and exhaustive six-sector partition.
+
+The retained coefficient yields entropy rate
+\[
+ H(\alpha_{t,\gamma})
+ =-\alpha_{t,\gamma}\log\alpha_{t,\gamma}
+  -(1-\alpha_{t,\gamma})\log(1-\alpha_{t,\gamma}).
+\]
+For $0<t<1/2$, the maximum $\log2$ is attained at $\gamma=\exp(2\sqrt t)$.  For $t=1/2$, $\log2$ is only the supremum as $\gamma$ approaches the forbidden upper boundary.  For $1/2<t<1$, the supremum is $H(t)$ and is likewise not attained.  The direct denominator-height form, exact-cardinality extraction, Hamming-separated families, balanced signed relations, refinement branching and transfer to arbitrary admissible rationals all inherit the parameterized theorem.
 
 \subsection{Context}
 
 Egyptian-fraction representations and their restricted-denominator variants have a long history; see Bloom and Elsholtz~\cite{bloom-elsholtz-2022} for a recent survey.  Barbeau gave the first known representation of $1$ by reciprocals of distinct squarefree semiprimes, using $101$ terms; Watanabe later found the currently shortest known examples, with $47$ terms~\cite{barbeau-1977,watanabe-2020}.  Butler, Erd\H{o}s and Graham proved that every positive integer is a sum of distinct unit fractions whose denominators have three distinct prime factors, and conjectured the corresponding statement with two prime factors~\cite{butler-erdos-graham-2015}.
 
-A recent preprint of Li proves the two-prime conjecture for every positive integer.  For a general squarefree denominator $b$, it also represents $a/b$ above an explicit threshold and leaves the remaining below-threshold $\omega=2$ regime open~\cite{li-2026-semiprime}.  The theorem above settles that remaining rational case.  Li's proof is driven by additive-combinatorial subset-sum input and induction; the present argument instead constructs $1/b$ directly as a positive finite Fourier coefficient.  Numerator induction is used only after the fixed-denominator theorem has been proved.
+A recent preprint of Li proves the two-prime conjecture for every positive integer.  For a general squarefree denominator $b$, it also represents $a/b$ above an explicit threshold and leaves the remaining below-threshold $\omega=2$ regime open~\cite{li-2026-semiprime}.  The theorem above settles that remaining rational case.  Li's proof is driven by additive-combinatorial subset-sum input and induction; the present argument instead constructs a fixed target directly as a positive finite Fourier coefficient.  Numerator induction is used only after the direct theorem has been proved.
 
 Quantitative multiplicity is known in the unrestricted setting on its natural ambient scale.  Conlon, Fox, He, Mubayi, Pham, Suk and Verstra\"ete prove that, for every fixed positive rational $q$, there are $2^{(c_q+o(1))N}$ representations by distinct denominators at most $N$~\cite{conlon-et-al-2025}.  The quantitative results here concern the much thinner squarefree-semiprime denominator system and are measured instead by the size of the constructed restricted family.
 
-The theorem was first obtained in the author's archived Lean~4 formalization, released as version~0.0.3~\cite{tang-erdos-306-formal}.  The present article grew out of that formal work and extracts from the same Fourier-analytic line of argument a substantially simpler one-anchor proof intended for ordinary mathematical reading.  The archived code does not formalize this exposition line by line, because the proof underwent substantial conceptual refinement after the first formal implementation.  The archived formalization obtains its prime-distribution input from explicit Rosser--Schoenfeld estimates, whereas the present exposition derives the corresponding prime-counting and reciprocal-mass consequences from the prime number theorem.
+The theorem was first obtained in the author's archived Lean~4 formalization, released as version~0.0.3~\cite{tang-erdos-306-formal}.  The present article grew out of that formal work and extracts from the same Fourier-analytic line a conceptually simpler one-anchor proof intended for ordinary mathematical reading.  The archived code does not formalize this exposition line by line, because the proof underwent substantial conceptual refinement after the first formal implementation.  The archived formalization obtains its prime-distribution input from explicit Rosser--Schoenfeld estimates, whereas the present exposition derives the corresponding prime-counting and reciprocal-mass consequences from the prime number theorem.
 
 \subsection{External input and proof architecture}
 
-The prime number theorem is the sole non-elementary number-theoretic input to the proof; a standard reference is Montgomery and Vaughan~\cite[Chapter~1]{montgomery-vaughan-2007}.  It supplies prime counts in fixed-ratio intervals and, through Abel summation, the reciprocal mass of the prime blocks.  All problem-specific estimates---anchor synchronization, row separation, fibre compression, target observability, the five-sector Fourier budget, and the no-wrap passage to exact equality---are proved here.  Standard finite-group Fourier inversion, the Chinese remainder theorem, Taylor expansion, Hoeffding's inequality, and elementary combinatorial estimates are used in their usual forms.
+The prime number theorem is the sole non-elementary number-theoretic input; a standard reference is Montgomery and Vaughan~\cite[Chapter~1]{montgomery-vaughan-2007}.  It supplies prime counts in fixed-ratio intervals and, through Abel summation, the reciprocal mass and square load of the prime blocks.  All problem-specific estimates---anchor synchronization, row separation, fibre compression, target observability, the regime-dependent Fourier budget, and the no-wrap passage to exact equality---are proved here.  Standard finite-group Fourier inversion, the Chinese remainder theorem, Taylor expansion, Hoeffding's inequality, and elementary combinatorial estimates are used in their usual forms.
 
 Finite Fourier inversion identifies the coefficient that must be made positive, but it leaves the many local CRT coordinates coupled only implicitly.  The one-anchor construction makes that coupling rigid enough to estimate.
 
-\subsection{The one-anchor construction}
+\subsection{The parameterized one-anchor construction}
 
-Fix a squarefree integer $b\geq3$.  At a large scale $X$ we take primes in
+Write $Z=X^\gamma$ and put
 \[
- P=\{p:X\leq p<X^3\}
+ P=\{p:X\leq p<Z\},
+ \qquad
+ B=\{q:Z/2\leq q<Z\}.
 \]
-and designate the upper block
+The denominator family consists of all products $pq$ with distinct $p,q\in P$, together with $rq$ for primes $r\mid b$ and $q\in B$.  Its reciprocal load $\Lambda$ tends to $\lambda_\gamma$.  Under \cref{eq:intro-admissible-region}, independent Bernoulli selectors with parameter
 \[
- B=\{q:X^3/2\leq q<X^3\}
+ \theta=\frac{t}{\Lambda}
 \]
-as the anchor block.  The denominator family consists of all products $pq$ with distinct $p,q\in P$, together with the products $rq$ for primes $r\mid b$ and $q\in B$.  Its reciprocal load $\Lambda$ is greater than $1/b$ and less than $1$.  Independent Bernoulli selectors with parameter
-\[
- \theta=\frac1{b\Lambda}
-\]
-therefore have expected reciprocal sum exactly $1/b$.
+have expected reciprocal sum exactly $t$ and remain in a fixed compact subinterval of $(0,1)$.
 
 Let
 \[
  L=b\prod_{p\in P}p.
 \]
-Character orthogonality modulo $L$ expresses the probability of selecting a subset with reciprocal sum congruent to $1/b$ modulo one as a finite Fourier sum.  Since $L$ is squarefree, a frequency modulo $L$ is a tuple of local residues, one for each prime dividing $L$.  The proof must show that these local residues do not behave independently: on the part of the Fourier sum which can matter, they synchronize around a single integer frequency.
+Character orthogonality modulo $L$ expresses the probability of selecting a subset with reciprocal sum congruent to $t$ modulo one as a finite Fourier sum whose target character is $\exp(-2\pi i a h/b)$.  The numerator $a$ enters only there.  Target-coordinate rows depend solely on the reduced denominator $b$.
 
-The anchor block supplies that synchronization.  If the energy carried by pairs of primes in $B$ is small, every anchor coordinate is represented by one exact integer label $m$.  Anchor assignments which do not have this form have exponentially small total weight.  Once the anchor assignment is fixed, each remaining prime coordinate is coupled to it through a row of factors indexed by $q\in B$.  A shift-uniform row-distance estimate concentrates that row near a decoder.  The rows indexed by primes dividing $b$ have an additional purpose: they detect target coordinates which the complete prime-pair family alone does not observe.
+The anchor block synchronizes low-energy local residues to one exact integer label $m$.  Once an anchor assignment is fixed, each remaining prime coordinate is coupled to it through a row of factors indexed by $q\in B$.  A shift-uniform row-distance estimate concentrates that row near a decoder.  The rows indexed by primes dividing $b$ detect target directions which the complete prime-pair family alone does not observe.
 
-The row estimates cannot simply be multiplied by the number of anchor assignments.  The decisive deterministic step is instead a weighted product-fibre identity.  If $W_y$ is the actual anchor weight, and $\alpha_{r,y}$ and $\beta_{r,y}$ are respectively the decoder and off-decoder masses in row $r$, then the total loss in replacing every fibre by its decoder tuple is bounded exactly by
-\[
- \sum_y W_y\left\{
-   \prod_r(\alpha_{r,y}+\beta_{r,y})
-   -\prod_r\alpha_{r,y}
- \right\}.
-\]
-All Fourier factors not assigned to rows remain on the decoded skeleton.  In particular, the lower--lower prime-pair factors survive the compression and provide the damping required for intermediate labels.
+The row estimates cannot simply be multiplied by the number of anchor assignments.  The decisive deterministic step is instead the exact weighted product-fibre identity of \cref{thm:weighted-compression}.  Every factor not assigned to a row remains on the decoded skeleton.  In particular, the lower--lower prime-pair factors survive the compression and provide both the transition damping at $\gamma\leq2$ and the adaptive damping farther out.
 
-The skeleton is divided into five disjoint sectors.  Small labels yield a positive Gaussian major contribution after exact linear centring.  The next range is controlled by the full variance of the denominator family.  Farther out, retained lower--lower factors give a scale adapted to the label $m$.  Still larger coherent labels are damped by the anchor energy, while noncoherent anchor assignments and nondecoder tuples have already been charged.  A Gaussian cutoff is held fixed while the prime scale tends to infinity.  This proves positivity; retaining the complete estimates and only afterwards sending the cutoff to infinity gives the sharp fixed-target coefficient asymptotic.
+For $\gamma>2$, the skeleton has five sectors: the Taylor major range, the full-variance Gaussian tail, the adaptive retained-pair range, the large coherent-label range, and the noncoherent/nondecoder remainder.  For $1<\gamma\leq2$, the full-coordinate range ends at a small fixed multiple of $\min(X^2,Z)$; the following range up to $X^2/4$ uses only the decoded prime coordinates and the complete-pair square load.  The remaining three controls are unchanged.  In each regime the partition is disjoint and exhaustive.
 
-The resulting positive coefficient gives a subset whose reciprocal sum is congruent to $1/b$ modulo one.  Exact equality is obtained only afterwards: every subset sum lies in $[0,\Lambda]$ with $\Lambda<1$, and $1/b\in(0,1)$, so no nonzero integer alias is possible.
+The positive coefficient gives a subset whose reciprocal sum is congruent to $t$ modulo one.  Exact equality is obtained only afterwards: every subset sum lies in $[0,\Lambda]$ with $\Lambda<1$, and $t\in(0,1)$, so no nonzero integer alias is possible.
 
 \subsection{Terminology and conventions}
 
 The following terms describe fixed parts of the decomposition.
-
-\begin{description}[
-  style=nextline,
-  widest={anchor assignment},
-  leftmargin=*
-]
+\begin{description}[style=nextline,widest={anchor assignment},leftmargin=*]
 \item[anchor block] the upper prime block $B$;
 \item[anchor assignment] the tuple of CRT coordinates indexed by $B$;
-\item[anchor weight] the product modulus contributed by factors internal to $B$;
 \item[coherent label] the integer $m$ whose residues agree with every coordinate of a low-energy anchor assignment;
 \item[anchor-cross row] the factors joining one non-anchor prime coordinate to all primes in $B$;
 \item[decoder] a row residue minimizing the associated quadratic phase energy;
 \item[fibre] the set of all row-coordinate tuples above a fixed anchor assignment;
 \item[decoded skeleton] the decoder tuple retained from each fibre, together with every factor not assigned to a row;
-\item[retained factor] such an unassigned factor, principally a lower--lower prime-pair factor;
-\item[target coordinate] a CRT coordinate indexed by a prime divisor of $b$; the complete prime-pair family does not observe it, so it is detected by a dedicated anchor-cross row;
-\item[sector] one of the five disjoint frequency ranges used in the final major--minor comparison.
+\item[target coordinate] a CRT coordinate indexed by a prime divisor of $b$;
+\item[transition sector] the prime-only Gaussian range required when $\gamma\leq2$.
 \end{description}
 
-The terms \emph{energy} and \emph{fingerprint} retain their literal mathematical meanings: energy is a displayed sum of squared circle distances, while a fingerprint is a fixed subset of coordinates whose residues determine all but a controlled exceptional set.  Throughout the analytic construction, $b$ and the finite forbidden set are fixed and $X\to\infty$.  Implied constants may depend on $b$ and on fixed numerical choices, but not on $X$.  Whenever the Gaussian cutoff $C$ is used, $X\to\infty$ is taken with $C$ fixed; only in the fixed-target asymptotic is $C$ then allowed to tend to infinity.  Circle distance is denoted by $\dist{\cdot}$.
+Throughout the direct analytic construction, $t$, $\gamma$, $b$ and the finite forbidden set are fixed while $X\to\infty$.  Constants bearing a subscript $b$ in the unchanged anchor lemmas may also depend on the fixed $t$ and $\gamma$ through the compact Bernoulli interval; none depends on $X$.  Whenever the Gaussian cutoff $C$ occurs, $X\to\infty$ is taken with $C$ fixed, and only afterwards may $C\to\infty$.  No statement is uniform in a moving target or moving exponent.
 
 \subsection{Organization}
 
-With the terminology fixed, the proof proceeds as follows.  \Cref{sec:fourier-selection} records the finite Fourier identity and separates quotient realization from exact equality.  \Cref{sec:structural-tools} proves the deterministic collision, compression, syndrome and skeleton principles.  \Cref{sec:denominator-system,sec:anchor-block,sec:fibre-decoding} construct the denominator family and establish anchor rigidity, weighted partition bounds, row separation and decoder identification.  \Cref{sec:decoded-skeleton,sec:major-budget} estimate the five sectors and prove positivity.  \Cref{sec:exact-completion} converts that positivity into exact representation, establishes the finite extension principle, and develops the common-refinement structure.  \Cref{sec:quantitative-multiplicity} extracts the sharp coefficient, exponential multiplicity, exact-cardinality and macroscopic-diversity consequences, derives balanced signed relations as their additive consequence, and records denominator-height bounds together with transfer to every admissible rational.  \Cref{sec:scope} places these results in the broader question of reciprocal representation from restricted denominator systems and records three bounded open directions.
+\Cref{sec:fourier-selection} records the parameterized finite Fourier identity and separates quotient realization from exact equality.  \Cref{sec:structural-tools} proves the deterministic collision, compression, syndrome and skeleton principles.  \Cref{sec:denominator-system,sec:anchor-block,sec:fibre-decoding} construct the denominator family and establish its load, two-regime variance, anchor rigidity, row separation and decoder identification.  \Cref{sec:decoded-skeleton,sec:major-budget} give the five- or six-sector analysis and prove positivity.  \Cref{sec:exact-completion} converts that positivity into exact representation and develops finite and countable refinement.  \Cref{sec:quantitative-multiplicity} proves the sharp coefficient, entropy optimization and quantitative consequences.  \Cref{sec:scope} records the scope and effectivity boundary.

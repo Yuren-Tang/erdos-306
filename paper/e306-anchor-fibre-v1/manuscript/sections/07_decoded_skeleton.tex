@@ -1,7 +1,37 @@
 \section{The decoded skeleton and its minor ranges}
 \label{sec:decoded-skeleton}
 
-After \cref{prop:global-fibre-error}, it remains to estimate the single decoded tuple attached to each anchor assignment.  Coherent anchor assignments are indexed by an integer label $m$; noncoherent assignments are treated directly by the anchor partition.  The essential point is that the lower--lower pair factors were not discarded during fibre compression.
+After \cref{prop:global-fibre-error}, it remains to estimate the single decoded tuple attached to each anchor assignment.  Coherent anchor assignments are indexed by an integer label $m$; noncoherent assignments are treated by the anchor partition.  The lower--lower pair factors were retained during fibre compression.
+
+\subsection{Prime-only Gaussian transition}
+
+Assume $1<\gamma\leq2$ and
+\begin{equation}
+\label{eq:transition-range}
+ T_{\mathrm{full}}<|m|\leq X^2/4.
+\end{equation}
+By \cref{prop:prime-decoder-identification}, every coordinate indexed by $P$ equals $m$.  Hence every complete-pair factor has phase $m/(pq)$.  Since $pq\geq X^2$ and $|m|\leq X^2/4$, these phases lie in the linear circle range, and \cref{eq:bernoulli-modulus} gives
+\begin{equation}
+\label{eq:transition-pointwise}
+ |F(h_m)|
+ \leq\exp\left(-c m^2
+   \sum_{p<q\in P}\frac1{p^2q^2}\right)
+ \leq\exp\left(-c\frac{m^2}{X^2\log^2X}\right).
+\end{equation}
+At the lower endpoint, the exponent satisfies
+\begin{equation}
+\label{eq:transition-lower-exponent}
+ \frac{T_{\mathrm{full}}^2}{X^2\log^2X}
+ \gg\frac{Z^2}{X^2\log^2X}
+ =\frac{X^{2\gamma-2}}{\log^2X}\longrightarrow\infty.
+\end{equation}
+Therefore
+\begin{equation}
+\label{eq:transition-total}
+ \sum_{T_{\mathrm{full}}<|m|\leq X^2/4}|F(h_m)|
+ =o(\sigma_{\mathcal E}^{-1}).
+\end{equation}
+This sector uses no target coordinate.  At $\gamma=2$ it treats the variance boundary exactly; for $1<\gamma<2$ it fills the entire gap left by the shorter full-coordinate range.
 
 \subsection{Adaptive retained-pair damping}
 
@@ -9,10 +39,7 @@ For an integer $m$ with
 \[
  X^2/4<|m|\leq M_{\mathrm{dec}},
 \]
-put
-\[
- I_m=[2\sqrt{|m|},3\sqrt{|m|}].
-\]
+put $I_m=[2\sqrt{|m|},3\sqrt{|m|}]$.
 
 \begin{proposition}[Adaptive prime interval]
 \label{prop:adaptive-prime-interval}
@@ -28,147 +55,100 @@ primes.  On the decoded skeleton, the retained complete-pair energy satisfies
 \end{proposition}
 
 \begin{proof}
-Write $y=\sqrt{|m|}$.  The strict lower inequality gives $2y>X$.  At the upper endpoint,
+The lower inclusion follows from $2\sqrt{|m|}>X$.  At the upper endpoint,
 \[
- 3y\leq\frac{3\sqrt{XZ}}{\log Z}
- =\frac{3X^2}{\log Z}<Z/2
+ 3\sqrt{|m|}\leq\frac{3\sqrt{XZ}}{\log Z}<Z/2
 \]
-for large $X$, using the definition of $M_{\mathrm{dec}}$.  Thus $I_m\subset P\setminus B$.  By \cref{lem:fixed-ratio-prime-supply},
-\[
- K_m=\pi(3y)-\pi(2y)\gg y/\log y
-\]
-uniformly in the whole range.
-
-For distinct primes $p,q\in I_m$,
-\[
- 4|m|\leq pq\leq9|m|,
-\]
-so
-\[
- 1/9\leq |m|/(pq)\leq1/4.
-\]
-This number already lies in $[0,1/2]$, and hence
-\[
- \dist{m/(pq)}\geq1/9.
-\]
-By \cref{prop:prime-decoder-identification}, the $p$- and $q$-coordinates of the decoded skeleton equal $m$.  Every such $pq$ is a retained lower--lower denominator, so
-\[
- Q_{\mathrm{pair}}(m)
- \gg\binom{K_m}{2}
- \gg K_m^2
- \gg\frac{|m|}{(\log|m|)^2}.
-\]
-The argument is unchanged for negative $m$, since circle distance is even.
+for every fixed $\gamma>1$ and large $X$.  Fixed-ratio prime supply gives the count.  For distinct $p,q\in I_m$, one has $1/9\leq|m|/(pq)\leq1/4$, so each retained pair contributes a fixed positive amount of energy; summing over the pairs proves \cref{eq:adaptive-energy}.
 \end{proof}
 
-The adaptive estimate is summarized in \cref{prop:adaptive-prime-interval}.  The interval depends on $m$, but the estimate is pointwise at each decoded frequency; overlap between intervals belonging to different labels is irrelevant.
+Consequently,
+\begin{equation}
+\label{eq:adaptive-pointwise}
+ |F(h_m)|\leq\exp\left(-c\frac{|m|}{(\log|m|)^2}\right),
+\end{equation}
+and
+\begin{equation}
+\label{eq:adaptive-total}
+ \sum_{X^2/4<|m|\leq M_{\mathrm{dec}}}|F(h_m)|
+ =o(\sigma_{\mathcal E}^{-1}).
+\end{equation}
 
-\subsection{The exhaustive frequency partition}
+\subsection{Pairwise-disjoint exhaustive partitions}
 
-The squarefree period has the exact CRT decomposition
-\[
- L=\prod_{r\in S_b}r\prod_{p\in P}p,
-\]
-and therefore
-\[
- h\pmod L
- \longleftrightarrow
- \bigl((h\bmod q)_{q\in B},
-       (h\bmod r)_{r\in R_{\mathrm{rows}}}\bigr).
-\]
-There is no extra lift multiplicity.
-
-Fix a constant $C\geq1$, to be chosen before $X$, and put
+Fix $C\geq1$, to be chosen before $X$, and put
 \begin{equation}
 \label{eq:N-major}
  N=\left\lfloor\frac{C}{\sigma_{\mathcal E}}\right\rfloor.
 \end{equation}
-For sufficiently large $X$, the definition \cref{eq:N-major} gives
-\[
- N<X^2/4<M_{\mathrm{dec}},
-\]
-and the residues of the integers $|m|\leq N$ are distinct modulo $L$.
+By \cref{prop:variance-regimes}, for every fixed $C$,
+\begin{equation}
+\label{eq:N-below-full}
+ N=o(T_{\mathrm{full}}).
+\end{equation}
 
-Apply the decoder/nondecoder split first for every anchor assignment.  Every nondecoder tuple, over any anchor assignment, belongs to Sector~V.  It remains to classify the single decoded tuple.  If its anchor assignment is noncoherent, meaning $Q_B\geq F_B$, that decoded tuple also belongs to Sector~V.  If the anchor assignment is coherent with its unique integer label $m$, exactly one of the following disjoint ranges holds:
-\begin{align*}
- \mathrm{I}.\quad &|m|\leq N,\\
- \mathrm{II}.\quad &N<|m|\leq X^2/4,\\
- \mathrm{III}.\quad &X^2/4<|m|\leq M_{\mathrm{dec}},\\
- \mathrm{IV}.\quad &|m|>M_{\mathrm{dec}}.
-\end{align*}
-Thus every frequency belongs to exactly one of the following five sectors:
+Apply the decoder/nondecoder split first.  Every nondecoder tuple belongs to the terminal error sector.  Among decoded tuples, a noncoherent anchor assignment belongs to that same sector.  A coherent assignment has one unique label $m$.
 
+If $\gamma>2$, the following five sectors are pairwise disjoint and exhaustive:
 \begin{center}
-\begin{tabular}{@{}c p{5.1cm} p{5.0cm}@{}}
+\begin{tabular}{@{}c p{5.2cm} p{5.0cm}@{}}
 \toprule
 Sector & skeleton condition & control \\
 \midrule
-I & decoded; coherent, $|m|\leq N$ & positive Taylor major \\
-II & decoded; coherent, $N<|m|\leq X^2/4$ & full-variance Gaussian tail \\
-III & decoded; coherent, $X^2/4<|m|\leq M_{\mathrm{dec}}$ & adaptive retained pairs \\
-IV & decoded; coherent, $|m|>M_{\mathrm{dec}}$ & internal anchor energy \\
-V & decoded with a noncoherent anchor assignment; or nondecoder with any anchor assignment & anchor entropy and fibre error \\
+I & $|m|\leq N$ & positive Taylor major \\
+II & $N<|m|\leq X^2/4$ & actual-variance Gaussian tail \\
+III & $X^2/4<|m|\leq M_{\mathrm{dec}}$ & adaptive retained pairs \\
+IV & $|m|>M_{\mathrm{dec}}$ & internal anchor energy \\
+V & noncoherent decoded tuple, or any nondecoder tuple & anchor entropy and fibre error \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-\begin{proposition}[Five-sector exhaustion]
+If $1<\gamma\leq2$, the following six sectors are pairwise disjoint and exhaustive:
+\begin{center}
+\begin{tabular}{@{}c p{5.2cm} p{5.0cm}@{}}
+\toprule
+Sector & skeleton condition & control \\
+\midrule
+I & $|m|\leq N$ & positive Taylor major \\
+II & $N<|m|\leq T_{\mathrm{full}}$ & actual-variance Gaussian tail \\
+III & $T_{\mathrm{full}}<|m|\leq X^2/4$ & prime-only pair Gaussian \\
+IV & $X^2/4<|m|\leq M_{\mathrm{dec}}$ & adaptive retained pairs \\
+V & $|m|>M_{\mathrm{dec}}$ & internal anchor energy \\
+VI & noncoherent decoded tuple, or any nondecoder tuple & anchor entropy and fibre error \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{proposition}[Regime-dependent sector exhaustion]
 \label{prop:five-sector-exhaustion}
-The five sectors above are pairwise disjoint and exhaust all frequencies modulo $L$.
+The five sectors for $\gamma>2$, and the six sectors for $1<\gamma\leq2$, are respectively pairwise disjoint and exhaustive over all frequencies modulo $L$.
 \end{proposition}
 
 \begin{proof}
-The CRT coordinate map is a bijection.  The decoder/nondecoder split is applied first and is disjoint for each anchor assignment.  All nondecoder tuples enter Sector~V.  Among decoded tuples, a noncoherent anchor assignment enters Sector~V, whereas a coherent assignment has exactly one label by \cref{prop:exact-cold-rigidity} and enters exactly one of the four disjoint and exhaustive displayed label ranges.  Hence every frequency occurs exactly once.
+The CRT coordinate map is a bijection.  The decoder/nondecoder split is disjoint for each anchor assignment.  A decoded coherent assignment has exactly one label and therefore lies in exactly one of the displayed disjoint label ranges.  No residual sibling sector remains.
 \end{proof}
 
-The exhaustion statement \cref{prop:five-sector-exhaustion} leaves no residual sibling sector.  In Sectors I and II, \cref{prop:prime-decoder-identification,prop:target-decoder-identification} identify the complete coordinate tuple with the genuine integer $m$ modulo $L$.  In Sector III, only the $P$-coordinates are needed for \cref{eq:adaptive-energy}.  Sectors IV and V are controlled without any further decoder identification.
+\subsection{Outer totals}
 
-\subsection{Pointwise bounds on the minor skeleton ranges}
-
-For a coherent label in Sector III, the retained pair factors and \cref{eq:bernoulli-modulus,eq:adaptive-energy} give
-\begin{equation}
-\label{eq:sector-III-pointwise}
- |F(h_m)|
- \leq\exp\left(-c\frac{|m|}{(\log|m|)^2}\right).
-\end{equation}
-By \cref{eq:sector-III-pointwise}, throughout this range $\log|m|\asymp\log X$, so each term is at most $\exp(-cX^2/\log^2X)$.  Since there are $O(M_{\mathrm{dec}})=O(X^4)$ labels,
-\begin{equation}
-\label{eq:sector-III-total}
- \sum_{\mathrm{III}}|F(h_m)|
- \ll X^4\exp(-cX^2/\log^2X)
- =o(\sigma_{\mathcal E}^{-1}).
-\end{equation}
-No coordinate of $b$ is identified in this argument.
-
-For a coherent label in Sector IV, the internal anchor factor and \cref{eq:top-exact-energy} give
+For $|m|>M_{\mathrm{dec}}$, the internal anchor factor gives
 \[
  |F(h_m)|\leq\exp(-\kappa_bm^2\sigma_{B,0}^2).
 \]
-The decoded row and residual factors have modulus at most one.  Hence
+Thus
 \begin{equation}
-\label{eq:sector-IV-total}
-\begin{aligned}
+\label{eq:anchor-tail-total}
  \sum_{|m|>M_{\mathrm{dec}}}|F(h_m)|
- &\ll \sigma_{B,0}^{-1}
- \exp(-cM_{\mathrm{dec}}^2\sigma_{B,0}^2)\\
- &=o(\sigma_{\mathcal E}^{-1}),
-\end{aligned}
+ \ll\sigma_{B,0}^{-1}
+ \exp(-cM_{\mathrm{dec}}^2\sigma_{B,0}^2)
+ =o(\sigma_{\mathcal E}^{-1}),
 \end{equation}
-because
-\[
- M_{\mathrm{dec}}^2\sigma_{B,0}^2
- \gg\frac{X^2}{\log^6Z},
- \qquad
- \sigma_{B,0}^{-1}\ll Z\log Z.
-\]
+because $M_{\mathrm{dec}}^2\sigma_{B,0}^2\gg X^2/\log^6Z$.
 
-Finally, the noncoherent decoded-skeleton contribution is bounded by \cref{eq:noncoherent-top-tail}, while every nondecoder tuple is charged by \cref{eq:global-fibre-error}.  Therefore
+Finally, \cref{eq:noncoherent-top-tail,eq:global-fibre-error} give
 \begin{equation}
-\label{eq:sector-V-total}
- \sum_{\mathrm{V}}|F|
- \ll \exp(-cF_B)
- +P_{\mathrm{anc}}(\exp(\Delta)-1)
+\label{eq:terminal-error-total}
+ \sum_{\mathrm{terminal}}|F|
+ \ll\exp(-cF_B)+P_{\mathrm{anc}}(\exp(\Delta)-1)
  =o(\sigma_{\mathcal E}^{-1}).
 \end{equation}
-
-Sector II and the positive Sector I are treated together in the next section, because both use the actual-family variance rather than only the anchor or retained-pair energies.

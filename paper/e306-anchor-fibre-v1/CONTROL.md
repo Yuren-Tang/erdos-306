@@ -40,26 +40,27 @@ The headline theorem was first obtained in the author's archived Lean 4 release 
 1. The one-anchor route remains the preferred complete ordinary proof.
 2. Exact weighted product-fibre compression is retained as genuine general structure.
 3. Finite-group syndrome observability is retained as a general hidden-coordinate separation theorem.
-4. The final major/minor inequality is an assembly interface, not deeper than its arithmetic providers.
-5. General structural tools occur before their E306 provider verifications.
-6. E306 remains the headline theorem and first substantive application.
-7. Exactness, finite extension, disjoint realization and common refinement form the elementary post-analytic branch.
-8. The retained coefficient supplies the fixed-target asymptotic, exponential multiplicity, exact-cardinality extraction, macroscopic diversity, balanced signed relations, height bounds and global transfer.
+4. The direct analytic theorem is parameterized by a fixed reduced target `t=a/b in (0,1)` with squarefree `b` and a fixed exponent `gamma>1`.
+5. The sharp fixed-parameter region is `t < (log gamma)^2/2 < 1`, with exact centring `theta Lambda=t` and limiting parameter `2t/(log gamma)^2`.
+6. For `gamma>2`, the five-sector architecture survives with systematic reparameterization.
+7. At `gamma=2` and for `1<gamma<2`, the target-row variance dominates and a prime-only Gaussian transition yields an exhaustive six-sector architecture.
+8. Exactness, finite extension, disjoint realization, common refinement and countably infinite proper refinement form the elementary post-analytic branch.
+9. The retained coefficient supplies the regime-correct fixed-target asymptotic, exact entropy optimization, exponential multiplicity, exact-cardinality extraction, macroscopic diversity, balanced signed relations, height bounds, optimal refinement branching and global transfer.
 
 ## Maintained manuscript architecture
 
-The live manuscript is an eleven-section article:
+The live manuscript remains an eleven-section article:
 
 1. Introduction.
 2. Finite Fourier selection and exactness.
 3. Structural tools.
-4. The semiprime denominator system.
+4. The parameterized semiprime denominator system.
 5. The anchor block.
 6. Fibre decoding and target observability.
-7. The decoded skeleton and its minor ranges.
+7. The decoded skeleton and its regime-dependent minor ranges.
 8. The major contribution and terminal budget.
 9. Exact representation, extension and refinement.
-10. Quantitative multiplicity, diversity and transfer.
+10. Quantitative multiplicity, optimization and transfer.
 11. Discussion and conclusion.
 
 The normalized source paths and detailed section structure are controlled by `ARTICLE_ARCHITECTURE.md`; theorem dependencies are controlled by `THEOREM_DAG.md`.
@@ -69,18 +70,20 @@ The normalized source paths and detailed section structure are controlled by `AR
 - manuscript entry point: `paper/e306-anchor-fibre-v1/manuscript/main.tex`;
 - local entry point: `make clean && make pdf`;
 - bibliography backend: Biber, invoked through the configured `latexmk` cycle;
+- controlling arXiv environment: TeX Live 2025;
+- TeX Live 2023/Debian workflow: secondary compatibility check;
 - reproducibility workflow: `.github/workflows/manuscript.yml`;
 - pull-request trigger: path-based changes to the manuscript tree or manuscript workflow;
-- gates: stabilized PDF build, bibliography/reference/duplicate-label checks and embedded-font verification;
+- gates: stabilized PDF build, bibliography/reference/duplicate-label checks, embedded-font verification, page inspection and theorem/dependency comparison;
 - exact-head workflow results are recorded in PR `#9` and the latest durable issue return.
 
-The Makefile, workflow, bibliography database and Lean sources are outside the global editorial-integration write surface and remain unchanged.
+The Makefile, workflow, bibliography database and Lean sources remain unchanged.
 
 ## Product rules
 
 - One article, one branch, one draft PR.
 - No task-, auditor-, repair-, review- or revision-specific branches.
-- Mathematical changes are recorded in `AFT_REPAIR_LEDGER.md` and `PROOF_CHANGE_LEDGER.md`.
+- Mathematical changes are recorded in `AFT_REPAIR_LEDGER.md` and `PROOF_CHANGE_LEDGER.md` only under separately authorized roles; this integration role modifies only its stated source surface.
 - Source obligations are tracked in `PROOF_OBLIGATION_LEDGER.md`.
 - Read-only reviewers do not write to the branch.
 - Owner approval is required before ready-for-review, merge, release, DOI action, arXiv upload or journal submission.
@@ -90,21 +93,21 @@ The Makefile, workflow, bibliography database and Lean sources are outside the g
 
 - `M0` control and source freeze — **COMPLETE**
 - `M1` bounded structural repair and specialization bridge — **COMPLETE / VERIFIED / MANUSCRIPT-ADOPTED**
-- `M2` theorem DAG and article architecture — **COMPLETE / SYNCHRONIZED**
+- `M2` theorem DAG and article architecture — **COMPLETE / SYNCHRONIZED THROUGH THE PRE-INTEGRATION HEAD**
 - `M3` general structural tools — **COMPLETE / MANUSCRIPT-ADOPTED**
-- `M4` E306 arithmetic providers — **COMPLETE / MANUSCRIPT-ADOPTED**
+- `M4` E306 arithmetic providers — **COMPLETE / PARAMETERIZED FIXED-TARGET EXTENSION INTEGRATED**
 - `M5` full manuscript assembly — **COMPLETE**
-- `M6` mathematical, source, build, publication-text and visual reviews — **COMPLETE THROUGH THE ACCEPTED GLOBAL REPAIR MAP**
-- `M7` revision and publication disposition — **PRE-ARXIV EXTERNAL-READER REPAIR COMPLETE / INDEPENDENT VERIFICATION PENDING / OWNER HOLD**
+- `M6` mathematical, source, build, publication-text and visual reviews — **COMPLETE THROUGH THE ACCEPTED PRE-INTEGRATION REPAIR MAP**
+- `M7` revision and publication disposition — **PARAMETERIZED PRE-SUBMISSION INTEGRATION COMPLETE / INDEPENDENT VERIFICATION PENDING / OWNER HOLD**
 
-## Pre-arXiv external-reader repair state
+## Parameterized pre-submission integration state
 
-The bounded clean external-reader repair has been integrated within its authorized source surface.  It awaits a one-off independent verification.  This state records no self-referential commit hash and grants no publication authority.
+The complete fixed-target and fixed-exponent package has been integrated within its authorized source surface.  It includes the exact admissible region, the three variance regimes, the five- and six-sector architectures, entropy optimization with attainment distinctions, the countably infinite proper refinement chain, and the resulting quantitative transfer.  This state grants no publication authority.
 
 ## Current state
 
 ```text
-[PRE-ARXIV EXTERNAL-READER REPAIR COMPLETE E306-PAPER-01]
+[PARAMETERIZED FIXED-TARGET INTEGRATION COMPLETE E306-PAPER-01]
 [INDEPENDENT VERIFICATION PENDING]
 [OWNER HOLD / PR #9 REMAINS DRAFT]
 ```

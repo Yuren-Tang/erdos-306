@@ -1,25 +1,41 @@
-\section{The semiprime denominator system}
+\section{The parameterized semiprime denominator system}
 \label{sec:denominator-system}
 
-We now specialize the finite selection model to a fixed squarefree denominator.  This section supplies the arithmetic family, its reciprocal capacity, the exact Bernoulli centring, and the factor partition on which the later anchor and row estimates act.  Throughout, let $b\geq3$ be squarefree and let $\mathcal T$ be a finite set of forbidden denominators.  All asymptotic statements are for $X\to\infty$ with $b$ and $\mathcal T$ fixed.
+Fix throughout a reduced target
+\[
+ t=\frac ab\in(0,1)
+\]
+with squarefree $b$, a finite forbidden set $\mathcal T$, and a fixed exponent $\gamma>1$.  Put
+\begin{equation}
+\label{eq:lambda-gamma}
+ \lambda_\gamma=\frac{(\log\gamma)^2}{2}.
+\end{equation}
+We assume the sharp admissible inequalities
+\begin{equation}
+\label{eq:admissible-region}
+ t<\lambda_\gamma<1.
+\end{equation}
+Equivalently,
+\begin{equation}
+\label{eq:admissible-gamma}
+ \exp(\sqrt{2t})<\gamma<\exp(\sqrt2).
+\end{equation}
+All asymptotic statements are for $X\to\infty$ with $t$, $\gamma$, $b$ and $\mathcal T$ fixed.
 
-\subsection{Prime blocks}
+\subsection{Prime blocks and their power sums}
 
 Put
-\[
- Z=X^3,
+\begin{equation}
+\label{eq:prime-blocks}
+ Z=X^\gamma,
  \qquad
  P=\{p\text{ prime}:X\leq p<Z\},
  \qquad
  B=\{q\text{ prime}:Z/2\leq q<Z\},
-\]
-and let
-\[
- S_b=\{r\text{ prime}:r\mid b\}.
-\]
-We always take $X$ so large that every prime in $P$ exceeds every prime divisor of $b$, and every denominator constructed below exceeds every element of $\mathcal T$.
+\end{equation}
+and let $S_b$ be the set of prime divisors of $b$.  We take $X$ so large that every prime in $P$ exceeds every prime divisor of $b$, and every denominator constructed below exceeds every element of $\mathcal T$.
 
-We use the following standard consequence of the prime number theorem; see, for example, Montgomery and Vaughan~\cite[Chapter~1]{montgomery-vaughan-2007}.
+We use the following standard consequence of the prime number theorem; see Montgomery and Vaughan~\cite[Chapter~1]{montgomery-vaughan-2007}.
 
 \begin{lemma}[Prime supply in fixed-ratio intervals]
 \label{lem:fixed-ratio-prime-supply}
@@ -28,17 +44,10 @@ For fixed $0<u<v$, uniformly as $y\to\infty$,
  \#\{p\text{ prime}:uy\leq p<vy\}
  =\bigl(v-u+o(1)\bigr)\frac{y}{\log y}.
 \]
-In particular this quantity lies between positive constant multiples of $y/\log y$ for all sufficiently large $y$.
 \end{lemma}
 
 \begin{proof}
-Write the prime number theorem in the tail-uniform form
-\[
- \pi(t)=\frac{t}{\log t}(1+\varepsilon(t)),
- \qquad
- \sup_{t\geq Y}|\varepsilon(t)|\longrightarrow0.
-\]
-Apply it at $uy$ and $vy$.  Since $u$ and $v$ are fixed, replacing $\log(uy)$ and $\log(vy)$ by $\log y$ introduces only a relative $o(1)$.
+Apply the prime number theorem at $uy$ and $vy$ in its tail-uniform form.  Replacing $\log(uy)$ and $\log(vy)$ by $\log y$ introduces only a relative $o(1)$.
 \end{proof}
 
 Define
@@ -47,7 +56,7 @@ Define
  \qquad
  U_X=\sum_{p\in P}\frac1{p^2},
  \qquad
- M=|B|,
+ M_B=|B|,
 \]
 and
 \[
@@ -56,46 +65,46 @@ and
  W_B=\sum_{q\in B}\frac1{q^2}.
 \]
 
-\begin{lemma}[Reciprocal prime estimates]
+\begin{lemma}[Parameterized prime reciprocal estimates]
 \label{lem:reciprocal-prime-estimates}
 As $X\to\infty$,
-\[
- S_X=\log3+o(1),
+\begin{align}
+ S_X&=\log\gamma+o(1),
+ \label{eq:SX-asymptotic}\\
+ U_X&\sim\frac1{X\log X},
+ \label{eq:UX-asymptotic}\\
+ |P|&\sim\frac{Z}{\log Z},
+ \label{eq:P-cardinality}\\
+ M_B&\sim\frac{Z}{2\log Z},
+ \label{eq:B-cardinality}\\
+ V_B&=O\!\left(\frac1{\log Z}\right),
  \qquad
- U_X=O\!\left(\frac1{X\log X}\right),
-\]
-and
-\[
- M\asymp\frac{Z}{\log Z},
- \qquad
- V_B=O\!\left(\frac1{\log Z}\right),
- \qquad
- W_B=O\!\left(\frac1{Z\log Z}\right).
-\]
+ W_B\sim\frac1{Z\log Z}.
+ \label{eq:B-power-sums}
+\end{align}
 \end{lemma}
 
 \begin{proof}
-Abel summation and \cref{lem:fixed-ratio-prime-supply} give
+Abel summation gives
 \[
- \sum_{X\leq p<X^3}\frac1p
- =\int_X^{X^3}\frac{dt}{t\log t}+o(1)
- =\log\log(X^3)-\log\log X+o(1)
- =\log3+o(1).
+ \sum_{X\leq p<X^\gamma}\frac1p
+ =\int_X^{X^\gamma}\frac{du}{u\log u}+o(1)
+ =\log\gamma+o(1).
 \]
-For the square sum, split $[X,X^3)$ into dyadic intervals.  The interval $[2^k,2^{k+1})$ contains $O(2^k/k)$ primes and therefore contributes $O(1/(k2^k))$; summing the geometric tail gives the asserted bound for $U_X$.
-
-The estimate for $M$ follows from \cref{lem:fixed-ratio-prime-supply} on $[Z/2,Z)$.  Since $q\geq Z/2$ on $B$,
+A second partial summation gives
 \[
- W_B\leq\frac{4M}{Z^2}=O\!\left(\frac1{Z\log Z}\right).
+ \sum_{X\leq p<X^\gamma}\frac1{p^2}
+ =\int_X^{X^\gamma}\frac{du}{u^2\log u}(1+o(1))
+ \sim\frac1{X\log X};
 \]
-A final Abel summation on $[Z/2,Z)$ gives
+the upper endpoint is negligible because $\gamma>1$ is fixed.  The cardinality statements follow from \cref{lem:fixed-ratio-prime-supply}.  Finally, partial summation on $[Z/2,Z)$ gives the two estimates in \cref{eq:B-power-sums}; explicitly,
 \[
- V_B=\log\log Z-\log\log(Z/2)+o(1/\log Z)
- =O(1/\log Z).
+ \int_{Z/2}^{Z}\frac{du}{u^2\log u}
+ \sim\frac1{Z\log Z}.
 \]
 \end{proof}
 
-\subsection{The denominator family}
+\subsection{The complete pair family and target rows}
 
 Define
 \[
@@ -106,129 +115,161 @@ Define
  =\{rq:r\in S_b,\ q\in B\},
 \]
 and
-\[
+\begin{equation}
+\label{eq:E-and-L}
  \mathcal E=\mathcal E_{\mathrm{pair}}\sqcup\mathcal E_b,
  \qquad
  L=b\prod_{p\in P}p.
-\]
-The symbol $\sqcup$ is justified by unique factorization: every prime in $P$ exceeds every prime factor of $b$.
-
-Let
+\end{equation}
+The disjoint union follows from unique factorization.  Put
 \[
  \Lambda=\sum_{e\in\mathcal E}\frac1e.
 \]
 
-\begin{proposition}[Arithmetic capacity]
+\begin{proposition}[Parameterized arithmetic capacity]
 \label{prop:arithmetic-capacity}
 For all sufficiently large $X$:
 \begin{enumerate}[label=(\roman*)]
 \item every $e\in\mathcal E$ is a squarefree semiprime;
 \item the elements of $\mathcal E$ are pairwise distinct, avoid $\mathcal T$, and divide $L$;
-\item for fixed constants
+\item one has
+\begin{equation}
+\label{eq:load-limit}
+ \Lambda\longrightarrow\lambda_\gamma;
+\end{equation}
+more precisely, for fixed constants
 \[
- \frac13<\lambda_-<\frac{(\log3)^2}{2}<\lambda_+<1,
+ t<\lambda_-<\lambda_\gamma<\lambda_+<1,
 \]
-one has
-\[
- \lambda_-<\Lambda<\lambda_+;
-\]
-\item
-\[
+one has $\lambda_-<\Lambda<\lambda_+$ for all sufficiently large $X$;
+\item with
+\begin{equation}
+\label{eq:tau-b}
+ \tau_b=\sum_{r\mid b}\frac1{r^2},
+\end{equation}
+one has the complete square-load asymptotic
+\begin{equation}
+\label{eq:complete-square-load}
  \sum_{e\in\mathcal E}\frac1{e^2}
- \asymp\frac1{X^2\log^2X}.
-\]
+ =\frac{1+o(1)}{2X^2\log^2X}
+  +\frac{\tau_b+o_b(1)}{Z\log Z}.
+\end{equation}
 \end{enumerate}
 \end{proposition}
 
 \begin{proof}
-The distinctness and squarefreeness assertions follow from unique factorization and the choice of $X$.  Avoidance follows because every constructed denominator eventually exceeds every element of the fixed set $\mathcal T$, and each denominator divides $L$ by definition.
-
-By \cref{lem:reciprocal-prime-estimates}, the first two power sums have the required asymptotics.  Apply the exact pair identity \cref{cor:pair-identity} with weights $u_p=1/p$.  The complete-pair load is
+Only the load and square load require proof.  The exact pair identity \cref{cor:pair-identity} gives
 \begin{equation}
 \label{eq:pair-load}
  \Lambda_{\mathrm{pair}}
- =\sum_{\substack{p<q\\p,q\in P}}\frac1{pq}
- =\frac12\left(S_X^2-U_X\right)
- \longrightarrow\frac{(\log3)^2}{2}.
+ =\frac12(S_X^2-U_X)
+ \longrightarrow\frac{(\log\gamma)^2}{2}=\lambda_\gamma.
 \end{equation}
-The factor $1/2$ in \cref{eq:pair-load} is essential: the family contains unordered distinct pairs.  The target-sensitive auxiliary load is
+The target-row load is
 \[
  \Lambda_b
- =\left(\sum_{r\in S_b}\frac1r\right)V_B
- =O_b(1/\log Z)=o_b(1).
+ =\left(\sum_{r\mid b}\frac1r\right)V_B
+ =O_b(1/\log Z)=o_b(1),
 \]
-This proves the load interval.
+which proves \cref{eq:load-limit} and the fixed load interval.
 
-For the upper square-load bound,
+For the pair square load, apply the pair identity to $u_p=p^{-2}$:
 \[
- \sum_{\substack{p<q\\p,q\in P}}\frac1{p^2q^2}
- \leq\frac{U_X^2}{2}
- =O\!\left(\frac1{X^2\log^2X}\right).
+ \sum_{p<q}\frac1{p^2q^2}
+ =\frac12\left(U_X^2-\sum_{p\in P}\frac1{p^4}\right)
+ \sim\frac1{2X^2\log^2X}.
 \]
-The interval $[X,2X)$ contains $\gg X/\log X$ primes.  Its distinct pairs have product at most $4X^2$, and hence contribute
+Indeed the fourth-power diagonal is $O(1/(X^3\log X))$.  The target rows contribute
 \[
- \gg\frac{(X/\log X)^2}{X^4}
- =\frac1{X^2\log^2X}.
+ \sum_{r\mid b}\sum_{q\in B}\frac1{r^2q^2}
+ =\tau_bW_B
+ \sim\frac{\tau_b}{Z\log Z}.
 \]
-Finally,
-\[
- \sum_{r\in S_b}\sum_{q\in B}\frac1{r^2q^2}
- =\left(\sum_{r\in S_b}\frac1{r^2}\right)W_B
- =O_b\!\left(\frac1{Z\log Z}\right),
-\]
-which is negligible on the displayed scale.
+This proves \cref{eq:complete-square-load} without assuming which summand dominates.
 \end{proof}
 
-\subsection{Bernoulli centring and variance}
+The family size and modulus satisfy
+\begin{equation}
+\label{eq:family-size-modulus}
+ M_X:=|\mathcal E|
+ =(1+o(1))\frac{Z^2}{2\log^2Z},
+ \qquad
+ \log L=(1+o(1))Z=o(M_X).
+\end{equation}
+The target rows have only $O_b(Z/\log Z)$ elements and do not affect the leading family size.  Every denominator is at most $Z^2$ for large $X$.
+
+\subsection{Exact centring and the variance phase boundary}
 
 Set
 \begin{equation}
 \label{eq:theta-definition}
- \theta=\frac1{b\Lambda}.
+ \theta=\frac{t}{\Lambda}.
 \end{equation}
-By \cref{prop:arithmetic-capacity}, $\theta$ belongs to the fixed compact interval
-\[
- I_b=\left[\frac1{b\lambda_+},\frac1{b\lambda_-}\right]\subset(0,1).
-\]
+By \cref{prop:arithmetic-capacity}, $\theta$ lies in a fixed compact interval $I_{t,\gamma}\subset(0,1)$ and
+\begin{equation}
+\label{eq:theta-limit}
+ \theta\longrightarrow
+ \alpha_{t,\gamma}
+ :=\frac{t}{\lambda_\gamma}
+ =\frac{2t}{(\log\gamma)^2}.
+\end{equation}
 Moreover,
 \begin{equation}
 \label{eq:exact-centering-load}
- \theta\sum_{e\in\mathcal E}\frac1e=\frac1b,
+ \theta\sum_{e\in\mathcal E}\frac1e=t,
  \qquad
  \Lambda<1.
 \end{equation}
-This realizes the abstract centring condition \cref{eq:theta-centering}.  Define the actual-family variance scale by
+Define the actual-family variance by
 \begin{equation}
 \label{eq:sigma-E}
  \sigma_{\mathcal E}^2
  =\theta(1-\theta)\sum_{e\in\mathcal E}\frac1{e^2}.
 \end{equation}
-Then
-\begin{equation}
-\label{eq:sigma-E-scale}
- \sigma_{\mathcal E}^2\asymp_b\frac1{X^2\log^2X},
- \qquad
- \sigma_{\mathcal E}^{-1}\asymp_b X\log X.
-\end{equation}
-The definitions \cref{eq:theta-definition,eq:sigma-E} and the scale comparison \cref{eq:sigma-E-scale} will be used throughout the frequency estimates.
 
-The finite Fourier numerator from \cref{eq:reciprocal-fourier} is
+\begin{proposition}[Complete variance in the three regimes]
+\label{prop:variance-regimes}
+Let $\alpha=\alpha_{t,\gamma}$.  Then:
+\begin{enumerate}[label=(\Alph*)]
+\item If $\gamma>2$, the pair square load dominates and
+\begin{equation}
+\label{eq:variance-gamma-large}
+ \sigma_{\mathcal E}^2
+ \sim\frac{\alpha(1-\alpha)}{2X^2\log^2X}.
+\end{equation}
+\item If $\gamma=2$, the target-row square load dominates the pair square load by a factor of order $\log X$, and
+\begin{equation}
+\label{eq:variance-gamma-two}
+ \sigma_{\mathcal E}^2
+ \sim\frac{\alpha(1-\alpha)\tau_b}{Z\log Z}.
+\end{equation}
+\item If $1<\gamma<2$, the target-row square load dominates by a power of $X$, and the same asymptotic \cref{eq:variance-gamma-two} holds.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Compare the two summands in \cref{eq:complete-square-load}.  Their ratio, target over pair, is asymptotic to a constant multiple of
+\[
+ \frac{X^2\log^2X}{Z\log Z}
+ \asymp X^{2-\gamma}\log X.
+\]
+It tends to $0$ for $\gamma>2$, to infinity logarithmically for $\gamma=2$, and to infinity polynomially for $\gamma<2$.  Now use \cref{eq:theta-limit}.
+\end{proof}
+
+This separate treatment of $\gamma=2$ is essential.  The coefficient scale, the major range, and the normalized minor totals all use the actual variance in \cref{prop:variance-regimes}.
+
+The finite Fourier numerator is
 \begin{equation}
 \label{eq:Fh-definition}
- F(h)=\exp(-2\pi i h/b)
+ F(h)=\exp\left(-\frac{2\pi i a h}{b}\right)
  \prod_{e\in\mathcal E}
- \left((1-\theta)+\theta\exp(2\pi i h/e)\right).
+ \left((1-\theta)+\theta\exp\left(\frac{2\pi i h}{e}\right)\right).
 \end{equation}
-For $t\in\mathbb R$,
-\[
- |(1-\theta)+\theta\exp(2\pi i t)|^2
- =1-4\theta(1-\theta)\sin^2(\pi t).
-\]
-Since $I_b$ is compact, there is $\kappa_b>0$ such that, uniformly for $\theta\in I_b$,
+Compactness of $I_{t,\gamma}$ gives a constant $\kappa_b>0$---allowed to depend on the fixed $t$ and $\gamma$---such that
 \begin{equation}
 \label{eq:bernoulli-modulus}
- |(1-\theta)+\theta\exp(2\pi i t)|
- \leq\exp(-\kappa_b\dist{t}^2).
+ |(1-\theta)+\theta\exp(2\pi i u)|
+ \leq\exp(-\kappa_b\dist{u}^2).
 \end{equation}
 Consequently,
 \begin{equation}
@@ -240,9 +281,7 @@ Consequently,
 
 \subsection{Exact factor partition}
 
-Because $b$ and $\prod_{p\in P}p$ are coprime and squarefree, the period $L$ is squarefree.  Chinese-remainder coordinates split the frequency into the coordinates indexed by $B$, by $P\setminus B$, and by $S_b$.
-
-The denominator factors in \cref{eq:Fh-definition} are assigned exactly once as follows:
+Because $b$ and $\prod_{p\in P}p$ are coprime and squarefree, the period $L$ is squarefree.  Chinese-remainder coordinates split the frequency into those indexed by $B$, by $P\setminus B$, and by $S_b$.  The denominator factors are assigned exactly once as follows:
 \begin{center}
 \begin{tabular}{ll}
 \toprule
@@ -255,6 +294,4 @@ $p p'$ with $p,p'\in P\setminus B$ & retained skeleton factor \\
 \bottomrule
 \end{tabular}
 \end{center}
-The target character $\exp(-2\pi ih/b)$ and every phase not absorbed into a row remain in the complex residual factor.  The four denominator classes are disjoint and cover $\mathcal E$.  Thus no Fourier factor is omitted, duplicated, or introduced by the anchor--fibre decomposition.
-
-The arithmetic family is now fixed.  The next section proves that its anchor assignments either synchronize to one exact integer label or have negligible total weight; the subsequent row analysis then recovers the remaining coordinates.
+The target character and every phase not absorbed into a row remain in the complex residual factor.  The four denominator classes are disjoint and cover $\mathcal E$.

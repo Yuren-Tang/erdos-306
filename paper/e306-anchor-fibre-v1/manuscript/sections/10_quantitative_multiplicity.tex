@@ -1,385 +1,308 @@
-\section{Quantitative multiplicity, diversity and transfer}
+\section{Quantitative multiplicity, optimization and transfer}
 \label{sec:quantitative-multiplicity}
 
-The strict Fourier budget contains more information than the positivity needed for existence.  We first record the exact coefficient in the direct one-anchor family, then pass successively to multiplicity, cardinality, macroscopic support diversity and its balanced signed-relation consequence, denominator height, refinement branching and arbitrary admissible targets.  Throughout the direct-family statements, $b\geq3$ is squarefree, the forbidden set $\mathcal T$ is fixed, and $X\to\infty$.  Whenever a Gaussian cutoff $C$ occurs, $X\to\infty$ is taken with $C$ fixed; only afterwards may $C\to\infty$.
-
-\subsection{Fixed-target coefficient and multiplicity}
-
-Retain the denominator family $\mathcal E=\mathcal E_X$, modulus $L=L_X$, load $\Lambda=\Lambda_X$, Bernoulli parameter $\theta=\theta_X$ and variance $\sigma_{\mathcal E}^2=\sigma_X^2$ of \cref{sec:denominator-system}.  Put
+Retain a fixed reduced target $t=a/b\in(0,1)$ with squarefree $b$, a fixed admissible exponent $\gamma$, and a fixed forbidden set.  Write $\mathcal E_X$, $L_X$, $\Lambda_X$, $\theta_X$ and $\sigma_X$ for the parameterized objects above.  Let
 \[
  M_X=|\mathcal E_X|,
  \qquad
- \mathcal R_X(b)
- =\left\{\mathcal A\subseteq\mathcal E_X:
-       \sum_{e\in\mathcal A}\frac1e=\frac1b\right\},
+ \mathcal R_X(t)=\left\{A\subseteq\mathcal E_X:
+   \sum_{e\in A}\frac1e=t\right\},
 \]
-and let $P_X$ denote the Bernoulli probability of the exact target event.  By character orthogonality and no-wrap,
+and let $P_X(t)$ be the Bernoulli probability of the exact target event.
+
+\subsection{Sharp fixed-target coefficient in the three regimes}
+
+By character orthogonality and no-wrap,
 \begin{equation}
 \label{eq:quantitative-weighted-count}
- P_X
- =\sum_{\mathcal A\in\mathcal R_X(b)}
-   \theta_X^{|\mathcal A|}(1-\theta_X)^{M_X-|\mathcal A|}.
+ P_X(t)=\sum_{A\in\mathcal R_X(t)}
+ \theta_X^{|A|}(1-\theta_X)^{M_X-|A|}.
 \end{equation}
-The prime number theorem and partial summation used in \cref{sec:denominator-system} also give
+The basic asymptotics are
 \begin{equation}
 \label{eq:quantitative-basic-asymptotics}
-\begin{gathered}
- \theta_X\longrightarrow
- \alpha_b:=\frac{2}{b(\log 3)^2}\in(0,1),
- \qquad
- M_X=(1+o(1))\frac{X^6}{18\log^2X},\\
- \log L_X=(1+o(1))X^3=o(M_X),
- \qquad
- \sigma_X^2\sim
- \frac{\alpha_b(1-\alpha_b)}{2X^2\log^2X}.
-\end{gathered}
+\begin{aligned}
+ \theta_X&\longrightarrow\alpha_{t,\gamma}
+ =\frac{2t}{(\log\gamma)^2},\\
+ M_X&=(1+o(1))\frac{Z^2}{2\log^2Z},\\
+ \log L_X&=(1+o(1))Z=o(M_X).
+\end{aligned}
 \end{equation}
-Indeed, $|P|\sim X^3/(3\log X)$, so the complete pair family contributes $\binom{|P|}{2}$, while the finitely many target rows have only $O_b(X^3/\log X)$ members.  Similarly, partial summation gives $\sum_{p\in P}p^{-2}\sim1/(X\log X)$; the pair square-load is half its square up to a negligible diagonal, and the target rows are again smaller.  Here and below logarithms are natural.
+The variance is the complete variance of \cref{prop:variance-regimes}; in particular, the target rows cannot be discarded at or below $\gamma=2$.
 
 \begin{corollary}[Quantitative target coefficient]
 \label{cor:quantitative-coefficient}
 For all sufficiently large $X$,
 \begin{equation}
 \label{eq:quantitative-coefficient}
- L_XP_X\geq\frac{c_{\mathrm{maj}}}{2\sigma_X}.
+ L_XP_X(t)\geq\frac{c_{t,\gamma}}{\sigma_X}
 \end{equation}
+for a fixed $c_{t,\gamma}>0$.
 \end{corollary}
 
 \begin{proof}
-The strict assembly in \cref{sec:major-budget} assigns at most
-$c_{\mathrm{maj}}/(8\sigma_X)$ to Sector~II and less than
-$3c_{\mathrm{maj}}/(8\sigma_X)$ to Sectors~III--V, whereas Sector~I has real part at least $c_{\mathrm{maj}}/\sigma_X$.  Thus the real part of the full Fourier numerator is bounded below by
-\[
- \left(1-\frac18-\frac38\right)
- \frac{c_{\mathrm{maj}}}{\sigma_X}
- =\frac{c_{\mathrm{maj}}}{2\sigma_X}.
-\]
-The numerator is $L_XP_X$, which is real and nonnegative.
+The strict sector assembly leaves a fixed positive fraction of the major contribution after all minor totals have been subtracted.
 \end{proof}
 
 \begin{theorem}[Sharp fixed-target coefficient]
 \label{thm:sharp-target-coefficient}
-For fixed squarefree $b\geq3$ and fixed finite $\mathcal T$,
+For fixed $t$, $\gamma$ and finite forbidden set,
 \begin{equation}
 \label{eq:sharp-target-coefficient}
- L_XP_X\sim\frac1{\sqrt{2\pi}\,\sigma_X}
- \sim\frac{X\log X}{\sqrt{\pi\alpha_b(1-\alpha_b)}}.
+ L_XP_X(t)\sim\frac1{\sqrt{2\pi}\,\sigma_X}.
+\end{equation}
+More explicitly, with $\alpha=\alpha_{t,\gamma}$ and $\tau_b$ as in \cref{eq:tau-b},
+\begin{equation}
+\label{eq:sharp-target-coefficient-regimes}
+ L_XP_X(t)\sim
+ \begin{cases}
+ \displaystyle
+ \frac{X\log X}{\sqrt{\pi\alpha(1-\alpha)}},&\gamma>2,\\[8pt]
+ \displaystyle
+ \frac{\sqrt{Z\log Z}}
+ {\sqrt{2\pi\alpha(1-\alpha)\tau_b}},&1<\gamma\leq2.
+ \end{cases}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
-Fix $C\geq1$ and retain it while $X\to\infty$.  With $N=\lfloor C/\sigma_X\rfloor$, the uniform complex expansion \cref{eq:major-local-gaussian}, including the aggregate remainder \cref{eq:aggregate-cubic-remainder}, gives the Riemann-sum limit
+Fix $C\geq1$ while $X\to\infty$.  With $N=\lfloor C/\sigma_X\rfloor$, the uniform complex expansion \cref{eq:major-local-gaussian,eq:aggregate-cubic-remainder} gives
 \[
  \sigma_X\sum_{|m|\leq C/\sigma_X}F(m)
- \longrightarrow
- \int_{-C}^{C}\exp(-2\pi^2u^2)\,du.
+ \longrightarrow\int_{-C}^{C}\exp(-2\pi^2u^2)\,du.
 \]
-The normalized Sector~II estimate \cref{eq:sector-II-tail} yields
+The normalized full-variance tail is $O(\exp(-cC^2))$.  For fixed $C$, every remaining sector is $o(\sigma_X^{-1})$: this includes the prime-only transition when $\gamma\leq2$.  Hence
 \[
  \limsup_{X\to\infty}
- \sigma_X\sum_{\mathrm{II}}|F|
- \leq K_b\exp(-c_bC^2/2),
-\]
-where $K_b$ is independent of $C$.  For this fixed $C$, \cref{eq:sector-III-total,eq:sector-IV-total,eq:sector-V-total} give
-\[
- \sigma_X\sum_{\mathrm{III}\text{--}\mathrm{V}}|F|\longrightarrow0.
-\]
-Consequently
-\[
- \limsup_{X\to\infty}
- \left|\sigma_XL_XP_X-
+ \left|\sigma_XL_XP_X(t)-
  \int_{-C}^{C}\exp(-2\pi^2u^2)\,du\right|
- \leq K_b\exp(-c_bC^2/2).
+ \ll\exp(-cC^2).
 \]
-Only now let $C\to\infty$.  Since
-\[
- \int_{\mathbb R}\exp(-2\pi^2u^2)\,du=\frac1{\sqrt{2\pi}},
-\]
-the first asymptotic follows.  The second is \cref{eq:quantitative-basic-asymptotics}.  No diagonal choice $C=C(X)$ and no moving-target uniformity is used.
+Only now let $C\to\infty$.  Since the Gaussian integral is $1/\sqrt{2\pi}$, \cref{eq:sharp-target-coefficient} follows.  The two explicit forms are \cref{prop:variance-regimes}.  No diagonal choice $C=C(X)$ and no moving-target uniformity is used.
 \end{proof}
+
+\subsection{Entropy-optimal cardinality and support diversity}
 
 Put
 \[
- q_X=\max(\theta_X,1-\theta_X),
- \qquad
- q_b=\max(\alpha_b,1-\alpha_b).
+ H(u)=-u\log u-(1-u)\log(1-u)
+ \qquad(0<u<1),
 \]
-
-\begin{corollary}[Exponential multiplicity]
-\label{cor:exponential-multiplicity}
-For all sufficiently large $X$,
-\begin{equation}
-\label{eq:raw-exponential-multiplicity}
- |\mathcal R_X(b)|
- \geq
- \frac{c_{\mathrm{maj}}}{2L_X\sigma_X}\,q_X^{-M_X}.
-\end{equation}
-Consequently,
-\begin{equation}
-\label{eq:exponential-multiplicity-rate}
- \log|\mathcal R_X(b)|
- \geq\bigl[-\log q_b+o_b(1)\bigr]M_X.
-\end{equation}
-\end{corollary}
-
-\begin{proof}
-Every summand in \cref{eq:quantitative-weighted-count} is at most $q_X^{M_X}$.  Hence
-$P_X\leq|\mathcal R_X(b)|q_X^{M_X}$, and \cref{eq:raw-exponential-multiplicity} follows from \cref{eq:quantitative-coefficient}.  Since $q_X\to q_b$, while $\log L_X$ and $|\log\sigma_X|$ are $o(M_X)$, \cref{eq:exponential-multiplicity-rate} follows.
-\end{proof}
-
-\subsection{Cardinality concentration, macroscopic diversity and balanced relations}
-
-For the sharper cardinality statement, let
+and let
 \[
- K_X=\sum_{e\in\mathcal E_X}\xi_e
- \sim\operatorname{Bin}(M_X,\theta_X),
+ K_X\sim\operatorname{Bin}(M_X,\theta_X),
  \qquad
- w_X=\left\lceil2\sqrt{M_X\log L_X}\right\rceil,
+ w_X=\left\lceil2\sqrt{M_X\log L_X}\right\rceil.
 \]
-and write
-\[
- H(t)=-t\log t-(1-t)\log(1-t)
- \qquad(0<t<1).
-\]
-By \cref{eq:quantitative-basic-asymptotics},
-\begin{equation}
-\label{eq:mesoscopic-window-size}
- \sqrt{M_X}\ll w_X=o(M_X).
-\end{equation}
+Then $\sqrt{M_X}\ll w_X=o(M_X)$.
 
 \begin{theorem}[Entropy-optimal mesoscopic window]
 \label{thm:mesoscopic-entropy}
 One has
 \begin{equation}
 \label{eq:mesoscopic-entropy-lower}
- \#\left\{\mathcal A\in\mathcal R_X(b):
-   \bigl||\mathcal A|-\theta_XM_X\bigr|\leq w_X\right\}
- \geq
- \exp\bigl([H(\alpha_b)-o_b(1)]M_X\bigr).
+ \#\left\{A\in\mathcal R_X(t):
+ \bigl||A|-\theta_XM_X\bigr|\leq w_X\right\}
+ \geq\exp\bigl([H(\alpha_{t,\gamma})-o(1)]M_X\bigr).
 \end{equation}
 The number of all subsets of $\mathcal E_X$ in the same window is at most
 \begin{equation}
 \label{eq:mesoscopic-entropy-upper}
- \exp\bigl([H(\alpha_b)+o_b(1)]M_X\bigr).
+ \exp\bigl([H(\alpha_{t,\gamma})+o(1)]M_X\bigr).
 \end{equation}
 Thus the lower bound has the optimal exponential rate for this window.
 \end{theorem}
 
 \begin{proof}
 Hoeffding's inequality gives
-\begin{equation}
-\label{eq:hoeffding-cardinality}
- \Prob\bigl(|K_X-\theta_XM_X|>w_X\bigr)
- \leq2\exp(-2w_X^2/M_X)
- \leq2L_X^{-8}.
-\end{equation}
-By \cref{eq:quantitative-coefficient},
-$P_X\gg_b(L_X\sigma_X)^{-1}$.  The estimates in
-\cref{eq:quantitative-basic-asymptotics} therefore imply
-$2L_X^{-8}=o(P_X)$.  Consequently the exact target mass lying in the displayed cardinality window is $(1-o(1))P_X$.
-
-For an integer $k$ in the window, write $k=\theta_XM_X+d$, where $|d|\leq w_X$.  The logarithm of its Bernoulli atom is
 \[
- -M_XH(\theta_X)
- +d\log\frac{\theta_X}{1-\theta_X}.
+ \Prob(|K_X-\theta_XM_X|>w_X)\leq2L_X^{-8}.
 \]
-Since $\theta_X$ remains in a fixed compact subinterval of $(0,1)$, every such atom is at most
-\begin{equation}
-\label{eq:window-atom-bound}
- \exp\bigl(-M_XH(\theta_X)+O_b(w_X)\bigr).
-\end{equation}
-Dividing the target mass in the window by \cref{eq:window-atom-bound}, and using \cref{eq:quantitative-basic-asymptotics,eq:mesoscopic-window-size}, gives \cref{eq:mesoscopic-entropy-lower}.  Finally, the elementary bound
-$\binom{M}{k}\leq\exp(MH(k/M))$, uniformly for
-$k/M_X=\theta_X+o(1)$, together with the $2w_X+1=\exp(o(M_X))$ possible values of $k$, gives \cref{eq:mesoscopic-entropy-upper}.
+By \cref{eq:sharp-target-coefficient}, this is $o(P_X(t))$.  Thus a $(1-o(1))$ proportion of the exact target mass lies in the window.  A Bernoulli atom at $k=\theta_XM_X+d$, $|d|\leq w_X$, is at most
+\[
+ \exp\left(-M_XH(\theta_X)+O(w_X)\right).
+\]
+Divide the target mass in the window by this bound and use \cref{eq:quantitative-basic-asymptotics}.  The upper bound follows from $\binom{M}{k}\leq\exp(MH(k/M))$ and the $\exp(o(M_X))$ possible cardinalities.
 \end{proof}
 
 \begin{corollary}[Exact-cardinality extraction]
 \label{cor:exact-cardinality-extraction}
 There is an integer
-\begin{equation}
-\label{eq:extracted-cardinality}
+\[
  k_X=\theta_XM_X+O(w_X)
-\end{equation}
+\]
 such that
 \begin{equation}
 \label{eq:exact-cardinality-count}
- \#\{\mathcal A\in\mathcal R_X(b):|\mathcal A|=k_X\}
- \geq
- \exp\bigl([H(\alpha_b)-o_b(1)]M_X\bigr).
+ \#\{A\in\mathcal R_X(t):|A|=k_X\}
+ \geq\exp\bigl([H(\alpha_{t,\gamma})-o(1)]M_X\bigr).
 \end{equation}
 \end{corollary}
 
 \begin{proof}
-The window in \cref{thm:mesoscopic-entropy} contains at most
-$2w_X+1=\exp(o(M_X))$ integers.  Partition its representations by cardinality and apply the pigeonhole principle.
+Pigeonhole among the $2w_X+1=\exp(o(M_X))$ cardinalities in the window.
 \end{proof}
 
 \begin{corollary}[Macroscopic diversity at one cardinality]
 \label{cor:hamming-separated-family}
-There are constants $\rho_b,\eta_b>0$ and, for all sufficiently large $X$, a family
-$\mathcal F_X\subseteq\mathcal R_X(b)$ such that
+There are constants $\rho,\eta>0$ and, for all sufficiently large $X$, a family $\mathcal F_X\subseteq\mathcal R_X(t)$ such that
 \[
- |\mathcal F_X|\geq\exp(\eta_bM_X),
+ |\mathcal F_X|\geq\exp(\eta M_X),
  \qquad
- |\mathcal A|=k_X\quad(\mathcal A\in\mathcal F_X),
+ |A|=k_X\quad(A\in\mathcal F_X),
 \]
-and, for distinct $\mathcal A,\mathcal B\in\mathcal F_X$,
+and
 \[
- |\mathcal A\mathbin\triangle\mathcal B|\geq\rho_bM_X.
+ |A\mathbin\triangle B|\geq\rho M_X
+ \qquad(A\neq B\in\mathcal F_X).
 \]
-Thus exponentially many exact representations are macroscopically distinct, rather than local perturbations of one support.
 \end{corollary}
 
 \begin{proof}
-Choose $0<\rho_b<1/2$ so small that $H(\rho_b)<H(\alpha_b)$.  In the full cube $2^{\mathcal E_X}$, a symmetric-difference ball of radius $\lfloor\rho_bM_X\rfloor$ has at most
-\[
- \sum_{j\leq\rho_bM_X}\binom{M_X}{j}
- \leq\exp\bigl([H(\rho_b)+o(1)]M_X\bigr)
-\]
-members.  Apply the greedy packing algorithm to the exact-cardinality family in \cref{cor:exact-cardinality-extraction}: select one support and remove its ball, then repeat.  The number selected is at least
-\[
- \exp\bigl([H(\alpha_b)-H(\rho_b)-o_b(1)]M_X\bigr).
-\]
-Taking, for example, $\eta_b=(H(\alpha_b)-H(\rho_b))/2$ for all sufficiently large $X$ proves the claim.
+Choose $\rho>0$ so small that $H(\rho)<H(\alpha_{t,\gamma})$.  A Hamming ball of radius $\rho M_X$ has at most $\exp([H(\rho)+o(1)]M_X)$ members.  Greedy packing inside the exact-cardinality family proves the assertion.
 \end{proof}
 
 \begin{corollary}[Balanced signed reciprocal relations]
 \label{cor:balanced-signed-relations}
-There are constants $c_b,\eta_b'>0$ such that, for all sufficiently large $X$, there are at least $\exp(\eta_b'M_X)$ distinct ordered pairs $(\mathcal P,\mathcal N)$ of disjoint subsets of $\mathcal E_X$ satisfying
+There are constants $c,\eta'>0$ such that, for all sufficiently large $X$, there are at least $\exp(\eta'M_X)$ distinct ordered pairs $(\mathcal P,\mathcal N)$ of disjoint subsets of $\mathcal E_X$ satisfying
 \[
  \sum_{e\in\mathcal P}\frac1e
  =\sum_{e\in\mathcal N}\frac1e,
  \qquad
- |\mathcal P|=|\mathcal N|\geq c_bM_X.
+ |\mathcal P|=|\mathcal N|\geq cM_X.
 \]
-Equivalently, there are at least $\exp(\eta_b'M_X)$ distinct nonzero vectors
-$(\varepsilon_e)_{e\in\mathcal E_X}\in\{-1,0,1\}^{\mathcal E_X}$ such that
-\[
- \sum_{e\in\mathcal E_X}\frac{\varepsilon_e}{e}=0,
- \qquad
- |\{e:\varepsilon_e=1\}|=|\{e:\varepsilon_e=-1\}|\geq c_bM_X.
-\]
-With $D=X^6$, both support sizes are $\gg_b D/(\log D)^2$.
 \end{corollary}
 
 \begin{proof}
-Fix $\mathcal A_0\in\mathcal F_X$.  For each
-$\mathcal B\in\mathcal F_X\setminus\{\mathcal A_0\}$, put
-\[
- \mathcal P=\mathcal A_0\setminus\mathcal B,
- \qquad
- \mathcal N=\mathcal B\setminus\mathcal A_0.
-\]
-The sets $\mathcal P$ and $\mathcal N$ are disjoint.  Since both $\mathcal A_0$ and $\mathcal B$ represent $1/b$, subtracting their common intersection gives equal reciprocal sums over $\mathcal P$ and $\mathcal N$.  Their equal cardinalities and the separation in \cref{cor:hamming-separated-family} give
-\[
- |\mathcal P|=|\mathcal N|
- =\frac12|\mathcal A_0\mathbin\triangle\mathcal B|
- \geq\frac{\rho_b}{2}M_X.
-\]
-The map $\mathcal B\mapsto(\mathcal P,\mathcal N)$ is injective, since $\mathcal A_0$ is fixed and $\mathcal B=(\mathcal A_0\setminus\mathcal P)\cup\mathcal N$.  As $M_X\to\infty$, for all sufficiently large $X$ one has
-$|\mathcal F_X|-1\geq\exp(\eta_bM_X/2)$.  Thus one may take $c_b=\rho_b/2$ and $\eta_b'=\eta_b/2$.  Assigning coefficients $1$ on $\mathcal P$, $-1$ on $\mathcal N$ and $0$ elsewhere gives the equivalent vector form; the height statement follows from \cref{eq:quantitative-basic-asymptotics}.
+Fix $A_0\in\mathcal F_X$.  For every other $B\in\mathcal F_X$, take $\mathcal P=A_0\setminus B$ and $\mathcal N=B\setminus A_0$.  Equal cardinality and equal reciprocal target give the two equalities, while Hamming separation gives the linear support size.  The map from $B$ is injective.
 \end{proof}
 
-This is the additive-relation form of the macroscopic fibre diversity supplied by \cref{cor:hamming-separated-family}.  No assertion is made that these signed relations are minimal, primitive or shortest.
+\subsection{Exact optimization over the admissible exponent}
 
-\subsection{Denominator height and quantitative refinement}
+For fixed $t$, the admissible interval \cref{eq:admissible-gamma} makes
+\[
+ \alpha_{t,\gamma}=\frac{2t}{(\log\gamma)^2}
+\]
+decrease continuously through the open interval $(t,1)$ as $\gamma$ increases.
+
+\begin{theorem}[Entropy optimization]
+\label{thm:entropy-optimization}
+The exact optimization of $H(\alpha_{t,\gamma})$ over fixed admissible $\gamma$ is as follows.
+\begin{enumerate}[label=(\roman*)]
+\item If $0<t<1/2$, the maximum is attained and equals $\log2$.  The unique maximizing exponent is
+\begin{equation}
+\label{eq:optimal-gamma}
+ \gamma=\exp(2\sqrt t),
+\end{equation}
+for which $\alpha_{t,\gamma}=1/2$.
+\item If $t=1/2$, the supremum is $\log2$, approached as $\gamma\uparrow\exp(\sqrt2)$, and it is not attained.
+\item If $1/2<t<1$, the supremum is $H(t)$, approached as $\gamma\uparrow\exp(\sqrt2)$, and it is not attained.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Binary entropy is uniquely maximized at $1/2$, increases on $(0,1/2)$ and decreases on $(1/2,1)$.  When $t<1/2$, the value $1/2$ lies in the accessible interval $(t,1)$ and gives $(\log\gamma)^2=4t$.  When $t\geq1/2$, the accessible interval lies in $(1/2,1)$ or begins at its boundary, so entropy increases as $\alpha$ decreases towards the excluded endpoint $t$.
+\end{proof}
+
+The word \emph{maximum} in part~(i) and \emph{supremum} in parts~(ii)--(iii) are not interchangeable: the upper load boundary $\lambda_\gamma=1$ is excluded by no-wrap.
+
+\subsection{Universal denominator-height form}
+
+Put
+\begin{equation}
+\label{eq:D-height}
+ D=Z^2=X^{2\gamma}.
+\end{equation}
+Every member of the direct family is at most $D$, and \cref{eq:family-size-modulus} becomes
+\begin{equation}
+\label{eq:M-height}
+ M_X=(2+o(1))\frac{D}{(\log D)^2}.
+\end{equation}
 
 \begin{corollary}[Direct denominator-height form]
 \label{cor:direct-height-form}
-Let $D=X^6$.  For all sufficiently large $X$, every member of the direct denominator family is at most $D$, and
-\[
- M_X=(2+o(1))\frac{D}{(\log D)^2}.
-\]
-Consequently $1/b$ has at least
+For all sufficiently large $D$ along the direct real parametrization $X=D^{1/(2\gamma)}$, the target $t$ has at least
 \begin{equation}
 \label{eq:direct-height-count}
- \exp\left(\left[2H(\alpha_b)-o_b(1)\right]
+ \exp\left(\left[2H(\alpha_{t,\gamma})-o(1)\right]
  \frac{D}{(\log D)^2}\right)
 \end{equation}
 representations by denominators at most $D$.  One cardinality
 \begin{equation}
 \label{eq:direct-height-cardinality}
- k_D=\left[2\alpha_b+o_b(1)\right]\frac{D}{(\log D)^2}
-\end{equation}
-supports the same lower bound.  Moreover, an exponential subfamily at that cardinality has pairwise symmetric difference at least
-\[
- \left[2\rho_b+o_b(1)\right]\frac{D}{(\log D)^2}.
-\]
-\end{corollary}
-
-\begin{proof}
-If $p,q<X^3$, then $pq<D$; the target-row denominators $rq$ are also below $D$ for fixed $r\mid b$ and large $X$.  The conversion of $M_X$ follows from \cref{eq:quantitative-basic-asymptotics} and $\log D=6\log X$.  Apply \cref{thm:mesoscopic-entropy,cor:exact-cardinality-extraction,cor:hamming-separated-family}, using $\theta_X\to\alpha_b$ and $w_X=o(M_X)$.
-\end{proof}
-
-For an arbitrary sufficiently large height $D$, apply the construction with the real parameter $X=D^{1/6}$; then every constructed denominator is at most $X^6=D$.  This is a direct reparametrization, not an interpolation between prime scales.  A fixed forbidden set affects only the threshold from which $X$ is sufficiently large, not the sharp coefficient, entropy exponent or any other leading constant, because every constructed denominator eventually exceeds every element of that set.
-
-\begin{corollary}[Exponential branching of refinements]
-\label{cor:quantitative-refinement-branching}
-Let $A_0$ be any finite squarefree-semiprime representation, and choose $a\in A_0$.  Then $A_0$ has exponentially many further refinements of denominator height at most $D$.  More precisely, for all sufficiently large $D$ there are at least
-\[
- \exp\left(\left[2H(\alpha_a)-o_a(1)\right]
- \frac{D}{(\log D)^2}\right)
-\]
-such refinements; one total cardinality
-\[
- |A_0|-1+\left[2\alpha_a+o_a(1)\right]
+ k_D=\left[2\alpha_{t,\gamma}+o(1)\right]
  \frac{D}{(\log D)^2}
-\]
-carries the same exponential rate, and an exponential equal-cardinality subfamily is Hamming-separated on the same linear scale.  The same conclusion applies to any common refinement of finitely many representations.
+\end{equation}
+supports the same lower bound, and an exponential equal-cardinality subfamily has symmetric differences of order $D/(\log D)^2$.  The balanced signed relations have both support sizes of that same order.
 \end{corollary}
 
 \begin{proof}
-The chosen denominator $a$ is squarefree and at least $3$.  Apply the direct family for $1/a$ with forbidden set $A_0$.  Each direct representation $A$ gives the refinement
-\[
- (A_0\setminus\{a\})\cup A.
-\]
-This map is injective, and a fixed surrounding support changes cardinality only by $|A_0|-1$ and does not change symmetric differences.  For large $D$ it also lies below the height bound.  Now use \cref{cor:direct-height-form}.  A common refinement is itself a finite representation, so the same argument applies.
+Combine \cref{eq:M-height} with \cref{thm:mesoscopic-entropy,cor:exact-cardinality-extraction,cor:hamming-separated-family,cor:balanced-signed-relations}.  A fixed forbidden set affects only the threshold.
 \end{proof}
 
-\subsection{Transfer to every admissible rational}
+For $0<t<1/2$, the optimizing exponent \cref{eq:optimal-gamma} gives the attained direct rate
+\begin{equation}
+\label{eq:optimal-direct-height-rate}
+ \exp\left(\left[2\log2-o(1)\right]
+ \frac{D}{(\log D)^2}\right),
+ \qquad
+ k_D=\left[1+o(1)\right]\frac{D}{(\log D)^2}.
+\end{equation}
+
+\subsection{Quantitative refinement branching}
+
+\begin{corollary}[Optimal exponential branching of refinements]
+\label{cor:quantitative-refinement-branching}
+Let $A_0$ be any finite squarefree-semiprime representation, and choose $a\in A_0$.  For all sufficiently large $D$, $A_0$ has at least
+\begin{equation}
+\label{eq:optimal-refinement-count}
+ \exp\left(\left[2\log2-o_a(1)\right]
+ \frac{D}{(\log D)^2}\right)
+\end{equation}
+further refinements of height at most $D$.  One total cardinality
+\[
+ |A_0|-1+\left[1+o_a(1)\right]\frac{D}{(\log D)^2}
+\]
+carries the same rate, and an exponential equal-cardinality subfamily is Hamming-separated on the same linear scale.
+\end{corollary}
+
+\begin{proof}
+Apply the direct family to $t=1/a$.  Since a squarefree semiprime satisfies $a\geq6$, one has $t<1/2$.  Choose the maximizing exponent $\gamma=\exp(2/\sqrt a)$.  Forbid $A_0$, replace $a$ by each direct support, and use \cref{eq:optimal-direct-height-rate}.  The surrounding fixed support changes cardinality by $|A_0|-1$ and preserves symmetric differences.
+\end{proof}
+
+The same conclusion applies to any common refinement of finitely many representations, since such a refinement is itself finite.
+
+\subsection{Optimal global quantitative transfer}
 
 \begin{corollary}[Global quantitative transfer]
 \label{cor:global-quantitative-transfer}
-Let $q>0$ have squarefree reduced denominator, and let $\mathcal T$ be finite.  Choose any squarefree integer $d\geq3$ with $1/d\leq q$.  Then, for all sufficiently large $D$, there are at least
+Let $q>0$ have squarefree reduced denominator, and let $\mathcal T$ be finite.  Then, for all sufficiently large $D$, there are at least
 \begin{equation}
 \label{eq:global-height-count}
- \exp\left(\left[2H(\alpha_d)-o_d(1)\right]
+ \exp\left(\left[2\log2-o_q(1)\right]
  \frac{D}{(\log D)^2}\right)
 \end{equation}
-representations of $q$ by distinct squarefree semiprimes at most $D$, all avoiding $\mathcal T$.  Exponentially many lie in a shifted mesoscopic cardinality window, and one cardinality
+representations of $q$ by distinct squarefree semiprimes at most $D$, all avoiding $\mathcal T$.  Exponentially many occur at one cardinality
 \begin{equation}
 \label{eq:global-height-cardinality}
  |\mathcal B_0|+
- \left[2\alpha_d+o_d(1)\right]\frac{D}{(\log D)^2}
+ \left[1+o_q(1)\right]\frac{D}{(\log D)^2},
 \end{equation}
-supports the same lower bound, where $\mathcal B_0$ is a fixed representation of $q-1/d$.  An exponentially large equal-cardinality Hamming-separated subfamily also transfers.  The displayed exponent is not asserted to be optimal over the possible choices of $d$.
+and an exponential equal-cardinality Hamming-separated subfamily transfers as well.
 \end{corollary}
 
 \begin{proof}
-The residual $q-1/d$ is either zero or belongs to $\mathbb Q_{\mathrm{sf}}^+$: a reduced denominator for the difference divides the squarefree least common multiple of the two denominators.  If the residual is positive, use \cref{thm:main} once to choose a finite representation $\mathcal B_0$ avoiding $\mathcal T$; if it is zero, put $\mathcal B_0=\varnothing$.
-
-Apply the direct quantitative family for $1/d$ with forbidden set $\mathcal T\cup\mathcal B_0$.  Every $\mathcal A\in\mathcal R_X(d)$ then gives the distinct representation
+Write $q=c/d$ in lowest terms.  Choose a prime $p\nmid d$ so large that
 \[
- \mathcal B_0\cup\mathcal A
+ t=\frac1p<\min(q,1/2).
 \]
-of $q$.  For large $D$, the fixed set $\mathcal B_0$ also lies below the height bound.  Union with it shifts every cardinality by $|\mathcal B_0|$ and preserves all symmetric differences, hence changes neither the exponential rate nor the asymptotic cardinality scale.  This argument includes reduced denominators $1$ and $2$ without treating them as direct one-family cases.
+Then the residual $q-t$ is nonnegative and has reduced denominator dividing the squarefree integer $dp$; if positive, choose once and for all a representation $\mathcal B_0$ of it, avoiding $\mathcal T$, and if it is zero put $\mathcal B_0=\varnothing$.
+
+Apply the optimal direct family to $t=1/p$ with $\gamma=\exp(2/\sqrt p)$, forbidding $\mathcal T\cup\mathcal B_0$.  Union with $\mathcal B_0$ is injective, shifts cardinalities by a constant, and preserves symmetric differences.  The direct exponent is the attained maximum $2\log2$ from \cref{eq:optimal-direct-height-rate}.
 \end{proof}
 
-\begin{remark}[Optimizing the direct choice within the transferred lower bound]
-\label{rem:optimal-transfer-choice}
-Within the lower bound proved in \cref{cor:global-quantitative-transfer}, if $q\geq1/3$, the choice $d=3$ maximizes the displayed entropy exponent among the allowed direct choices.  If $q<1/3$, the maximizing choice is the least squarefree integer $d\geq1/q$.  Indeed, $\alpha_d=2/(d(\log3)^2)$ decreases with $d$; for $d\geq5$ it lies in $(0,1/2)$, where binary entropy is increasing, so $H(\alpha_d)$ decreases with $d$, while the separate comparison $H(\alpha_3)>H(\alpha_5)$ handles the allowed choice $d=3$.  This optimizes only the displayed transferred lower bound, not all possible constructions or all representations.
-\end{remark}
-
-\begin{remark}[Finite avoidance versus in-family deletion]
-\label{rem:deletion-boundary}
-Finite avoidance means that the construction may be carried out after a fixed forbidden set has been prescribed.  It does not make one already-built family resilient under arbitrary sparse deletion.  Indeed, fix a prime $r\mid b$ and delete the target row
-\[
- \mathcal D_{r,X}=\{rq:q\in B\}.
-\]
-This removes only $|B|=o(M_X)$ candidates.  Every remaining integer weight $L_X/e$ is nevertheless $0$ modulo $r$, whereas $L_X/b$ is nonzero modulo $r$; the target is therefore destroyed even in the quotient.  Structural resilience would require hypotheses preserving target observability and the other analytic mechanisms.
-\end{remark}
+The threshold and the harmless $o_q(1)$ term may depend on the fixed auxiliary prime $p$ chosen in the proof.  The leading exponent is nevertheless the universal attained value $2\log2$.
 
 \begin{remark}[Boundary of the quantitative statement]
-\label{rem:quantitative-boundary}
-The direct coefficient and one-family results are proved only for fixed squarefree $b\geq3$.  The global transfer covers all admissible rationals by adjoining a fixed residual representation; it does not turn the separate closure arguments for $b=1,2$ into direct-family asymptotics.  Nor does this article assert a moving-target local limit, a conditional central limit theorem, a joint value--cardinality local limit, an asymptotic at every prescribed cardinality, or a structural deletion-resilience theorem.
+The coefficient asymptotic is fixed-target and fixed-$\gamma$.  The article does not assert simultaneous uniformity as $t$ or $\gamma$ moves, a joint value--cardinality local limit, an asymptotic at every prescribed cardinality, or resilience under arbitrary sparse deletion.  These are different quantifier structures, not qualifications missing from the theorem above.
 \end{remark}
