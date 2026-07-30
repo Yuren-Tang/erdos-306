@@ -5,10 +5,10 @@ After \cref{prop:global-fibre-error}, it remains to estimate the single decoded 
 
 \subsection{Prime-only Gaussian transition}
 
-Assume $1<\gamma\leq2$ and
+For every fixed $\gamma>1$, consider
 \begin{equation}
 \label{eq:transition-range}
- T_{\mathrm{full}}<|m|\leq X^2/4.
+ T_0<|m|\leq X^2/4.
 \end{equation}
 By \cref{prop:prime-decoder-identification}, every coordinate indexed by $P$ equals $m$.  Hence every complete-pair factor has phase $m/(pq)$.  Since $pq\geq X^2$ and $|m|\leq X^2/4$, these phases lie in the linear circle range, and \cref{eq:bernoulli-modulus} gives
 \begin{equation}
@@ -18,20 +18,21 @@ By \cref{prop:prime-decoder-identification}, every coordinate indexed by $P$ equ
    \sum_{p<q\in P}\frac1{p^2q^2}\right)
  \leq\exp\left(-c\frac{m^2}{X^2\log^2X}\right).
 \end{equation}
-At the lower endpoint, the exponent satisfies
+At the lower endpoint,
 \begin{equation}
 \label{eq:transition-lower-exponent}
- \frac{T_{\mathrm{full}}^2}{X^2\log^2X}
- \gg\frac{Z^2}{X^2\log^2X}
- =\frac{X^{2\gamma-2}}{\log^2X}\longrightarrow\infty.
+ \frac{T_0^2}{X^2\log^2X}
+ =\kappa_0^2
+ \frac{\min(X^2,Z)^2}{X^2\log^2X}
+ \longrightarrow\infty.
 \end{equation}
-Therefore
+Indeed the right side is $\asymp X^2/\log^2X$ when $\gamma\geq2$ and $\asymp X^{2\gamma-2}/\log^2X$ when $1<\gamma<2$.  Therefore
 \begin{equation}
 \label{eq:transition-total}
- \sum_{T_{\mathrm{full}}<|m|\leq X^2/4}|F(h_m)|
+ \sum_{T_0<|m|\leq X^2/4}|F(h_m)|
  =o(\sigma_{\mathcal E}^{-1}).
 \end{equation}
-This sector uses no target coordinate.  At $\gamma=2$ it treats the variance boundary exactly; for $1<\gamma<2$ it fills the entire gap left by the shorter full-coordinate range.
+This sector uses no target coordinate.  At and below the variance boundary it fills the gap left by the shorter full-coordinate range; above the boundary it is redundant analytically but harmless, and retaining it gives one proof architecture for every fixed $\gamma>1$.
 
 \subsection{Adaptive retained-pair damping}
 
@@ -74,45 +75,29 @@ and
  =o(\sigma_{\mathcal E}^{-1}).
 \end{equation}
 
-\subsection{Pairwise-disjoint exhaustive partitions}
+\subsection{One pairwise-disjoint exhaustive partition}
 
 Fix $C\geq1$, to be chosen before $X$, and put
 \begin{equation}
 \label{eq:N-major}
  N=\left\lfloor\frac{C}{\sigma_{\mathcal E}}\right\rfloor.
 \end{equation}
-By \cref{prop:variance-regimes}, for every fixed $C$,
+By the total variance \cref{eq:total-variance}, for every fixed $C$,
 \begin{equation}
 \label{eq:N-below-full}
- N=o(T_{\mathrm{full}}).
+ N=o(T_0).
 \end{equation}
+For $\gamma>2$ this is $X\log X=o(X^2)$; for $1<\gamma\leq2$ it is $\sqrt{Z\log Z}=o(Z)$.
 
-Apply the decoder/nondecoder split first.  Every nondecoder tuple belongs to the terminal error sector.  Among decoded tuples, a noncoherent anchor assignment belongs to that same sector.  A coherent assignment has one unique label $m$.
-
-If $\gamma>2$, the following five sectors are pairwise disjoint and exhaustive:
+Apply the decoder/nondecoder split first.  Every nondecoder tuple belongs to the terminal error sector.  Among decoded tuples, a noncoherent anchor assignment belongs to that same sector.  A coherent assignment has one unique label $m$.  For every fixed $\gamma>1$, the following six sectors are pairwise disjoint and exhaustive:
 \begin{center}
 \begin{tabular}{@{}c p{5.2cm} p{5.0cm}@{}}
 \toprule
 Sector & skeleton condition & control \\
 \midrule
 I & $|m|\leq N$ & positive Taylor major \\
-II & $N<|m|\leq X^2/4$ & actual-variance Gaussian tail \\
-III & $X^2/4<|m|\leq M_{\mathrm{dec}}$ & adaptive retained pairs \\
-IV & $|m|>M_{\mathrm{dec}}$ & internal anchor energy \\
-V & noncoherent decoded tuple, or any nondecoder tuple & anchor entropy and fibre error \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-If $1<\gamma\leq2$, the following six sectors are pairwise disjoint and exhaustive:
-\begin{center}
-\begin{tabular}{@{}c p{5.2cm} p{5.0cm}@{}}
-\toprule
-Sector & skeleton condition & control \\
-\midrule
-I & $|m|\leq N$ & positive Taylor major \\
-II & $N<|m|\leq T_{\mathrm{full}}$ & actual-variance Gaussian tail \\
-III & $T_{\mathrm{full}}<|m|\leq X^2/4$ & prime-only pair Gaussian \\
+II & $N<|m|\leq T_0$ & total-variance Gaussian tail \\
+III & $T_0<|m|\leq X^2/4$ & prime-only pair Gaussian \\
 IV & $X^2/4<|m|\leq M_{\mathrm{dec}}$ & adaptive retained pairs \\
 V & $|m|>M_{\mathrm{dec}}$ & internal anchor energy \\
 VI & noncoherent decoded tuple, or any nondecoder tuple & anchor entropy and fibre error \\
@@ -120,9 +105,9 @@ VI & noncoherent decoded tuple, or any nondecoder tuple & anchor entropy and fib
 \end{tabular}
 \end{center}
 
-\begin{proposition}[Regime-dependent sector exhaustion]
-\label{prop:five-sector-exhaustion}
-The five sectors for $\gamma>2$, and the six sectors for $1<\gamma\leq2$, are respectively pairwise disjoint and exhaustive over all frequencies modulo $L$.
+\begin{proposition}[Universal six-sector exhaustion]
+\label{prop:six-sector-exhaustion}
+For every fixed $\gamma>1$, the six displayed sectors are pairwise disjoint and exhaustive over all frequencies modulo $L$.
 \end{proposition}
 
 \begin{proof}

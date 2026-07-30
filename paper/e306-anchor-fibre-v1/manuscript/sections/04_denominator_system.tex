@@ -20,7 +20,7 @@ Equivalently,
 \label{eq:admissible-gamma}
  \exp(\sqrt{2t})<\gamma<\exp(\sqrt2).
 \end{equation}
-All asymptotic statements are for $X\to\infty$ with $t$, $\gamma$, $b$ and $\mathcal T$ fixed.
+All asymptotic statements are for $X\to\infty$ with $t$, $\gamma$, $b$ and $\mathcal T$ fixed.  Unless stated otherwise, implied constants may depend on the fixed tuple $(t,\gamma,b)$ and on fixed numerical choices, but not on $X$ or on the later Gaussian cutoff $C$.
 
 \subsection{Prime blocks and their power sums}
 
@@ -145,14 +145,14 @@ one has $\lambda_-<\Lambda<\lambda_+$ for all sufficiently large $X$;
 \item with
 \begin{equation}
 \label{eq:tau-b}
- \tau_b=\sum_{r\mid b}\frac1{r^2},
+ \tau(b)=\sum_{r\in S_b}\frac1{r^2},
 \end{equation}
 one has the complete square-load asymptotic
 \begin{equation}
 \label{eq:complete-square-load}
  \sum_{e\in\mathcal E}\frac1{e^2}
  =\frac{1+o(1)}{2X^2\log^2X}
-  +\frac{\tau_b+o_b(1)}{Z\log Z}.
+  +\frac{\tau(b)+o_b(1)}{Z\log Z}.
 \end{equation}
 \end{enumerate}
 \end{proposition}
@@ -168,7 +168,7 @@ Only the load and square load require proof.  The exact pair identity \cref{cor:
 The target-row load is
 \[
  \Lambda_b
- =\left(\sum_{r\mid b}\frac1r\right)V_B
+ =\left(\sum_{r\in S_b}\frac1r\right)V_B
  =O_b(1/\log Z)=o_b(1),
 \]
 which proves \cref{eq:load-limit} and the fixed load interval.
@@ -181,9 +181,9 @@ For the pair square load, apply the pair identity to $u_p=p^{-2}$:
 \]
 Indeed the fourth-power diagonal is $O(1/(X^3\log X))$.  The target rows contribute
 \[
- \sum_{r\mid b}\sum_{q\in B}\frac1{r^2q^2}
- =\tau_bW_B
- \sim\frac{\tau_b}{Z\log Z}.
+ \sum_{r\in S_b}\sum_{q\in B}\frac1{r^2q^2}
+ =\tau(b)W_B
+ \sim\frac{\tau(b)}{Z\log Z}.
 \]
 This proves \cref{eq:complete-square-load} without assuming which summand dominates.
 \end{proof}
@@ -227,9 +227,27 @@ Define the actual-family variance by
  =\theta(1-\theta)\sum_{e\in\mathcal E}\frac1{e^2}.
 \end{equation}
 
-\begin{proposition}[Complete variance in the three regimes]
+\begin{proposition}[Total actual-family variance]
 \label{prop:variance-regimes}
-Let $\alpha=\alpha_{t,\gamma}$.  Then:
+Let $\alpha=\alpha_{t,\gamma}$.  Then
+\begin{equation}
+\label{eq:total-variance}
+ \sigma_{\mathcal E}^2
+ \sim \alpha(1-\alpha)
+ \left(
+  \frac1{2X^2\log^2X}
+  +\frac{\tau(b)}{Z\log Z}
+ \right).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Combine \cref{eq:theta-limit,eq:complete-square-load,eq:sigma-E}.  Both summands are retained, so the statement is valid without first deciding which variance provider dominates.
+\end{proof}
+
+\begin{corollary}[Explicit variance regimes]
+\label{cor:variance-regimes}
+With $\alpha=\alpha_{t,\gamma}$:
 \begin{enumerate}[label=(\Alph*)]
 \item If $\gamma>2$, the pair square load dominates and
 \begin{equation}
@@ -241,22 +259,22 @@ Let $\alpha=\alpha_{t,\gamma}$.  Then:
 \begin{equation}
 \label{eq:variance-gamma-two}
  \sigma_{\mathcal E}^2
- \sim\frac{\alpha(1-\alpha)\tau_b}{Z\log Z}.
+ \sim\frac{\alpha(1-\alpha)\tau(b)}{Z\log Z}.
 \end{equation}
 \item If $1<\gamma<2$, the target-row square load dominates by a power of $X$, and the same asymptotic \cref{eq:variance-gamma-two} holds.
 \end{enumerate}
-\end{proposition}
+\end{corollary}
 
 \begin{proof}
-Compare the two summands in \cref{eq:complete-square-load}.  Their ratio, target over pair, is asymptotic to a constant multiple of
+The ratio of the target-row summand in \cref{eq:total-variance} to the pair summand is asymptotic, up to a fixed positive factor, to
 \[
  \frac{X^2\log^2X}{Z\log Z}
  \asymp X^{2-\gamma}\log X.
 \]
-It tends to $0$ for $\gamma>2$, to infinity logarithmically for $\gamma=2$, and to infinity polynomially for $\gamma<2$.  Now use \cref{eq:theta-limit}.
+It tends to $0$ for $\gamma>2$, to infinity logarithmically for $\gamma=2$, and to infinity polynomially for $\gamma<2$.
 \end{proof}
 
-This separate treatment of $\gamma=2$ is essential.  The coefficient scale, the major range, and the normalized minor totals all use the actual variance in \cref{prop:variance-regimes}.
+Thus $\gamma=2$ remains a genuine variance boundary, but it no longer requires a separate proof architecture: every later estimate is stated first with the total variance \cref{eq:total-variance}.
 
 The finite Fourier numerator is
 \begin{equation}
@@ -265,16 +283,20 @@ The finite Fourier numerator is
  \prod_{e\in\mathcal E}
  \left((1-\theta)+\theta\exp\left(\frac{2\pi i h}{e}\right)\right).
 \end{equation}
-Compactness of $I_{t,\gamma}$ gives a constant $\kappa_b>0$---allowed to depend on the fixed $t$ and $\gamma$---such that
+Compactness of $I_{t,\gamma}$ gives a constant
+\[
+ \kappa_{\rm mod}=\kappa_{\rm mod}(t,\gamma)>0
+\]
+such that
 \begin{equation}
 \label{eq:bernoulli-modulus}
  |(1-\theta)+\theta\exp(2\pi i u)|
- \leq\exp(-\kappa_b\dist{u}^2).
+ \leq\exp(-\kappa_{\rm mod}\dist{u}^2).
 \end{equation}
-Consequently,
+For compatibility with the notation in the unchanged anchor-block estimates, write $\kappa_b:=\kappa_{\rm mod}$ there; this is the same Bernoulli modulus constant and is not the decoder cutoff introduced later.  Consequently,
 \begin{equation}
 \label{eq:global-Fourier-energy}
- |F(h)|\leq\exp(-\kappa_bQ_{\mathcal E}(h)),
+ |F(h)|\leq\exp(-\kappa_{\rm mod}Q_{\mathcal E}(h)),
  \qquad
  Q_{\mathcal E}(h)=\sum_{e\in\mathcal E}\dist{h/e}^2.
 \end{equation}

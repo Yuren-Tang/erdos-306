@@ -16,13 +16,34 @@ If the row residue changes by $d$, then
 \end{equation}
 Thus the separation of two possible row residues is independent of the anchor shift.
 
-\subsection{Row distances and tails}
+\subsection{Cyclic row distance}
+
+\begin{lemma}[Multiplicity-sensitive cyclic energy]
+\label{lem:cyclic-energy}
+Let $c_1,\ldots,c_M$ be nonzero residues modulo a prime $r$, each occurring at most $\mu$ times.  If $M/\mu$ is sufficiently large, then for every $d\not\equiv0\pmod r$,
+\[
+ \sum_{j=1}^M\dist{dc_j/r}^2
+ \geq c\frac{M^3}{\mu^2r^2}
+\]
+for an absolute constant $c>0$.
+\end{lemma}
+
+\begin{proof}
+Multiplication by the nonzero residue $d$ permutes the nonzero residue classes modulo $r$ and therefore preserves the multiplicity bound.  Put
+\[
+ u=\left\lfloor\frac{M}{4\mu}\right\rfloor.
+\]
+For sufficiently large $M/\mu$, one has $u\geq M/(8\mu)\geq1$.  At most $2\mu u\leq M/2$ entries can lie in the $2u$ nonzero residue classes closest to zero on the circle.  Every remaining entry has circle distance at least
+\[
+ \frac{u}{r}\geq\frac{M}{8\mu r}.
+\]
+At least $M/2$ entries therefore contribute the square of this quantity, which proves the stated lower bound.
+\end{proof}
 
 For a row $r$, define
 \[
  D_r=\min_{d\not\equiv0\,(r)}\sum_{q\in B}\dist{dq^{-1}/r}^2.
 \]
-The multiplicity-sensitive cyclic-energy estimate on the inverses of the primes in $B$ gives the following uniform bounds.
 
 \begin{proposition}[Lower-prime row distance]
 \label{prop:lower-row-distance}
@@ -33,25 +54,34 @@ Uniformly for every prime $r\in P\setminus B$,
 \end{proposition}
 
 \begin{proof}
-One residue class modulo $r$ contains at most $O(Z/r)$ integers from $[Z/2,Z)$.  Since $|B|\gg Z/\log Z$, the cyclic-energy lower bound gives
+Inversion permutes the nonzero residue classes modulo $r$.  The interval $[Z/2,Z)$ contains at most
 \[
- D_r\gg\frac{|B|^3}{(Z/r)^2r^2}\gg\frac{Z}{\log^3Z}.
+ \mu_r\leq Z/(2r)+1\leq2Z/r
 \]
+integers in one residue class modulo $r$.  With $M=|B|\gg Z/\log Z$, \cref{lem:cyclic-energy} gives
+\[
+ D_r\gg\frac{M^3}{\mu_r^2r^2}
+ \gg\frac{Z^3/\log^3Z}{Z^2}
+ =\frac{Z}{\log^3Z}.
+\]
+Moreover $M/\mu_r\gg r/\log Z\geq X/\log Z$, so the largeness hypothesis is uniform in $r$.
 \end{proof}
 
 \begin{proposition}[Target-row distance]
 \label{prop:target-row-distance}
-For every prime $r\mid b$,
+For every $r\in S_b$,
 \[
  D_r\geq\frac{|B|}{r^2}\gg_b\frac{Z}{\log Z}.
 \]
 \end{proposition}
 
 \begin{proof}
-Every $dq^{-1}$ is nonzero modulo $r$, so each circle distance is at least $1/r$.
+Every $q\in B$ is coprime to $r$.  If $d\not\equiv0\pmod r$, then $dq^{-1}$ is nonzero modulo $r$, so each circle distance is at least $1/r$.
 \end{proof}
 
-The target-row sensors depend only on the reduced denominator $b$.  Their common kernel on $\prod_{r\mid b}\mathbb Z/r\mathbb Z$ is trivial.  The numerator $a$ of the fixed target does not enter these sensors and creates no additional decoder or CRT obstruction.
+The target-row sensors depend only on the reduced denominator $b$.  Their common kernel on $\prod_{r\in S_b}\mathbb Z/r\mathbb Z$ is trivial.  The numerator $a$ of the fixed target does not enter these sensors and creates no additional decoder or CRT obstruction.
+
+\subsection{Row tails}
 
 For $r\in R_{\mathrm{rows}}$, define
 \[
@@ -64,22 +94,30 @@ and choose $x_r^*$ minimizing $E_r(x)$.
 
 \begin{lemma}[Shift-uniform row tail]
 \label{lem:row-tail}
-There is $c_b>0$ such that
+There is
+\[
+ c_{\rm row}=c_{\rm row}(t,\gamma,b)>0
+\]
+such that
 \[
  \delta_r:=\sum_{x\neq x_r^*}A_r(x)
- \leq r\exp(-c_bD_r).
+ \leq r\exp(-c_{\rm row}D_r).
 \]
 \end{lemma}
 
 \begin{proof}
-If $x\neq x_r^*$, \cref{eq:row-shift} and the circle triangle inequality imply $D_r\leq4E_r(x)$.  Apply \cref{eq:bernoulli-modulus} and sum over the nondecoder residues.
+If $x\neq x_r^*$, \cref{eq:row-shift} and the circle triangle inequality imply
+\[
+ D_r\leq2E_r(x)+2E_r(x_r^*)\leq4E_r(x).
+\]
+Apply \cref{eq:bernoulli-modulus} with $\kappa_{\rm mod}$ and sum over the at most $r$ nondecoder residues.  One may take $c_{\rm row}=\kappa_{\rm mod}/4$.
 \end{proof}
 
 Consequently,
 \begin{equation}
 \label{eq:Delta-row}
  \Delta:=\sum_{r\in R_{\mathrm{rows}}}\delta_r
- \leq Z^2\exp(-cZ/\log^3Z)=o(1).
+ \leq Z^2\exp(-c_{\rm row}Z/\log^3Z)=o(1).
 \end{equation}
 
 \subsection{The exact retained skeleton}
@@ -135,27 +173,27 @@ For every $r\in P\setminus B$ and every coherent anchor label satisfying $|m|\le
 At $r=X$ and $|m|=M_{\mathrm{dec}}$, \cref{eq:candidate-row-energy} is $O(Z/\log^5Z)$, whereas \cref{prop:lower-row-distance} gives $D_r\gg Z/\log^3Z$.
 \end{proof}
 
-Choose once and for all a sufficiently small constant $\kappa_b>0$ and define the full-coordinate cutoff
+Fix once and for all a sufficiently small constant
+\[
+ \kappa_0=\kappa_0(t,\gamma,b)>0,
+ \qquad \kappa_0<\frac14,
+\]
+small enough for the finitely many target rows and for the common linear phase range below.  Define the universal full-coordinate cutoff
 \begin{equation}
 \label{eq:T-full}
- T_{\mathrm{full}}=
- \begin{cases}
- X^2/4,&\gamma>2,\\
- \kappa_b Z,&1<\gamma\leq2.
- \end{cases}
+ T_0=\kappa_0\min(X^2,Z).
 \end{equation}
-At $\gamma=2$, this is a small fixed multiple of $X^2$, not the former endpoint $X^2/4$.  When $\gamma<2$, it is a small fixed multiple of the smaller denominator scale $Z$.
 
 \begin{proposition}[Target-coordinate identification]
 \label{prop:target-decoder-identification}
-For every prime $r\mid b$ and every coherent anchor label satisfying $|m|\leq T_{\mathrm{full}}$,
+For every $r\in S_b$ and every coherent anchor label satisfying $|m|\leq T_0$,
 \[
  x_r^*=m\pmod r.
 \]
 \end{proposition}
 
 \begin{proof}
-By \cref{eq:candidate-row-energy}, the candidate energy is $O_b(m^2/(Z\log Z))$, while \cref{prop:target-row-distance} is $\gg_b Z/\log Z$.  For $\gamma\leq2$, choose $\kappa_b$ small enough that $m^2\leq\kappa_b^2Z^2$ gives the strict comparison.  For $\gamma>2$, $m^2\leq X^4/16=o(Z^2)$.
+By \cref{eq:candidate-row-energy}, the candidate energy is $O_b(m^2/(Z\log Z))$, while \cref{prop:target-row-distance} is $\gg_b Z/\log Z$.  Since $|m|\leq T_0\leq\kappa_0Z$, choosing $\kappa_0$ sufficiently small makes the comparison strict, uniformly over the finite set $S_b$.
 \end{proof}
 
-Because $b$ is squarefree, agreement modulo every $r\mid b$ is agreement modulo $b$.  Hence for $|m|\leq T_{\mathrm{full}}$, the entire decoded tuple is the genuine integer $m$ modulo $L$.  In the larger range $T_{\mathrm{full}}<|m|\leq M_{\mathrm{dec}}$, all $P$-coordinates still decode to $m$, while no target-coordinate identification is asserted.  The transition and adaptive estimates use only those prime coordinates.
+Because $b$ is squarefree, agreement modulo every $r\in S_b$ is agreement modulo $b$.  Hence for $|m|\leq T_0$, the entire decoded tuple is the genuine integer $m$ modulo $L$.  In the larger range $T_0<|m|\leq M_{\mathrm{dec}}$, all $P$-coordinates still decode to $m$, while no target-coordinate identification is asserted.  The transition and adaptive estimates use only those prime coordinates.

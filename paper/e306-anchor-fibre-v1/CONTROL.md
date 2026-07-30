@@ -42,10 +42,12 @@ The headline theorem was first obtained in the author's archived Lean 4 release 
 3. Finite-group syndrome observability is retained as a general hidden-coordinate separation theorem.
 4. The direct analytic theorem is parameterized by a fixed reduced target `t=a/b in (0,1)` with squarefree `b` and a fixed exponent `gamma>1`.
 5. The sharp fixed-parameter region is `t < (log gamma)^2/2 < 1`, with exact centring `theta Lambda=t` and limiting parameter `2t/(log gamma)^2`.
-6. For `gamma>2`, the five-sector architecture survives with systematic reparameterization.
-7. At `gamma=2` and for `1<gamma<2`, the target-row variance dominates and a prime-only Gaussian transition yields an exhaustive six-sector architecture.
-8. Exactness, finite extension, disjoint realization, common refinement and countably infinite proper refinement form the elementary post-analytic branch.
-9. The retained coefficient supplies the regime-correct fixed-target asymptotic, exact entropy optimization, exponential multiplicity, exact-cardinality extraction, macroscopic diversity, balanced signed relations, height bounds, optimal refinement branching and global transfer.
+6. The target rows are indexed by the prime-divisor set `S_b`, with `tau(b)=sum_{r in S_b} 1/r^2`.
+7. The total actual-family variance is the sum of the prime-pair and target-row square loads.  Its leading provider changes at `gamma=2`, but the proof uses one universal cutoff `T_0=kappa_0 min(X^2,Z)` and one exhaustive six-sector architecture for every fixed `gamma>1`.
+8. The multiplicity-sensitive cyclic-energy lemma is an explicit provider for the lower-prime row distance.
+9. The full characterization follows from the direct fixed-target theorem by prime dilution; no avoiding-unit, numerator-induction or special-denominator chain is retained.
+10. Local one-block replacement is distinguished from simultaneous globally proper replacement.  Exactness, finite prescription, disjoint realization, common refinement and countably infinite proper refinement form the elementary post-analytic branch.
+11. The retained coefficient supplies the total-variance fixed-target asymptotic, explicit regime corollaries, exact entropy optimization, exponential multiplicity, exact-cardinality extraction, macroscopic diversity, balanced signed relations, height bounds, globally proper refinement branching and global transfer.
 
 ## Maintained manuscript architecture
 
@@ -57,13 +59,13 @@ The live manuscript remains an eleven-section article:
 4. The parameterized semiprime denominator system.
 5. The anchor block.
 6. Fibre decoding and target observability.
-7. The decoded skeleton and its regime-dependent minor ranges.
+7. The decoded skeleton and its universal minor ranges.
 8. The major contribution and terminal budget.
 9. Exact representation, extension and refinement.
 10. Quantitative multiplicity, optimization and transfer.
 11. Discussion and conclusion.
 
-The normalized source paths and detailed section structure are controlled by `ARTICLE_ARCHITECTURE.md`; theorem dependencies are controlled by `THEOREM_DAG.md`.
+The normalized source paths and detailed section structure are controlled by `ARTICLE_ARCHITECTURE.md`; theorem dependencies are controlled by `THEOREM_DAG.md`.  Those ledgers are outside this bounded source-only repair surface and are not rewritten by this role.
 
 ## Source and build assurance
 
@@ -83,7 +85,7 @@ The Makefile, workflow, bibliography database and Lean sources remain unchanged.
 
 - One article, one branch, one draft PR.
 - No task-, auditor-, repair-, review- or revision-specific branches.
-- Mathematical changes are recorded in `AFT_REPAIR_LEDGER.md` and `PROOF_CHANGE_LEDGER.md` only under separately authorized roles; this integration role modifies only its stated source surface.
+- Mathematical changes are recorded in `AFT_REPAIR_LEDGER.md` and `PROOF_CHANGE_LEDGER.md` only under separately authorized roles; this bounded role modifies only its stated source surface.
 - Source obligations are tracked in `PROOF_OBLIGATION_LEDGER.md`.
 - Read-only reviewers do not write to the branch.
 - Owner approval is required before ready-for-review, merge, release, DOI action, arXiv upload or journal submission.
@@ -93,23 +95,23 @@ The Makefile, workflow, bibliography database and Lean sources remain unchanged.
 
 - `M0` control and source freeze — **COMPLETE**
 - `M1` bounded structural repair and specialization bridge — **COMPLETE / VERIFIED / MANUSCRIPT-ADOPTED**
-- `M2` theorem DAG and article architecture — **COMPLETE / SYNCHRONIZED THROUGH THE PRE-INTEGRATION HEAD**
+- `M2` theorem DAG and article architecture — **COMPLETE / SYNCHRONIZED THROUGH THE PRE-INTEGRATION HEAD; LEDGER UPDATE NOT AUTHORIZED IN THIS ROLE**
 - `M3` general structural tools — **COMPLETE / MANUSCRIPT-ADOPTED**
-- `M4` E306 arithmetic providers — **COMPLETE / PARAMETERIZED FIXED-TARGET EXTENSION INTEGRATED**
+- `M4` E306 arithmetic providers — **COMPLETE / PARAMETERIZED FIXED-TARGET EXTENSION REPAIRED**
 - `M5` full manuscript assembly — **COMPLETE**
-- `M6` mathematical, source, build, publication-text and visual reviews — **COMPLETE THROUGH THE ACCEPTED PRE-INTEGRATION REPAIR MAP**
-- `M7` revision and publication disposition — **PARAMETERIZED PRE-SUBMISSION INTEGRATION COMPLETE / INDEPENDENT VERIFICATION PENDING / OWNER HOLD**
+- `M6` mathematical, source, build, publication-text and visual reviews — **BOUNDED PARAMETER-TARGET REPAIR COMPLETE / EXACT-HEAD WORKFLOW VERIFICATION REQUIRED**
+- `M7` revision and publication disposition — **OWNER HOLD / NO PUBLICATION GATE TRANSFERRED**
 
-## Parameterized pre-submission integration state
+## Unified parameterized repair state
 
-The complete fixed-target and fixed-exponent package has been integrated within its authorized source surface.  It includes the exact admissible region, the three variance regimes, the five- and six-sector architectures, entropy optimization with attainment distinctions, the countably infinite proper refinement chain, and the resulting quantitative transfer.  This state grants no publication authority.
+The fixed-target and fixed-exponent package is synchronized around one total-variance formula and one universal six-sector architecture.  Prime-divisor indexing, the cyclic-energy provider, zero-residual prescription, constant dependence, prime dilution and the replacement hierarchy are explicit.  The admissible ranges, fixed-target/fixed-`gamma` quantifiers, entropy results, denominator-height results, global `2 log 2` transfer and countably infinite refinement theorem are unchanged.  This state grants no publication authority and does not refreeze any head.
 
 ## Current state
 
 ```text
-[PARAMETERIZED FIXED-TARGET INTEGRATION COMPLETE E306-PAPER-01]
-[INDEPENDENT VERIFICATION PENDING]
+[UNIFIED PARAMETERIZED PROOF REPAIR COMPLETE E306-PAPER-01]
+[EXACT-HEAD WORKFLOW VERIFICATION REQUIRED]
 [OWNER HOLD / PR #9 REMAINS DRAFT]
 ```
 
-This control state does not mark PR `#9` ready, authorize merge, create or move a tag, authorize a release or DOI action, or authorize arXiv or journal submission.
+This control state does not mark PR `#9` ready, authorize merge, create or move a tag, authorize a release or DOI action, select a licence, or authorize arXiv or journal submission.

@@ -10,7 +10,7 @@ Retain a fixed reduced target $t=a/b\in(0,1)$ with squarefree $b$, a fixed admis
 \]
 and let $P_X(t)$ be the Bernoulli probability of the exact target event.
 
-\subsection{Sharp fixed-target coefficient in the three regimes}
+\subsection{Sharp fixed-target coefficient from the total variance}
 
 By character orthogonality and no-wrap,
 \begin{equation}
@@ -28,7 +28,7 @@ The basic asymptotics are
  \log L_X&=(1+o(1))Z=o(M_X).
 \end{aligned}
 \end{equation}
-The variance is the complete variance of \cref{prop:variance-regimes}; in particular, the target rows cannot be discarded at or below $\gamma=2$.
+The variance is the total actual-family variance \cref{eq:total-variance}; its two leading providers are separated only afterwards by \cref{cor:variance-regimes}.
 
 \begin{corollary}[Quantitative target coefficient]
 \label{cor:quantitative-coefficient}
@@ -41,7 +41,7 @@ for a fixed $c_{t,\gamma}>0$.
 \end{corollary}
 
 \begin{proof}
-The strict sector assembly leaves a fixed positive fraction of the major contribution after all minor totals have been subtracted.
+The strict six-sector assembly leaves a fixed positive fraction of the major contribution after all minor totals have been subtracted.
 \end{proof}
 
 \begin{theorem}[Sharp fixed-target coefficient]
@@ -51,7 +51,20 @@ For fixed $t$, $\gamma$ and finite forbidden set,
 \label{eq:sharp-target-coefficient}
  L_XP_X(t)\sim\frac1{\sqrt{2\pi}\,\sigma_X}.
 \end{equation}
-More explicitly, with $\alpha=\alpha_{t,\gamma}$ and $\tau_b$ as in \cref{eq:tau-b},
+Equivalently, with $\alpha=\alpha_{t,\gamma}$,
+\begin{equation}
+\label{eq:sharp-target-coefficient-total}
+ L_XP_X(t)
+ \sim
+ \left[
+ 2\pi\alpha(1-\alpha)
+ \left(
+  \frac1{2X^2\log^2X}
+  +\frac{\tau(b)}{Z\log Z}
+ \right)
+ \right]^{-1/2}.
+\end{equation}
+The explicit variance regimes give
 \begin{equation}
 \label{eq:sharp-target-coefficient-regimes}
  L_XP_X(t)\sim
@@ -60,7 +73,7 @@ More explicitly, with $\alpha=\alpha_{t,\gamma}$ and $\tau_b$ as in \cref{eq:tau
  \frac{X\log X}{\sqrt{\pi\alpha(1-\alpha)}},&\gamma>2,\\[8pt]
  \displaystyle
  \frac{\sqrt{Z\log Z}}
- {\sqrt{2\pi\alpha(1-\alpha)\tau_b}},&1<\gamma\leq2.
+ {\sqrt{2\pi\alpha(1-\alpha)\tau(b)}},&1<\gamma\leq2.
  \end{cases}
 \end{equation}
 \end{theorem}
@@ -71,14 +84,14 @@ Fix $C\geq1$ while $X\to\infty$.  With $N=\lfloor C/\sigma_X\rfloor$, the unifor
  \sigma_X\sum_{|m|\leq C/\sigma_X}F(m)
  \longrightarrow\int_{-C}^{C}\exp(-2\pi^2u^2)\,du.
 \]
-The normalized full-variance tail is $O(\exp(-cC^2))$.  For fixed $C$, every remaining sector is $o(\sigma_X^{-1})$: this includes the prime-only transition when $\gamma\leq2$.  Hence
+The normalized total-variance tail is $O(\exp(-cC^2))$.  For fixed $C$, every remaining sector is $o(\sigma_X^{-1})$, including the universal prime-only transition.  Hence
 \[
  \limsup_{X\to\infty}
  \left|\sigma_XL_XP_X(t)-
  \int_{-C}^{C}\exp(-2\pi^2u^2)\,du\right|
  \ll\exp(-cC^2).
 \]
-Only now let $C\to\infty$.  Since the Gaussian integral is $1/\sqrt{2\pi}$, \cref{eq:sharp-target-coefficient} follows.  The two explicit forms are \cref{prop:variance-regimes}.  No diagonal choice $C=C(X)$ and no moving-target uniformity is used.
+Only now let $C\to\infty$.  Since the Gaussian integral is $1/\sqrt{2\pi}$, \cref{eq:sharp-target-coefficient} follows.  Formula \cref{eq:sharp-target-coefficient-total} is the total variance \cref{eq:total-variance}, and the two explicit forms are \cref{cor:variance-regimes}.  No diagonal choice $C=C(X)$ and no moving-target uniformity is used.
 \end{proof}
 
 \subsection{Entropy-optimal cardinality and support diversity}
@@ -249,25 +262,37 @@ For $0<t<1/2$, the optimizing exponent \cref{eq:optimal-gamma} gives the attaine
  k_D=\left[1+o(1)\right]\frac{D}{(\log D)^2}.
 \end{equation}
 
-\subsection{Quantitative refinement branching}
+\subsection{Quantitative proper refinement branching}
 
-\begin{corollary}[Optimal exponential branching of refinements]
+\begin{corollary}[Optimal exponential branching of proper refinements]
 \label{cor:quantitative-refinement-branching}
-Let $A_0$ be any finite squarefree-semiprime representation, and choose $a\in A_0$.  For all sufficiently large $D$, $A_0$ has at least
+Let $A_0$ be any finite squarefree-semiprime representation, and choose a distinguished $a_0\in A_0$.  For all sufficiently large $D$, there are at least
 \begin{equation}
 \label{eq:optimal-refinement-count}
- \exp\left(\left[2\log2-o_a(1)\right]
+ \exp\left(\left[2\log2-o_{a_0}(1)\right]
  \frac{D}{(\log D)^2}\right)
 \end{equation}
-further refinements of height at most $D$.  One total cardinality
+representations $A'$ of height at most $D$ satisfying $A_0\prec A'$.  One total cardinality
 \[
- |A_0|-1+\left[1+o_a(1)\right]\frac{D}{(\log D)^2}
+ K_{A_0,a_0}+\left[1+o_{a_0}(1)\right]\frac{D}{(\log D)^2},
 \]
-carries the same rate, and an exponential equal-cardinality subfamily is Hamming-separated on the same linear scale.
+where $K_{A_0,a_0}$ is fixed, carries the same rate, and an exponential equal-cardinality subfamily is Hamming-separated on the same linear scale.
 \end{corollary}
 
 \begin{proof}
-Apply the direct family to $t=1/a$.  Since a squarefree semiprime satisfies $a\geq6$, one has $t<1/2$.  Choose the maximizing exponent $\gamma=\exp(2/\sqrt a)$.  Forbid $A_0$, replace $a$ by each direct support, and use \cref{eq:optimal-direct-height-rate}.  The surrounding fixed support changes cardinality by $|A_0|-1$ and preserves symmetric differences.
+For every $a\in A_0\setminus\{a_0\}$, choose once and for all a representation $C_a$ of $1/a$, successively forbidding $A_0$ and the earlier chosen blocks.  The $C_a$ are pairwise disjoint and avoid $A_0$.  Put
+\[
+ \mathcal U=A_0\cup\bigcup_{a\neq a_0}C_a.
+\]
+Apply the direct family to $t=1/a_0$.  Since a squarefree semiprime satisfies $a_0\geq6$, one has $t<1/2$; choose the maximizing exponent $\gamma=\exp(2/\sqrt{a_0})$ and forbid $\mathcal U$.  For each direct support $C_{a_0}$, set
+\[
+ A'=C_{a_0}\sqcup\bigsqcup_{a\neq a_0}C_a.
+\]
+The simultaneous replacement corollary \cref{cor:simultaneous-proper-replacement} gives $A_0\prec A'$.  The union map is injective, all fixed blocks have bounded height and contribute the fixed cardinality shift
+\[
+ K_{A_0,a_0}=\sum_{a\neq a_0}|C_a|,
+\]
+and symmetric differences are exactly those of the varying block $C_{a_0}$.  Now use \cref{eq:optimal-direct-height-rate}; enlarging the threshold ensures that every fixed denominator is at most $D$.
 \end{proof}
 
 The same conclusion applies to any common refinement of finitely many representations, since such a refinement is itself finite.

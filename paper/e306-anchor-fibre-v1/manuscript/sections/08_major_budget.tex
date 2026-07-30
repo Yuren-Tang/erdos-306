@@ -1,7 +1,7 @@
 \section{The major contribution and terminal budget}
 \label{sec:major-budget}
 
-We now estimate the Taylor major and the full-variance tail, then assemble the regime-dependent sector partition.  The order of choices is essential: the Gaussian cutoff $C$ is fixed first, and only then is $X$ taken sufficiently large.  All constants are fixed once $t$, $\gamma$, $b$ and the stated numerical choices are fixed.
+We now estimate the Taylor major and the total-variance tail, then assemble the universal six-sector partition.  The order of choices is essential: $(t,\gamma,b,\mathcal T)$ and the fixed numerical constants are chosen first, the Gaussian cutoff $C$ is then fixed, and only afterwards is $X$ taken sufficiently large.  No constant below depends on $X$ or on $C$ unless explicitly indicated.
 
 \subsection{A uniform local expansion}
 
@@ -31,15 +31,16 @@ For $|m|\leq N=C/\sigma_{\mathcal E}$,
        \sum_{e\in\mathcal E}\frac1{e^2}
  \ll\frac{C^3}{\sigma_{\mathcal E}e_{\min}}.
 \end{equation}
-By \cref{prop:variance-regimes}, this is
+The total variance \cref{eq:total-variance} gives
 \begin{equation}
 \label{eq:aggregate-cubic-remainder}
- \begin{cases}
- O(C^3\log X/X),&\gamma>2,\\
- O(C^3\sqrt{\log Z/Z}),&1<\gamma\leq2,
+ \frac1{\sigma_{\mathcal E}e_{\min}}
+ =\begin{cases}
+ O(\log X/X),&\gamma>2,\\
+ O(\sqrt{\log Z/Z}),&1<\gamma\leq2,
  \end{cases}
 \end{equation}
-and hence tends to zero for fixed $C$ in every regime.  Also $N=o(e_{\min})$, so all major phases lie in the common Taylor disk.
+and hence the aggregate cubic remainder tends to zero for fixed $C$ in every regime.  Also $N=o(e_{\min})$, so all major phases lie in the common Taylor disk.
 
 \subsection{Sector I: positive real major}
 
@@ -47,7 +48,7 @@ For $|m|\leq N$, \cref{eq:N-below-full} and the decoder-identification propositi
 \[
  2\pi i m\theta\Lambda-2\pi i mt=0.
 \]
-The numerator $a$ has therefore introduced no residual phase.  The quadratic term is exactly the full variance.  Uniformly for $|m|\leq N$,
+The numerator $a$ has therefore introduced no residual phase.  The quadratic term is exactly the total actual-family variance.  Uniformly for $|m|\leq N$,
 \begin{equation}
 \label{eq:major-local-gaussian}
  F(m)=\exp\bigl(-2\pi^2m^2\sigma_{\mathcal E}^2+\varepsilon_m\bigr),
@@ -71,13 +72,13 @@ For every fixed $C\geq1$ and all sufficiently large $X$,
 where $c_{\mathrm{maj}}>0$ is independent of $C$ and $X$.
 \end{proposition}
 
-\subsection{Sector II: the full actual-variance tail}
+\subsection{Sector II: the total actual-variance tail}
 
 For
 \[
- N<|m|\leq T_{\mathrm{full}},
+ N<|m|\leq T_0,
 \]
-the decoded tuple is the genuine integer $m$ modulo $L$.  The constant in \cref{eq:T-full} was chosen so that $|m|/e\leq1/4$ for every $e\in\mathcal E$.  Hence
+the decoded tuple is the genuine integer $m$ modulo $L$.  The constant $\kappa_0$ in \cref{eq:T-full} was chosen so that $|m|/e\leq1/4$ for every $e\in\mathcal E$.  Hence
 \begin{equation}
 \label{eq:full-variance-gaussian}
  |F(m)|\leq\exp(-c m^2\sigma_{\mathcal E}^2).
@@ -90,7 +91,7 @@ A Gaussian integral comparison gives
 \end{equation}
 where $K$ is independent of $C$ and $X$.  Choose $C$ so large that this is at most $c_{\mathrm{maj}}/(8\sigma_{\mathcal E})$.
 
-\subsection{Strict assembly in all regimes}
+\subsection{Strict six-sector assembly}
 
 Fix this $C$, then choose $X$ above the finite maximum of the thresholds required for:
 \begin{itemize}
@@ -98,19 +99,22 @@ Fix this $C$, then choose $X$ above the finite maximum of the thresholds require
 \item separation from the support of $b$ and avoidance of $\mathcal T$;
 \item the strict load inequalities $t<\Lambda<1$ and the compact Bernoulli interval;
 \item anchor rigidity, fingerprint entropy and the weighted anchor partition;
-\item both row-distance estimates, the row-tail sum and the two identification ranges;
-\item the prime-only transition estimate when $\gamma\leq2$;
+\item the cyclic-energy provider, both row-distance estimates, the row-tail sum and the two identification ranges;
+\item the prime-only transition estimate for every fixed $\gamma>1$;
 \item containment and prime supply in the adaptive interval;
-\item the Taylor disk and the regime-specific cubic remainder;
+\item the Taylor disk and the total-variance cubic remainder;
 \item all $o(\sigma_{\mathcal E}^{-1})$ totals in \cref{eq:transition-total,eq:adaptive-total,eq:anchor-tail-total,eq:terminal-error-total}.
 \end{itemize}
 The terminal order is therefore
 \begin{equation}
 \label{eq:parameter-order}
  (t,\gamma,b,\mathcal T)\ \text{fixed},
- \qquad C\longrightarrow X.
+ \qquad C\ \text{fixed},
+ \qquad X\to\infty,
 \end{equation}
-For $\gamma>2$, Sectors III--V contribute $o(\sigma_{\mathcal E}^{-1})$.  For $1<\gamma\leq2$, Sectors III--VI do so, including the prime-only transition.  Sector II is at most $c_{\mathrm{maj}}/(8\sigma_{\mathcal E})$, whereas Sector I has real part at least $c_{\mathrm{maj}}/\sigma_{\mathcal E}$.  Applying \cref{prop:decoded-skeleton-positivity} yields:
+and only in the sharp asymptotic argument is $C\to\infty$ taken afterwards.
+
+By \cref{prop:six-sector-exhaustion}, Sectors III--VI contribute $o(\sigma_{\mathcal E}^{-1})$ for every fixed $\gamma>1$.  Sector II is at most $c_{\mathrm{maj}}/(8\sigma_{\mathcal E})$, whereas Sector I has real part at least $c_{\mathrm{maj}}/\sigma_{\mathcal E}$.  Applying \cref{prop:decoded-skeleton-positivity} yields:
 
 \begin{theorem}[Positive parameterized Fourier numerator]
 \label{thm:positive-fourier-numerator}
@@ -121,4 +125,4 @@ For every fixed reduced $t=a/b\in(0,1)$ with squarefree $b$, every fixed $\gamma
 \end{equation}
 \end{theorem}
 
-The proof uses the full actual-family variance in both the major and the first minor range.  At $\gamma=2$, that variance is target-row dominated, while the following transition range is controlled solely by the complete prime-pair square load.  No estimate is obtained by formal substitution for the exponent $3$.
+The proof uses the total actual-family variance in both the major and the first minor range.  The leading variance provider still changes at $\gamma=2$, but the following prime-only transition sector and the remaining estimates are now part of one six-sector architecture in every regime.
