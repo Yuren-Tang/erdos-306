@@ -114,7 +114,7 @@ The packet contains:
 2. connected-component factorization and alphabet-restricted sourced fibres;
 3. the exact edge-symbol-resolved weighted enumerator evaluation;
 4. the exact source-convolution identity;
-5. the Bernoulli three-point edge law;
+5. the positive three-point majorant for the fractional Bernoulli modulus;
 6. syndrome/integer-reciprocal equivalence;
 7. exact no-wrap balanced reciprocal relations;
 8. the local-no-wrap support-core theorem;
@@ -147,9 +147,11 @@ not the anchor-flow entropy layer.
 The accepted E306 representation theorem bypasses the representation
 consequence for which Li's gap-free-floor conjecture is sufficient. It does not
 prove or imply that conjecture and proves no growing gap-free interval for one
-fixed Li primorial family. The separate moving-target research return
-`#issuecomment-5146761939` is not integrated here; it remains outside this
-packet pending its independent audit.
+fixed Li primorial family. The compact moving-target local-saturation theorem
+returned at `#issuecomment-5146761939` passed independent audit at
+`#issuecomment-5147047654` and was accepted by Director disposition
+`#issuecomment-5147112606`. It is nevertheless not integrated into this packet
+and remains outside it pending a separate integration authorization.
 
 The packet records no publication, priority, merge, release, DOI, arXiv,
 journal, or cross-project disposition.
