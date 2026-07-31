@@ -1,8 +1,9 @@
 # Proof Packet
 
-This file proves the theorem inventory in `THEOREM_PACKET.md` and records the
-accepted analytic dependency chain without replacing inherited providers by
-unstated abstractions.
+This file proves the exact finite statements in `THEOREM_PACKET.md` and records
+the accepted analytic dependency chain. Sections 8–12 are inherited audited
+provider/dependency proofs: they explain how the accepted providers compose,
+but do not replace those providers by unstated self-contained reproofs.
 
 ## 1. CRT phase factorization
 
@@ -15,9 +16,7 @@ h/(n_u n_v)
   +a_v n_u^(-1)/n_v.
 ```
 
-Indeed the two sides have the same additive characters against every integer:
-the first summand is congruent to `a_u/(n_u n_v)` after multiplication by
-`n_v`, and similarly at `v`. Hence, for every integer `j`,
+Hence, for every integer `j`,
 
 ```text
 e(jh/(n_u n_v))
@@ -28,13 +27,14 @@ e(jh/(n_u n_v))
 The same label `j` occurs at both endpoints. There is no orientation sign and
 no diagonal multiplicity.
 
-## 2. Proof of the exact sourced identity
+## 2. Exact sourced identity and restricted fibres
 
 Expand every edge kernel:
 
 ```text
 product_e K_e(h_e(a)/n_e)
- =sum_j product_e c_e(j_e)
+ =sum_(j in product_e mathcal J_e)
+    product_e c_e(j_e)
     product_e e(j_e h_e(a)/n_e).
 ```
 
@@ -53,37 +53,80 @@ Therefore
 
 ```text
 sum_(a_v mod n_v)
- e(a_v[(partial_rec j)_v-beta_v]/n_v)
+ e(a_v[(partial_rec_tilde j)_v-beta_v]/n_v)
 ```
 
-equals `n_v` when `(partial_rec j)_v=beta_v` and equals `0` otherwise. Taking
-the product over all vertices gives
+equals `n_v` when `(partial_rec_tilde j)_v=beta_v` and equals `0` otherwise.
+Taking the product over all vertices gives
 
 ```text
 Z_G(beta)
  =product_v n_v
-  *sum_(j:partial_rec j=beta) product_e c_e(j_e).
+  *sum_(j in F_beta(G,n,mathcal J))
+     product_e c_e(j_e).
 ```
 
-Normalize `c_e(j)` by `C_e`. Independence of the labels gives
+Normalize `c_e(j)` by `C_e`. Independence of the random variables `J_e` gives
 
 ```text
-sum_(j:partial_rec j=beta) product_e c_e(j_e)
- =product_e C_e * Pr(partial_rec J=beta),
+sum_(j in F_beta) product_e c_e(j_e)
+ =product_e C_e * Pr(partial_rec_tilde J=beta),
 ```
 
 which proves Theorem 1.2.
 
+The ambient map `partial_rec_tilde:Z^E->A_G` is additive. Its intersection with
+an arbitrary product alphabet is merely an alphabet-restricted fibre. Unless
+the alphabets are additive subgroups, that intersection need not be a subgroup
+or a coset. Corollary 1.3 therefore defines its enumerator directly rather than
+importing linear-code terminology.
+
 If the graph is disconnected, every factor and every syndrome equation belongs
 to one component. Both the assignment sum and the independent-label
-probability therefore factor. Setting `beta=0` gives the homogeneous weighted
-enumerator. An arbitrary `beta` selects an affine fibre, not a new code.
+probability factor, proving Corollary 1.4.
 
 For absolutely summable nonnegative coefficient families, Tonelli's theorem
 permits the same expansion; finite vertex sums cause no further convergence
 issue.
 
-## 3. Proof of the Bernoulli three-point majorant
+### 2.1 Exact source convolution
+
+Let `c_e` and `d_e` be two coefficient systems and let
+
+```text
+r_e(k)=sum_(i+j=k)c_e(i)d_e(j).
+```
+
+Expanding the `r`-system is equivalent to choosing two integer edge-label
+vectors `i` and `j` and using their sum `i+j`. Additivity gives
+
+```text
+partial_rec_tilde(i+j)
+ =partial_rec_tilde i+partial_rec_tilde j.
+```
+
+Write `N=product_v n_v`. By Theorem 1.2,
+
+```text
+Z_r(beta)
+ =N sum_(gamma in A_G)
+    [sum_(partial_rec_tilde i=gamma)product_e c_e(i_e)]
+    [sum_(partial_rec_tilde j=beta-gamma)product_e d_e(j_e)].
+```
+
+Each bracket equals the corresponding sourced coefficient divided by `N`.
+Thus
+
+```text
+Z_r(beta)
+ =(1/N)sum_(gamma in A_G)
+   Z_c(gamma)Z_d(beta-gamma).
+```
+
+No support-switching involution is used, and convolution generally enlarges the
+edge alphabet. This proves Theorem 1.5 with its stated limitation.
+
+## 3. Bernoulli three-point majorant
 
 Let
 
@@ -106,8 +149,7 @@ x=2nu(1-cos(2pi t)).
 ```
 
 Since `0<=nu<=1/4` and `0<=1-cos<=2`, one has `0<=x<=1`. For
-`0<lambda<=1`, concavity of `y -> y^(lambda/2)` on `[0,1]`, or the tangent
-inequality at `1`, gives
+`0<lambda<=1`, concavity of `y -> y^(lambda/2)` gives
 
 ```text
 (1-x)^(lambda/2)
@@ -126,11 +168,13 @@ f(t)^lambda
 
 All coefficients are nonnegative and sum to one. This proves Proposition 2.1.
 
-The concentration constant obtained from this law depends on the activity
-`lambda nu`. If that activity tends to zero, the law converges to the
-deterministic zero current and no uniform mixing estimate can persist.
+The concentration constant depends on the activity
+`eta=lambda theta(1-theta)`. Uniformity over compact parameter sets therefore
+uses a constant `c_(Theta,Lambda)` depending on both the compact `theta` range
+and the compact `lambda` range. If the activity tends to zero, the law converges
+to the deterministic zero current and no uniform mixing estimate can persist.
 
-## 4. Proof of syndrome/integer-reciprocal equivalence
+## 4. Syndrome/integer-reciprocal equivalence
 
 Let
 
@@ -153,7 +197,7 @@ Because `N/n_v` is invertible modulo `n_v`,
 ```text
 N R(j)=0 mod n_v
 iff
-(partial_rec j)_v=0.
+(partial_rec_tilde j)_v=0.
 ```
 
 The moduli are pairwise coprime, so divisibility of `N R(j)` by every `n_v` is
@@ -161,10 +205,11 @@ equivalent to divisibility by `N`. That is equivalent to `R(j)` being an
 integer. This proves Theorem 3.1.
 
 If `sum_e |j_e|/n_e<1`, then `|R(j)|<1`. The only integer in that open interval
-is zero, proving the no-wrap corollary.
+is zero, proving Corollary 3.2.
 
-## 5. Proof of the support-core consequence
+## 5. Support core, `2`-core restriction, and low weight
 
+Let `G[j]=(V[j],E[j])` be the support graph defined in the theorem packet.
 Suppose a nonzero support component has a leaf `v`, and let its unique support
 edge be `e={v,w}`. The `v`-syndrome equation is
 
@@ -173,19 +218,73 @@ j_e n_w^(-1)=0 mod n_v.
 ```
 
 The coefficient `n_w^(-1)` is a unit modulo `n_v`, so `n_v` divides `j_e`.
-This contradicts the local no-wrap hypothesis. Thus no support leaf exists and
-minimum degree is at least two.
+This contradicts local no-wrap. Thus `G[j]` has no leaf and every one of its
+vertices has support degree at least two. Every finite graph of minimum degree
+at least two contains a cycle, proving Theorem 4.1.
 
-Every finite graph of minimum degree at least two contains a cycle, and repeated
-leaf stripping deletes no support edge. Hence the support lies in the
-graph-theoretic `2`-core. A forest always has a leaf in each nontrivial
-component, so it has no nonzero homogeneous support. The girth statement is
-immediate for simple graphs.
+### 5.1 Exact restriction and zero-extension
 
-Nothing in this proof gives parity of the support degree, a decomposition into
-cycles, or support minimality.
+Assume `0 in mathcal J_e` for every edge and the stated nondivisibility of every
+allowed nonzero symbol. Run the usual leaf-stripping process defining
+`K=core_2(G)`. At each deleted leaf, the syndrome equation forces its unique
+remaining incident edge to carry zero by the argument above. Induction through
+the stripping order forces every edge outside `E(K)` to carry zero.
 
-## 6. Proof of sourced separator elimination
+Restriction therefore maps every homogeneous restricted assignment on `G` to
+one on `K`. Conversely, extend a homogeneous assignment on `K` by the admissible
+zero symbol on every deleted edge. Every deleted vertex receives zero syndrome,
+and every core equation is unchanged. Restriction and zero-extension are thus
+inverse bijections.
+
+For the enumerator, every deleted edge contributes exactly its zero-symbol
+variable. Hence
+
+```text
+W_0(G;x)
+ =product_(e notin E(K))x_(e,0) * W_0(K;x).
+```
+
+A forest has empty `2`-core, so under the zero-symbol hypothesis its homogeneous
+restricted fibre is exactly the singleton zero assignment. No dimension claim
+is available without a linear/module structure. This proves Theorem 4.2.
+
+### 5.2 Odd-prime three-point minimum distance
+
+For a simple graph with distinct odd-prime moduli and alphabet `{-1,0,1}`, a
+nonzero support of weight one or two cannot have minimum support degree two. A
+weight-three support with minimum degree two must be a triangle on moduli
+`p,q,r`. Corollary 3.2 gives
+
+```text
++/-1/(pq) +/-1/(pr) +/-1/(qr)=0.
+```
+
+Multiplication by `pqr` gives a signed sum of three odd integers equal to zero,
+which is impossible by parity. Thus every nonzero homogeneous restricted
+assignment has Hamming weight at least four.
+
+The odd-prime restriction cannot be omitted: on moduli `2,3,5`,
+
+```text
+1/6-1/10-1/15=0.
+```
+
+This proves Corollary 4.3.
+
+### 5.3 Explicit non-Eulerian witness
+
+For moduli `5,7,11,13`, direct arithmetic gives
+
+```text
+-1/35+1/55+1/65+1/77-1/91-1/143=0.
+```
+
+The labels are exactly those in Example 4.4. By Theorem 3.1 they have zero
+syndrome. Their support is all of `K_4`, so every support degree is three. This
+proves the claimed failure of Eulerian, ordinary-cycle, signed-circuit, and
+cycle-cover conclusions.
+
+## 6. Sourced separator elimination and min-entropy
 
 Fix the labels on `E[O]`. Their contribution merely changes the required source
 at every vertex in `O` and `C`.
@@ -210,25 +309,36 @@ Pr(all O-equations | J|_(E[O]))
 ```
 
 Now expose the cross-edge labels. Their contributions to vertices in `C`
-produce an arbitrary induced affine source `gamma`. The only remaining random
-variables are the internal core labels `J|_(E[C])`, and their chance of meeting
-that source is at most
+produce an arbitrary induced affine source. The only remaining random variables
+are the internal core labels, whose largest source atom is `P_(G[C])` by the
+explicit induced-graph definition. Multiplication proves the conditional
+inequality; averaging over `E[O]` proves Theorem 5.1.
+
+Iterating gives
 
 ```text
-sup_gamma Pr(partial_rec^C J|_(E[C])=gamma).
+M_G
+ <=product_(p in O)(n_p rho_p)M_(G[C]).
 ```
 
-Multiplication proves the conditional inequality. Averaging over `E[O]`
-proves the unconditional inequality. Multiplying by the vertex-modulus factors
-gives its `M_G` form.
+If `M_(G[C])<=T` and `n_p rho_p<=1+epsilon_p`, then
 
-Iterating this proof over nested cores gives the conditional sensor-separator
-architecture. The source supremum is essential: eliminating one layer changes
-the source seen by every later layer.
+```text
+max_beta Pr(partial_rec_tilde J=beta)
+ <=T product_(p in O)(1+epsilon_p)
+   /product_v n_v.
+```
 
-## 7. Decoder image and completion injectivity
+Taking negative logarithms gives Corollary 5.2. It controls the largest
+syndrome atom only; it does not establish total-variation mixing or abundance
+of homogeneous assignments.
 
-The abstract inequality is immediate. Since `C:S->A` is injective,
+The source supremum is essential: eliminating one layer changes the source seen
+by every later layer.
+
+## 7. Decoder image and hypergraph algebra
+
+The decoder-image inequality is immediate. Since `C:S->A` is injective,
 
 ```text
 {C(s):s in S}
@@ -244,23 +354,46 @@ sum_s W(C(s))
 
 In the literal construction, the sensor coordinates are retained unchanged in
 the completed assignment. If two completed assignments agree, their sensor
-restrictions agree, so the sensor assignments agree. This proves injectivity.
-All nonsensor coordinates are then supplied by the accepted row decoder on its
-stated range. No complex cancellation and no estimate of the full partition is
-used in this injection argument.
+restrictions agree, so the sensor assignments agree. This proves Proposition
+6.1 and its application.
 
-## 8. Source-uniform terminal inverse-residue concentration
+For a hyperedge `e`, CRT factorization gives
 
-Let `p` be the row modulus and `F` a set of `s` distinct primes in an interval
-of diameter `K`. For nonzero `d mod p`, the accepted divisor-dispersion argument
-bounds the multiplicity with which a small centred residue can occur by the
-parameter `D`. Ordering the possible centred values and discarding at most the
-allowed multiplicity yields
+```text
+e(j_e h_e(a)/n_e)
+ =product_(v in e)
+   e(
+     j_e a_v
+     (product_(w in e\{v})n_w)^(-1)/n_v
+    ).
+```
+
+Vertex character orthogonality then proves the sourced hypergraph coefficient
+identity exactly as in Sections 1–2. For the reciprocal equivalence, put
+`N=product_v n_v` and reduce `N sum_e j_e/n_e` modulo each `n_v`; the incident
+terms reproduce the `v`-coordinate of `partial_rec_tilde^H`, multiplied by the
+unit `N/n_v`. Pairwise coprimality completes the proof. At a support-degree-one
+vertex, the same unit argument forces the unique incident nonzero label to be
+divisible by the vertex modulus, contradicting local no-wrap. This proves
+Theorem 6.2.
+
+## 8. Inherited source-uniform terminal inverse-residue concentration
+
+This section records the inherited audited provider used by Theorem 7.2; it is
+not a new independent derivation of the divisor-dispersion estimate.
+
+Let `p` be the row modulus and let `F` be a set of `s` distinct sensor primes in
+an interval of diameter `K`, with `p notin F`. The inherited provider supplies,
+for every nonzero `d mod p`,
 
 ```text
 sum_(q in F)||d q^(-1)/p||^2
  >>s^3/(K^2D^2).
 ```
+
+Here `D` is exactly the divisor/multiplicity parameter appearing in that
+provider. This displayed dispersion inequality, rather than an undefined
+multiplicity shorthand, is the hypothesis used below.
 
 For the three-point law of activity `eta=lambda theta(1-theta)`, its
 characteristic function at `x` is
@@ -269,11 +402,12 @@ characteristic function at `x` is
 1-eta+eta cos(2pi x).
 ```
 
-For fixed positive activity,
+When `theta in Theta subset (0,1)` and `lambda in Lambda subset (0,1]` range
+over fixed compact sets, the activity is bounded below and
 
 ```text
 |1-eta+eta cos(2pi x)|
- <=exp(-c_lambda ||x||^2).
+ <=exp(-c_(Theta,Lambda)||x||^2).
 ```
 
 Fourier inversion on `Z/pZ` gives, for every source `t`,
@@ -287,91 +421,91 @@ Pr(sum_(q in F)J_q q^(-1)=t)
 ```
 
 The `d=0` term is `1/p`. Taking absolute values on all nonzero frequencies and
-using the dispersion estimate gives
+using the inherited dispersion estimate gives
 
 ```text
 sup_t Pr(sum_(q in F)J_q q^(-1)=t)
- <=1/p+exp(-c_lambda s^3/(K^2D^2)).
+ <=1/p+exp(-c_(Theta,Lambda)s^3/(K^2D^2)).
 ```
 
-The bound is uniform in `t`. Therefore all labels exposed at previous
-elimination stages may be absorbed into the source without changing the bound.
+The bound is uniform in `t`, so labels exposed at earlier stages may be absorbed
+into the source. The proof uses a positive activity lower bound and gives no
+uniformity as `lambda` or `theta(1-theta)` tends to zero.
 
-The proof uses the lower bound on activity. It does not yield uniformity as
-`lambda` or `theta(1-theta)` tends to zero.
+## 9. Inherited nested dense-core elimination
 
-## 9. Nested dense-core elimination
+This section records the accepted dependency proof. Its arithmetic thresholds,
+diameter contraction, and divisor controls are inherited providers.
 
-The accepted terminal proof applies the separator theorem repeatedly. Its
-combinatorial invariant is:
+The terminal proof applies the separator theorem repeatedly:
 
 - at each nonterminal stage, remove vertices having a sufficiently large
   reciprocal-dispersed neighbourhood in the retained core;
 - apply the source-uniform row bound to every removed vertex;
 - expose all edges internal to the removed set;
 - pass the induced arbitrary source to the smaller core;
-- if no such vertex remains, the surviving set has contracted cardinality and
-  interval diameter, so it is a dense residual core rather than an uncontrolled
-  sparse remainder.
+- if no such vertex remains, invoke the inherited contracted-cardinality and
+  interval-diameter alternative, so the survivor is a dense residual core
+  rather than an uncontrolled sparse remainder.
 
-The terminal alternatives are exhaustive:
+The inherited terminal alternatives are exhaustive:
 
 1. **eliminable stage:** the product of factors `n_p rho_p` is bounded by the
    reciprocal-dispersion gain;
 2. **small residual core:** count its labels trivially;
-3. **dense residual core:** its diameter contraction and minimum retained
-   neighbourhood allow another elimination scale;
+3. **dense residual core:** use its inherited diameter contraction and retained
+   neighbourhood to continue at another scale;
 4. **terminal bounded core:** absorb its complete label count into the final
    entropy budget.
 
-The source-uniformity proved in the previous section prevents any multiplication
-by the number of possible incoming sources. Shared edge variables are never
-replaced by independently optimized row variables.
-
-With the accepted thresholds, the complete iteration has logarithmic current
-entropy
+Source-uniformity prevents multiplication by the number of possible incoming
+sources. Shared edge variables are never replaced by independently optimized
+row variables. With the accepted thresholds, the inherited iteration yields
 
 ```text
 log(number/weighted mass of surviving joint currents)
  =O(D^2 ell^5).
 ```
 
-This is the joint reciprocal-flow entropy estimate. The exponent is not a
-generic graph-theoretic consequence: it uses the terminal interval diameter,
-the divisor/multiplicity bound, and the particular nested-core schedule.
+The exponent is not a generic graph-theoretic consequence; it depends on the
+accepted terminal interval geometry, divisor/multiplicity provider, and nested
+core schedule.
 
-## 10. Weighted anchor partition
+## 10. Inherited weighted anchor partition
+
+This section records how the exact packet enters the accepted anchor theorem.
+It does not re-prove prime supply, rigidity, or the energy-floor provider.
 
 For an anchor assignment with reciprocal energy `Q`, raise the Bernoulli
-modulus to the fixed fractional power `lambda`. The positive majorant and
-Theorem 1.2 convert its assignment sum into a nonnegative weighted sum over
-sourced reciprocal currents.
+modulus to the fixed fractional power `lambda`. Proposition 2.1 majorizes it by
+a nonnegative three-point edge law, and Theorem 1.2 converts the resulting
+assignment sum into a nonnegative weighted sum over sourced reciprocal
+currents.
 
-The accepted rigidity argument supplies an energy floor of scale sufficient
-to dominate the joint-current entropy precisely when
+The inherited rigidity argument supplies an energy floor sufficient to dominate
+the joint-current entropy precisely when
 
 ```text
 H^2 >> Z D^3 ell^8.
 ```
 
-Below the floor, the decoder-image inclusion reduces the actual image to the
-full weighted anchor partition, and coherent labels are summed by the accepted
-Gaussian/rigidity estimates. Above the floor, the Fourier damping contributes
-an exponential factor whose exponent dominates `O(D^2 ell^5)`. Therefore:
+Below the floor, decoder-image inclusion reduces the actual image to the full
+weighted anchor partition, and coherent labels are summed by the inherited
+Gaussian/rigidity estimate. Above the floor, inherited Fourier damping dominates
+`O(D^2 ell^5)`. Thus the accepted provider yields:
 
-- the complete weighted anchor partition is polynomial at the required scale;
-- the energy-above-floor tail is exponentially negligible;
-- no raw count of assignments is substituted for the weighted partition.
+- the complete weighted anchor partition at the required polynomial scale;
+- an exponentially negligible energy-above-floor tail;
+- no substitution of raw assignment count for the weighted partition.
 
-This theorem replaces the old fingerprint-counting obstruction for the literal
-terminal block. It does not re-prove prime supply, target observability, Taylor
-control, quotient semantics, or no-wrap.
+The reciprocal-incidence theorem removes the old fingerprint-counting
+obstruction for the literal terminal block. It does not itself supply prime
+supply, target observability, Taylor control, quotient semantics, or no-wrap.
 
-## 11. Row-specific decoding
+## 11. Inherited row-specific decoding
 
-For a coherent label `m` and row modulus `r`, compare the candidate row phase
-with every competing residue. The accepted cyclic inverse-residue estimate
-gives the separation
+For a coherent label `m` and row modulus `r`, the accepted cyclic
+inverse-residue provider gives
 
 ```text
 D_r >> H/ell^3
@@ -383,26 +517,22 @@ when `r<=H`, and
 D_r >> H^3/(r^2 ell^3)
 ```
 
-when `r>H`.
-
-The candidate energy remains below a fixed fraction of this separation for
+when `r>H`. The accepted candidate-energy comparison holds for
 
 ```text
 |m| << Z min(r,H)/ell.
 ```
 
 The nearest-syndrome inequality from the verified structural interface then
-makes the candidate the unique decoder. Its off-decoder row mass is bounded by
+identifies the candidate uniquely. The inherited off-decoder estimate is
 
 ```text
 r exp(-cD_r).
 ```
 
-The weighted product-fibre compression theorem sums these errors without an
-exponential coordinate-count loss.
-
-The worst retained rows occur at the largest relevant `r`. The accepted
-absolute summation closes under
+Weighted product-fibre compression sums these errors without an exponential
+coordinate-count loss. The worst retained rows occur at the largest relevant
+`r`, and accepted absolute summation closes under
 
 ```text
 H^3 >> Z^2 ell^4.
@@ -411,26 +541,26 @@ H^3 >> Z^2 ell^4.
 This condition is globally stronger than the anchor condition throughout the
 fixed-power literal regime of interest.
 
-## 12. Full literal closure
+## 12. Inherited full literal closure
 
-Under the cubic condition, the proof chain is:
+Under the cubic condition, the audited dependency chain is
 
 ```text
 decoder-image injectivity
- -> positive Fourier edge-current expansion
+ -> positive Fourier edge-current majorant
  -> exact sourced reciprocal-incidence identity
- -> source-uniform inverse-residue concentration
- -> nested dense-core elimination
+ -> inherited source-uniform inverse-residue concentration
+ -> inherited nested dense-core elimination
  -> O(D^2 ell^5) joint entropy
- -> weighted anchor partition
- -> row-specific decoder and product-fibre compression
+ -> inherited weighted anchor partition
+ -> inherited row-specific decoder and product-fibre compression
  -> retained-skeleton minor-lane damping
  -> actual-family Taylor major
  -> positive quotient coefficient
  -> deterministic no-wrap.
 ```
 
-The last four arrows are inherited accepted providers from the one-anchor
+The final four arrows are inherited accepted providers from the one-anchor
 proof and structural interface. They remain necessary.
 
 If `H=Z^(1/Gamma)`, the cubic condition reads
@@ -443,19 +573,20 @@ Every fixed `Gamma<3/2` has a positive power margin and is covered. At
 `Gamma=3/2`, the left power is `Z^0`; it cannot dominate `ell^4`. Thus the
 equality endpoint is outside the theorem.
 
-At the pure boundary `H=Z^(2/3)`, the present worst-row estimate is only of
-order `ell^(-3)`, while the accepted absolute fibre argument needs a
-logarithmically growing aggregate separation. The missing gain is in the
-row/fibre layer; anchor entropy is already below its own power threshold.
+At `H=Z^(2/3)`, the present worst-row estimate is only of order `ell^(-3)`,
+while the accepted absolute fibre argument needs a logarithmically growing
+aggregate separation. The missing gain is in the row/fibre layer; anchor
+entropy is already below its own power threshold.
 
 ## 13. Dependency audit
 
-The exact finite graph theorems require only CRT and character orthogonality.
-The thin-sensor theorem additionally requires:
+The exact finite graph and hypergraph theorems require only CRT, additivity, and
+character orthogonality. The inherited thin-sensor theorem additionally
+requires:
 
-- fixed positive edge activity;
+- fixed positive edge activity, uniformly bounded below on mixing edges;
 - prime supply and pairwise coprimality;
-- interval-diameter and divisor/multiplicity control;
+- the inherited interval-diameter and divisor-dispersion estimate;
 - the exact sensor/row/retained factor partition;
 - injective completion;
 - source-uniform separator elimination;
@@ -466,4 +597,5 @@ The thin-sensor theorem additionally requires:
 - quotient realization and no-wrap.
 
 Removing any one of the last five providers is not justified by the graph
-identity alone.
+identity alone. Sections 8–12 record this inherited dependency structure and do
+not enlarge any analytic theorem, endpoint, or uniformity range.
