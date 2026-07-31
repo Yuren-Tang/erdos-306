@@ -75,11 +75,13 @@ sum_(j in F_beta) product_e c_e(j_e)
 
 which proves Theorem 1.2.
 
-The ambient map `partial_rec_tilde:Z^E->A_G` is additive. Its intersection with
-an arbitrary product alphabet is merely an alphabet-restricted fibre. Unless
-the alphabets are additive subgroups, that intersection need not be a subgroup
-or a coset. Corollary 1.3 therefore defines its enumerator directly rather than
-importing linear-code terminology.
+The ambient map `partial_rec_tilde:Z^E->A_G` is additive. Intersecting one of
+its full inverse images with an arbitrary finite product alphabet produces only
+an alphabet-restricted fibre; the intersection need not be a subgroup or a
+coset. Literal kernel/coset language becomes available only when a separate
+additive allowed-label group, subgroup, or module domain compatible with the
+syndrome homomorphism is supplied. Corollary 1.3 therefore defines the
+edge-symbol-resolved enumerator directly.
 
 If the graph is disconnected, every factor and every syndrome equation belongs
 to one component. Both the assignment sum and the independent-label
@@ -244,9 +246,10 @@ W_0(G;x)
  =product_(e notin E(K))x_(e,0) * W_0(K;x).
 ```
 
-A forest has empty `2`-core, so under the zero-symbol hypothesis its homogeneous
-restricted fibre is exactly the singleton zero assignment. No dimension claim
-is available without a linear/module structure. This proves Theorem 4.2.
+A forest has empty `2`-core, so under the zero-symbol and nondivisibility
+hypotheses its homogeneous restricted fibre is exactly the singleton zero
+assignment. No dimension claim is available without a linear/module structure.
+This proves Theorem 4.2.
 
 ### 5.2 Odd-prime three-point minimum distance
 
