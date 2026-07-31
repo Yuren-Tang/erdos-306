@@ -77,10 +77,11 @@ F_beta(G,n,mathcal J)
 ```
 
 The homogeneous restricted fibre is `F_0`. These restricted fibres need not be
-cosets, and `F_0` need not be a linear code, because arbitrary finite alphabets
-need not be additive subgroups. Literal kernel/coset or linear-code language is
-valid only after the corresponding additive subgroup or module hypotheses are
-added.
+cosets, and `F_0` need not be a linear code, because an arbitrary finite product
+alphabet need not be an additive subgroup of the ambient domain. Literal
+kernel/coset or linear-code language is valid only after a separate additive
+label group, subgroup, or module domain compatible with the syndrome map has
+been supplied.
 
 ### Theorem 1.2 — exact sourced coefficient identity
 
@@ -132,10 +133,13 @@ and the arbitrary-source coefficient is the corresponding affine-fibre
 evaluation. No MacWilliams identity for these generally nonlinear restricted
 fibres is asserted.
 
-If every `mathcal J_e` is an additive subgroup of `Z` compatible with the
-ambient map, then `F_0` is literally the kernel of the restricted homomorphism
-and the nonempty `F_beta` are its cosets. Only in that additional setting may
-one use unqualified code/kernel/coset terminology.
+On the ambient domain `Z^E`, `ker(partial_rec_tilde)` is of course an additive
+subgroup and every nonempty full inverse image is a coset of that kernel. More
+generally, if an additive allowed-label subgroup or module `B` and a compatible
+syndrome homomorphism on `B` are separately supplied, then the homogeneous
+fibre in `B` is a literal kernel and its nonempty affine fibres are cosets. An
+arbitrary finite product alphabet does not acquire that structure merely by
+restriction.
 
 ### Corollary 1.4 — component factorization
 
@@ -301,8 +305,8 @@ Then the support graph `G[j]` has minimum degree at least `2`. Hence:
 2. every support edge lies in the graph-theoretic `2`-core of `G`;
 3. if `G` is simple, every nonzero support has at least the girth of its
    component;
-4. if every edge alphabet contains `0`, the homogeneous restricted fibre of a
-   forest is exactly the singleton zero assignment.
+4. a forest admits no nonzero homogeneous assignment satisfying the displayed
+   local-no-wrap condition.
 
 For the three-point alphabet, the local condition is automatic because
 `j_e=+/-1` and every `n_v>=2`.
@@ -340,8 +344,10 @@ W_0(G;x)
  =product_(e notin E(K))x_(e,0) * W_0(K;x).
 ```
 
-This is a nonlinear alphabet-restricted bijection. It is not a dimension or
-linear-code statement unless additional module hypotheses are imposed.
+A forest therefore has homogeneous restricted fibre exactly equal to the
+singleton zero assignment under the displayed zero-symbol and nondivisibility
+hypotheses. This is a nonlinear alphabet-restricted bijection, not a dimension
+or linear-code statement unless additional module hypotheses are imposed.
 
 ### Corollary 4.3 — odd-prime three-point minimum distance
 
@@ -396,6 +402,8 @@ P_(G[W])
 M_(G[W])
  =product_(v in W)n_v * P_(G[W]).
 ```
+
+Write `P_G=P_(G[V])` and `M_G=M_(G[V])`.
 
 Let `C subset V`, put `O=V\C`, and decompose the edge set into
 
