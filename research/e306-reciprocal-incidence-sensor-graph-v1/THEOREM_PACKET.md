@@ -219,7 +219,9 @@ Pr(J_e=1)=lambda_e nu_e/2,
 Pr(J_e=-1)=lambda_e nu_e/2.
 ```
 
-Consequently Theorem 1.2 applies edge by edge to the Bernoulli modulus.
+Consequently, Theorem 1.2 applies edge by edge to the positive three-point
+majorant of `f_e(t)^lambda_e`; it does not identify the actual Bernoulli modulus
+with the three-point law.
 
 The algebra permits edge-dependent `theta_e` and `lambda_e`. Arithmetic
 concentration constants are uniform only when the activities
