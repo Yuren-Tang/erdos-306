@@ -241,8 +241,10 @@ In particular:
 - fixed-target or target-adapted E306 families are not simultaneous coverage by
   one prescribed family;
 - the compact moving-target local-saturation theorem returned at
-  `#issuecomment-5146761939` is not integrated into this packet and remains
-  outside it pending independent audit.
+  `#issuecomment-5146761939` passed independent audit at
+  `#issuecomment-5147047654` and was accepted by Director disposition
+  `#issuecomment-5147112606`. It is nevertheless not integrated into this
+  packet and remains outside it pending a separate integration authorization.
 
 ## 3. Robustness ledger
 
