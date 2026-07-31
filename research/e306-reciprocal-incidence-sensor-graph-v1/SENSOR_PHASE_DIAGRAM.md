@@ -234,13 +234,14 @@ The following accepted consequences retain their proofs and exponential rates:
 - refinement branching;
 - global transfer.
 
-Balanced signed relations acquire the exact reciprocal-incidence-code
-interpretation: differences of equal-cardinality exact-target representations
-are homogeneous codewords and, under no-wrap, exact zero reciprocal relations.
+Balanced signed relations acquire the exact reciprocal-incidence homogeneous-
+fibre interpretation: differences of equal-cardinality exact-target
+representations are alphabet-restricted homogeneous assignments and, under
+no-wrap, exact zero reciprocal relations.
 
 The graph identity itself does not prove that exponentially many nonzero
-codewords exist. That abundance still comes from the representation-entropy
-theorem.
+homogeneous assignments exist. That abundance still comes from the
+representation-entropy theorem.
 
 ## 8. Boundary statements
 
