@@ -30,7 +30,15 @@ The governing source hierarchy is:
 8. its independent audit at
    `review/e306-one-anchor-proof-audit-v1@1d63273ede93e1b83abf1ab9073d91b76600c23c`;
 9. the verified structural interface at
-   `5945a2b9d3c596bed13f42201be11a39d4a0068c`.
+   `5945a2b9d3c596bed13f42201be11a39d4a0068c`;
+10. the application and open-problem transfer return
+    `#issuecomment-5143917493` and its disposition
+    `#issuecomment-5145070974`;
+11. the packet source/citation/exact-text audit
+    `#issuecomment-5146758916`;
+12. the packet mathematical audit `#issuecomment-5146769719`;
+13. the bounded-repair disposition `#issuecomment-5146859264` and repair
+    authorization `#issuecomment-5146862731`.
 
 The exact-head manuscript
 `paper/e306-anchor-fibre-v1@80c2ad278621265e07f9dfb5beeeb874c743211c`
@@ -38,27 +46,42 @@ is a comparison object only.
 
 ## Packet map
 
-- `THEOREM_PACKET.md` states the exact graph algebra, the code and coset
-  consequences, the support-core theorem, sourced separator elimination, and
-  the accepted thin-sensor theorem.
-- `PROOF_PACKET.md` gives the proofs and the dependency chain from the positive
-  Fourier edge-current expansion through source-uniform arithmetic
-  anti-concentration and nested dense-core elimination.
+- `THEOREM_PACKET.md` states the exact graph algebra, alphabet-restricted
+  homogeneous and affine fibres, support-core and `2`-core results, sourced
+  separator elimination, accepted immediate corollaries, and the inherited
+  thin-sensor theorem.
+- `PROOF_PACKET.md` proves the exact algebraic statements and records the
+  inherited audited dependency chain from the positive Fourier edge-current
+  majorant through source-uniform arithmetic anti-concentration and nested
+  dense-core elimination.
 - `SENSOR_PHASE_DIAGRAM.md` records terminal and interior sensor architectures,
   sensor sparsity, the corrected two-parameter variance, and all boundary
   qualifications.
 - `LITERATURE_AND_NOVELTY.md` separates classical Fourier/graphical/coding
   frameworks from the new arithmetic combination and gives the terminology and
   novelty matrix.
-- `APPLICATION_AND_TRANSFER_FRONTIER.md` records immediate corollaries,
-  obstructions, cross-project prerequisites, and ranked open problems.
+- `APPLICATION_AND_TRANSFER_FRONTIER.md` records the audited immediate
+  corollaries, Li/GFF non-implication, obstructions, cross-project
+  prerequisites, and ranked open problems.
 - `references.bib` is the primary-source bibliography used by the packet.
 
 ## Terminology
 
-The operator in this packet is the **signless reciprocal incidence operator**.
-Its homogeneous kernel is the **signless reciprocal incidence code**. The
-Fourier expansion producing its edge variables is the **positive Fourier
+The ambient operator in this packet is the **signless reciprocal incidence
+homomorphism**
+
+```text
+partial_rec_tilde : Z^E -> product_(v in V) Z/n_v Z.
+```
+
+After finite edge alphabets are imposed, the relevant objects are the
+**alphabet-restricted homogeneous fibre** and **alphabet-restricted affine
+fibres**. They are literal kernels or cosets only when the edge alphabets carry
+the required additive subgroup or module structure. The phrase **reciprocal
+incidence code** is used only with that qualification or as an explicitly
+nonlinear shorthand for the homogeneous restricted constraint set.
+
+The Fourier expansion producing its edge variables is the **positive Fourier
 edge-current expansion**. The minimum-degree-two result is a **support-core
 consequence**.
 
@@ -74,6 +97,8 @@ In particular:
 - the support-core consequence is not a signed-circuit or frame-circuit
   classification;
 - no random-current switching lemma is imported;
+- no MacWilliams identity is proved for the actual alphabet-restricted
+  reciprocal constraint set;
 - no invention of finite-group Fourier duality, coding duality, or Tutte
   duality is claimed;
 - no direct CDC, 5-CDC, or AffineCDC theorem follows;
@@ -85,31 +110,45 @@ In particular:
 The packet contains:
 
 1. the exact sourced mixed-modulus CRT graph coefficient identity;
-2. connected-component factorization, sourced syndrome cosets, and the
-   homogeneous weighted enumerator;
-3. the Bernoulli three-point edge law;
-4. syndrome/integer-reciprocal equivalence;
-5. exact no-wrap balanced reciprocal relations;
-6. the local-no-wrap support-core theorem;
-7. sourced separator elimination;
-8. the conditional sensor-separator architecture;
-9. decoder-image domination and injective completion;
-10. the positive fractional-power Fourier majorant;
-11. source-uniform terminal inverse-residue subset-sum concentration;
-12. nested dense-core elimination and joint entropy `O(D^2 (log Z)^5)`;
-13. the weighted literal anchor theorem under
+2. connected-component factorization and alphabet-restricted sourced fibres;
+3. the exact edge-symbol-resolved weighted enumerator evaluation;
+4. the exact source-convolution identity;
+5. the Bernoulli three-point edge law;
+6. syndrome/integer-reciprocal equivalence;
+7. exact no-wrap balanced reciprocal relations;
+8. the local-no-wrap support-core theorem;
+9. the exact `2`-core restriction/zero-extension theorem and enumerator
+   factorization;
+10. the odd-prime three-point minimum-distance lower bound;
+11. the explicit non-Eulerian `K_4` homogeneous witness;
+12. sourced separator elimination and its min-entropy certificate;
+13. the conditional sensor-separator architecture;
+14. decoder-image domination and injective completion;
+15. the exact algebraic hypergraph extension;
+16. the positive fractional-power Fourier majorant;
+17. inherited source-uniform terminal inverse-residue subset-sum concentration;
+18. inherited nested dense-core elimination and joint entropy
+    `O(D^2 (log Z)^5)`;
+19. the inherited weighted literal anchor theorem under
     `H^2 >> Z D^3 (log Z)^8`;
-14. row-specific decoding and full literal closure under
+20. inherited row-specific decoding and full literal closure under
     `H^3 >> Z^2 (log Z)^4`;
-15. the corrected two-parameter variance and phase diagram.
+21. the corrected two-parameter variance and phase diagram.
 
 ## Boundary of the result
 
-The graph identity is exact and general. The analytic theorem is arithmetic and
-conditional on its stated prime-supply, reciprocal-dispersion, decoder,
-retained-skeleton, quotient, and no-wrap providers. The first unresolved global
-boundary is the row/fibre layer at the limiting cubic scale, not the anchor-flow
-entropy layer.
+The graph and hypergraph identities are exact. The analytic theorem is
+arithmetic and conditional on its stated prime-supply, reciprocal-dispersion,
+decoder, retained-skeleton, quotient, and no-wrap providers. The first
+unresolved global boundary is the row/fibre layer at the limiting cubic scale,
+not the anchor-flow entropy layer.
+
+The accepted E306 representation theorem bypasses the representation
+consequence for which Li's gap-free-floor conjecture is sufficient. It does not
+prove or imply that conjecture and proves no growing gap-free interval for one
+fixed Li primorial family. The separate moving-target research return
+`#issuecomment-5146761939` is not integrated here; it remains outside this
+packet pending its independent audit.
 
 The packet records no publication, priority, merge, release, DOI, arXiv,
 journal, or cross-project disposition.
