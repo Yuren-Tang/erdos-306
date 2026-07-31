@@ -60,9 +60,9 @@ W_0(G;x)
 ```
 
 This is a nonlinear alphabet-restricted theorem. A forest's homogeneous fibre
-is exactly the singleton zero assignment under the displayed zero-symbol
-hypothesis. No dimension or linear-code assertion is made without additional
-module structure.
+is exactly the singleton zero assignment under the displayed zero-symbol and
+nondivisibility hypotheses. No dimension or linear-code assertion is made
+without additional module structure.
 
 ### 1.3 Odd-prime three-point minimum distance
 
@@ -118,7 +118,7 @@ H_infinity(partial_rec_tilde J)
 
 This is an upper bound on the largest syndrome atom, equivalently a min-entropy
 certificate. It is not a total-variation theorem and is not by itself a
-codeword-count lower bound.
+homogeneous-assignment-count lower bound.
 
 ### 1.5 Exact source convolution
 
