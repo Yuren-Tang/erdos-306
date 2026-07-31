@@ -12,13 +12,21 @@ The independently verified structural interface is:
 - repaired packet at `5945a2b9d3c596bed13f42201be11a39d4a0068c`;
 - return: `[PASS E306-AFT-REPAIR-VERIFY-01]`.
 
-The current manuscript-mathematical baseline is:
+The historical parameterized manuscript baseline is:
 
 - exact head: `544d42d510bcab3ad0ddd7855525770e0d4b0926`;
-- exact-head independent verification: `#issuecomment-5128463117`;
-- disposition: no manuscript-mathematical, TeX, bibliography, workflow, font or visual defect found.
+- exact-head independent verification: `#issuecomment-5128463117`.
 
-No metadata edit may silently strengthen, weaken or replace a manuscript theorem or provider. Every mathematical deviation must be entered below with its downstream uses and assurance disposition.
+The recovered holistic manuscript source was integrated at:
+
+- recovery checkpoint: `c2dfc5120eec017718ef07cbe43f9c151803769c`;
+- provenance record: `RECOVERED_SOURCE_PROVENANCE.md`;
+- exact-head comparative audit: `#issuecomment-5141204793`;
+- exact-head workflows: `verify-e306-manuscript` run `30608129577` and `verify-erdos-306` run `30608129625`, both successful;
+- exact-head manuscript: 42 pages;
+- comparative disposition: `[BOUNDED-RESTORATION E306-MANUSCRIPT-COMPARATIVE-VALUE-ARCHITECTURE-AUDIT-02]`.
+
+The comparative audit found no manuscript-mathematical repair. No metadata edit may silently strengthen, weaken or replace a manuscript theorem or provider. Every mathematical deviation must be entered below with its downstream uses and assurance disposition.
 
 ## Change classes
 
@@ -69,7 +77,8 @@ These are the verified interface through which the concrete proof is presented.
 |---|---|---|---|---|
 | PC-001 | `79a43178bdc4919677375362ef58b9c127da18b0 -> a4fb7ed78bf217ce310ab147c82af2a49f0029bb` | B | integrated fixed reduced targets `t=a/b`, fixed `gamma>1`, `Z=X^gamma`, target rows, parameterized coefficient, entropy, height and refinement consequences | writer candidate only; unrefrozen; later audit required repair |
 | PC-002 | `a4fb7ed78bf217ce310ab147c82af2a49f0029bb -> 544d42d510bcab3ad0ddd7855525770e0d4b0926` | B | corrected prime-divisor indexing and `tau(b)`; restored multiplicity-sensitive cyclic energy; adopted one total-variance formula, universal `T_0`, and one exhaustive six-sector architecture; replaced avoiding-unit/numerator-induction/special-denominator closure by prime dilution; added zero-residual finite prescription; corrected local versus simultaneous proper replacement and quantitative globally proper branching | independently verified mathematically, typographically and visually at `#issuecomment-5128463117`; workflows `#639` and `#78` passed |
-| PC-003 | `544d42d510bcab3ad0ddd7855525770e0d4b0926 -> synchronized metadata successor` | A | synchronizes only top-level control ledgers and PR metadata with the already verified manuscript | changes no manuscript, theorem, Lean source, workflow, Makefile or bibliography; successor pending independent control-surface verification and Owner disposition |
+| PC-003 | `544d42d510bcab3ad0ddd7855525770e0d4b0926 -> historical metadata synchronization successor` | A | synchronized top-level control ledgers and PR metadata with the already verified parameterized manuscript | historical control-only transition, later superseded by recovery and integration; no manuscript-mathematical effect |
+| PC-004 | `c2dfc5120eec017718ef07cbe43f9c151803769c -> bounded provenance/control repair successor` | A | closes BR-01--BR-03 in `manuscript/BUILD.md`, the five named control ledgers and PR `#9` metadata; distinguishes the forensic evidence object from the current Actions artifact and records the recovered-source lifecycle | changes no theorem, proof, manuscript mathematical section, Lean source, workflow, Makefile or bibliography; narrow exact-diff and exact-head re-check required before readiness |
 
 ## Architecture transition
 
@@ -80,7 +89,7 @@ The historical candidate `79a43178bdc4919677375362ef58b9c127da18b0` presented th
 - the earlier decoder-range description;
 - avoiding-unit representation, numerator induction and separate reduced-denominator `1,2` closure.
 
-The verified manuscript at `544d42d510bcab3ad0ddd7855525770e0d4b0926` instead presents:
+The verified parameterized manuscript, retained in the recovered integration at `c2dfc5120eec017718ef07cbe43f9c151803769c`, instead presents:
 
 - fixed reduced `t=a/b in (0,1)` with squarefree `b` and fixed `gamma>1`;
 - `Z=X^gamma` and target rows indexed by `S_b`;
@@ -92,36 +101,47 @@ The verified manuscript at `544d42d510bcab3ad0ddd7855525770e0d4b0926` instead pr
 - local replacement distinguished from simultaneous globally proper replacement;
 - the preserved entropy, diversity, height, refinement and global-transfer consequences.
 
-This is an adopted, independently verified mathematical reformulation of the article architecture, not a metadata invention.
+This is an adopted, independently verified mathematical reformulation of the article architecture, not a metadata invention. The recovery integration is a forensic reconstruction of the rendered manuscript evidence and does not claim invisible historical source identity.
 
 ## Lifecycle heads and publication-gate boundary
 
 - `79a43178bdc4919677375362ef58b9c127da18b0` is the historical pre-integration refrozen candidate. Its 44-page technical publication gate applies only to that exact head.
 - `a4fb7ed78bf217ce310ab147c82af2a49f0029bb` is the unrefrozen integration writer candidate that required bounded repair.
-- `544d42d510bcab3ad0ddd7855525770e0d4b0926` is the independently verified 39-page manuscript baseline.
-- The metadata-only synchronization successor is not refrozen and must receive independent control-surface verification before any Owner disposition.
+- `544d42d510bcab3ad0ddd7855525770e0d4b0926` is the independently verified historical 39-page parameterized manuscript baseline.
+- `c2dfc5120eec017718ef07cbe43f9c151803769c` is the recovered-source integration checkpoint. Its 42-page manuscript and Lean workflows succeeded, and the comparative audit found no mathematical repair.
+- The BR-01--BR-03 successor is a bounded Class-A provenance/control repair and must receive a narrow independent exact-diff and exact-head re-check before any Owner readiness disposition.
 - No refreeze or publication gate transfers automatically from an earlier head.
 
-## Protected no-change boundary for this synchronization
+## Protected no-change boundary for this repair
 
-The metadata-only synchronization changes none of the following:
+The bounded provenance/control repair may change only:
 
-- manuscript source or prose;
+- `paper/e306-anchor-fibre-v1/manuscript/BUILD.md`;
+- `paper/e306-anchor-fibre-v1/CONTROL.md`;
+- `paper/e306-anchor-fibre-v1/ARTICLE_ARCHITECTURE.md`;
+- `paper/e306-anchor-fibre-v1/THEOREM_DAG.md`;
+- `paper/e306-anchor-fibre-v1/PROOF_OBLIGATION_LEDGER.md`;
+- `paper/e306-anchor-fibre-v1/PROOF_CHANGE_LEDGER.md`;
+- PR `#9` body metadata.
+
+It changes none of the following:
+
+- manuscript mathematical section source or article prose;
 - theorem, proposition, lemma, corollary, definition, proof or displayed equation;
 - Lean source;
 - workflow or Makefile;
 - bibliography;
-- generated PDF or source archive;
 - licence, tag, release, DOI, Zenodo, arXiv or journal surface.
 
-The exhaustive Git tree comparison against `544d42d510bcab3ad0ddd7855525770e0d4b0926` is the controlling byte-identity check.
+The exhaustive comparison against `c2dfc5120eec017718ef07cbe43f9c151803769c` is the controlling exact-file and no-mathematical-change check.
 
 ## Current disposition
 
 ```text
-PARAMETERIZED MANUSCRIPT BASELINE VERIFIED AT 544d42d510bcab3ad0ddd7855525770e0d4b0926
-CONTROL METADATA SYNCHRONIZED ONLY
-NO UNVERIFIED MANUSCRIPT-MATHEMATICAL CHANGE RECORDED
-SYNCHRONIZED HEAD PENDING INDEPENDENT CONTROL-SURFACE VERIFICATION
+RECOVERED SOURCE INTEGRATED AT c2dfc5120eec017718ef07cbe43f9c151803769c
+42-PAGE EXACT-HEAD MANUSCRIPT AND LEAN WORKFLOWS SUCCESSFUL
+COMPARATIVE AUDIT FOUND NO MATHEMATICAL REPAIR
+BR-01--BR-03 PROVENANCE/CONTROL REPAIR ONLY
+REPAIR SUCCESSOR PENDING NARROW EXACT-DIFF AND EXACT-HEAD RE-CHECK
 NOT REFROZEN / NO PUBLICATION GATE TRANSFERRED
 ```

@@ -3,12 +3,12 @@
 ## Status vocabulary
 
 - `SOURCE-PASS` — independently verified in the controlling mathematical source.
-- `MANUSCRIPT-VERIFIED` — independently checked in the assembled manuscript at exact head `544d42d510bcab3ad0ddd7855525770e0d4b0926`.
-- `CONTROL-SYNCED` — the control ledger now agrees with the verified manuscript.
-- `CONTROL-VERIFY-PENDING` — the synchronized metadata successor still requires independent exact-head control-surface verification.
+- `MANUSCRIPT-VERIFIED` — independently checked in the recovered integrated manuscript at exact checkpoint `c2dfc5120eec017718ef07cbe43f9c151803769c`.
+- `CONTROL-SYNCED` — the control ledger agrees with the recovered integration and the comparative audit disposition.
+- `REPAIR-DIFF-RECHECK-PENDING` — the BR-01--BR-03 successor requires a narrow independent exact-diff and exact-head re-check before readiness.
 - `PUBLICATION-GATE-PENDING` — a later exact-head publication gate would require separate Owner authorization; no earlier gate transfers.
 
-The manuscript obligations below were independently verified at `#issuecomment-5128463117`. The exact-head checks found no mathematical, TeX, bibliography, workflow, font or visual defect; `verify-erdos-306` run `#639` and `verify-e306-manuscript` run `#78` succeeded, and the manuscript stabilized at 39 pages. This role synchronizes control metadata only.
+The recovered integrated manuscript was checked by the exact-head comparative audit at `#issuecomment-5141204793`. At checkpoint `c2dfc5120eec017718ef07cbe43f9c151803769c`, `verify-e306-manuscript` run `30608129577` and `verify-erdos-306` run `30608129625` succeeded, and the generated manuscript has 42 pages. The audit found no mathematical manuscript defect and authorized only BR-01--BR-03 provenance and control repairs. Those repairs change no mathematical obligation below.
 
 ## A. Parameterized arithmetic capacity
 
@@ -82,13 +82,13 @@ The manuscript obligations below were independently verified at `#issuecomment-5
 
 | ID | Obligation | Evidence | Current status |
 |---|---|---|---|
-| F1 | independent mathematical, build and visual verification of manuscript baseline | `#issuecomment-5128463117`; runs `#639`, `#78`; 39-page build | MANUSCRIPT-VERIFIED |
-| F2 | metadata-only synchronization leaves manuscript, Lean, workflow, Makefile and bibliography byte-identical to baseline | exhaustive Git tree comparison in the synchronization return | CONTROL-SYNCED |
-| F3 | synchronized exact head receives independent control-surface verification | later one-off read-only role | CONTROL-VERIFY-PENDING |
+| F1 | independent exact-head mathematical-value, architecture, provenance and build audit of the recovered integration | `#issuecomment-5141204793`; runs `30608129577`, `30608129625`; 42-page build | MANUSCRIPT-VERIFIED |
+| F2 | recovered-source provenance and control records distinguish the integrated source, the rendered evidence object and the current GitHub Actions artifact | `RECOVERED_SOURCE_PROVENANCE.md`; BR-01--BR-03 repair record | CONTROL-SYNCED |
+| F3 | the bounded repair successor receives a narrow exact-diff, exact-file-list, exact-head workflow and artifact re-check | later one-off read-only role | REPAIR-DIFF-RECHECK-PENDING |
 | F4 | any refreeze or publication gate is separately authorized at its exact head | Owner disposition | PUBLICATION-GATE-PENDING |
 
 ## Acceptance boundary
 
-The manuscript-mathematical, source, build, bibliography, font and visual obligations are complete at `544d42d510bcab3ad0ddd7855525770e0d4b0926`. The synchronized successor changes control metadata only. It may advance only to independent exact-head control-surface verification and then to a separate Owner disposition.
+The mathematical obligations A1--E9 are complete in the recovered integrated manuscript at checkpoint `c2dfc5120eec017718ef07cbe43f9c151803769c`; the comparative audit found no mathematical repair. The BR-01--BR-03 successor changes only authorized provenance and control prose and PR metadata. It may advance only to a narrow independent exact-diff and exact-head re-check, followed by a separate Owner disposition.
 
-The former 44-page technical publication gate at `79a43178bdc4919677375362ef58b9c127da18b0` is historical and nontransferable. No synchronized head is refrozen, ready for review, merged, licensed, released, uploaded or submitted by this ledger.
+The former 44-page technical publication gate at `79a43178bdc4919677375362ef58b9c127da18b0` is historical and nontransferable. Neither the recovered integration nor its bounded repair successor is refrozen, ready for review, merged, licensed, released, uploaded or submitted by this ledger.

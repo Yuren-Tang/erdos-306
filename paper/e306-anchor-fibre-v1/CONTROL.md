@@ -68,31 +68,47 @@ The live manuscript remains an eleven-section article:
 
 The detailed architecture and theorem dependencies are controlled by `ARTICLE_ARCHITECTURE.md` and `THEOREM_DAG.md`.
 
-## Independently verified manuscript baseline
+## Recovered-source integration and comparative audit
 
-The manuscript baseline is
+The historical parameterized manuscript baseline
 
 ```text
 544d42d510bcab3ad0ddd7855525770e0d4b0926
 ```
 
-and was independently checked at `#issuecomment-5128463117`.
+was independently verified before the loss and recovery episode. The recovered holistic manuscript source was subsequently integrated on the sole article branch at
 
-The verifier confirmed:
+```text
+c2dfc5120eec017718ef07cbe43f9c151803769c
+```
 
-- the repaired fixed-target/fixed-`gamma` mathematics and all bounded simplifications;
-- successful `verify-erdos-306` run `#639`;
-- successful `verify-e306-manuscript` run `#78`;
-- a stabilized 39-page exact-head build;
-- no manuscript-mathematical, TeX, bibliography, workflow, font or visual defect.
+with detailed provenance in `RECOVERED_SOURCE_PROVENANCE.md`. Under the recorded reconstruction environment, the integrated source reproduces the surviving 42-page evidence PDF byte-for-byte. This is a forensic reconstruction of the rendered evidence, not a certification that invisible historical source details such as comments, whitespace or equivalent TeX spellings are identical to the lost working tree.
 
-That verification did not refreeze the head and did not transfer any earlier publication gate.
+The exact-head comparative mathematical-value and architecture audit at `#issuecomment-5141204793` retained the integrated manuscript as the mathematical and expository successor to the historical source. It found no mathematical manuscript repair necessary and returned
 
-## Metadata-only synchronization
+```text
+[BOUNDED-RESTORATION E306-MANUSCRIPT-COMPARATIVE-VALUE-ARCHITECTURE-AUDIT-02]
+```
 
-Role `E306-MANUSCRIPT-PARAMETER-TARGET-CONTROL-SYNC-01` synchronizes top-level control ledgers and the PR body with the verified manuscript baseline. It changes no manuscript source, theorem, Lean source, workflow, Makefile, bibliography, generated PDF or source archive.
+with only BR-01--BR-03 provenance and control repairs.
 
-The resulting exact head is recorded in PR `#9` and the durable issue return. It remains pending independent control-surface verification and Owner disposition. No previous refreeze or publication gate transfers automatically.
+## Exact-head build assurance at the recovery checkpoint
+
+At `c2dfc5120eec017718ef07cbe43f9c151803769c`:
+
+- `verify-e306-manuscript` run `30608129577` concluded successfully;
+- `verify-erdos-306` run `30608129625` concluded successfully;
+- the generated manuscript has 42 pages;
+- artifact ID `8784435185` has current Actions API/download ZIP SHA-256 `1733faced92fd22e91427ffe7f1ebbbb074ff6aca8740bf61d1a1a5255b2e8e0`;
+- the contained `main.pdf` has SHA-256 `b894be102bfe1af03ff491dec7e59936192f883ce5d38ff055914f19bf38d052`.
+
+The distinct local evidence object remains identified by SHA-256 `d0bc466283dc591b90e7039bb6461ecaa040d6a80b63d7270c1211e7377992c2` and is not mislabeled as the current GitHub Actions artifact.
+
+## Bounded provenance and control repair
+
+Role `E306-MANUSCRIPT-BOUNDED-PROVENANCE-CONTROL-REPAIR-01` changes only the six authorized prose/control files and PR metadata needed to close BR-01--BR-03. It changes no manuscript mathematical section, theorem, proof, reference database, workflow, Lean source or publication surface.
+
+The repair successor's exact head, workflow results and generated artifact metadata are recorded in PR `#9` and the durable issue return. That successor requires a narrow independent exact-diff re-check before any readiness transition. No previous refreeze or publication gate transfers automatically.
 
 ## Source and build assurance
 
@@ -102,7 +118,8 @@ The resulting exact head is recorded in PR `#9` and the durable issue return. It
 - controlling arXiv environment: TeX Live 2025;
 - TeX Live 2023/Debian workflow: secondary compatibility check;
 - reproducibility workflow: `.github/workflows/manuscript.yml`;
-- exact-head workflow and visual evidence: `#issuecomment-5128463117` and the successful runs above.
+- recovery provenance: `paper/e306-anchor-fibre-v1/RECOVERED_SOURCE_PROVENANCE.md`;
+- exact-head comparative audit: `#issuecomment-5141204793`.
 
 ## Product rules
 
@@ -118,23 +135,24 @@ The resulting exact head is recorded in PR `#9` and the durable issue return. It
 
 - `M0` control and source freeze — **COMPLETE**
 - `M1` bounded structural repair and specialization bridge — **COMPLETE / VERIFIED / MANUSCRIPT-ADOPTED**
-- `M2` theorem DAG and article architecture — **SYNCHRONIZED TO THE VERIFIED PARAMETERIZED MANUSCRIPT / CONTROL VERIFICATION PENDING**
+- `M2` theorem DAG and article architecture — **MATHEMATICALLY PRESERVED / CONTROL PROSE SYNCHRONIZED TO RECOVERED INTEGRATION**
 - `M3` general structural tools — **COMPLETE / MANUSCRIPT-ADOPTED**
 - `M4` E306 arithmetic providers — **COMPLETE / PARAMETERIZED REPAIR VERIFIED**
-- `M5` full manuscript assembly — **COMPLETE**
-- `M6` mathematical, source, build, bibliography, font and visual review — **COMPLETE AT 544d42d510bcab3ad0ddd7855525770e0d4b0926**
-- `M7` revision and publication disposition — **METADATA SYNCHRONIZATION CANDIDATE / OWNER HOLD / NO PUBLICATION GATE TRANSFERRED**
+- `M5` full manuscript assembly — **COMPLETE / RECOVERED SOURCE INTEGRATED**
+- `M6` mathematical, source, build, bibliography, font and visual review — **COMPLETE AT RECOVERY CHECKPOINT `c2dfc512...` SUBJECT ONLY TO BR-01--BR-03**
+- `M7` revision and publication disposition — **BOUNDED PROVENANCE/CONTROL REPAIR / NARROW EXACT-DIFF RE-CHECK REQUIRED / OWNER HOLD**
 
 ## Historical gate boundary
 
-The refrozen candidate `79a43178bdc4919677375362ef58b9c127da18b0` and its 44-page technical publication gate are historical. That gate does not transfer to the integration head, the verified 39-page manuscript baseline, or the metadata-only synchronization successor.
+The refrozen candidate `79a43178bdc4919677375362ef58b9c127da18b0` and its 44-page technical publication gate are historical. That gate does not transfer to the later parameterized manuscript, the recovered-source integration at `c2dfc5120eec017718ef07cbe43f9c151803769c`, or its bounded provenance/control repair successor.
 
 ## Current state
 
 ```text
-[MANUSCRIPT BASELINE VERIFIED @ 544d42d510bcab3ad0ddd7855525770e0d4b0926]
-[CONTROL SURFACE SYNCHRONIZED / INDEPENDENT CONTROL-SURFACE VERIFICATION PENDING]
-[NOT REFROZEN / NO PUBLICATION GATE TRANSFERRED]
+[RECOVERED SOURCE INTEGRATED @ c2dfc5120eec017718ef07cbe43f9c151803769c]
+[42-PAGE EXACT-HEAD MANUSCRIPT AND LEAN WORKFLOWS SUCCESSFUL]
+[COMPARATIVE AUDIT: BOUNDED RESTORATION BR-01--BR-03 ONLY]
+[BOUNDED REPAIR SUCCESSOR REQUIRES NARROW EXACT-DIFF RE-CHECK]
 [OWNER HOLD / PR #9 REMAINS OPEN, DRAFT AND UNMERGED]
 [NO LICENCE, UPLOAD OR SUBMISSION AUTHORIZED]
 ```

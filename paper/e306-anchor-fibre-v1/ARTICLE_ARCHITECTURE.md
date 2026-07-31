@@ -2,7 +2,7 @@
 
 ## Status
 
-`M7 / PARAMETERIZED CONTROL SURFACE SYNCHRONIZED / INDEPENDENT CONTROL-SURFACE VERIFICATION PENDING / OWNER HOLD`
+`M7 / RECOVERED SOURCE INTEGRATED / COMPARATIVE AUDIT BOUNDED RESTORATION / BR-01--BR-03 REPAIR / OWNER HOLD`
 
 This document records the maintained architecture of the article. The exact current branch head is recorded in controlling issue `#8`, draft PR `#9`, and the latest durable return; no commit attempts to contain its own hash.
 
@@ -276,7 +276,7 @@ No estimate chooses `C` after `X` or hides dependence on `X` or the later cutoff
 
 ## Historical architecture boundary
 
-The refrozen candidate `79a43178bdc4919677375362ef58b9c127da18b0` used the earlier fixed-`Z=X^3`, five-sector and numerator-induction presentation. Its 44-page technical publication gate belongs only to that historical exact head. It does not transfer to the later parameterized manuscript or to this metadata-only synchronization.
+The refrozen candidate `79a43178bdc4919677375362ef58b9c127da18b0` used the earlier fixed-`Z=X^3`, five-sector and numerator-induction presentation. Its 44-page technical publication gate belongs only to that historical exact head. It does not transfer to the later parameterized manuscript or to the recovered-source integration and bounded repair successor.
 
 ## Current control
 
@@ -284,10 +284,14 @@ The refrozen candidate `79a43178bdc4919677375362ef58b9c127da18b0` used the earli
 - controlling issue: `#8`;
 - sole branch: `paper/e306-anchor-fibre-v1`;
 - draft PR: `#9`;
-- verified manuscript baseline: `544d42d510bcab3ad0ddd7855525770e0d4b0926`;
-- synchronized control head: recorded in PR `#9` and the latest durable return;
-- lifecycle: pending independent control-surface verification and Owner disposition;
-- refreeze: none for the synchronized head;
+- historical parameterized baseline: `544d42d510bcab3ad0ddd7855525770e0d4b0926`;
+- recovered-source integration checkpoint: `c2dfc5120eec017718ef07cbe43f9c151803769c`;
+- exact-head build at that checkpoint: 42 pages;
+- exact-head workflows: `verify-e306-manuscript` run `30608129577` and `verify-erdos-306` run `30608129625`, both successful;
+- comparative audit: `#issuecomment-5141204793`, disposition `[BOUNDED-RESTORATION E306-MANUSCRIPT-COMPARATIVE-VALUE-ARCHITECTURE-AUDIT-02]`;
+- bounded repair successor: exact head recorded in PR `#9` and the latest durable return;
+- lifecycle: narrow independent exact-diff re-check required before readiness;
+- refreeze: none for the recovered integration or repair successor;
 - publication gate: none transferred.
 
 No ready-for-review, merge, tag, release, DOI, Zenodo, licence, arXiv or journal action is implied by this architecture record.

@@ -1,6 +1,6 @@
 # Forensic reconstruction build
 
-This directory is a **local reconstruction candidate**. It is not asserted to be the original lost TeX source and has not been integrated into GitHub.
+This directory contains the recovered manuscript source integrated into GitHub on `paper/e306-anchor-fibre-v1` at recovery checkpoint `c2dfc5120eec017718ef07cbe43f9c151803769c`. It is a forensic reconstruction: under the recorded reproducible-build environment it reproduces the surviving 42-page evidence PDF byte-for-byte, but it does not certify invisible historical source identity such as comments, whitespace or equivalent TeX syntax.
 
 ## Ordinary build
 
