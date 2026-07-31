@@ -1,7 +1,7 @@
 \section{The anchor block}
 \label{sec:anchor-block}
 
-The anchor block has two functions.  At low energy it synchronizes all of its local residue coordinates to one integer label.  Above the synchronization floor it admits a sufficiently small weighted partition.  We prove these facts first for an abstract prime block and then apply them to $B$.
+The anchor block has two functions.  At low energy it synchronizes all of its local residue coordinates to one integer label.  Above the synchronization floor it admits a small weighted partition.  We prove these facts first for an abstract prime block and then apply them to $B$.
 
 \subsection{A reciprocal prime code}
 
@@ -24,8 +24,6 @@ Put
  \sigma_Q^2=\sum_{p<q}\frac1{p^2q^2}\asymp\frac1{Y^2\log^2Y}.
 \]
 Fix once and for all $\rho\in(0,1/4)$.
-
-The basic separation estimate is deliberately stated with the exact lower threshold used later.
 
 \begin{lemma}[Reciprocal dispersion]
 \label{lem:reciprocal-dispersion}
@@ -95,60 +93,108 @@ implies that $a$ has a unique dominant label.
 \end{proposition}
 
 \begin{proof}
-The case $\mathcal Q(a)=0$ is immediate: every centred pair lift is zero and all coordinates have label $0$.  Assume
+The case $\mathcal Q(a)=0$ is immediate.  Assume
 \[
- 0<R:=\mathcal Q(a)<cY/\log^3Y,
+ 0<R:=\mathcal Q(a)<c\frac{Y}{\log^3Y},
 \]
-where $c$ will be chosen small.  Put
+where $c>0$ will be fixed at the end.  Put
 \[
  B_0=A_\rho\frac{\sqrt R\,Y^2}{N}
 \]
-with $A_\rho$ a sufficiently large fixed constant, and call a pair bad if $|H_{pq}|>B_0$.  Since $pq<4Y^2$, the number of bad pairs is at most $16RY^4/B_0^2$.  Some base prime $p_0$ consequently has bad degree at most
+with $A_\rho$ a sufficiently large constant, and call an unordered pair $\{p,q\}$ bad if $|H_{pq}|>B_0$.  Since $pq<4Y^2$, every bad pair contributes more than $B_0^2/(16Y^4)$ to $R$.  Hence the number of bad pairs is at most
 \[
- \frac{32RY^4}{B_0^2N}=\frac{32N}{A_\rho^2}\leq\rho N/8.
+ \frac{16RY^4}{B_0^2}=\frac{16N^2}{A_\rho^2}.
 \]
-For every nonbad neighbour $q$, the lift $H_{p_0q}$ is a label for $a_q$, has absolute value at most $B_0$, and lies in one residue class modulo $p_0$.  Thus the number $M_0$ of possible labels is at most $2B_0/Y+2$.
+The sum of their degrees is twice this number, so some base prime $p_0$ has bad degree at most
+\[
+ \frac{32N}{A_\rho^2}\leq\frac{\rho N}{8},
+\]
+after choosing $A_\rho^2\geq256/\rho$.
 
-For small enough $c$ and large enough $Y$, one has $B_0<Y^2/4$.  Suppose no dominant label exists.  Call a label class small if its size is less than
+For every nonbad neighbour $q$, the lift $H_{p_0q}$ is an integer label for $a_q$, has absolute value at most $B_0$, and is congruent to the fixed residue $a_{p_0}$ modulo $p_0$.  The interval $[-B_0,B_0]$ therefore contains at most
 \[
- s_0=256(B_0/Y+1),
+ M_0\leq\frac{2B_0}{p_0}+2\leq2B_0/Y+2
 \]
-so $s_0\geq16$ and $s_0\geq128B_0/Y$.
+possible labels.  The assumed bound on $R$, together with $N\gg Y/\log Y$, gives $B_0=o(Y^2)$; decreasing $c$ if necessary, we may suppose $B_0<Y^2/4$.
 
-If small classes contain at least $\rho N/4$ vertices, then
+Suppose that no label class is dominant.  Call a label class small when its size is less than
 \[
- \rho N/4\leq M_0s_0\ll_\rho(B_0/Y+1)^2.
+ s_0=256(B_0/Y+1).
 \]
-When $B_0/Y<1$ this contradicts $N\to\infty$; otherwise it yields
-\[
- R\gg N^3/Y^2\gg Y/\log^3Y.
-\]
+Then $s_0\geq16$ and $s_0\geq128B_0/Y$.
 
-Otherwise, after removing $p_0$, its bad neighbours and all small classes, the substantial classes have total size $S\geq(1-\rho/2)N$.  Let their sizes be $n_1,\ldots,n_t$.  Each is at least $s_0$, and the largest is at most $(1-\rho)N$.  Applying \cref{lem:cross-label-energy} to ordered pairs of distinct classes gives
+First suppose that the small classes contain at least $\rho N/4$ vertices.  Since there are at most $M_0$ label classes,
+\begin{equation}
+\label{eq:small-class-count}
+ \frac{\rho N}{4}\leq M_0s_0\leq C_\rho(B_0/Y+1)^2.
+\end{equation}
+Write $u=B_0/Y=A_\rho\sqrt R\,Y/N$.  If $u<1$, the right side of \cref{eq:small-class-count} is bounded in terms of $\rho$ alone, contradicting $N\to\infty$.  If $u\geq1$, then \cref{eq:small-class-count} gives
 \[
+ N\ll_\rho u^2=A_\rho^2\frac{RY^2}{N^2},
+\]
+and therefore
+\begin{equation}
+\label{eq:small-class-R}
+ R\gg_\rho\frac{N^3}{Y^2}\gg\frac{Y}{\log^3Y}.
+\end{equation}
+This contradicts the assumed upper bound when $c$ is smaller than the resulting constant.
+
+We may therefore suppose that the small classes contain fewer than $\rho N/4$ vertices.  Remove $p_0$, its bad neighbours and every vertex in a small class.  For sufficiently large $N$, the number removed is at most
+\[
+ 1+\frac{\rho N}{8}+\frac{\rho N}{4}\leq\frac{\rho N}{2}.
+\]
+The remaining substantial label classes have total size
+\[
+ S\geq(1-\rho/2)N.
+\]
+Write their sizes as $n_1,\ldots,n_t$.  Each $n_i\geq s_0$, and, because no dominant label exists, each $n_i\leq(1-\rho)N$.
+
+Apply \cref{lem:cross-label-energy} to ordered pairs of distinct substantial classes.  Each interclass edge is counted in at most the two opposite orientations, so the factor of two is absorbed into the constant and
+\begin{equation}
+\label{eq:substantial-energy}
  R\gg\frac1{Y^2}\sum_i n_i^3\sum_{j\neq i}(n_j-1).
+\end{equation}
+Because every other class has at least $s_0$ vertices,
+\[
+ t-1\leq\frac{S-n_i}{s_0},
 \]
-Because every other class has size at least $s_0$,
+and hence
 \[
  \sum_{j\neq i}(n_j-1)
  =(S-n_i)-(t-1)
- \geq(1-1/s_0)(S-n_i).
+ \geq(1-1/s_0)(S-n_i)
+ \geq\frac12(S-n_i).
 \]
-If one class has size at least $S/2$, its term is $\gg_\rho N^4$; otherwise $S-n_i\geq S/2$ for every $i$, and power mean gives
+
+If some class, say $n_1$, satisfies $n_1\geq S/2$, then
 \[
- \sum_i n_i^3\geq S^3/t^2\geq S^3/M_0^2.
+ S-n_1\geq(1-\rho/2)N-(1-\rho)N=\frac{\rho N}{2},
 \]
-In either case
+so its term in \cref{eq:substantial-energy} is $\gg_\rho N^4$.  Otherwise $S-n_i\geq S/2$ for every $i$, and power mean gives
 \[
+ \sum_i n_i^3\geq\frac{S^3}{t^2}\geq\frac{S^3}{M_0^2}.
+\]
+In either case,
+\begin{equation}
+\label{eq:substantial-R}
  R\gg_\rho\frac{N^4}{M_0^2Y^2}.
-\]
-If $B_0/Y<1$ this is already too large.  Otherwise $M_0^2\ll B_0^2/Y^2=RY^2/N^2$, so
+\end{equation}
+
+If $u=B_0/Y<1$, then $M_0\leq4$, so \cref{eq:substantial-R} gives
 \[
- R^2\gg N^6/Y^4,
- \qquad
- R\gg N^3/Y^2\gg Y/\log^3Y.
+ R\gg_\rho\frac{N^4}{Y^2}\gg\frac{Y^2}{\log^4Y}.
 \]
-Both alternatives contradict the assumed upper bound once $c$ is chosen below the resulting constants.
+This exceeds every fixed multiple of $Y/\log^3Y$ for large $Y$, since their ratio is $Y/\log Y\to\infty$; this is the contradiction in the small-$B_0/Y$ branch.  If $u\geq1$, then $M_0\ll B_0/Y$, and
+\[
+ M_0^2\ll_\rho\frac{B_0^2}{Y^2}=A_\rho^2\frac{RY^2}{N^2}.
+\]
+Substitution in \cref{eq:substantial-R} yields
+\[
+ R^2\gg_\rho\frac{N^6}{Y^4},
+ \qquad
+ R\gg_\rho\frac{N^3}{Y^2}\gg\frac{Y}{\log^3Y},
+\]
+again contradicting the upper bound for sufficiently small $c$.  Thus a dominant label exists; uniqueness was noted above.
 \end{proof}
 
 The next proposition is the zero-exception step: low energy does not merely yield an almost-global label.
@@ -207,15 +253,7 @@ Since $|C|\gg Y/\log Y$,
 \[
  |E_0|\ll\mathcal Q(a)Y^2/N^3<C'c_w.
 \]
-Choose $c_w$ so that $C'c_w<1$.  The integer $|E_0|$ must then be zero.  Equivalently, if
-\[
- R_{\mathrm{exc}}:=|E_0|,
-\]
-denotes the exceptional count, then
-\[
- R_{\mathrm{exc}}=0.
-\]
-\end{proof}
+Choose $c_w$ so that $C'c_w<1$.  The integer $|E_0|$ must then be zero.\end{proof}
 
 \subsection{Fingerprint counting}
 
@@ -233,13 +271,19 @@ For a fixed absolute $g>0$, at most one residue $w$ satisfies
 \end{lemma}
 
 \begin{proof}
-Let $w\neq w'$ and put $d=w-w'\not\equiv0\pmod q$.  For each $p\in\mathcal F$, subtraction of the two centred CRT lifts is divisible by $p$ and congruent to $d$ modulo $q$; after division by $pq$, its circle residue is therefore $dp^{-1}/q$.  The circle triangle inequality and $(u+v)^2\leq2u^2+2v^2$ give
+Let $w\neq w'$ and put $d=w-w'\not\equiv0\pmod q$.  For every $p\in\mathcal F$, the difference of the two centred CRT lifts represents $dp^{-1}/q$ on the circle.  Hence
+\[
+ \dist{dp^{-1}/q}^2
+ \leq2\left(\frac{H_{pq}(a_p,w)}{pq}\right)^2
+  +2\left(\frac{H_{pq}(a_p,w')}{pq}\right)^2.
+\]
+After summing and applying \cref{lem:reciprocal-dispersion},
 \[
  c_D\frac{s^3}{Y^2}
  \leq\sum_{p\in\mathcal F}\dist{dp^{-1}/q}^2
- \leq2t_q(w)+2t_q(w'),
+ \leq2t_q(w)+2t_q(w').
 \]
-where the first inequality is \cref{lem:reciprocal-dispersion}.  Choose the fixed absolute constant $g$ with $4g<c_D$.  Then two residues cannot both have energy below $gs^3/Y^2$.
+Choose $g$ with $4g<c_D$.  Then two residues cannot both have energy below $gs^3/Y^2$.
 \end{proof}
 
 \begin{proposition}[Fingerprint entropy bound]
@@ -269,11 +313,11 @@ independently of the residue assignment being enumerated.  The lower range gives
 \]
 By \cref{lem:fingerprint-rigidity}, these fixed functions force all but at most
 \[
- t\leq\frac{RY^2}{gs^3}\ll_A s
+ u\leq\frac{RY^2}{gs^3}\ll_A s
 \]
 vertices to one residue.  Choosing the exceptional vertices and residues gives at most
 \[
- \exp\bigl(O((s+t)\log Y)\bigr)
+ \exp\bigl(O((s+u)\log Y)\bigr)
  =\exp\bigl(O((RY^2)^{1/4}\log Y)\bigr)
 \]
 possibilities.  Dividing this exponent by $R\geq c_wY/\log^3Y$ gives
@@ -319,14 +363,14 @@ Define the anchor modulus
 \]
 By \cref{eq:bernoulli-modulus},
 \[
- T_B(a_B)\leq\exp(-\kappa_bQ_B(a_B)).
+ T_B(a_B)\leq\exp(-\kappa_{\rm mod}Q_B(a_B)).
 \]
-Fix $\varepsilon<\kappa_b$ in \cref{prop:fingerprint-entropy}.  On the unit shell $j\leq Q_B<j+1$, the number of assignments is at most $\exp(\varepsilon(j+1))$, while each weight is at most $\exp(-\kappa_bj)$.  Hence
+Fix $\varepsilon<\kappa_{\rm mod}$ in \cref{prop:fingerprint-entropy}.  On the unit shell $j\leq Q_B<j+1$, the number of assignments is at most $\exp(\varepsilon(j+1))$, while each weight is at most $\exp(-\kappa_{\rm mod}j)$.  Hence
 \[
  \sum_{Q_B\geq F_B}T_B(a_B)
  \leq e^\varepsilon
  \sum_{j\geq\lfloor F_B\rfloor}
- \exp\bigl(- (\kappa_b-\varepsilon)j\bigr)
+ \exp\bigl(- (\kappa_{\rm mod}-\varepsilon)j\bigr)
  \ll\exp(-cF_B),
 \]
 which is the geometric-series estimate
@@ -339,11 +383,10 @@ Below the floor, distinct anchor assignments have distinct labels, because two s
 \[
  \sum_{Q_B<F_B}T_B(a_B)
  \leq\sum_{m\in\mathbb Z}
- \exp(-\kappa_bm^2\sigma_{B,0}^2)
+ \exp(-\kappa_{\rm mod}m^2\sigma_{B,0}^2)
  \ll\sigma_{B,0}^{-1}
  \ll Z\log Z.
 \]
-We have proved the weighted partition estimate.
 
 \begin{proposition}[Anchor partition]
 \label{prop:top-partition}
@@ -356,4 +399,4 @@ The complete anchor weight satisfies
 while its noncoherent part satisfies \cref{eq:noncoherent-top-tail}.  Every coherent anchor assignment carries a unique exact integer label and obeys \cref{eq:top-exact-energy}.
 \end{proposition}
 
-The anchor theorem will be used in three logically distinct places: to supply the actual anchor weights in the fibre average, to control noncoherent anchor assignments, and to control the large coherent-label tail.  These uses concern disjoint contributions and do not double-count a frequency.  With synchronization established, the next section turns to the anchor-cross rows and their decoders.
+The anchor theorem supplies the actual anchor weights in the fibre average, controls noncoherent assignments, and controls the large coherent-label tail.  These are disjoint contributions.  With synchronization established, the next section turns to the anchor-cross rows and their decoders.

@@ -110,7 +110,7 @@ If $x\neq x_r^*$, \cref{eq:row-shift} and the circle triangle inequality imply
 \[
  D_r\leq2E_r(x)+2E_r(x_r^*)\leq4E_r(x).
 \]
-Apply \cref{eq:bernoulli-modulus} with $\kappa_{\rm mod}$ and sum over the at most $r$ nondecoder residues.  One may take $c_{\rm row}=\kappa_{\rm mod}/4$.
+Apply \cref{eq:bernoulli-modulus} and sum over the at most $r$ nondecoder residues.  One may take $c_{\rm row}=\kappa_{\rm mod}/4$.
 \end{proof}
 
 Consequently,
@@ -154,9 +154,9 @@ The total contribution of every nondecoder fibre point is at most
 \end{equation}
 \end{proposition}
 
-This argument is unnormalized and remains valid when a decoder weight $\alpha_r$ is zero; no decoder weight is divided out, and the raw number of anchor assignments does not occur.
+This argument is unnormalized and remains valid when a decoder weight $\alpha_r$ is zero; no decoder weight is divided out, and the raw number of anchor assignments does not occur.  The lower--lower factors remain in $H_{a_B}$ and will supply the minor-frequency coercivity.
 
-\subsection{Identification ranges}
+\subsection{Identification ranges and decoded frequencies}
 
 Suppose the anchor assignment is coherent with integer label $m$.  The candidate row residue $m\pmod r$ satisfies
 \begin{equation}
@@ -212,4 +212,16 @@ For every $r\in S_b$ and every coherent anchor label satisfying $|m|\leq T_0$,
 By \cref{eq:candidate-row-energy}, the candidate energy is $O_b(m^2/(Z\log Z))$, while \cref{prop:target-row-distance} is $\gg_b Z/\log Z$.  Since $|m|\leq T_0\leq\kappa_0Z$, choosing $\kappa_0$ sufficiently small makes the comparison strict, uniformly over the finite set $S_b$.
 \end{proof}
 
-Because $b$ is squarefree, agreement modulo every $r\in S_b$ is agreement modulo $b$.  Hence for $|m|\leq T_0$, the entire decoded tuple is the genuine integer $m$ modulo $L$.  In the larger range $T_0<|m|\leq M_{\mathrm{dec}}$, all $P$-coordinates still decode to $m$, while no target-coordinate identification is asserted.  The transition and adaptive estimates use only those prime coordinates.
+For every coherent anchor assignment with label $m$, define its \emph{decoded CRT frequency}
+\begin{equation}
+\label{eq:h-m-definition}
+ h_m\in\mathbb Z/L\mathbb Z
+\end{equation}
+to be the unique residue class whose coordinate modulo each $q\in B$ is $m\pmod q$ and whose coordinate modulo each $r\in R_{\mathrm{rows}}$ is the chosen decoder $x_r^*$.  Thus $m$ is an ordinary integer label, whereas $h_m$ is the CRT frequency retained after fibre compression.
+
+Because $b$ is squarefree, agreement modulo every $r\in S_b$ is agreement modulo $b$.  Hence, when $|m|\leq T_0$, every prime and target coordinate of $h_m$ agrees with $m$, so
+\begin{equation}
+\label{eq:h-m-full-identification}
+ h_m=m\pmod L.
+\end{equation}
+In the transition range $T_0<|m|\leq M_{\mathrm{dec}}$, only the coordinates indexed by $P$ are asserted to agree with $m$; the target coordinates in $S_b$ may differ.  The estimates in that range use only the prime-pair factors and therefore require no stronger identification.

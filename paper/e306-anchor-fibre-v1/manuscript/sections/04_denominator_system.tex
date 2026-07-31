@@ -5,12 +5,17 @@ Fix throughout a reduced target
 \[
  t=\frac ab\in(0,1)
 \]
-with squarefree $b$, a finite forbidden set $\mathcal T$, and a fixed exponent $\gamma>1$.  Put
+with squarefree $b$, a finite forbidden set $\mathcal T$, and a fixed exponent $\gamma>1$.  Reducedness and $0<t<1$ imply $b>1$.  Thus the set $S_b$ of prime divisors of $b$ is nonempty and
+\begin{equation}
+\label{eq:tau-positive}
+ \tau(b):=\sum_{r\in S_b}\frac1{r^2}>0.
+\end{equation}
+Put
 \begin{equation}
 \label{eq:lambda-gamma}
  \lambda_\gamma=\frac{(\log\gamma)^2}{2}.
 \end{equation}
-We assume the exact admissible inequalities for the present centred no-wrap construction
+We assume the exact inequalities for the centred no-wrap construction
 \begin{equation}
 \label{eq:admissible-region}
  t<\lambda_\gamma<1.
@@ -35,7 +40,13 @@ Put
 \end{equation}
 and let $S_b$ be the set of prime divisors of $b$.  We take $X$ so large that every prime in $P$ exceeds every prime divisor of $b$, and every denominator constructed below exceeds every element of $\mathcal T$.
 
-We use the following standard consequence of the prime number theorem; see Montgomery and Vaughan~\cite[Chapter~1]{montgomery-vaughan-2007}.
+We use the prime number theorem in the forms
+\[
+ \pi(y)\sim\frac{y}{\log y},
+ \qquad
+ \vartheta(y):=\sum_{p\leq y}\log p=y+o(y),
+\]
+together with their standard partial-summation consequences; see Montgomery and Vaughan~\cite[Chapter~1]{montgomery-vaughan-2007}.
 
 \begin{lemma}[Prime supply in fixed-ratio intervals]
 \label{lem:fixed-ratio-prime-supply}
@@ -142,12 +153,7 @@ more precisely, for fixed constants
  t<\lambda_-<\lambda_\gamma<\lambda_+<1,
 \]
 one has $\lambda_-<\Lambda<\lambda_+$ for all sufficiently large $X$;
-\item with
-\begin{equation}
-\label{eq:tau-b}
- \tau(b)=\sum_{r\in S_b}\frac1{r^2},
-\end{equation}
-one has the complete square-load asymptotic
+\item the complete square load satisfies
 \begin{equation}
 \label{eq:complete-square-load}
  \sum_{e\in\mathcal E}\frac1{e^2}
@@ -188,7 +194,9 @@ Indeed the fourth-power diagonal is $O(1/(X^3\log X))$.  The target rows contrib
 This proves \cref{eq:complete-square-load} without assuming which summand dominates.
 \end{proof}
 
-The family size and modulus satisfy
+\begin{proposition}[Family size and modulus]
+\label{prop:family-size-modulus}
+One has
 \begin{equation}
 \label{eq:family-size-modulus}
  M_X:=|\mathcal E|
@@ -196,9 +204,28 @@ The family size and modulus satisfy
  \qquad
  \log L=(1+o(1))Z=o(M_X).
 \end{equation}
-The target rows have only $O_b(Z/\log Z)$ elements and do not affect the leading family size.  Every denominator is at most $Z^2$ for large $X$.
+The target rows have $O_b(Z/\log Z)$ elements and do not affect the leading family size.  Every denominator is at most $Z^2$ for large $X$.
+\end{proposition}
 
-\subsection{Exact centring and the variance phase boundary}
+\begin{proof}
+The pair family has $\binom{|P|}{2}=(1+o(1))Z^2/(2\log^2Z)$ elements by \cref{eq:P-cardinality}, while $|\mathcal E_b|=|S_b|M_B=O_b(Z/\log Z)$.  This proves the formula for $M_X$.
+
+For the modulus, the prime number theorem in the form $\vartheta(y)=y+o(y)$ gives
+\begin{align*}
+ \log L
+ &=\log b+\sum_{p\in P}\log p\\
+ &=\vartheta(Z)-\vartheta(X)+O_b(1)\\
+ &=(1+o(1))Z.
+\end{align*}
+The harmless $O_b(1)$ accounts for the endpoint convention and the fixed factor $b$.  Since $\gamma>1$, one has $X=o(Z)$.  Finally,
+\[
+ \frac{\log L}{M_X}
+ =(2+o(1))\frac{\log^2Z}{Z}\longrightarrow0,
+\]
+so $\log L=o(M_X)$.
+\end{proof}
+
+\subsection{Exact centring and the variance boundary}
 
 Set
 \begin{equation}
@@ -242,7 +269,7 @@ Let $\alpha=\alpha_{t,\gamma}$.  Then
 \end{proposition}
 
 \begin{proof}
-Combine \cref{eq:theta-limit,eq:complete-square-load,eq:sigma-E}.  Both summands are retained, so the statement is valid without first deciding which variance contribution dominates.
+Combine \cref{eq:theta-limit,eq:complete-square-load,eq:sigma-E}.  Both summands are retained, so the statement is valid without first deciding which contribution dominates.
 \end{proof}
 
 \begin{corollary}[Explicit variance regimes]
@@ -271,10 +298,10 @@ The ratio of the target-row summand in \cref{eq:total-variance} to the pair summ
  \frac{X^2\log^2X}{Z\log Z}
  \asymp X^{2-\gamma}\log X.
 \]
-It tends to $0$ for $\gamma>2$, to infinity logarithmically for $\gamma=2$, and to infinity polynomially for $\gamma<2$.
+It tends to $0$ for $\gamma>2$, to infinity logarithmically for $\gamma=2$, and to infinity polynomially for $\gamma<2$.  Positivity of $\tau(b)$ follows from \cref{eq:tau-positive}; the case $b=1$ cannot occur in the direct setting $t\in(0,1)$.
 \end{proof}
 
-Thus $\gamma=2$ remains a genuine variance boundary, but it no longer requires a separate proof architecture: every later estimate is stated first with the total variance \cref{eq:total-variance}.
+Thus $\gamma=2$ is a genuine variance boundary, but it does not require a separate proof architecture: every later estimate is stated first with the total variance \cref{eq:total-variance}.
 
 The finite Fourier numerator is
 \begin{equation}
@@ -293,7 +320,7 @@ such that
  |(1-\theta)+\theta\exp(2\pi i u)|
  \leq\exp(-\kappa_{\rm mod}\dist{u}^2).
 \end{equation}
-For compatibility with the notation in the unchanged anchor-block estimates, write $\kappa_b:=\kappa_{\rm mod}$ there; this is the same Bernoulli modulus constant and is not the decoder cutoff introduced later.  Consequently,
+Consequently,
 \begin{equation}
 \label{eq:global-Fourier-energy}
  |F(h)|\leq\exp(-\kappa_{\rm mod}Q_{\mathcal E}(h)),

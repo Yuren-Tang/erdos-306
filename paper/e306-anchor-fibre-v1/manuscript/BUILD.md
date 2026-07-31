@@ -1,52 +1,56 @@
-# Manuscript build
+# Forensic reconstruction build
 
-## Local build
+This directory is a **local reconstruction candidate**. It is not asserted to be the original lost TeX source and has not been integrated into GitHub.
 
-Run all commands from this directory:
+## Ordinary build
 
-```bash
-cd paper/e306-anchor-fibre-v1/manuscript
-make clean
-make pdf
-```
-
-The build entrypoint executes:
+The source uses PDFLaTeX with Biber. From this directory run:
 
 ```bash
+latexmk -C main.tex
 latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error main.tex
 ```
 
-`latexmk` runs the configured Biber cycle and repeats LaTeX to stabilization.
+The included `Makefile` provides the equivalent `make clean` / `make pdf` entrypoints.
 
-Expected product:
+## Byte-exact forensic reproduction
 
-```text
-main.pdf
+The surviving 42-page evidence PDF records the creation/modification time
+`2026-07-30 23:38:20 UTC`, whose Unix epoch is `1785454700`.
+With the recovered source candidate and the original toolchain, the following reproducible build produces a PDF byte-for-byte identical to the evidence object:
+
+```bash
+export SOURCE_DATE_EPOCH=1785454700
+export FORCE_SOURCE_DATE=1
+latexmk -C main.tex
+latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error main.tex
+sha256sum main.pdf
 ```
 
-## Pull-request build
-
-The workflow
+Expected SHA-256:
 
 ```text
-.github/workflows/manuscript.yml
+d0bc466283dc591b90e7039bb6461ecaa040d6a80b63d7270c1211e7377992c2  main.pdf
 ```
 
-runs for pull requests that change the manuscript paths or the workflow itself; PR #9 is the present instance.  It installs a clean standard TeX Live toolchain, executes the same clean build, fails on unresolved citations or cross-references, verifies that `main.pdf` is nonempty, and uploads the PDF as a thirty-day GitHub Actions artifact.
+This equality establishes exact recovery of the compiled evidence object. It does not prove that invisible source details such as comments, harmless blank lines or equivalent TeX spellings are identical to the lost source.
 
-The workflow is a reproducibility gate.  It does not replace mathematical review or source-preservation review.
-
-## Validation boundary
-
-A successful build must establish:
+## Validation performed
 
 1. every `\input` target is present;
-2. Biber completes;
-3. no undefined control sequence occurs;
-4. no undefined citation remains after the final pass;
-5. no undefined cross-reference remains after the final pass;
-6. the generated PDF is nonempty and readable.
+2. Biber completes without warnings or errors;
+3. there are no undefined citations or cross-references;
+4. there are no duplicate labels;
+5. all PDF fonts are embedded and no Type 3 font occurs;
+6. the dedication extracts literally as `ΤΟΙΣ ΕΜΕ ΦΙΛΟΥΣΙΝ` / `ΚΑΙ ΟΙΣ ΦΙΛΩ`;
+7. the bibliography begins on a separate page;
+8. the output has 42 pages;
+9. normalized full text agrees token-for-token with the evidence PDF;
+10. all 42 pages agree pixel-for-pixel at 200 dpi;
+11. the evidence-timestamp build agrees byte-for-byte with the evidence PDF.
 
-Warnings about overfull boxes, line breaks or bibliography style are recorded separately from fatal build failures.
+The final build records one nonfatal underfull box and no overfull box.
 
-The PDF is a review artifact only. Its existence does not mark PR #9 ready for review and does not authorize merge, release, DOI creation, arXiv or journal submission.
+## Authority boundary
+
+This candidate is for independent mathematical-content preservation review. It authorizes no branch change, commit, push, PR transition, merge, release, licence selection, DOI action, arXiv upload or journal submission.

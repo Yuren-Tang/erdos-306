@@ -1,7 +1,7 @@
 \section{Structural tools}
 \label{sec:structural-tools}
 
-This section isolates the deterministic statements used by the arithmetic construction.  The complete-family estimate controls reciprocal capacity; the product-fibre theorem performs the compression to one decoder tuple per anchor assignment; the syndrome theorem detects otherwise unobserved finite-group directions; and the final proposition assembles a positive skeleton contribution against finitely many error lanes.  The prime-specific rigidity, row distance and minor-frequency estimates are supplied only in the later sections.
+We isolate four deterministic principles used by the arithmetic construction.  The first quantifies the loss caused by collisions in complete weighted $k$-uniform families.  The second compresses a product fibre to one decoded tuple without discarding unassigned factors.  The third gives an intrinsic finite-group criterion for target observability.  The fourth compares a positive decoded skeleton with its minor lanes.  The statements are independent of the semiprime specialization; the concrete proof supplies their arithmetic hypotheses in later sections.
 
 \subsection{Complete weighted families}
 
@@ -80,7 +80,7 @@ This is the identity
 \]
 \end{proof}
 
-Only \cref{cor:pair-identity} is needed for the dense semiprime family; \cref{cor:complete-family-relative} records the corresponding relative and asymptotic forms.  The higher-uniformity statement records the natural collision-free range detected by the first two power sums; it does not provide the rigidity or decoding theory required by a higher-uniformity application.
+The semiprime family uses the exact pair identity.  The higher-uniformity theorem is retained because it gives genuinely stronger information: it identifies, for fixed or moving $k$, the precise collision parameter detected by the first two power sums.  It does not by itself supply the rigidity or decoding theory required in a higher-uniformity arithmetic application.
 
 \subsection{Exact weighted product-fibre compression}
 
@@ -244,9 +244,7 @@ is injective;
 Injectivity of $\Sigma$ is equivalent to triviality of its kernel, which is the common kernel of the sensors.  Since $H$ is finite, injectivity makes every nonzero syndrome have positive squared norm and hence gives $\delta>0$.  Conversely, $\delta=0$ means that some nonzero element lies in every sensor kernel.
 \end{proof}
 
-The explicit Gaussian tail is \cref{cor:syndrome-tail}.  For one finite system, $\delta>0$ is a qualitative injectivity statement.  For a sequence of systems, an explicit scale-dependent lower bound for $\delta$ is the quantitative input.  The theorem gives a sufficient absolute-value decoding estimate; it does not classify arguments which exploit cancellation inside fibres.  It also does not identify a prescribed decoder without an application-specific comparison of the candidate energy with the competing syndrome distance.  If $H$ is trivial, there is no target-coordinate obligation and no minimum over nonzero elements is defined.
-
-We use the following coverage principle.  In each frequency lane, every otherwise unobserved quotient direction must be fixed by the anchor assignment, resolved by a decoded fibre, or detected by a retained residual factor which damps that lane.  Thus observability is a distinct obligation, although in a concrete lane it may be supplied by row separation, decoder identification or residual damping.
+The theorem separates qualitative observability from quantitative decoding.  For one finite system, $\delta>0$ is precisely injectivity; for a sequence of systems, an explicit lower bound for $\delta$ supplies the scale.  The result is an absolute-value estimate, not a classification of all possible cancellation arguments, and an application must still identify the intended decoder by comparing its energy with competing syndromes.  In the E306 construction the target rows furnish the concrete sensors, while the prime rows are controlled by the stronger arithmetic distance estimates of \cref{sec:fibre-decoding}.  If $H$ is trivial, no target-coordinate condition remains and the minimum over nonzero elements is omitted.
 
 \subsection{Decoded-skeleton positivity}
 

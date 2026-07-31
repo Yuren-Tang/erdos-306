@@ -44,7 +44,7 @@ and hence the aggregate cubic remainder tends to zero for fixed $C$ in every reg
 
 \subsection{Sector I: positive real major}
 
-For $|m|\leq N$, \cref{eq:N-below-full} and the decoder-identification propositions show that the decoded tuple is the genuine integer frequency $m$ modulo $L$.  Summing \cref{eq:local-log-expansion} over the actual family, the linear term cancels exactly:
+For $|m|\leq N$, \cref{eq:h-m-full-identification,eq:N-below-full} show that the decoded frequency is the genuine integer $m$ modulo $L$.  Summing \cref{eq:local-log-expansion} over the actual family, the linear term cancels exactly:
 \[
  2\pi i m\theta\Lambda-2\pi i mt=0.
 \]
@@ -78,16 +78,16 @@ For
 \[
  N<|m|\leq T_0,
 \]
-the decoded tuple is the genuine integer $m$ modulo $L$.  The constant $\kappa_0$ in \cref{eq:T-full} was chosen so that $|m|/e\leq1/4$ for every $e\in\mathcal E$.  Hence
+the decoded frequency is again the genuine integer $m$ modulo $L$.  The constant $\kappa_0$ in \cref{eq:T-full} was chosen so that $|m|/e\leq1/4$ for every $e\in\mathcal E$.  Hence
 \begin{equation}
 \label{eq:full-variance-gaussian}
  |F(m)|\leq\exp(-c m^2\sigma_{\mathcal E}^2).
 \end{equation}
-A Gaussian integral comparison gives
+Apply \cref{lem:tail-summation}(i) with $B=\sigma_{\mathcal E}^{-1}$ and $A=N\geq B$.  Since $N\sigma_{\mathcal E}=C+O(\sigma_{\mathcal E})$,
 \begin{equation}
 \label{eq:sector-II-tail}
  \sum_{|m|>N}\exp(-c m^2\sigma_{\mathcal E}^2)
- \leq K\sigma_{\mathcal E}^{-1}\exp(-cC^2/2),
+ \leq K\sigma_{\mathcal E}^{-1}\exp(-c'C^2),
 \end{equation}
 where $K$ is independent of $C$ and $X$.  Choose $C$ so large that this is at most $c_{\mathrm{maj}}/(8\sigma_{\mathcal E})$.
 
@@ -95,7 +95,7 @@ where $K$ is independent of $C$ and $X$.  Choose $C$ so large that this is at mo
 
 Fix this $C$, then choose $X$ above the finite maximum of the thresholds required for:
 \begin{itemize}
-\item the parameterized prime counts, reciprocal masses, family size and complete square load;
+\item the parameterized prime counts, reciprocal masses, family size, modulus and complete square load;
 \item separation from the support of $b$ and avoidance of $\mathcal T$;
 \item the strict load inequalities $t<\Lambda<1$ and the compact Bernoulli interval;
 \item anchor rigidity, fingerprint entropy and the weighted anchor partition;
@@ -103,9 +103,9 @@ Fix this $C$, then choose $X$ above the finite maximum of the thresholds require
 \item the prime-only transition estimate for every fixed $\gamma>1$;
 \item containment and prime supply in the adaptive interval;
 \item the Taylor disk and the total-variance cubic remainder;
-\item all $o(\sigma_{\mathcal E}^{-1})$ totals in \cref{eq:transition-total,eq:adaptive-total,eq:anchor-tail-total,eq:terminal-error-total}.
+\item the explicit tail estimates in \cref{eq:transition-total,eq:adaptive-total,eq:anchor-tail-total,eq:terminal-error-total}.
 \end{itemize}
-The terminal order is therefore
+The parameter order is therefore
 \begin{equation}
 \label{eq:parameter-order}
  (t,\gamma,b,\mathcal T)\ \text{fixed},
@@ -125,4 +125,4 @@ For every fixed reduced $t=a/b\in(0,1)$ with squarefree $b$, every fixed $\gamma
 \end{equation}
 \end{theorem}
 
-The proof uses the total actual-family variance in both the major and the first minor range.  The leading variance provider still changes at $\gamma=2$, but the following prime-only transition sector and the remaining estimates are now part of one six-sector architecture in every regime.
+The proof uses the total actual-family variance in both the major and the first minor range.  The dominant variance contribution changes at $\gamma=2$, but the prime-only transition and the remaining sectors form one architecture in every regime.

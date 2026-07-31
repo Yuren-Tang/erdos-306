@@ -28,6 +28,7 @@ jobs:
             texlive-bibtex-extra \
             texlive-fonts-extra \
             texlive-fonts-recommended \
+            texlive-lang-greek \
             texlive-latex-extra \
             texlive-plain-generic
 

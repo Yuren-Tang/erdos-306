@@ -1,39 +1,12 @@
 \section{Discussion and conclusion}
 \label{sec:scope}
 
-The characterization and finite-avoidance theorem are global, whereas the quantitative analysis is tied to the explicit one-anchor family.  Its natural parameter range is the open centred no-wrap range $t<\lambda_\gamma<1$; the argument makes no impossibility claim beyond that range.
+The characterization and finite-avoidance theorem are global.  The coefficient asymptotic and entropy estimates belong to the explicit one-anchor family and to its open centred no-wrap range $t<\lambda_\gamma<1$; no impossibility statement is made beyond that range.
 
-\subsection{Mechanism and scope}
+The construction isolates a reusable mechanism.  Fourier inversion selects the prescribed coefficient.  The anchor block turns many low-energy CRT coordinates into one integer label.  Anchor-cross rows recover the remaining prime coordinates and the coordinates carried by the reduced target denominator.  Exact weighted fibre compression retains, rather than averages away, every factor not assigned to a row.  In particular, the lower--lower prime-pair factors survive and control the transition and adaptive frequency ranges.  This retained-factor coercivity is what permits one six-sector proof on both sides of the variance boundary at $\gamma=2$.
 
-The exponent $\gamma$ controls the reciprocal load, the size of the candidate family, and the change in the dominant variance contribution at $\gamma=2$.  The complete variance statement is
-\[
- \sigma_{\mathcal E}^2
- \sim\alpha_{t,\gamma}(1-\alpha_{t,\gamma})
- \left(
-  \frac1{2X^2\log^2X}
-  +\frac{\tau(b)}{Z\log Z}
- \right),
- \qquad
- \tau(b)=\sum_{r\in S_b}\frac1{r^2}.
-\]
-The universal cutoff $T_0=\kappa_0\min(X^2,Z)$ and the prime-only transition sector allow the same six-sector proof on both sides of that variance boundary.  Apart from its scalar effect through $\theta=t/\Lambda$, the numerator $a$ enters the Fourier geometry only through the target character; the target-row system depends only on $b$.
+The direct coefficient also separates qualitative existence from quantitative structure.  Its Gaussian asymptotic yields the exact entropy rate available in the chosen family, equal-cardinality extraction, Hamming separation and balanced reciprocal relations.  The replacement and transportation arguments then transfer this abundance to proper refinements and to arbitrary rationals with squarefree reduced denominator.  These conclusions preserve the distinction between a theorem about the constructed family and an optimization over all possible squarefree-semiprime representations.
 
-The same distinction governs the counting statements.  The entropy optimization is exact within the direct family: below $1/2$ the balanced Bernoulli point is attained, while at and above $1/2$ only a boundary supremum occurs.  These statements do not assert global optimality among all squarefree-semiprime representations of a given height.  Likewise, local replacement makes one block strict, whereas simultaneous pairwise-disjoint replacement is what produces globally proper refinements; the transportation argument is needed to align different decompositions.
+Several natural variants remain open: suppressing nonzero aliases beyond no-wrap, proving a joint value--cardinality local limit, retaining target observability under structured deletions, and formulating an abstract anchored graph or hypergraph CRT local-limit theorem.  Effective numerical thresholds would require explicit prime-number-theorem errors and systematic tracking of the constants in the rigidity and sector estimates.
 
-\subsection{Further questions}
-
-The proof naturally leaves four questions.
-\begin{enumerate}[label=(\roman*)]
-\item Can nonzero integer aliases be suppressed quantitatively beyond the present no-wrap range?
-\item Is there a joint value--cardinality local limit theorem for the direct family?
-\item How robust are the target sensors under structured deletions that preserve their separating action?
-\item Is there an abstract anchored graph or hypergraph CRT local-limit principle encompassing this construction?
-\end{enumerate}
-
-\subsection{Effectivity}
-
-The argument is qualitative-effective in principle: explicit prime-number-theorem bounds, Taylor constants, cyclic-energy constants, and sector inequalities would reduce the construction to a finite computation.  The article does not supply a useful numerical threshold for $X$ or effective errors in the coefficient asymptotic; obtaining them would require separate constant tracking.
-
-\subsection{Conclusion}
-
-The CRT coordinates expose an anchor block that synchronizes local residues, anchor-cross rows recover the target directions, and weighted fibre compression preserves the prime-pair factors needed outside the central range.  Prime dilution converts the resulting fixed-target theorem into the full squarefree-denominator characterization.  The same structure yields a sharp Gaussian coefficient, direct-family exponential multiplicity, and a directed, quantitatively abundant representation poset.
+Thus the squarefree-denominator obstruction is exact.  The proof proceeds from one fixed Fourier coefficient to a synchronized CRT skeleton, and from that skeleton to a sharp local Gaussian law; prime dilution, replacement and transfer then supply the global theorem and its quantitative consequences.

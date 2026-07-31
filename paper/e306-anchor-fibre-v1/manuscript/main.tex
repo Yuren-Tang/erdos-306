@@ -1,7 +1,7 @@
 \documentclass[11pt,a4paper,reqno]{amsart}
 
-\usepackage[T1]{fontenc}
-\usepackage[british]{babel}
+\usepackage[LGR,T1]{fontenc}
+\usepackage[greek,british]{babel}
 \usepackage{csquotes}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage[etbb]{newtx}
@@ -39,7 +39,6 @@
      \clearfield{urlmonth}%
      \clearfield{urlday}}}
 
-\DeclareFontEncoding{LGR}{}{}
 \DeclareFontSubstitution{LGR}{artemisia}{m}{n}
 \ifdefined\pdfglyphtounicode
   \pdfglyphtounicode{Omega}{03A9}
@@ -73,8 +72,8 @@
   {\normalfont
    \fontencoding{LGR}\fontfamily{artemisia}\fontseries{m}\fontshape{n}%
    \fontsize{10}{15}\selectfont
-   TOIS EME FILOUSIN\\
-   KAI TOIS OUS FILW}%
+   \foreignlanguage{greek}{ΤΟΙΣ ΕΜΕ ΦΙΛΟΥΣΙΝ\\
+   ΚΑΙ ΟΙΣ ΦΙΛΩ}}%
   \vspace{12pt}%
 }
 \subjclass[2020]{Primary 11D68; Secondary 11B75, 11L07}
@@ -90,7 +89,7 @@
 \begin{document}
 
 \begin{abstract}
-We characterize the positive rationals that are finite sums of reciprocals of distinct squarefree semiprimes: they are exactly those with squarefree reduced denominator, and any prescribed finite set of denominators may be avoided.  For a fixed reduced target $t=a/b\in(0,1)$ and fixed $\gamma>1$, the present centred no-wrap construction works in the exact admissible range $t<(\log\gamma)^2/2<1$; one anchor block, finite Fourier inversion, and decoded prime and target-coordinate rows produce an exact representation.  The fixed-target coefficient has a sharp Gaussian asymptotic governed by the full variance, and within the direct family this yields entropy-rate multiplicity, exact-cardinality and Hamming-separated subfamilies.  Finite prescription also gives common refinements, countably infinite proper refinement chains, and quantitative transfer to every admissible rational.
+A positive rational is a finite sum of reciprocals of distinct squarefree semiprimes if and only if its reduced denominator is squarefree; the representing denominators may moreover avoid any prescribed finite set.  For a fixed reduced target $t=a/b\in(0,1)$ and a fixed $\gamma>1$ with $t<(\log\gamma)^2/2<1$, we give a direct construction from primes in $[X,X^\gamma)$.  Finite Fourier inversion encodes the target, an anchor block synchronizes low-energy Chinese-remainder coordinates, and anchor-cross rows decode the remaining prime and target coordinates.  Exact weighted fibre compression then replaces each fibre by its decoded tuple while retaining every unassigned factor; in particular, the surviving lower--lower prime-pair factors provide the coercivity outside the major range.  The exact target coefficient has a sharp Gaussian asymptotic.  This yields entropy-rate multiplicity in the direct family, exact-cardinality and Hamming-separated subfamilies, quantitative proper-refinement branching, and global transfer to every rational with squarefree reduced denominator.
 \end{abstract}
 
 \maketitle
@@ -108,8 +107,9 @@ We characterize the positive rationals that are finite sums of reciprocals of di
 \input{sections/11_discussion_conclusion}
 
 \section*{Acknowledgements}
-Generative-AI systems assisted proof exploration, Lean development, source checking, and editorial revision.  The author takes full responsibility for the mathematics, citations, and text.
+Generative-AI systems assisted proof exploration, source checking and editorial revision.  The author takes full responsibility for the mathematics, citations and text.
 
+\clearpage
 \printbibliography
 \thispagestyle{plain}
 
