@@ -124,7 +124,7 @@ to a standard invariant.
 | balanced reciprocal relation | homogeneous three-point assignment plus global no-wrap | exact |
 | support graph | graph on vertices incident to nonzero support edges | exact |
 | support-core consequence | leaf-stripping/minimum-degree-two result | exact under local no-wrap |
-| `2`-core restriction/zero-extension | bijection of restricted homogeneous fibres when every alphabet contains zero | exact under stated hypotheses |
+| `2`-core restriction/zero-extension | bijection of restricted homogeneous fibres when every alphabet contains zero and every allowed nonzero symbol is locally nondivisible | exact under stated hypotheses |
 | sensor | cross-edge family observing an eliminated vertex syndrome | architectural term |
 | conditional separator | retained core receiving an arbitrary affine source | exact |
 | reciprocal-CRT geometry | opposite-modulus inverse coefficients tied to a shared edge label | descriptive exact specialization |
@@ -176,8 +176,8 @@ to a standard invariant.
    endpoints. Splitting it into independent endpoint labels changes the model.
 9. **Positive Fourier coefficients imply FKG.** Positivity alone does not
    provide the lattice condition or ferromagnetic monotonicity.
-10. **The graph identity creates many codewords.** Enumeration abundance comes
-    from the separate representation-entropy theorem.
+10. **The graph identity creates many homogeneous assignments.** Enumeration
+    abundance comes from the separate representation-entropy theorem.
 
 ## 6. Citation groups
 
