@@ -76,10 +76,11 @@ partial_rec_tilde : Z^E -> product_(v in V) Z/n_v Z.
 
 After finite edge alphabets are imposed, the relevant objects are the
 **alphabet-restricted homogeneous fibre** and **alphabet-restricted affine
-fibres**. They are literal kernels or cosets only when the edge alphabets carry
-the required additive subgroup or module structure. The phrase **reciprocal
-incidence code** is used only with that qualification or as an explicitly
-nonlinear shorthand for the homogeneous restricted constraint set.
+fibres**. They are literal kernels or cosets only when a separate additive
+allowed-label group, subgroup, or module domain compatible with the syndrome
+map has been supplied. The phrase **reciprocal incidence code** is used only
+with that qualification or as an explicitly nonlinear shorthand for the
+homogeneous restricted constraint set.
 
 The Fourier expansion producing its edge variables is the **positive Fourier
 edge-current expansion**. The minimum-degree-two result is a **support-core
