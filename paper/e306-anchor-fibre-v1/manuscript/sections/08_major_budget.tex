@@ -1,11 +1,11 @@
 \section{The major contribution and terminal budget}
 \label{sec:major-budget}
 
-We now estimate the Taylor major and the total-variance tail, then assemble the universal six-sector partition.  The order of choices is essential: $(t,\gamma,b,\mathcal T)$ and the fixed numerical constants are chosen first, the Gaussian cutoff $C$ is then fixed, and only afterwards is $X$ taken sufficiently large.  No constant below depends on $X$ or on $C$ unless explicitly indicated.
+We now estimate the Taylor major and the total-variance tail, then assemble the universal six-sector partition.  The order of choices is essential: $(t,\gamma,\eta,b,\mathcal T)$ and the fixed numerical constants are chosen first, the Gaussian cutoff $C$ is then fixed, and only afterwards is $X$ taken sufficiently large.  No constant below depends on $X$ or on $C$ unless explicitly indicated.
 
 \subsection{A uniform local expansion}
 
-Compactness of the Bernoulli interval $I_{t,\gamma}$ gives constants $\rho>0$ and $M<\infty$ such that, uniformly for $\theta\in I_{t,\gamma}$ and $|z|\leq\rho$,
+Compactness of the Bernoulli interval $I_{t,\gamma,\eta}$ gives constants $\rho>0$ and $M<\infty$ such that, uniformly for $\theta\in I_{t,\gamma,\eta}$ and $|z|\leq\rho$,
 \begin{equation}
 \label{eq:local-log-expansion}
  \log\bigl((1-\theta)+\theta\exp(2\pi iz)\bigr)
@@ -21,7 +21,7 @@ where
 
 Let
 \[
- e_{\min}=\min_{e\in\mathcal E}e\asymp\min(X^2,Z).
+ e_{\min}=\min_{e\in\mathcal E}e\asymp_{b,\eta}\min(X^2,Z).
 \]
 For $|m|\leq N=C/\sigma_{\mathcal E}$,
 \begin{equation}
@@ -29,15 +29,15 @@ For $|m|\leq N=C/\sigma_{\mathcal E}$,
  \sum_{e\in\mathcal E}|m/e|^3
  \leq\frac{|m|^3}{e_{\min}}
        \sum_{e\in\mathcal E}\frac1{e^2}
- \ll\frac{C^3}{\sigma_{\mathcal E}e_{\min}}.
+ \ll_{b,\eta}\frac{C^3}{\sigma_{\mathcal E}e_{\min}}.
 \end{equation}
 The total variance \cref{eq:total-variance} gives
 \begin{equation}
 \label{eq:aggregate-cubic-remainder}
  \frac1{\sigma_{\mathcal E}e_{\min}}
  =\begin{cases}
- O(\log X/X),&\gamma>2,\\
- O(\sqrt{\log Z/Z}),&1<\gamma\leq2,
+ O_{b,\eta}(\log X/X),&\gamma>2,\\
+ O_{b,\eta}(\sqrt{\log Z/Z}),&1<\gamma\leq2,
  \end{cases}
 \end{equation}
 and hence the aggregate cubic remainder tends to zero for fixed $C$ in every regime.  Also $N=o(e_{\min})$, so all major phases lie in the common Taylor disk.
@@ -98,31 +98,31 @@ Fix this $C$, then choose $X$ above the finite maximum of the thresholds require
 \item the parameterized prime counts, reciprocal masses, family size, modulus and complete square load;
 \item separation from the support of $b$ and avoidance of $\mathcal T$;
 \item the strict load inequalities $t<\Lambda<1$ and the compact Bernoulli interval;
-\item anchor rigidity, fingerprint entropy and the weighted anchor partition;
+\item fixed-ratio anchor rigidity, fingerprint entropy and the weighted anchor partition;
 \item the cyclic-energy provider, both row-distance estimates, the row-tail sum and the two identification ranges;
 \item the prime-only transition estimate for every fixed $\gamma>1$;
-\item containment and prime supply in the adaptive interval;
+\item containment below $\eta Z$ and prime supply in the adaptive interval;
 \item the Taylor disk and the total-variance cubic remainder;
 \item the explicit tail estimates in \cref{eq:transition-total,eq:adaptive-total,eq:anchor-tail-total,eq:terminal-error-total}.
 \end{itemize}
 The parameter order is therefore
 \begin{equation}
 \label{eq:parameter-order}
- (t,\gamma,b,\mathcal T)\ \text{fixed},
+ (t,\gamma,\eta,b,\mathcal T)\ \text{fixed},
  \qquad C\ \text{fixed},
  \qquad X\to\infty,
 \end{equation}
 and only in the sharp asymptotic argument is $C\to\infty$ taken afterwards.
 
-By \cref{prop:six-sector-exhaustion}, Sectors III--VI contribute $o(\sigma_{\mathcal E}^{-1})$ for every fixed $\gamma>1$.  Sector II is at most $c_{\mathrm{maj}}/(8\sigma_{\mathcal E})$, whereas Sector I has real part at least $c_{\mathrm{maj}}/\sigma_{\mathcal E}$.  Applying \cref{prop:decoded-skeleton-positivity} yields:
+By \cref{prop:six-sector-exhaustion}, Sectors III--VI contribute $o(\sigma_{\mathcal E}^{-1})$ for every fixed $(\gamma,\eta)$ with $\gamma>1$ and $\eta\in(0,1)$.  Sector II is at most $c_{\mathrm{maj}}/(8\sigma_{\mathcal E})$, whereas Sector I has real part at least $c_{\mathrm{maj}}/\sigma_{\mathcal E}$.  Applying \cref{prop:decoded-skeleton-positivity} yields:
 
 \begin{theorem}[Positive parameterized Fourier numerator]
 \label{thm:positive-fourier-numerator}
-For every fixed reduced $t=a/b\in(0,1)$ with squarefree $b$, every fixed $\gamma$ satisfying \cref{eq:admissible-region}, and every finite forbidden set $\mathcal T$, one has for all sufficiently large $X$
+For every fixed reduced $t=a/b\in(0,1)$ with squarefree $b$, every fixed $\eta\in(0,1)$, every fixed $\gamma$ satisfying \cref{eq:admissible-region}, and every finite forbidden set $\mathcal T$, one has for all sufficiently large $X$
 \begin{equation}
 \label{eq:positive-full-sum}
  \RePart\sum_{h\bmod L}F(h)>0.
 \end{equation}
 \end{theorem}
 
-The proof uses the total actual-family variance in both the major and the first minor range.  The dominant variance contribution changes at $\gamma=2$, but the prime-only transition and the remaining sectors form one architecture in every regime.
+The proof uses the total actual-family variance in both the major and the first minor range.  The dominant variance contribution changes at $\gamma=2$, but the prime-only transition and the remaining sectors form one architecture in every fixed-ratio regime.
