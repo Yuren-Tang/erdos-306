@@ -21,6 +21,11 @@ jobs:
         working-directory: paper/e306-squarefree-denominators-v1/manuscript
     steps:
       - uses: actions/checkout@v4
+      - name: Install PDF inspection tools
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends poppler-utils
+          rm -rf /var/lib/apt/lists/*
       - name: Clean build
         run: make clean && make pdf
       - name: Reference and layout gates
