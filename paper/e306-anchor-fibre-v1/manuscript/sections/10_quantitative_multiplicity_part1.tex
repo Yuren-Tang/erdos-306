@@ -1,7 +1,7 @@
 \section{Quantitative multiplicity, optimization and transfer}
 \label{sec:quantitative-multiplicity}
 
-Retain a fixed reduced target $t=a/b\in(0,1)$ with squarefree $b$, a fixed admissible exponent $\gamma$, and a fixed forbidden set.  Write $\mathcal E_X$, $L_X$, $\Lambda_X$, $\theta_X$ and $\sigma_X$ for the parameterized objects above.  Let
+Retain a fixed reduced target $t=a/b\in(0,1)$ with squarefree $b$, a fixed anchor ratio $\eta\in(0,1)$, a fixed admissible exponent $\gamma$, and a fixed forbidden set.  Write $\mathcal E_X$, $L_X$, $\Lambda_X$, $\theta_X$ and $\sigma_X$ for the parameterized objects above.  Let
 \[
  M_X=|\mathcal E_X|,
  \qquad
@@ -35,9 +35,9 @@ The variance is the total actual-family variance \cref{eq:total-variance}; its t
 For all sufficiently large $X$,
 \begin{equation}
 \label{eq:quantitative-coefficient}
- L_XP_X(t)\geq\frac{c_{t,\gamma}}{\sigma_X}
+ L_XP_X(t)\geq\frac{c_{t,\gamma,\eta}}{\sigma_X}
 \end{equation}
-for a fixed $c_{t,\gamma}>0$.
+for a fixed $c_{t,\gamma,\eta}>0$.
 \end{corollary}
 
 \begin{proof}
@@ -46,7 +46,7 @@ The strict six-sector assembly leaves a fixed positive fraction of the major con
 
 \begin{theorem}[Sharp fixed-target coefficient]
 \label{thm:sharp-target-coefficient}
-For fixed $t$, $\gamma$ and finite forbidden set,
+For fixed $t$, $\gamma$, $\eta$ and finite forbidden set,
 \begin{equation}
 \label{eq:sharp-target-coefficient}
  L_XP_X(t)\sim\frac1{\sqrt{2\pi}\,\sigma_X}.
@@ -60,7 +60,7 @@ Equivalently, with $\alpha=\alpha_{t,\gamma}$,
  2\pi\alpha(1-\alpha)
  \left(
   \frac1{2X^2\log^2X}
-  +\frac{\tau(b)}{Z\log Z}
+  +\frac{(\eta^{-1}-1)\tau(b)}{Z\log Z}
  \right)
  \right]^{-1/2}.
 \end{equation}
@@ -73,7 +73,7 @@ The explicit variance regimes give
  \frac{X\log X}{\sqrt{\pi\alpha(1-\alpha)}},&\gamma>2,\\[8pt]
  \displaystyle
  \frac{\sqrt{Z\log Z}}
- {\sqrt{2\pi\alpha(1-\alpha)\tau(b)}},&1<\gamma\leq2.
+ {\sqrt{2\pi\alpha(1-\alpha)(\eta^{-1}-1)\tau(b)}},&1<\gamma\leq2.
  \end{cases}
 \end{equation}
 \end{theorem}
@@ -148,7 +148,7 @@ The sharp coefficient gives the quantitative comparison that is needed here:
 \end{equation}
 By \cref{eq:total-variance},
 \[
- \sigma_X=O\!\left(\frac1{X\log X}+\frac1{\sqrt{Z\log Z}}\right)=o(1),
+ \sigma_X=O_{b,\eta}\!\left(\frac1{X\log X}+\frac1{\sqrt{Z\log Z}}\right)=o(1),
 \]
 while \cref{prop:family-size-modulus} gives $\log L_X=(1+o(1))Z$ and hence
 \[
@@ -161,7 +161,7 @@ Therefore $\sigma_XL_X^{-7}\to0$, and \cref{eq:hoeffding-target-ratio} proves
 \end{equation}
 Thus a $(1-o(1))$ proportion of the exact target mass lies in the window.  The explicit variance regimes also give
 \[
- |\log\sigma_X|=O(\log Z)=o(M_X).
+ |\log\sigma_X|=O_{b,\eta}(\log Z)=o(M_X).
 \]
 Together with $\log L_X=o(M_X)$ and the sharp coefficient, this yields
 \begin{equation}
@@ -204,9 +204,9 @@ Pigeonhole among the $2w_X+1=\exp(o(M_X))$ cardinalities in the window.
 
 \begin{corollary}[Macroscopic diversity at one cardinality]
 \label{cor:hamming-separated-family}
-There are constants $\rho,\eta>0$ and, for all sufficiently large $X$, a family $\mathcal F_X\subseteq\mathcal R_X(t)$ such that
+There are constants $\rho,\zeta>0$ and, for all sufficiently large $X$, a family $\mathcal F_X\subseteq\mathcal R_X(t)$ such that
 \[
- |\mathcal F_X|\geq\exp(\eta M_X),
+ |\mathcal F_X|\geq\exp(\zeta M_X),
  \qquad
  |A|=k_X\quad(A\in\mathcal F_X),
 \]
@@ -223,7 +223,7 @@ Choose $\rho>0$ so small that $H(\rho)<H(\alpha_{t,\gamma})$.  A Hamming ball of
 
 \begin{corollary}[Balanced signed reciprocal relations]
 \label{cor:balanced-signed-relations}
-There are constants $c,\eta'>0$ such that, for all sufficiently large $X$, there are at least $\exp(\eta'M_X)$ distinct ordered pairs $(\mathcal P,\mathcal N)$ of disjoint subsets of $\mathcal E_X$ satisfying
+There are constants $c,\zeta'>0$ such that, for all sufficiently large $X$, there are at least $\exp(\zeta'M_X)$ distinct ordered pairs $(\mathcal P,\mathcal N)$ of disjoint subsets of $\mathcal E_X$ satisfying
 \[
  \sum_{e\in\mathcal P}\frac1e
  =\sum_{e\in\mathcal N}\frac1e,
