@@ -1,0 +1,169 @@
+\section{Proof of the characterization}
+\label{sec:characterization-proof}
+
+\subsection{The squarefree-denominator characterization by prime dilution}
+
+\begin{lemma}[Squarefree denominator obstruction]
+\label{lem:squarefree-necessity}
+The reduced denominator of a finite sum of reciprocals of squarefree integers is squarefree.
+\end{lemma}
+
+\begin{proof}
+It divides the squarefree least common multiple of the summand denominators.
+\end{proof}
+
+\begin{proof}[Proof of \cref{thm:main} by prime dilution]
+Necessity is \cref{lem:squarefree-necessity}.  For sufficiency, write the positive rational in lowest terms as
+\[
+ q=\frac ab,
+\]
+with $b$ squarefree, and fix a finite forbidden set $\mathcal T$.  Choose a prime $p>a$ with $p\nmid b$, and put
+\[
+ t=\frac{a}{bp}.
+\]
+Because $\gcd(a,b)=1$, the inequality $p>a$ gives $p\nmid a$; hence $\gcd(a,bp)=1$.  Thus $t\in(0,1)$ is reduced and its denominator $bp$ is squarefree.  Choose any fixed exponent satisfying
+\[
+ \exp(\sqrt{2t})<\gamma<\exp(\sqrt2).
+\]
+
+Construct supports $A_1,\ldots,A_p$ successively.  At stage $j$, apply \cref{thm:avoiding-fixed-target} to $t$, forbidding the finite set
+\[
+ \mathcal T\cup A_1\cup\cdots\cup A_{j-1}.
+\]
+The supports are pairwise disjoint, each avoids $\mathcal T$, and each represents $t$.  Their union therefore represents
+\[
+ \sum_{j=1}^p t=pt=\frac ab=q.
+\]
+This argument treats reduced denominators $1$ and $2$ without a special case and preserves the full finite-avoidance quantifier.
+\end{proof}
+
+\subsection{Finite extension and disjoint realization}
+
+Let
+\[
+ \mathbb Q_{\mathrm{sf}}^+
+ =\{q\in\mathbb Q_{\geq0}:\text{the reduced denominator of $q$ is squarefree}\}.
+\]
+This set is closed under finite addition and subtraction when the result is nonnegative.
+
+\begin{theorem}[Finite prescription and avoidance]
+\label{thm:finite-extension}
+Let $q>0$ belong to $\mathbb Q_{\mathrm{sf}}^+$.  Let $S$ be a finite set of squarefree semiprimes and let $\mathcal T$ be finite.  Suppose $S\cap\mathcal T=\varnothing$ and $\sum_{s\in S}1/s\leq q$.  Then $S$ extends to a representation of $q$ by distinct squarefree semiprimes avoiding $\mathcal T$.
+\end{theorem}
+
+\begin{proof}
+Put
+\[
+ r=q-\sum_{s\in S}\frac1s\geq0.
+\]
+If $r=0$, the prescribed support $S$ already represents $q$.  If $r>0$, then $r\in\mathbb Q_{\mathrm{sf}}^+$; apply \cref{thm:main} to $r$, forbidding $S\cup\mathcal T$, and adjoin the resulting support to $S$.
+\end{proof}
+
+\begin{corollary}[Qualitative flexibility]
+\label{cor:qualitative-flexibility}
+Every positive $q\in\mathbb Q_{\mathrm{sf}}^+$ has representations above every prescribed denominator threshold, with arbitrarily many terms, and on infinitely many pairwise disjoint finite supports.
+\end{corollary}
+
+\begin{proof}
+For a prescribed threshold, apply \cref{thm:main} while forbidding the finitely many squarefree semiprimes below it.  To obtain arbitrarily many terms, fix $k$ and choose $k$ distinct squarefree semiprimes so large that the sum of their reciprocals is less than $q$; prescribe these terms and apply \cref{thm:finite-extension} to the positive residual.  Finally, construct infinitely many supports recursively, at each stage applying finite avoidance with the union of all earlier supports as the forbidden set.  The resulting finite supports are pairwise disjoint.
+\end{proof}
+
+\begin{theorem}[Row--column refinement in $\mathbb Q_{\mathrm{sf}}^+$]
+\label{thm:squarefree-row-column}
+If $x_1+\cdots+x_r=y_1+\cdots+y_s$ with all terms in $\mathbb Q_{\mathrm{sf}}^+$, then there are $z_{ij}\in\mathbb Q_{\mathrm{sf}}^+$ with row sums $x_i$ and column sums $y_j$.
+\end{theorem}
+
+\begin{proof}
+Choose one squarefree common denominator $L$.  The resulting nonnegative integer row and column sums admit a transportation matrix; divide its entries by $L$.
+\end{proof}
+
+\begin{corollary}[Disjoint realization of finite decompositions]
+\label{cor:disjoint-realization}
+Every finite decomposition of an admissible rational may be realized on pairwise disjoint squarefree-semiprime supports, avoiding any prescribed finite set.
+\end{corollary}
+
+\begin{proof}
+Apply \cref{thm:main} successively, enlarging the forbidden set by the previously chosen supports.
+\end{proof}
+
+\subsection{Local replacement and proper refinement}
+
+\begin{definition}
+Let $A$ and $C$ be finite squarefree-semiprime representations of the same rational.  We say that $C$ \emph{refines} $A$ if
+\[
+ C=\bigsqcup_{a\in A}C_a,
+ \qquad
+ \sum_{c\in C_a}\frac1c=\frac1a.
+\]
+We write $A\prec C$ when every block $C_a$ has at least two elements.  Refinement is transitive.
+\end{definition}
+
+\begin{lemma}[Local replacement]
+\label{lem:local-replacement}
+Let $A$ represent $q$, let $a\in A$, and let $C$ represent $1/a$, with
+\[
+ C\cap(A\setminus\{a\})=\varnothing.
+\]
+Then
+\[
+ A[a\leftarrow C]:=(A\setminus\{a\})\cup C
+\]
+represents $q$ and refines $A$.  If $a\notin C$, the block over $a$ is strict and has at least two terms.
+\end{lemma}
+
+\begin{proof}
+The reciprocal sum is unchanged because the deleted term $1/a$ is replaced by the equal sum over $C$.  The disjointness hypothesis makes the displayed union a set and supplies the refinement partition: $C$ is the block over $a$, while every unchanged term is its own singleton block.  If $a\notin C$, the block $C$ cannot be a singleton, since a singleton representation of $1/a$ is necessarily $\{a\}$.
+\end{proof}
+
+\begin{corollary}[Simultaneous proper replacement]
+\label{cor:simultaneous-proper-replacement}
+Let $A$ be a finite representation.  For every $a\in A$, choose a representation $C_a$ of $1/a$ such that the $C_a$ are pairwise disjoint and all avoid $A$.  Then
+\[
+ C=\bigsqcup_{a\in A}C_a
+\]
+satisfies $A\prec C$.
+\end{corollary}
+
+\begin{proof}
+The blocks $C_a$ give a refinement and are pairwise disjoint.  Since each avoids $a$, no $C_a$ is a singleton; hence every block is proper.
+\end{proof}
+
+\begin{theorem}[Common refinement]
+\label{thm:common-refinement}
+Any finite family of finite representations of the same admissible positive rational has a common refinement.  Given any finite forbidden set, it may be chosen disjoint from that set and from every original support, and it is proper over every original term.
+\end{theorem}
+
+\begin{proof}
+Consider first two representations $A=\{a_1,\ldots,a_r\}$ and $B=\{b_1,\ldots,b_s\}$.  Choose a squarefree common denominator $L$ for all numbers $1/a_i$ and $1/b_j$, and write
+\[
+ R_i=\frac{L}{a_i},
+ \qquad
+ C_j=\frac{L}{b_j}.
+\]
+These are nonnegative integers with $\sum_iR_i=\sum_jC_j$.  Choose a nonnegative integral transportation matrix $(c_{ij})$ with row sums $R_i$ and column sums $C_j$, and put $z_{ij}=c_{ij}/L$.  Every positive $z_{ij}$ belongs to $\mathbb Q_{\mathrm{sf}}^+$.  Realize all positive entries on pairwise disjoint squarefree-semiprime supports, successively avoiding the prescribed forbidden set and both original supports.  Grouping these supports by rows gives a refinement of $A$, while grouping them by columns gives the same support as a refinement of $B$.  Avoidance of the original denominators makes every original block proper.  Iterating the two-family construction gives a common proper refinement for any finite family.  The row--column theorem is essential: local replacement alone need not align two different decompositions.
+\end{proof}
+
+\begin{theorem}[Countably infinite proper refinement chain]
+\label{thm:infinite-refinement-chain}
+Let $A_0$ be any finite squarefree-semiprime representation.  There is a chain
+\[
+ A_0\prec A_1\prec A_2\prec\cdots
+\]
+such that the supports $A_n$ are pairwise disjoint.  More generally, if $(\mathcal T_n)_{n\geq1}$ is any prescribed sequence of finite sets, the chain may be chosen with $A_n\cap\mathcal T_n=\varnothing$ for every $n\geq1$.
+\end{theorem}
+
+\begin{proof}
+Assume $A_0,\ldots,A_n$ have been constructed.  The set
+\[
+ \mathcal U_n=\mathcal T_{n+1}\cup A_0\cup\cdots\cup A_n
+\]
+is finite.  Proceed through the finitely many $a\in A_n$.  For each $a$, apply \cref{thm:main} to $1/a$, forbidding $\mathcal U_n$ together with every support already chosen for the next level; call the resulting support $C_a$.  The $C_a$ are pairwise disjoint and all avoid $A_n$, so \cref{cor:simultaneous-proper-replacement} gives
+\[
+ A_n\prec A_{n+1},
+ \qquad
+ A_{n+1}=\bigsqcup_{a\in A_n}C_a.
+\]
+The new support is disjoint from every earlier level and from $\mathcal T_{n+1}$.  Ordinary recursion on the nonnegative integers completes the construction.
+\end{proof}
+
+The characterization is now complete, together with the qualitative extension and refinement mechanisms.  The final quantitative section returns to the fixed direct family and records the accepted compact-window saturation theorem before deriving its multiplicity consequences.
