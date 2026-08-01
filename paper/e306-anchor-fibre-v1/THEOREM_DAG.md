@@ -4,13 +4,35 @@
 
 The article displays both the causal architecture of the concrete E306 proof and the reusable structures exposed by that architecture. Generality is introduced where it controls the proof and is not inflated beyond the work performed by the arithmetic providers.
 
+## Standing native fixed-ratio data
+
+```text
+fixed reduced target t=a/b in (0,1), b squarefree
+fixed eta in (0,1)
+fixed gamma>1
+Z=X^gamma
+B={q prime: eta Z<=q<Z}
+t < (log gamma)^2/2 < 1.
+```
+
+The fixed-ratio moments are
+
+```text
+|B|=(1-eta+o_eta(1)) Z/log Z,
+V_B=sum_(q in B)1/q=(log(1/eta)+o_eta(1))/log Z,
+W_B=sum_(q in B)1/q^2=(eta^(-1)-1+o_eta(1))/(Z log Z).
+```
+
+The proof is uniform for `eta` in compact subsets of `(0,1)`.  The endpoint `eta=eta(X)->1` is not part of the DAG.
+
 ## Four-layer analytic architecture
 
 ### Layer I — arithmetic capacity, centring and total variance
 
 ```text
-fixed reduced target t=a/b and fixed gamma>1
+fixed t, gamma and eta
  -> fixed-ratio prime supply with Z=X^gamma
+ -> native anchor moments on [eta Z,Z)
  -> exact complete-pair load and square load
  -> target rows indexed by S_b and corrected tau(b)
  -> exact Bernoulli centring theta Lambda=t
@@ -18,30 +40,28 @@ fixed reduced target t=a/b and fixed gamma>1
  -> exact finite Fourier coefficient.
 ```
 
-Purpose: construct a denominator system with enough reciprocal mass, a squarefree CRT period, controlled total variance, target sensitivity and no-wrap room throughout the sharp region
-
-```text
-t < (log gamma)^2/2 < 1.
-```
-
 The total variance is
 
 ```text
 sigma_E^2
  ~ alpha_(t,gamma)(1-alpha_(t,gamma))
-   {1/(2X^2 log^2 X) + tau(b)/(Z log Z)}.
+   {1/(2X^2 log^2 X)
+    +(eta^(-1)-1)tau(b)/(Z log Z)}.
 ```
 
-Its leading provider changes at `gamma=2`, but both contributions remain in the primary statement.
+Its leading provider changes at `gamma=2`, but both contributions remain in the primary statement. The coefficient `1/2` is the exact unordered-pair identity and is unrelated to the former dyadic endpoint.
 
 ### Layer II — synchronization and information recovery
 
 ```text
-anchor-block reciprocal rigidity
- -> coherent integer label or energetic anchor assignment
+fixed-ratio reciprocal dispersion on [delta Y,Y)
+ -> nondominant forcing with delta-dependent constants
+ -> exact anchor rigidity
+ -> fingerprint entropy
  -> weighted anchor partition
 
 multiplicity-sensitive cyclic energy
+ + exact interval multiplicity 1+(1-eta)Z/r
  -> lower-prime row distance
 
 target-row distance on S_b
@@ -56,10 +76,10 @@ row distances + shift-uniform tails
 Here
 
 ```text
-T_0=kappa_0 min(X^2,Z).
+T_0=kappa_0(t,gamma,eta,b) min(X^2,Z).
 ```
 
-Purpose: recover one low-dimensional global integer label from a high-dimensional CRT assignment while retaining every target direction needed by the major and total-variance Gaussian ranges. Larger transition and adaptive ranges use prime coordinates only.
+All `P`-coordinates are identified through `M_dec`; target coordinates are identified through `T_0`. Larger transition and adaptive ranges use prime coordinates only.
 
 ### Layer III — weighted fibre compression
 
@@ -83,7 +103,7 @@ Purpose: compress the product fibre without multiplying by raw anchor cardinalit
 
 ### Layer IV — universal six-sector elimination
 
-With `N=floor(C/sigma_E)`, every fixed `gamma>1` uses one pairwise-disjoint exhaustive partition:
+With `N=floor(C/sigma_E)`, every fixed `gamma>1` and fixed `eta in (0,1)` use one pairwise-disjoint exhaustive partition:
 
 ```text
 I    |m| <= N
@@ -96,7 +116,7 @@ III  T_0 < |m| <= X^2/4
      -> prime-only complete-pair Gaussian transition
 
 IV   X^2/4 < |m| <= M_dec
-     -> adaptive retained-pair damping
+     -> adaptive retained-pair damping on an interval contained in [X,eta Z)
 
 V    |m| > M_dec
      -> internal anchor energy
@@ -115,17 +135,25 @@ strict C -> X six-sector budget
  -> squarefree-denominator characterization by prime dilution.
 ```
 
+The cutoff `X^2/4` is a small-phase convenience and not anchor-ratio data.
+
 ## Formal analytic DAG
 
 ```text
-PNT  fixed-ratio prime supply
+PNT fixed-ratio prime supply
  |\
- | -> A1 exact complete-pair load and square load
- |       \
- |        -> A3 total load and no-wrap capacity
+ | -> A0 native anchor moments M_B,V_B,W_B
+ |       |\
+ |       | -> A2 target-row load and eta-dependent square load over S_b
+ |       |       \
+ |       |        -> A3 total load, exact centring and no-wrap capacity
+ |       |
+ |       -> E1 fixed-ratio reciprocal dispersion and anchor rigidity
+ |               -> E2 fingerprint entropy and weighted anchor partition
  |
- | -> A2 target-row load and square load over S_b
-          -> A3
+ -> A1 exact complete-pair load and square load
+          \
+           -> A3
 
 A1 + A2 + exact centring
  -> V1 total actual-family variance
@@ -134,10 +162,8 @@ A1 + A2 + exact centring
 G1 complete-family collision theorem
  -> A1 exact pair identities
 
-E1 anchor-block rigidity
- -> E2 weighted anchor partition
-
 C1 multiplicity-sensitive cyclic energy
+ + native interval multiplicity
  -> E3 lower-prime row distance
 
 E4 target-row distance on S_b
@@ -162,15 +188,13 @@ F1 + E2--E9
  -> no-wrap direct fixed-target equality.
 ```
 
-`S1` remains the specialized positivity node so that `P1` remains available for the established weighted anchor-partition notation.
-
 ## Exactness and characterization branch
 
 ```text
 positive quotient coefficient
  -> quotient realization
  -> deterministic no-wrap
- -> avoiding fixed-target theorem for reduced t=a/b in (0,1)
+ -> avoiding fixed-target theorem for every fixed eta in (0,1)
 
 squarefree least-common-multiple obstruction
  + direct fixed-target theorem
@@ -205,17 +229,16 @@ simultaneous disjoint replacement of every block
  -> countably infinite pairwise-disjoint proper refinement chain.
 ```
 
-The row--column theorem is essential for aligning different decompositions. Local replacement alone does not supply a common refinement or global properness.
-
 ## Quantitative branch
 
 ```text
 retained exact target coefficient
- + total actual-family variance
+ + native fixed-ratio total variance
  + universal six-sector budget
  -> quantitative coefficient lower bound
  -> sharp fixed-target asymptotic
- -> explicit gamma>2 and 1<gamma<=2 coefficient forms
+ -> explicit gamma>2 and 1<gamma<=2 coefficient forms,
+    the latter containing (eta^(-1)-1)tau(b)
  -> exponential multiplicity
  -> entropy-optimal mesoscopic cardinality window
  -> exact entropy optimization over fixed admissible gamma
@@ -227,55 +250,24 @@ retained exact target coefficient
  -> global transfer with leading exponent 2 log 2.
 ```
 
-Balanced signed relations are obtained by subtracting two equal-cardinality separated representations. Their controlled non-minimality disclaimer remains part of the mathematical boundary.
-
-## Article order controlled by the DAG
-
-1. Introduction.
-2. Finite Fourier selection and exactness.
-3. Structural tools.
-4. The parameterized semiprime denominator system.
-5. The anchor block.
-6. Fibre decoding and target observability.
-7. The decoded skeleton and its universal minor ranges.
-8. The major contribution and terminal budget.
-9. Exact representation, extension and refinement.
-10. Quantitative multiplicity, optimization and transfer.
-11. Discussion and conclusion.
-
-## Non-negotiable range structure
-
-The decoder and skeleton bridge is
-
-```text
-major:                 |m| <= N=floor(C/sigma_E)
-total-variance tail:   N < |m| <= T_0
-prime transition:      T_0 < |m| <= X^2/4
-adaptive:              X^2/4 < |m| <= M_dec
-large coherent:        |m| > M_dec
-terminal error:         noncoherent decoded or nondecoder.
-```
-
-- all `P`-coordinates are identified through `M_dec`: the `B`-coordinates are fixed by the coherent anchor label and the `P\B` coordinates are supplied by row decoding;
-- target coordinates indexed by `S_b` are identified through `T_0`;
-- the transition and adaptive sectors use only prime coordinates;
-- adaptive damping uses retained lower--lower factors;
-- no-wrap is applied only after quotient positivity.
+The diversity exponents use `zeta` notation; `eta` is reserved globally for the anchor ratio.
 
 ## Protected proof statements
 
 The manuscript retains explicitly:
 
-- fixed reduced targets and fixed `gamma>1` quantifiers;
-- `Z=X^gamma` and the sharp admissible region;
+- fixed reduced targets, fixed `gamma>1` and fixed `eta in (0,1)` quantifiers;
+- `Z=X^gamma`, the sharp admissible region and native `B=[eta Z,Z)`;
 - prime-divisor indexing by `S_b` and corrected `tau(b)`;
-- the complete-pair load with its factor `1/2`;
+- the complete-pair load with its structural factor `1/2`;
+- the native fixed-ratio prime count, reciprocal mass and inverse-square mass;
 - the total variance and all three explicit regimes;
-- `s>=16` in the reciprocal-rigidity input and the zero-exception conclusion;
+- reciprocal dispersion with an `eta`-dependent finite threshold and the zero-exception conclusion;
 - the multiplicity-sensitive cyclic-energy provider;
 - the unnormalized global fibre error;
 - the exact denominator-factor partition;
 - prime-coordinate decoding through `M_dec` and target-coordinate decoding through `T_0`;
+- adaptive retained-prime intervals below `eta Z`;
 - the universal six-sector partition;
 - the aggregate Taylor remainder and parameter order `C -> X`;
 - the strict no-wrap interval and direct fixed-target exactness;
@@ -285,16 +277,14 @@ The manuscript retains explicitly:
 - transportation-based common refinement;
 - sharp coefficient, entropy, diversity, height, proper-refinement branching and global transfer.
 
-## Historical dependency boundary
-
-The fixed-`Z=X^3`, five-sector, avoiding-unit and numerator-induction chain belongs to the historical candidate `79a43178bdc4919677375362ef58b9c127da18b0`. It is not the live dependency graph. The former 44-page technical publication gate at that exact head is nontransferable.
-
 ## Excluded distortions
 
 The article must not:
 
-- present the terminal triangle-inequality budget as deeper than its providers;
-- hide weighted normalization inside prose;
+- reintroduce an append-only fixed-ratio proposition or normalize the proof at `eta=1/2`;
+- conflate the native fixed-ratio theorem with a shrinking-width/thin-anchor result;
+- import reciprocal-flow machinery into the present proof;
+- alter the structural unordered-pair coefficient `1/2`;
 - normalize by decoder weights when zero weights are possible;
 - demand target-coordinate identification beyond `T_0`;
 - discard retained factors during fibre compression;
@@ -302,10 +292,8 @@ The article must not:
 - split the live proof into separate five- and six-sector architectures;
 - restore avoiding-unit, numerator-induction or special-denominator closure as the current route;
 - conflate local replacement with global properness;
-- demote the difficult E306 providers to a nominal corollary;
-- infer a universal restricted-denominator theorem from the present application;
-- overstate the balanced signed relations as minimal or as resolving neighbouring gap problems.
+- infer a universal restricted-denominator theorem from the present application.
 
-## Current control
+## Audit boundary
 
-The historical parameterized manuscript baseline is `544d42d510bcab3ad0ddd7855525770e0d4b0926`. The recovered holistic source was integrated at checkpoint `c2dfc5120eec017718ef07cbe43f9c151803769c`; its exact-head manuscript and Lean workflows, runs `30608129577` and `30608129625`, both succeeded, and the manuscript artifact has 42 pages. The comparative audit at `#issuecomment-5141204793` retained this architecture and found no mathematical repair, returning `[BOUNDED-RESTORATION E306-MANUSCRIPT-COMPARATIVE-VALUE-ARCHITECTURE-AUDIT-02]`. The bounded BR-01--BR-03 repair successor is recorded in issue `#8`, draft PR `#9`, and the latest durable return. It requires a narrow independent exact-diff re-check before readiness, is not refrozen, and inherits no earlier publication gate.
+The native reparameterization is PC-005 in `PROOF_CHANGE_LEDGER.md`. It is a writer result and requires a separate independent whole-article mathematical and naturalness audit. PR `#9` remains open, draft and unmerged; no refreeze, readiness, merge, tag, release, DOI, licence, arXiv or journal action is authorized.
