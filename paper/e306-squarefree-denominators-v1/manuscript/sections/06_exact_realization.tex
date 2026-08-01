@@ -1,0 +1,56 @@
+\section{Exact realization and prime dilution}
+\label{sec:exact-realization}
+
+We now pass from the positive finite Fourier coefficient to an exact rational identity and complete the characterization.
+
+\begin{theorem}[Avoiding fixed target]
+\label{thm:avoiding-fixed-target}
+Let $t=a/b\in(0,1)$ be reduced with squarefree $b$, let $\eta\in(0,1)$ be fixed, let $\gamma$ satisfy \cref{eq:admissible-region}, and let $\mathcal T$ be finite. For every sufficiently large $X$, there is a subset $A\subseteq\mathcal E_X$, disjoint from $\mathcal T$, such that
+\[
+ \sum_{e\in A}\frac1e=t.
+\]
+\end{theorem}
+\begin{proof}
+Let $W$ be the Bernoulli weight of subsets $A\subseteq\mathcal E$ satisfying
+\[
+ \sum_{e\in A}\frac{L}{e}\equiv\frac{aL}{b}\pmod L.
+\]
+By \cref{eq:reciprocal-fourier,thm:positive-fourier-numerator},
+\[
+ LW=\sum_{h\bmod L}F(h)
+\]
+has positive real part. The left side is real and nonnegative, so $W>0$. Hence some subset satisfies the target congruence. Dividing by $L$, its reciprocal sum differs from $t$ by an integer.
+
+By \cref{eq:exact-centering-load},
+\[
+ 0\leq\sum_{e\in A}\frac1e\leq\Lambda<1,
+ \qquad 0<t<1.
+\]
+The integer difference lies strictly between $-1$ and $1$ and is therefore zero. The denominators are distinct squarefree semiprimes and avoid $\mathcal T$ by \cref{prop:arithmetic-capacity}.
+\end{proof}
+
+The no-wrap step is logically last: positivity first produces a quotient target, and the interval of length less than one then gives exact equality.
+
+\begin{lemma}[Squarefree denominator obstruction]
+\label{lem:squarefree-necessity}
+The reduced denominator of a finite sum of reciprocals of squarefree integers is squarefree.
+\end{lemma}
+\begin{proof}
+It divides the squarefree least common multiple of the summand denominators.
+\end{proof}
+
+\begin{proof}[Proof of \cref{thm:main}]
+Necessity is \cref{lem:squarefree-necessity}. For sufficiency, write the positive rational in lowest terms as $q=a/b$, with $b$ squarefree, and fix a finite forbidden set $\mathcal T$. Choose a prime $p>a$ with $p\nmid b$, and put
+\[
+ t=\frac{a}{bp}.
+\]
+Then $t\in(0,1)$ is reduced and its denominator $bp$ is squarefree. Choose fixed $\eta\in(0,1)$ and any fixed $\gamma$ satisfying
+\[
+ \exp(\sqrt{2t})<\gamma<\exp(\sqrt2).
+\]
+Construct supports $A_1,\ldots,A_p$ successively. At stage $j$, apply \cref{thm:avoiding-fixed-target} to $t$, forbidding
+\[
+ \mathcal T\cup A_1\cup\cdots\cup A_{j-1}.
+\]
+The supports are pairwise disjoint, each avoids $\mathcal T$, and each represents $t$. Their union represents $pt=a/b=q$. This argument includes reduced denominators $1$ and $2$ without a special construction and preserves the full finite-avoidance quantifier.
+\end{proof}
