@@ -91,7 +91,7 @@ put $I_m=[2\sqrt{|m|},3\sqrt{|m|}]$.
 
 \begin{proposition}[Adaptive prime interval]
 \label{prop:adaptive-prime-interval}
-For every such $m$, the interval $I_m$ lies in $[X,Z/2)$ and contains
+For every such $m$, the interval $I_m$ lies in $[X,\eta Z)$ for all sufficiently large $X$ and contains
 \[
  K_m\gg\frac{\sqrt{|m|}}{\log|m|}
 \]
@@ -105,9 +105,11 @@ primes.  On the decoded skeleton, the retained complete-pair energy satisfies
 \begin{proof}
 The lower inclusion follows from $2\sqrt{|m|}>X$.  At the upper endpoint,
 \[
- 3\sqrt{|m|}\leq\frac{3\sqrt{XZ}}{\log Z}<Z/2
+ 3\sqrt{|m|}
+ \leq\frac{3\sqrt{XZ}}{\log Z}
+ =o_\eta(Z)<\eta Z
 \]
-for every fixed $\gamma>1$ and large $X$.  Here $y=\sqrt{|m|}\geq X/2\to\infty$ throughout the relevant range, so the fixed-ratio prime-supply estimate applies uniformly and gives the count.  For distinct $p,q\in I_m$, one has $1/9\leq|m|/(pq)\leq1/4$, so each retained pair contributes a fixed positive amount of energy; summing over the pairs proves \cref{eq:adaptive-energy}.
+for every fixed $(\gamma,\eta)$ with $\gamma>1$ and $\eta\in(0,1)$.  Hence every prime in $I_m$ lies in $P\setminus B$, so every pair formed inside $I_m$ is retained on the decoded skeleton.  Here $y=\sqrt{|m|}\geq X/2\to\infty$ throughout the relevant range, so the fixed-ratio prime-supply estimate applies uniformly and gives the count.  For distinct $p,q\in I_m$, one has $1/9\leq|m|/(pq)\leq1/4$, so each retained pair contributes a fixed positive amount of energy; summing over the pairs proves \cref{eq:adaptive-energy}.
 \end{proof}
 
 Consequently,
@@ -165,7 +167,7 @@ VI & noncoherent decoded tuple, or any nondecoder tuple & anchor entropy and fib
 
 \begin{proposition}[Universal six-sector exhaustion]
 \label{prop:six-sector-exhaustion}
-For every fixed $\gamma>1$, the six displayed sectors are pairwise disjoint and exhaustive over all frequencies modulo $L$.
+For every fixed $\gamma>1$ and $\eta\in(0,1)$, the six displayed sectors are pairwise disjoint and exhaustive over all frequencies modulo $L$.
 \end{proposition}
 
 \begin{proof}
@@ -180,13 +182,15 @@ For $|m|>M_{\mathrm{dec}}$, the internal anchor factor and \cref{eq:top-exact-en
 \]
 Apply \cref{lem:tail-summation}(i) with $B=\sigma_{B,0}^{-1}$ and $A=M_{\mathrm{dec}}$.  Since
 \[
- M_{\mathrm{dec}}\sigma_{B,0}\asymp\frac{X}{\log^3Z}\longrightarrow\infty,
+ M_{\mathrm{dec}}\sigma_{B,0}
+ \asymp_\eta\frac{X}{\log^3Z}\longrightarrow\infty,
 \]
 we obtain
 \begin{align}
  \sum_{|m|>M_{\mathrm{dec}}}|F(h_m)|
- &\ll\sigma_{B,0}^{-1}\exp(-cM_{\mathrm{dec}}^2\sigma_{B,0}^2)\notag\\
- &\ll Z\log Z\exp\left(-c'\frac{X^2}{\log^6Z}\right)
+ &\ll_\eta\sigma_{B,0}^{-1}
+ \exp(-c_\eta M_{\mathrm{dec}}^2\sigma_{B,0}^2)\notag\\
+ &\ll_\eta Z\log Z\exp\left(-c'_\eta\frac{X^2}{\log^6Z}\right)
  =o(1)=o(\sigma_{\mathcal E}^{-1}).
  \label{eq:anchor-tail-total}
 \end{align}
@@ -195,6 +199,7 @@ Finally, \cref{eq:noncoherent-top-tail,eq:global-fibre-error} give
 \begin{equation}
 \label{eq:terminal-error-total}
  \sum_{\mathrm{terminal}}|F|
- \ll\exp(-cF_B)+P_{\mathrm{anc}}(\exp(\Delta)-1)
+ \ll_\eta\exp(-c_\eta F_B)
+   +P_{\mathrm{anc}}(\exp(\Delta)-1)
  =o(1)=o(\sigma_{\mathcal E}^{-1}).
 \end{equation}
