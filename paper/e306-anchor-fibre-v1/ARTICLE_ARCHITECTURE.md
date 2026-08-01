@@ -2,7 +2,7 @@
 
 ## Status
 
-`M7 / RECOVERED SOURCE INTEGRATED / COMPARATIVE AUDIT BOUNDED RESTORATION / BR-01--BR-03 REPAIR / OWNER HOLD`
+`M7 / NATIVE FIXED-RATIO WHOLE-ARTICLE REPARAMETERIZATION WRITER SUCCESSOR / INDEPENDENT AUDIT PENDING / OWNER HOLD`
 
 This document records the maintained architecture of the article. The exact current branch head is recorded in controlling issue `#8`, draft PR `#9`, and the latest durable return; no commit attempts to contain its own hash.
 
@@ -12,27 +12,38 @@ Title:
 
 **Reciprocal Sums of Distinct Squarefree Semiprimes**
 
-The article has no subtitle. Its headline result is the squarefree-denominator characterization with finite avoidance:
+The article has no subtitle. Its headline result remains unchanged:
 
 > A positive rational number is a finite sum of reciprocals of distinct integers, each the product of two distinct primes, if and only if its reduced denominator is squarefree; moreover, every prescribed finite set of denominators may be avoided.
 
-The theorem was first obtained in the author's archived Lean 4 formalization, release `0.0.3`. The present article grew out of that formal work and refines the same Fourier-analytic lineage into a substantially simpler one-anchor proof for ordinary mathematical reading. The archived code does not formalize the present exposition line by line.
+The theorem was first obtained in the author's archived Lean 4 formalization, release `0.0.3`. The present article grew out of that formal work and refines the same Fourier-analytic lineage into a one-anchor proof for ordinary mathematical reading. The archived code does not formalize the present exposition line by line.
 
 ## Current mathematical package
 
-The verified manuscript fixes a reduced target
+The direct article fixes
 
 ```text
 t=a/b in (0,1), with b squarefree,
-```
-
-a fixed exponent `gamma>1`, and
-
-```text
+eta in (0,1),
+gamma>1,
 Z=X^gamma,
 lambda_gamma=(log gamma)^2/2,
 t<lambda_gamma<1,
 alpha_(t,gamma)=2t/(log gamma)^2.
+```
+
+The native anchor block is
+
+```text
+B={q prime: eta Z<=q<Z}.
+```
+
+The fixed-ratio prime moments are
+
+```text
+|B|=(1-eta+o_eta(1)) Z/log Z,
+sum_(q in B)1/q=(log(1/eta)+o_eta(1))/log Z,
+sum_(q in B)1/q^2=(eta^(-1)-1+o_eta(1))/(Z log Z).
 ```
 
 Target rows are indexed by the prime-divisor set `S_b`, and
@@ -46,7 +57,8 @@ The total actual-family variance is
 ```text
 sigma_E^2
  ~ alpha_(t,gamma)(1-alpha_(t,gamma))
-   {1/(2X^2 log^2 X) + tau(b)/(Z log Z)}.
+   {1/(2X^2 log^2 X)
+    +(eta^(-1)-1)tau(b)/(Z log Z)}.
 ```
 
 The leading variance provider changes at `gamma=2`, but the proof architecture does not. With
@@ -55,13 +67,11 @@ The leading variance provider changes at `gamma=2`, but the proof architecture d
 T_0=kappa_0 min(X^2,Z),
 ```
 
-one pairwise-disjoint exhaustive six-sector partition applies for every fixed `gamma>1`. The lower-prime row distance is supplied explicitly by the multiplicity-sensitive cyclic-energy lemma.
+one pairwise-disjoint exhaustive six-sector partition applies for every fixed `gamma>1` and fixed `eta in (0,1)`. The lower-prime row distance is supplied explicitly by the multiplicity-sensitive cyclic-energy lemma. The adaptive retained-prime interval lies below `eta Z` for all sufficiently large `X`.
 
-The analytic branch proves direct fixed-target exactness. The full squarefree-denominator characterization then follows by prime dilution, not by an avoiding-unit theorem, numerator induction, or separate treatment of reduced denominators `1` and `2`.
+All fixed-ratio constants may depend on the fixed `eta`; the argument is uniform when `eta` ranges in a compact subset of `(0,1)`. A varying ratio `eta=eta(X)->1`, shrinking terminal width, thin-anchor exponent theorem and reciprocal-flow machinery are not part of this article.
 
-The elementary post-analytic branch includes zero-residual finite prescription, disjoint realization, common refinement, and countably infinite proper refinement. It distinguishes local one-block replacement, which need not be globally proper, from simultaneous replacement of every block, which is globally proper.
-
-The quantitative branch includes the sharp total-variance coefficient, its explicit regime corollaries, entropy optimization, exact-cardinality extraction, macroscopic diversity, balanced signed relations, denominator-height bounds, globally proper refinement branching, and global transfer with leading rate `2 log 2`.
+The analytic branch proves direct fixed-target exactness. The full squarefree-denominator characterization then follows by prime dilution. The elementary post-analytic branch includes zero-residual finite prescription, disjoint realization, common refinement and countably infinite proper refinement. The quantitative branch includes the sharp total-variance coefficient, explicit regime corollaries with the native target-row constant, entropy optimization, exact-cardinality extraction, diversity, balanced relations, height bounds, globally proper refinement branching and global transfer with leading rate `2 log 2`.
 
 ## Governing order
 
@@ -69,11 +79,12 @@ The article follows the causal cycle
 
 ```text
 squarefree-denominator problem and fixed reduced target
+ -> native fixed-ratio anchor data eta
  -> finite Fourier selection
  -> general structural tools
  -> parameterized squarefree-semiprime denominator system
- -> exact pair and target-row loads, centring and total variance
- -> anchor-block synchronization and weighted partition
+ -> exact pair and eta-dependent target-row loads, centring and total variance
+ -> fixed-ratio anchor synchronization and weighted partition
  -> cyclic-energy row separation, fibre decoding and target observability
  -> retained decoded skeleton and universal six-sector elimination
  -> positive total-variance major and strict terminal budget
@@ -84,137 +95,58 @@ squarefree-denominator problem and fixed reduced target
  -> discussion and conclusion.
 ```
 
-Generality appears where it controls the proof. No provider layer is omitted from the maintained architecture.
+The structural factor `1/2` in the complete-pair identity, the centred CRT half-interval, the `X^2/4` small-phase cutoff and the entropy threshold at `1/2` are unrelated to the former dyadic anchor endpoint and remain unchanged.
 
-## Normalized manuscript source tree
+## Manuscript source architecture
+
+`main.tex` inputs eleven Architecture-E wrappers:
 
 ```text
-manuscript/
-├── BUILD.md
-├── Makefile
-├── main.tex
-├── references.bib
-└── sections/
-    ├── 01_introduction.tex
-    ├── 02_fourier_selection.tex
-    ├── 03_structural_tools.tex
-    ├── 04_denominator_system.tex
-    ├── 05_anchor_block.tex
-    ├── 06_fibre_decoding.tex
-    ├── 07_decoded_skeleton.tex
-    ├── 08_major_budget.tex
-    ├── 09_exact_completion.tex
-    ├── 10_quantitative_multiplicity.tex
-    └── 11_discussion_conclusion.tex
+sections/arch_e_01_introduction.tex
+sections/arch_e_02_composition_interface.tex
+sections/arch_e_03_reciprocal_system.tex
+sections/arch_e_04_one_anchor.tex
+sections/arch_e_05_rows_fibres.tex
+sections/arch_e_06_decoded_tail.tex
+sections/arch_e_07_actual_well.tex
+sections/arch_e_08_positive_realization.tex
+sections/arch_e_09_characterization.tex
+sections/arch_e_10_saturation_quantitative.tex
+sections/arch_e_11_scope.tex
 ```
 
-`main.tex` inputs these eleven files once each and in this order. Bibliography processing uses `biblatex` with Biber.
+The wrappers transport the following provider files:
+
+```text
+01_introduction.tex
+02_fourier_selection.tex
+03_structural_tools.tex
+04_denominator_system.tex
+05_anchor_block.tex
+06_fibre_decoding.tex
+07_decoded_skeleton.tex
+08_major_budget.tex
+09_exact_completion.tex
+10_quantitative_multiplicity_part1.tex
+10_quantitative_multiplicity_part2.tex
+11_discussion_conclusion.tex
+```
+
+The rejected append-only file `04a_fixed_ratio_anchor.tex` is absent. Bibliography processing uses `biblatex` with Biber.
 
 ## Eleven-section plan
 
-### 1. Introduction
-
-- headline characterization and finite avoidance;
-- fixed-target and fixed-exponent analytic theorem;
-- total-variance and universal six-sector architecture;
-- historical and literature context;
-- external input, terminology, parameter order and roadmap.
-
-### 2. Finite Fourier selection and exactness
-
-- character orthogonality;
-- reciprocal subset sums;
-- quotient realization versus ambient equality;
-- injective-support, fundamental-domain and measurable-alias interfaces;
-- Chinese-remainder coordinates.
-
-E306 uses deterministic no-wrap only after positivity.
-
-### 3. Structural tools
-
-- complete-family collision theorem;
-- exact weighted product-fibre compression;
-- finite-group syndrome separation;
-- decoded-skeleton positivity.
-
-The unnormalized compression statement retains zero weights, empty coordinate sets, nonunique decoders and complex residual factors.
-
-### 4. The parameterized semiprime denominator system
-
-- fixed reduced target `t=a/b`, squarefree `b`, fixed `gamma>1`, and `Z=X^gamma`;
-- prime supply, complete pair family and target rows indexed by `S_b`;
-- reciprocal load, exact Bernoulli centring and admissible region;
-- complete pair and target-row square loads;
-- one total actual-family variance and its three explicit regime corollaries;
-- exact partition of every Fourier factor into anchor, row or retained-skeleton roles.
-
-### 5. The anchor block
-
-- reciprocal prime code;
-- low energy forces one exact integer label;
-- fingerprint counting above the forcing floor;
-- application to the anchor block;
-- weighted anchor partition and noncoherent tail.
-
-### 6. Fibre decoding and target observability
-
-- multiplicity-sensitive cyclic energy;
-- uniform lower-prime row distance;
-- target-row distance and observability;
-- shift-uniform row tails and exact weighted fibre compression;
-- prime-coordinate identification through `M_dec`;
-- target-coordinate identification through `T_0=kappa_0 min(X^2,Z)`.
-
-All prime coordinates are identified through `M_dec`: coordinates in the anchor block are fixed by the coherent anchor label and the remaining prime coordinates are supplied by row decoding. Target coordinates indexed by `S_b` are identified through `T_0`; larger transition and adaptive ranges use only prime coordinates.
-
-### 7. The decoded skeleton and its universal minor ranges
-
-- prime-only Gaussian transition from `T_0` to `X^2/4`;
-- adaptive retained-pair damping from `X^2/4` to `M_dec`;
-- one pairwise-disjoint exhaustive six-sector partition for every fixed `gamma>1`;
-- separate accounting for noncoherent anchor assignments and nondecoder fibres.
-
-Every factor not assigned to a row remains visible on the decoded skeleton.
-
-### 8. The major contribution and terminal budget
-
-- uniform local expansion;
-- positive real major contribution;
-- total-variance Gaussian tail;
-- aggregate Taylor remainder;
-- strict six-sector assembly in the order `C -> X`.
-
-Complex major positivity remains distinct from absolute minor estimates.
-
-### 9. Exact representation, extension and refinement
-
-- positive quotient coefficient and deterministic no-wrap;
-- direct avoiding fixed-target representation;
-- squarefree-denominator obstruction and prime-dilution characterization;
-- zero-residual finite prescription;
-- disjoint realization of finite decompositions;
-- local replacement versus simultaneous globally proper replacement;
-- common refinements and countably infinite proper refinement chains.
-
-### 10. Quantitative multiplicity, optimization and transfer
-
-1. total-variance fixed-target coefficient and explicit regime corollaries;
-2. entropy-optimal cardinality concentration;
-3. exact-cardinality extraction, macroscopic diversity and balanced relations;
-4. entropy optimization over admissible fixed `gamma`;
-5. denominator-height conversion;
-6. quantitative globally proper refinement branching;
-7. global transfer to every admissible rational with leading rate `2 log 2`.
-
-The balanced signed reciprocal relations are the additive consequence of the equal-cardinality macroscopically separated family. Their non-minimality disclaimer remains part of the controlled statement.
-
-### 11. Discussion and conclusion
-
-- what the proof preserves;
-- bounded open directions;
-- conclusion.
-
-This section states the scope of the proved mechanisms without asserting a general black-box representation theorem.
+1. **Introduction and main results:** headline characterization; fixed target, fixed exponent and native fixed anchor ratio; total variance; six-sector architecture; coefficient and quantitative consequences.
+2. **Composition interface:** finite Fourier semantics; admissible observation/compression provider; exact realization interfaces.
+3. **Reciprocal-semiprime system:** prime supply; complete pair family; native anchor block; target rows; load, modulus, exact centring and total variance; exact factor partition.
+4. **One anchor and rigidity:** fixed-ratio reciprocal code on `[delta Y,Y)`; low-energy exact label; fingerprint entropy; weighted anchor partition.
+5. **Rows, observability and fibres:** multiplicity-sensitive cyclic energy; lower-prime and target-row distance; unnormalized weighted fibre compression; prime and target coordinate identification.
+6. **Decoded tail:** prime-only transition; adaptive retained pairs below `eta Z`; pairwise-disjoint exhaustive six sectors; coherent and terminal tails.
+7. **Actual local well:** Taylor expansion; exact phase cancellation; total-variance Gaussian major; strict budget in the order `C -> X`.
+8. **Positive coefficient and realization:** quotient positivity; rational congruence; deterministic no-wrap.
+9. **Characterization and refinement:** prime dilution; finite prescription; disjoint realization; transportation; local versus globally proper replacement; infinite chains.
+10. **Compact saturation and quantitative consequences:** sharp fixed-target coefficient with native target-row constant; compact moving targets on one fixed family; entropy, diversity, height and transfer.
+11. **Scope and boundaries:** fixed `eta`; compact-uniform dependence; explicit exclusion of shrinking-width/thin-anchor and reciprocal-flow extensions.
 
 ## Theorem and dependency hierarchy
 
@@ -229,12 +161,12 @@ This section states the scope of the proved mechanisms without asserting a gener
 ### E306 analytic providers
 
 - `A1` fixed-ratio prime supply and exact complete-pair identities;
-- `A2` target-row loads indexed by `S_b`, Bernoulli centring and total variance;
-- `A3` anchor-block rigidity and weighted partition;
+- `A2` native anchor moments, target-row loads indexed by `S_b`, Bernoulli centring and total variance;
+- `A3` fixed-ratio anchor-block rigidity and weighted partition;
 - `A4` multiplicity-sensitive cyclic energy and lower-prime row distance;
 - `A5` target-row distance and observability;
 - `A6` prime-coordinate identification through `M_dec` and target-coordinate identification through `T_0`;
-- `A7` prime-only transition and adaptive retained-pair damping;
+- `A7` prime-only transition and adaptive retained-pair damping below `eta Z`;
 - `A8` total-variance Taylor major;
 - `A9` universal exhaustive six-sector strict budget.
 
@@ -250,7 +182,7 @@ This section states the scope of the proved mechanisms without asserting a gener
 ### Quantitative branch
 
 - `Q1` quantitative coefficient lower bound;
-- `Q2` sharp total-variance fixed-target coefficient and explicit regime forms;
+- `Q2` sharp fixed-target coefficient with total native fixed-ratio variance;
 - `Q3` exponential multiplicity;
 - `Q4` entropy-optimal mesoscopic cardinality window and exact optimization;
 - `Q5` exact-cardinality extraction and macroscopic diversity;
@@ -258,14 +190,13 @@ This section states the scope of the proved mechanisms without asserting a gener
 - `Q7` denominator-height bounds and globally proper refinement branching;
 - `Q8` global quantitative transfer with leading rate `2 log 2`.
 
-The final TeX numbering may differ, but this dependency order is controlling.
-
 ## Parameter order
 
 The article preserves
 
 ```text
-fix reduced t=a/b, squarefree b, fixed admissible gamma>1 and finite forbidden data
+fix reduced t=a/b, squarefree b,
+fix admissible gamma>1, eta in (0,1), and finite forbidden data
  -> fix structural constants depending only on the fixed data
  -> choose terminal Gaussian cutoff C
  -> choose X sufficiently large depending on the fixed data and C
@@ -274,24 +205,10 @@ fix reduced t=a/b, squarefree b, fixed admissible gamma>1 and finite forbidden d
 
 No estimate chooses `C` after `X` or hides dependence on `X` or the later cutoff `C` in a fixed constant.
 
-## Historical architecture boundary
+## Change and audit boundary
 
-The refrozen candidate `79a43178bdc4919677375362ef58b9c127da18b0` used the earlier fixed-`Z=X^3`, five-sector and numerator-induction presentation. Its 44-page technical publication gate belongs only to that historical exact head. It does not transfer to the later parameterized manuscript or to the recovered-source integration and bounded repair successor.
+The native whole-article reparameterization is recorded as PC-005 in `PROOF_CHANGE_LEDGER.md`. It is a writer result, not a self-certified theorem adoption. It requires exact-head workflow validation and a separate independent whole-article mathematical and naturalness audit.
 
-## Current control
-
-- repository: `Yuren-Tang/erdos-306`;
-- controlling issue: `#8`;
-- sole branch: `paper/e306-anchor-fibre-v1`;
-- draft PR: `#9`;
-- historical parameterized baseline: `544d42d510bcab3ad0ddd7855525770e0d4b0926`;
-- recovered-source integration checkpoint: `c2dfc5120eec017718ef07cbe43f9c151803769c`;
-- exact-head build at that checkpoint: 42 pages;
-- exact-head workflows: `verify-e306-manuscript` run `30608129577` and `verify-erdos-306` run `30608129625`, both successful;
-- comparative audit: `#issuecomment-5141204793`, disposition `[BOUNDED-RESTORATION E306-MANUSCRIPT-COMPARATIVE-VALUE-ARCHITECTURE-AUDIT-02]`;
-- bounded repair successor: exact head recorded in PR `#9` and the latest durable return;
-- lifecycle: narrow independent exact-diff re-check required before readiness;
-- refreeze: none for the recovered integration or repair successor;
-- publication gate: none transferred.
+The historical fixed-`Z=X^3`, five-sector candidate and its publication gate remain nontransferable. The append-only fixed-ratio absorption at `b64bac1f9426cbeb60090a6dbdc147c5e67386ac` was architecturally rejected and is retained only as the authorized starting head for the native rewrite.
 
 No ready-for-review, merge, tag, release, DOI, Zenodo, licence, arXiv or journal action is implied by this architecture record.
