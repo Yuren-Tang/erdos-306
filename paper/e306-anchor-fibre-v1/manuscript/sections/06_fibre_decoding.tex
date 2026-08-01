@@ -49,29 +49,33 @@ For a row $r$, define
 \label{prop:lower-row-distance}
 Uniformly for every prime $r\in P\setminus B$,
 \[
- D_r\gg\frac{Z}{\log^3Z}.
+ D_r\gg_\eta\frac{Z}{\log^3Z}.
 \]
 \end{proposition}
 
 \begin{proof}
-Inversion permutes the nonzero residue classes modulo $r$.  The interval $[Z/2,Z)$ contains at most
+Inversion permutes the nonzero residue classes modulo $r$.  The interval $[\eta Z,Z)$ contains at most
 \[
- \mu_r\leq Z/(2r)+1\leq2Z/r
+ \mu_r\leq1+\frac{(1-\eta)Z}{r}\leq\frac{Z}{r}
 \]
-integers in one residue class modulo $r$.  With $M=|B|\gg Z/\log Z$, \cref{lem:cyclic-energy} gives
+integers in one residue class modulo $r$, because $r<\eta Z$ for $r\in P\setminus B$.  With
 \[
- D_r\gg\frac{M^3}{\mu_r^2r^2}
- \gg\frac{Z^3/\log^3Z}{Z^2}
+ M=|B|=\bigl(1-\eta+o_\eta(1)\bigr)\frac{Z}{\log Z},
+\]
+\cref{lem:cyclic-energy} gives
+\[
+ D_r\gg_\eta\frac{M^3}{\mu_r^2r^2}
+ \gg_\eta\frac{Z^3/\log^3Z}{Z^2}
  =\frac{Z}{\log^3Z}.
 \]
-Moreover $M/\mu_r\gg r/\log Z\geq X/\log Z$, so the largeness hypothesis is uniform in $r$.
+Moreover $M/\mu_r\gg_\eta r/\log Z\geq X/\log Z$, so the largeness hypothesis is uniform in $r$.
 \end{proof}
 
 \begin{proposition}[Target-row distance]
 \label{prop:target-row-distance}
 For every $r\in S_b$,
 \[
- D_r\geq\frac{|B|}{r^2}\gg_b\frac{Z}{\log Z}.
+ D_r\geq\frac{|B|}{r^2}\gg_{b,\eta}\frac{Z}{\log Z}.
 \]
 \end{proposition}
 
@@ -96,7 +100,7 @@ and choose $x_r^*$ minimizing $E_r(x)$.
 \label{lem:row-tail}
 There is
 \[
- c_{\rm row}=c_{\rm row}(t,\gamma,b)>0
+ c_{\rm row}=c_{\rm row}(t,\gamma,\eta,b)>0
 \]
 such that
 \[
@@ -117,7 +121,7 @@ Consequently,
 \begin{equation}
 \label{eq:Delta-row}
  \Delta:=\sum_{r\in R_{\mathrm{rows}}}\delta_r
- \leq Z^2\exp(-c_{\rm row}Z/\log^3Z)=o(1).
+ \leq Z^2\exp(-c_{\rm row,\eta}Z/\log^3Z)=o(1).
 \end{equation}
 
 \subsection{The exact retained skeleton}
@@ -150,7 +154,7 @@ The total contribution of every nondecoder fibre point is at most
 \begin{equation}
 \label{eq:global-fibre-error}
  P_{\mathrm{anc}}\bigl(\exp(\Delta)-1\bigr)
- \ll Z\log Z\,\Delta=o(1).
+ \ll_\eta Z\log Z\,\Delta=o(1).
 \end{equation}
 \end{proposition}
 
@@ -163,7 +167,7 @@ Suppose the anchor assignment is coherent with integer label $m$.  The candidate
 \label{eq:candidate-row-energy}
  E_r(m\bmod r)
  \leq\frac{m^2}{r^2}W_B
- \ll\frac{m^2/r^2}{Z\log Z}.
+ \ll_\eta\frac{m^2/r^2}{Z\log Z}.
 \end{equation}
 If this is less than $D_r/8$, the candidate is the unique minimizer.  Indeed, if a distinct residue $x$ were also a minimizer, then \cref{eq:row-shift} and the circle triangle inequality would give
 \[
@@ -186,12 +190,12 @@ For every $r\in P\setminus B$ and every coherent anchor label satisfying $|m|\le
 \end{proposition}
 
 \begin{proof}
-The upper bound in \cref{eq:candidate-row-energy} increases with $|m|$ and decreases with $r$, so the worst permitted endpoint is $r=X$ and $|m|=M_{\mathrm{dec}}$.  There the candidate energy is $O(Z/\log^5Z)$, whereas \cref{prop:lower-row-distance} gives $D_r\gg Z/\log^3Z$.  Their ratio is $O((\log Z)^{-2})$, and is therefore below $1/8$ for all sufficiently large $X$, uniformly for every permitted $r$ and $m$.
+The upper bound in \cref{eq:candidate-row-energy} increases with $|m|$ and decreases with $r$, so the worst permitted endpoint is $r=X$ and $|m|=M_{\mathrm{dec}}$.  There the candidate energy is $O_\eta(Z/\log^5Z)$, whereas \cref{prop:lower-row-distance} gives $D_r\gg_\eta Z/\log^3Z$.  Their ratio is $O_\eta((\log Z)^{-2})$, and is therefore below $1/8$ for all sufficiently large $X$, uniformly for every permitted $r$ and $m$.
 \end{proof}
 
 Fix once and for all a sufficiently small constant
 \[
- \kappa_0=\kappa_0(t,\gamma,b)>0,
+ \kappa_0=\kappa_0(t,\gamma,\eta,b)>0,
  \qquad \kappa_0<\frac14,
 \]
 small enough for the finitely many target rows and for the common linear phase range below.  Define the universal full-coordinate cutoff
@@ -209,7 +213,7 @@ For every $r\in S_b$ and every coherent anchor label satisfying $|m|\leq T_0$,
 \end{proposition}
 
 \begin{proof}
-By \cref{eq:candidate-row-energy}, the candidate energy is $O_b(m^2/(Z\log Z))$, while \cref{prop:target-row-distance} is $\gg_b Z/\log Z$.  Since $|m|\leq T_0\leq\kappa_0Z$, choosing $\kappa_0$ sufficiently small makes the comparison strict, uniformly over the finite set $S_b$.
+By \cref{eq:candidate-row-energy}, the candidate energy is $O_{b,\eta}(m^2/(Z\log Z))$, while \cref{prop:target-row-distance} is $\gg_{b,\eta}Z/\log Z$.  Since $|m|\leq T_0\leq\kappa_0Z$, choosing $\kappa_0$ sufficiently small in terms of $(t,\gamma,\eta,b)$ makes the comparison strict, uniformly over the finite set $S_b$.
 \end{proof}
 
 For every coherent anchor assignment with label $m$, define its \emph{decoded CRT frequency}
