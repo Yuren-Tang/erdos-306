@@ -63,6 +63,12 @@
 \newcommand{\RePart}{\operatorname{Re}}
 \newcommand{\Hom}{\operatorname{Hom}}
 \newcommand{\dist}[1]{\left\lVert #1\right\rVert}
+\newcommand{\InputSectionBody}[1]{%
+  \begingroup
+  \renewcommand{\section}[1]{}%
+  \input{#1}%
+  \endgroup
+}
 
 \title{Reciprocal Sums of Distinct Squarefree Semiprimes}
 \author{Yuren Tang}
@@ -81,7 +87,7 @@
 \hypersetup{
   pdftitle={Reciprocal Sums of Distinct Squarefree Semiprimes},
   pdfauthor={Yuren Tang},
-  pdfsubject={Characterization and fixed-target asymptotics for reciprocal sums of distinct squarefree semiprimes},
+  pdfsubject={Characterization and fixed-family local saturation for reciprocal sums of distinct squarefree semiprimes},
   pdfkeywords={Egyptian fractions, squarefree semiprimes, reciprocal sums, finite Fourier analysis, Chinese remainder theorem}
 }
 \date{}
@@ -89,22 +95,22 @@
 \begin{document}
 
 \begin{abstract}
-A positive rational is a finite sum of reciprocals of distinct squarefree semiprimes if and only if its reduced denominator is squarefree; the representing denominators may moreover avoid any prescribed finite set.  For a fixed reduced target $t=a/b\in(0,1)$ and a fixed $\gamma>1$ with $t<(\log\gamma)^2/2<1$, we give a direct construction from primes in $[X,X^\gamma)$.  Finite Fourier inversion encodes the target, an anchor block synchronizes low-energy Chinese-remainder coordinates, and anchor-cross rows decode the remaining prime and target coordinates.  Exact weighted fibre compression then replaces each fibre by its decoded tuple while retaining every unassigned factor; in particular, the surviving lower--lower prime-pair factors provide the coercivity outside the major range.  The exact target coefficient has a sharp Gaussian asymptotic.  This yields entropy-rate multiplicity in the direct family, exact-cardinality and Hamming-separated subfamilies, quantitative proper-refinement branching, and global transfer to every rational with squarefree reduced denominator.
+A positive rational is a finite sum of reciprocals of distinct squarefree semiprimes if and only if its reduced denominator is squarefree; the representing denominators may moreover avoid any prescribed finite set.  For a fixed reduced target $t=a/b\in(0,1)$ and a fixed $\gamma>1$ with $t<(\log\gamma)^2/2<1$, we construct one family from primes in $[X,X^\gamma)$.  The proof is organized through a source-twisted one-well composition interface: exact finite Fourier coefficients are combined with one-anchor observability, weighted fibre compression, an actual-kernel Gaussian well, source-uniform retained-factor tail bounds and a separate realization/no-wrap step.  This yields the exact fixed-target coefficient asymptotic and, uniformly on every fixed standardized compact window, a Gaussian moving-target profile for the same family.  Entropy-rate multiplicity, exact-cardinality and Hamming-separated subfamilies, proper-refinement branching and global transfer follow without introducing a second proof centre.
 \end{abstract}
 
 \maketitle
 
-\input{sections/01_introduction}
-\input{sections/02_fourier_selection}
-\input{sections/03_structural_tools}
-\input{sections/04_denominator_system}
-\input{sections/05_anchor_block}
-\input{sections/06_fibre_decoding}
-\input{sections/07_decoded_skeleton}
-\input{sections/08_major_budget}
-\input{sections/09_exact_completion}
-\input{sections/10_quantitative_multiplicity}
-\input{sections/11_discussion_conclusion}
+\input{sections/arch_e_01_introduction}
+\input{sections/arch_e_02_composition_interface}
+\input{sections/arch_e_03_reciprocal_system}
+\input{sections/arch_e_04_one_anchor}
+\input{sections/arch_e_05_rows_fibres}
+\input{sections/arch_e_06_decoded_tail}
+\input{sections/arch_e_07_actual_well}
+\input{sections/arch_e_08_positive_realization}
+\input{sections/arch_e_09_characterization}
+\input{sections/arch_e_10_saturation_quantitative}
+\input{sections/arch_e_11_scope}
 
 \section*{Acknowledgements}
 Generative-AI systems assisted proof exploration, source checking and editorial revision.  The author takes full responsibility for the mathematics, citations and text.
