@@ -1,0 +1,64 @@
+\subsection{Fixed-ratio robustness of the anchor}
+\label{sec:fixed-ratio-anchor}
+
+The detailed estimates below use the terminal block $B=[Z/2,Z)$ in order not to carry one further fixed parameter.  The endpoint $1/2$ is not structural.  The following proposition records the exact freedom available within the same one-anchor proof; it does not invoke the variable-width thin-anchor theory.
+
+\begin{proposition}[Fixed-ratio anchor robustness]
+\label{prop:fixed-ratio-anchor}
+Fix $\eta\in(0,1)$ and, for all sufficiently large $X$, replace the anchor block and target rows by
+\[
+ B_\eta=\{q\text{ prime}:\eta Z\leq q<Z\},
+ \qquad
+ \mathcal E_{b,\eta}=\{rq:r\in S_b,\ q\in B_\eta\}.
+\]
+Keep the complete pair family on $P=[X,Z)$ unchanged.  Then the parameterized direct fixed-target theorem, the sharp coefficient asymptotic, the compact moving-target theorem and all quantitative consequences proved below remain valid, with constants allowed to depend on the fixed parameter $\eta$.  The dependence is uniform when $\eta$ ranges in a compact subset of $(0,1)$.
+
+More precisely, writing
+\[
+ M_{B,\eta}=|B_\eta|,
+ \qquad
+ V_{B,\eta}=\sum_{q\in B_\eta}\frac1q,
+ \qquad
+ W_{B,\eta}=\sum_{q\in B_\eta}\frac1{q^2},
+\]
+one has
+\begin{align}
+ M_{B,\eta}
+  &=(1-\eta+o_\eta(1))\frac{Z}{\log Z},
+ \label{eq:fixed-ratio-count}\\
+ V_{B,\eta}
+  &=\frac{\log(1/\eta)+o_\eta(1)}{\log Z},
+ \label{eq:fixed-ratio-reciprocal}\\
+ W_{B,\eta}
+  &=\frac{\eta^{-1}-1+o_\eta(1)}{Z\log Z}.
+ \label{eq:fixed-ratio-square}
+\end{align}
+Consequently the total reciprocal load still tends to $\lambda_\gamma=(\log\gamma)^2/2$, the centring limit $\alpha_{t,\gamma}$ is unchanged, and the actual-family variance becomes
+\begin{equation}
+\label{eq:fixed-ratio-variance}
+ \sigma_{\mathcal E,\eta}^2
+ \sim\alpha_{t,\gamma}(1-\alpha_{t,\gamma})
+ \left(
+  \frac1{2X^2\log^2X}
+  +\frac{(\eta^{-1}-1)\tau(b)}{Z\log Z}
+ \right).
+\end{equation}
+In particular, the variance transition remains at $\gamma=2$.
+\end{proposition}
+
+\begin{proof}
+The fixed-ratio prime number theorem and partial summation give \cref{eq:fixed-ratio-count,eq:fixed-ratio-reciprocal,eq:fixed-ratio-square}.  The target-row load is
+\[
+ \left(\sum_{r\in S_b}\frac1r\right)V_{B,\eta}
+ =O_{b,\eta}(1/\log Z)=o(1),
+\]
+so the limiting capacity and centring parameter are unchanged.  The target-row square load is $\tau(b)W_{B,\eta}$, which gives \cref{eq:fixed-ratio-variance}; the complete pair contribution is unchanged.
+
+It remains to check that the proof uses only fixed-ratio comparability.  Every $q\in B_\eta$ satisfies $q\asymp_\eta Z$.  In the anchor dispersion argument, the number of integers from the terminal interval in one relevant residue class changes from an absolute bound to $O_\eta(1)$, and the coherent-label window is chosen below a fixed multiple of $\eta^2Z^2$.  The nondominant forcing floor and the exact-rigidity argument therefore persist with $\eta$-dependent constants.  For a lower row indexed by $r$, the elementary multiplicity bound becomes
+\[
+ \mu_r\leq1+\frac{(1-\eta)Z}{r},
+\]
+and the same cyclic-energy separation follows after changing only fixed constants.  Target-row observability, decoder identification and weighted fibre summability use the moments above.  Finally, the adaptive retained-pair interval has upper endpoint $o(Z)$, hence lies below $\eta Z$ for all sufficiently large $X$; the factor partition and all six complementary lanes remain disjoint.  The local expansion, realization and no-wrap steps depend only on the resulting total load and variance.  Thus every later conclusion survives within the same proof architecture.
+\end{proof}
+
+For the remainder of the article we normalize $\eta=1/2$.  This keeps the displayed constants short while \cref{prop:fixed-ratio-anchor} makes clear that the dyadic endpoint carries no mathematical significance.
