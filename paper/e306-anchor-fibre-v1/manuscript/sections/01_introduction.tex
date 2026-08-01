@@ -27,7 +27,7 @@ An earlier Lean~4 formalization established the original Erd\H{o}s 306 existence
 
 The proof is organized around one continuous Fourier--CRT mechanism.  The exact coefficient identity is separated from the estimates used to prove positivity.  In the compact composition theorem of \cref{thm:one-well-composition}, finite Fourier semantics, an admissible observation/compression provider, the actual local kernel, a source-uniform weighted tail estimate and exact realization are distinct inputs.  The reciprocal construction supplies each input concretely.
 
-A block of the largest primes acts as an anchor: sufficiently small internal energy forces all anchor coordinates to be residues of one integer label $m$.  The factors joining an anchor prime to a remaining prime form anchor-cross rows.  Their cyclic energy identifies the remaining prime coordinates; analogous rows indexed by the prime divisors of the reduced target denominator observe the target coordinates.
+A fixed upper-ratio block of the largest primes acts as an anchor: sufficiently small internal energy forces all anchor coordinates to be residues of one integer label $m$.  The factors joining an anchor prime to a remaining prime form anchor-cross rows.  Their cyclic energy identifies the remaining prime coordinates; analogous rows indexed by the prime divisors of the reduced target denominator observe the target coordinates.
 
 The row estimates alone cannot be multiplied over the raw set of anchor assignments.  The exact weighted fibre identity of \cref{thm:weighted-compression} performs the required compression: above each anchor assignment it retains one decoded tuple and bounds the full off-decoder mass without dividing by decoder weights.  Every factor not assigned to a row remains on the decoded skeleton.  This preservation is essential.  The lower--lower prime-pair factors survive the compression and provide the Gaussian transition and adaptive damping which control frequencies beyond the full-coordinate range.
 
@@ -41,7 +41,11 @@ Fix a reduced rational
 \[
  t=\frac ab\in(0,1),
 \]
-with squarefree $b$, and fix $\gamma>1$.  Since $t$ is positive and less than one, reducedness entails $b>1$.  At scale $X$ put $Z=X^\gamma$, take primes in $[X,Z)$, and designate the upper fixed-ratio block $[Z/2,Z)$ as the anchor.  The denominator family consists of all unordered products of two distinct primes in $[X,Z)$, together with rows $rq$ for $r\mid b$ prime and $q$ in the anchor block.  Its reciprocal load tends to
+with squarefree $b$, a fixed anchor ratio $\eta\in(0,1)$, and a fixed exponent $\gamma>1$.  Since $t$ is positive and less than one, reducedness entails $b>1$.  At scale $X$ put $Z=X^\gamma$, take primes in $[X,Z)$, and designate
+\[
+ B=\{q\text{ prime}:\eta Z\leq q<Z\}
+\]
+as the anchor.  The denominator family consists of all unordered products of two distinct primes in $[X,Z)$, together with rows $rq$ for $r\mid b$ prime and $q\in B$.  Its reciprocal load tends to
 \[
  \lambda_\gamma=\frac{(\log\gamma)^2}{2}.
 \]
@@ -61,7 +65,7 @@ Exact centring chooses $\theta\Lambda=t$, so
 
 \begin{theorem}[Parameterized direct fixed-target theorem]
 \label{thm:parameterized-direct-target-intro}
-Let $t=a/b\in(0,1)$ be reduced with squarefree $b$, let $\gamma$ satisfy \cref{eq:intro-admissible-region}, and let $\mathcal T$ be finite.  For all sufficiently large $X$, the parameterized family of \cref{sec:denominator-system} contains a subset $\mathcal A$, disjoint from $\mathcal T$, such that
+Let $t=a/b\in(0,1)$ be reduced with squarefree $b$, let $\eta\in(0,1)$ be fixed, let $\gamma$ satisfy \cref{eq:intro-admissible-region}, and let $\mathcal T$ be finite.  For all sufficiently large $X$, the parameterized family of \cref{sec:denominator-system} contains a subset $\mathcal A$, disjoint from $\mathcal T$, such that
 \[
  \sum_{e\in\mathcal A}\frac1e=t.
 \]
@@ -78,14 +82,14 @@ The variance of the actual Bernoulli family has the single asymptotic
  \sim\alpha_{t,\gamma}(1-\alpha_{t,\gamma})
  \left(
   \frac1{2X^2\log^2X}
-  +\frac{\tau(b)}{Z\log Z}
+  +\frac{(\eta^{-1}-1)\tau(b)}{Z\log Z}
  \right).
 \]
 At $\gamma=2$ the dominant contribution changes: prime pairs dominate for $\gamma>2$, while the target rows dominate for $1<\gamma\leq2$.  The proof itself remains uniform.  A full-coordinate cutoff
 \[
  T_0=\kappa_0\min(X^2,Z)
 \]
-is followed by a prime-only Gaussian transition and an adaptive retained-pair range, giving one pairwise-disjoint six-sector decomposition for every fixed $\gamma>1$.
+is followed by a prime-only Gaussian transition and an adaptive retained-pair range, giving one pairwise-disjoint six-sector decomposition for every fixed $\gamma>1$ and $\eta\in(0,1)$.
 
 \subsection{The coefficient and its consequences}
 
@@ -107,6 +111,6 @@ For $0<t<1/2$, the maximum $\log2$ is attained uniquely at $\gamma=\exp(2\sqrt t
 
 The terms \emph{anchor assignment}, \emph{coherent label}, \emph{row decoder}, \emph{fibre} and \emph{decoded skeleton} refer respectively to the CRT coordinates on the anchor block, the synchronizing integer $m$, the minimizing residue in one anchor-cross row, the product of all row coordinates over a fixed anchor assignment, and the single decoded tuple together with every unassigned factor.  The integer label $m$ and the decoded residue class $h_m\in\mathbb Z/L\mathbb Z$ are distinct objects; they coincide as a full CRT tuple only in the full-coordinate range.
 
-Throughout the direct construction, $t$, $\gamma$, $b$ and the finite forbidden set are fixed while $X\to\infty$.  The constants $\kappa_{\rm mod}=\kappa_{\rm mod}(t,\gamma)$, $c_{\rm row}=c_{\rm row}(t,\gamma,b)$ and $\kappa_0=\kappa_0(t,\gamma,b)$ have distinct roles.  Other unnamed constants may depend on the fixed tuple and fixed numerical choices, but not on $X$ or on the later Gaussian cutoff $C$.  Whenever $C$ occurs, $X\to\infty$ is taken with $C$ fixed, and only afterwards may $C\to\infty$.
+Throughout the direct construction, $t$, $\gamma$, $\eta$, $b$ and the finite forbidden set are fixed while $X\to\infty$.  The constants $\kappa_{\rm mod}=\kappa_{\rm mod}(t,\gamma,\eta)$, $c_{\rm row}=c_{\rm row}(t,\gamma,\eta,b)$ and $\kappa_0=\kappa_0(t,\gamma,\eta,b)$ have distinct roles.  Other unnamed constants may depend on the fixed tuple and fixed numerical choices, but not on $X$ or on the later Gaussian cutoff $C$.  Fixed-ratio estimates are uniform for $\eta$ in compact subsets of $(0,1)$.  Whenever $C$ occurs, $X\to\infty$ is taken with $C$ fixed, and only afterwards may $C\to\infty$.
 
 \Cref{sec:composition-interface} gives exact coefficient semantics, the compact composition theorem and its deterministic providers.  \Cref{sec:denominator-system,sec:anchor-block,sec:fibre-decoding} build the reciprocal family and establish capacity, variance, one-anchor rigidity, row observability and weighted compression.  \Cref{sec:decoded-skeleton,sec:major-budget} prove the decoded-tail and actual-well estimates.  \Cref{sec:positive-realization} separates quotient positivity, realization and no-wrap.  \Cref{sec:characterization-proof} proves the characterization and refinement theorems.  \Cref{sec:saturation-quantitative} proves compact fixed-family saturation and the quantitative consequence cluster, and \cref{sec:scope} records the exact boundaries and nonclaims.
