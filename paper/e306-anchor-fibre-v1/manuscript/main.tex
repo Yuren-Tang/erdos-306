@@ -5,16 +5,12 @@
 \usepackage{csquotes}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{aliascnt}
-\makeatletter
-\edef\EThreeZeroSixJobName{\jobname}
-\def\EThreeZeroSixGaramondJob{main-garamond}
-\ifx\EThreeZeroSixJobName\EThreeZeroSixGaramondJob
+\ifnum\pdfstrcmp{\jobname}{main-garamond}=0
   \usepackage{ebgaramond}
   \usepackage[ebgaramond]{newtxmath}
 \else
   \usepackage[etbb]{newtx}
 \fi
-\makeatother
 \usepackage{newtxtt}
 \usepackage{microtype}
 \usepackage{enumitem}
