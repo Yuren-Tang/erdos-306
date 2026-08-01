@@ -5,7 +5,7 @@ Fix throughout a reduced target
 \[
  t=\frac ab\in(0,1)
 \]
-with squarefree $b$, a finite forbidden set $\mathcal T$, and a fixed exponent $\gamma>1$.  Reducedness and $0<t<1$ imply $b>1$.  Thus the set $S_b$ of prime divisors of $b$ is nonempty and
+with squarefree $b$, a fixed anchor ratio $\eta\in(0,1)$, a finite forbidden set $\mathcal T$, and a fixed exponent $\gamma>1$.  Reducedness and $0<t<1$ imply $b>1$.  Thus the set $S_b$ of prime divisors of $b$ is nonempty and
 \begin{equation}
 \label{eq:tau-positive}
  \tau(b):=\sum_{r\in S_b}\frac1{r^2}>0.
@@ -25,7 +25,7 @@ Equivalently,
 \label{eq:admissible-gamma}
  \exp(\sqrt{2t})<\gamma<\exp(\sqrt2).
 \end{equation}
-All asymptotic statements are for $X\to\infty$ with $t$, $\gamma$, $b$ and $\mathcal T$ fixed.  Unless stated otherwise, implied constants may depend on the fixed tuple $(t,\gamma,b)$ and on fixed numerical choices, but not on $X$ or on the later Gaussian cutoff $C$.
+All asymptotic statements are for $X\to\infty$ with $t$, $\gamma$, $\eta$, $b$ and $\mathcal T$ fixed.  Unless stated otherwise, implied constants may depend on the fixed tuple $(t,\gamma,\eta,b)$ and on fixed numerical choices, but not on $X$ or on the later Gaussian cutoff $C$.  The estimates below are uniform when $\eta$ ranges in a fixed compact subset of $(0,1)$.
 
 \subsection{Prime blocks and their power sums}
 
@@ -36,7 +36,7 @@ Put
  \qquad
  P=\{p\text{ prime}:X\leq p<Z\},
  \qquad
- B=\{q\text{ prime}:Z/2\leq q<Z\},
+ B=\{q\text{ prime}:\eta Z\leq q<Z\},
 \end{equation}
 and let $S_b$ be the set of prime divisors of $b$.  We take $X$ so large that every prime in $P$ exceeds every prime divisor of $b$, and every denominator constructed below exceeds every element of $\mathcal T$.
 
@@ -53,12 +53,13 @@ together with their standard partial-summation consequences; see Montgomery and 
 For fixed $0<u<v$, as $y\to\infty$,
 \[
  \#\{p\text{ prime}:uy\leq p<vy\}
- =\bigl(v-u+o(1)\bigr)\frac{y}{\log y}.
+ =\bigl(v-u+o_{u,v}(1)\bigr)\frac{y}{\log y}.
 \]
+The error is uniform when $(u,v)$ ranges over a compact subset of $\{(u,v):0<u<v\}$.
 \end{lemma}
 
 \begin{proof}
-Apply the prime number theorem at $uy$ and $vy$.  Replacing $\log(uy)$ and $\log(vy)$ by $\log y$ introduces only a relative $o(1)$.
+Apply the prime number theorem at $uy$ and $vy$.  Replacing $\log(uy)$ and $\log(vy)$ by $\log y$ introduces only a relative $o_{u,v}(1)$, uniformly on compact parameter sets.
 \end{proof}
 
 Define
@@ -86,11 +87,11 @@ As $X\to\infty$,
  \label{eq:UX-asymptotic}\\
  |P|&\sim\frac{Z}{\log Z},
  \label{eq:P-cardinality}\\
- M_B&\sim\frac{Z}{2\log Z},
+ M_B&=\bigl(1-\eta+o_\eta(1)\bigr)\frac{Z}{\log Z},
  \label{eq:B-cardinality}\\
- V_B&=O\!\left(\frac1{\log Z}\right),
- \qquad
- W_B\sim\frac1{Z\log Z}.
+ V_B&=\frac{\log(1/\eta)+o_\eta(1)}{\log Z},
+ \label{eq:B-reciprocal-mass}\\
+ W_B&=\frac{\eta^{-1}-1+o_\eta(1)}{Z\log Z}.
  \label{eq:B-power-sums}
 \end{align}
 \end{lemma}
@@ -108,11 +109,19 @@ A second partial summation gives
  =\int_X^{X^\gamma}\frac{du}{u^2\log u}(1+o(1))
  \sim\frac1{X\log X};
 \]
-the upper endpoint is negligible because $\gamma>1$ is fixed.  The cardinality statements follow from \cref{lem:fixed-ratio-prime-supply}.  Finally, partial summation on $[Z/2,Z)$ gives the two estimates in \cref{eq:B-power-sums}; explicitly,
+the upper endpoint is negligible because $\gamma>1$ is fixed.  The cardinality statements follow from \cref{lem:fixed-ratio-prime-supply}.  Partial summation on $[\eta Z,Z)$ gives
 \[
- \int_{Z/2}^{Z}\frac{du}{u^2\log u}
- \sim\frac1{Z\log Z}.
+ \sum_{\eta Z\leq q<Z}\frac1q
+ =\int_{\eta Z}^{Z}\frac{du}{u\log u}+o_\eta(1/\log Z)
+ =\frac{\log(1/\eta)+o_\eta(1)}{\log Z}
 \]
+and
+\[
+ \sum_{\eta Z\leq q<Z}\frac1{q^2}
+ =\int_{\eta Z}^{Z}\frac{du}{u^2\log u}(1+o_\eta(1))
+ =\frac{\eta^{-1}-1+o_\eta(1)}{Z\log Z}.
+\]
+All fixed-ratio estimates are uniform for $\eta$ in compact subsets of $(0,1)$.
 \end{proof}
 
 \subsection{The complete pair family and target rows}
@@ -158,7 +167,7 @@ one has $\lambda_-<\Lambda<\lambda_+$ for all sufficiently large $X$;
 \label{eq:complete-square-load}
  \sum_{e\in\mathcal E}\frac1{e^2}
  =\frac{1+o(1)}{2X^2\log^2X}
-  +\frac{\tau(b)+o_b(1)}{Z\log Z}.
+  +\frac{(\eta^{-1}-1)\tau(b)+o_{b,\eta}(1)}{Z\log Z}.
 \end{equation}
 \end{enumerate}
 \end{proposition}
@@ -175,7 +184,9 @@ The target-row load is
 \[
  \Lambda_b
  =\left(\sum_{r\in S_b}\frac1r\right)V_B
- =O_b(1/\log Z)=o_b(1),
+ =\left(\sum_{r\in S_b}\frac1r\right)
+   \frac{\log(1/\eta)+o_\eta(1)}{\log Z}
+ =o_{b,\eta}(1),
 \]
 which proves \cref{eq:load-limit} and the fixed load interval.
 
@@ -189,7 +200,7 @@ Indeed the fourth-power diagonal is $O(1/(X^3\log X))$.  The target rows contrib
 \[
  \sum_{r\in S_b}\sum_{q\in B}\frac1{r^2q^2}
  =\tau(b)W_B
- \sim\frac{\tau(b)}{Z\log Z}.
+ =\frac{(\eta^{-1}-1)\tau(b)+o_{b,\eta}(1)}{Z\log Z}.
 \]
 This proves \cref{eq:complete-square-load} without assuming which summand dominates.
 \end{proof}
@@ -204,11 +215,17 @@ One has
  \qquad
  \log L=(1+o(1))Z=o(M_X).
 \end{equation}
-The target rows have $O_b(Z/\log Z)$ elements and do not affect the leading family size.  Every denominator is at most $Z^2$ for large $X$.
+The target rows have
+\[
+ |\mathcal E_b|
+ =\bigl(|S_b|(1-\eta)+o_{b,\eta}(1)\bigr)\frac{Z}{\log Z}
+ =O_{b,\eta}(Z/\log Z)
+\]
+elements and do not affect the leading family size.  Every denominator is at most $Z^2$ for large $X$.
 \end{proposition}
 
 \begin{proof}
-The pair family has $\binom{|P|}{2}=(1+o(1))Z^2/(2\log^2Z)$ elements by \cref{eq:P-cardinality}, while $|\mathcal E_b|=|S_b|M_B=O_b(Z/\log Z)$.  This proves the formula for $M_X$.
+The pair family has $\binom{|P|}{2}=(1+o(1))Z^2/(2\log^2Z)$ elements by \cref{eq:P-cardinality}, while the displayed target-row count follows from \cref{eq:B-cardinality}.  This proves the formula for $M_X$.
 
 For the modulus, the prime number theorem in the form $\vartheta(y)=y+o(y)$ gives
 \begin{align*}
@@ -232,7 +249,7 @@ Set
 \label{eq:theta-definition}
  \theta=\frac{t}{\Lambda}.
 \end{equation}
-By \cref{prop:arithmetic-capacity}, $\theta$ lies in a fixed compact interval $I_{t,\gamma}\subset(0,1)$ and
+By \cref{prop:arithmetic-capacity}, $\theta$ lies in a fixed compact interval $I_{t,\gamma,\eta}\subset(0,1)$ and
 \begin{equation}
 \label{eq:theta-limit}
  \theta\longrightarrow
@@ -263,7 +280,7 @@ Let $\alpha=\alpha_{t,\gamma}$.  Then
  \sim \alpha(1-\alpha)
  \left(
   \frac1{2X^2\log^2X}
-  +\frac{\tau(b)}{Z\log Z}
+  +\frac{(\eta^{-1}-1)\tau(b)}{Z\log Z}
  \right).
 \end{equation}
 \end{proposition}
@@ -286,22 +303,22 @@ With $\alpha=\alpha_{t,\gamma}$:
 \begin{equation}
 \label{eq:variance-gamma-two}
  \sigma_{\mathcal E}^2
- \sim\frac{\alpha(1-\alpha)\tau(b)}{Z\log Z}.
+ \sim\frac{\alpha(1-\alpha)(\eta^{-1}-1)\tau(b)}{Z\log Z}.
 \end{equation}
 \item If $1<\gamma<2$, the target-row square load dominates by a power of $X$, and the same asymptotic \cref{eq:variance-gamma-two} holds.
 \end{enumerate}
 \end{corollary}
 
 \begin{proof}
-The ratio of the target-row summand in \cref{eq:total-variance} to the pair summand is asymptotic, up to a fixed positive factor, to
+The ratio of the target-row summand in \cref{eq:total-variance} to the pair summand is asymptotic, up to a fixed positive factor depending on $(\eta,b)$, to
 \[
  \frac{X^2\log^2X}{Z\log Z}
  \asymp X^{2-\gamma}\log X.
 \]
-It tends to $0$ for $\gamma>2$, to infinity logarithmically for $\gamma=2$, and to infinity polynomially for $\gamma<2$.  Positivity of $\tau(b)$ follows from \cref{eq:tau-positive}; the case $b=1$ cannot occur in the direct setting $t\in(0,1)$.
+It tends to $0$ for $\gamma>2$, to infinity logarithmically for $\gamma=2$, and to infinity polynomially for $\gamma<2$.  Positivity of $(\eta^{-1}-1)\tau(b)$ follows from $\eta\in(0,1)$ and \cref{eq:tau-positive}; the case $b=1$ cannot occur in the direct setting $t\in(0,1)$.
 \end{proof}
 
-Thus $\gamma=2$ is a genuine variance boundary, but it does not require a separate proof architecture: every later estimate is stated first with the total variance \cref{eq:total-variance}.
+Thus $\gamma=2$ is a genuine variance boundary for every fixed $\eta\in(0,1)$, but it does not require a separate proof architecture: every later estimate is stated first with the total variance \cref{eq:total-variance}.
 
 The finite Fourier numerator is
 \begin{equation}
@@ -310,9 +327,9 @@ The finite Fourier numerator is
  \prod_{e\in\mathcal E}
  \left((1-\theta)+\theta\exp\left(\frac{2\pi i h}{e}\right)\right).
 \end{equation}
-Compactness of $I_{t,\gamma}$ gives a constant
+Compactness of $I_{t,\gamma,\eta}$ gives a constant
 \[
- \kappa_{\rm mod}=\kappa_{\rm mod}(t,\gamma)>0
+ \kappa_{\rm mod}=\kappa_{\rm mod}(t,\gamma,\eta)>0
 \]
 such that
 \begin{equation}
