@@ -5,7 +5,12 @@
 \usepackage{csquotes}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{aliascnt}
-\usepackage[etbb]{newtx}
+\ifdefined\EThreeZeroSixGaramondTypography
+  \usepackage{ebgaramond}
+  \usepackage[ebgaramond]{newtxmath}
+\else
+  \usepackage[etbb]{newtx}
+\fi
 \usepackage{newtxtt}
 \usepackage{microtype}
 \usepackage{enumitem}

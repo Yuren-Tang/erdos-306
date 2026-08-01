@@ -9,7 +9,18 @@ on:
 
 jobs:
   build-manuscript:
+    name: build-manuscript-${{ matrix.variant }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - variant: default
+            target: pdf
+            stem: main
+          - variant: garamond
+            target: garamond
+            stem: main-garamond
     defaults:
       run:
         working-directory: paper/e306-anchor-fibre-v1/manuscript
@@ -37,63 +48,92 @@ jobs:
         run: |
           set -o pipefail
           make clean
-          make pdf 2>&1 | tee build-output.log
+          make "${{ matrix.target }}" 2>&1 | tee "${{ matrix.stem }}-build-output.log"
+
+      - name: Gate bibliography, references, labels, and glyphs
+        shell: bash
+        run: |
+          stem="${{ matrix.stem }}"
+          test -s "$stem.pdf"
+          test -s "$stem.bbl"
+          if grep -E "LaTeX Warning: (There were undefined references|Citation .* undefined|Reference .* undefined|Label .* multiply defined)" "$stem.log"; then
+            echo "::error::unresolved or duplicate references remain"
+            exit 1
+          fi
+          if grep -E "There were undefined references|undefined citations|multiply-defined labels" "$stem.log"; then
+            echo "::error::unresolved or duplicate references remain"
+            exit 1
+          fi
+          if grep -E "^(WARN|ERROR) -" "$stem.blg"; then
+            echo "::error::Biber reported a warning or error"
+            exit 1
+          fi
+          if grep -F "Missing character:" "$stem.log"; then
+            echo "::error::missing glyph detected"
+            exit 1
+          fi
+
+      - name: Verify A4 page size and embedded fonts
+        shell: bash
+        run: |
+          stem="${{ matrix.stem }}"
+          pdfinfo "$stem.pdf" | tee "$stem-pdfinfo.txt"
+          python3 - "$stem-pdfinfo.txt" <<'PY'
+          import re
+          import sys
+
+          text = open(sys.argv[1], encoding="utf-8").read()
+          match = re.search(r"^Page size:\s+([0-9.]+) x ([0-9.]+) pts", text, re.MULTILINE)
+          if not match:
+              raise SystemExit("page size missing from pdfinfo")
+          width, height = map(float, match.groups())
+          if abs(width - 595.276) > 0.5 or abs(height - 841.89) > 0.5:
+              raise SystemExit(f"not A4: {width} x {height} pts")
+          PY
+          pdffonts "$stem.pdf" | tee "$stem-fonts.txt"
+          if grep -q "Type 3" "$stem-fonts.txt"; then
+            echo "::error::Type 3 fonts are not permitted"
+            exit 1
+          fi
+          awk 'NR > 2 && $(NF-4) != "yes" { bad=1 } END { exit bad }' "$stem-fonts.txt"
+          pdftotext -layout "$stem.pdf" "$stem.txt"
 
       - name: Upload build diagnostics
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: e306-manuscript-diagnostics-${{ github.sha }}
+          name: e306-manuscript-${{ matrix.variant }}-diagnostics-${{ github.sha }}
           path: |
-            paper/e306-anchor-fibre-v1/manuscript/build-output.log
-            paper/e306-anchor-fibre-v1/manuscript/main.log
-            paper/e306-anchor-fibre-v1/manuscript/main.blg
+            paper/e306-anchor-fibre-v1/manuscript/${{ matrix.stem }}-build-output.log
+            paper/e306-anchor-fibre-v1/manuscript/${{ matrix.stem }}.log
+            paper/e306-anchor-fibre-v1/manuscript/${{ matrix.stem }}.blg
+            paper/e306-anchor-fibre-v1/manuscript/${{ matrix.stem }}-fonts.txt
+            paper/e306-anchor-fibre-v1/manuscript/${{ matrix.stem }}-pdfinfo.txt
+            paper/e306-anchor-fibre-v1/manuscript/${{ matrix.stem }}.txt
           if-no-files-found: warn
           retention-days: 30
 
-      - name: Gate bibliography, references, and labels
-        run: |
-          test -s main.pdf
-          test -s main.bbl
-          if grep -E "LaTeX Warning: (There were undefined references|Citation .* undefined|Reference .* undefined|Label .* multiply defined)" main.log; then
-            echo "::error::unresolved or duplicate references remain"
-            exit 1
-          fi
-          if grep -E "There were undefined references|undefined citations|multiply-defined labels" main.log; then
-            echo "::error::unresolved or duplicate references remain"
-            exit 1
-          fi
-          if grep -E "^(WARN|ERROR) -" main.blg; then
-            echo "::error::Biber reported a warning or error"
-            exit 1
-          fi
-
-      - name: Verify embedded fonts
-        run: |
-          pdffonts main.pdf | tee main-fonts.txt
-          if grep -q "Type 3" main-fonts.txt; then
-            echo "::error::Type 3 fonts are not permitted"
-            exit 1
-          fi
-          awk 'NR > 2 && $(NF-4) != "yes" { bad=1 } END { exit bad }' main-fonts.txt
-
       - name: Build summary
+        shell: bash
         run: |
+          stem="${{ matrix.stem }}"
           {
-            echo "## E306 manuscript build"
+            echo "## E306 manuscript ${{ matrix.variant }} build"
             echo
             echo "- Commit: $GITHUB_SHA"
-            echo "- Entry point: \`paper/e306-anchor-fibre-v1/manuscript/main.tex\`"
-            echo "- Command: \`make clean && make pdf\`"
+            echo "- Entry point: \`paper/e306-anchor-fibre-v1/manuscript/$stem.tex\`"
+            echo "- Command: \`make clean && make ${{ matrix.target }}\`"
             echo "- Bibliography backend: Biber"
-            echo "- Result: clean PDF build, bibliography gate, and font-embedding gate passed"
-            echo "- PDF size: $(stat -c%s main.pdf) bytes"
+            echo "- Result: clean PDF build, bibliography/reference/label/glyph gate, A4 gate, and font-embedding gate passed"
+            echo "- PDF size: $(stat -c%s "$stem.pdf") bytes"
+            echo "- PDF pages: $(pdfinfo "$stem.pdf" | awk '/^Pages:/ {print $2}')"
+            echo "- PDF SHA-256: $(sha256sum "$stem.pdf" | awk '{print $1}')"
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload manuscript PDF
         uses: actions/upload-artifact@v4
         with:
-          name: e306-manuscript-${{ github.sha }}
-          path: paper/e306-anchor-fibre-v1/manuscript/main.pdf
+          name: e306-manuscript-${{ matrix.variant }}-${{ github.sha }}
+          path: paper/e306-anchor-fibre-v1/manuscript/${{ matrix.stem }}.pdf
           if-no-files-found: error
           retention-days: 30
