@@ -4,6 +4,7 @@
 \usepackage[greek,british]{babel}
 \usepackage{csquotes}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{aliascnt}
 \usepackage[etbb]{newtx}
 \usepackage{newtxtt}
 \usepackage{microtype}
@@ -48,13 +49,23 @@
 \numberwithin{equation}{section}
 
 \newtheorem{theorem}{Theorem}[section]
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{corollary}[theorem]{Corollary}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
 \theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
 \theoremstyle{remark}
-\newtheorem{remark}[theorem]{Remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
 
 \newcommand{\T}{\mathbb{R}/\mathbb{Z}}
 \newcommand{\e}{\mathrm{e}}
