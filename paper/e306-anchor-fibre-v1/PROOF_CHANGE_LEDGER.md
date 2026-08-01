@@ -79,6 +79,38 @@ These are the verified interface through which the concrete proof is presented.
 | PC-002 | `a4fb7ed78bf217ce310ab147c82af2a49f0029bb -> 544d42d510bcab3ad0ddd7855525770e0d4b0926` | B | corrected prime-divisor indexing and `tau(b)`; restored multiplicity-sensitive cyclic energy; adopted one total-variance formula, universal `T_0`, and one exhaustive six-sector architecture; replaced avoiding-unit/numerator-induction/special-denominator closure by prime dilution; added zero-residual finite prescription; corrected local versus simultaneous proper replacement and quantitative globally proper branching | independently verified mathematically, typographically and visually at `#issuecomment-5128463117`; workflows `#639` and `#78` passed |
 | PC-003 | `544d42d510bcab3ad0ddd7855525770e0d4b0926 -> historical metadata synchronization successor` | A | synchronized top-level control ledgers and PR metadata with the already verified parameterized manuscript | historical control-only transition, later superseded by recovery and integration; no manuscript-mathematical effect |
 | PC-004 | `c2dfc5120eec017718ef07cbe43f9c151803769c -> bounded provenance/control repair successor` | A | closes BR-01--BR-03 in `manuscript/BUILD.md`, the five named control ledgers and PR `#9` metadata; distinguishes the forensic evidence object from the current Actions artifact and records the recovered-source lifecycle | changes no theorem, proof, manuscript mathematical section, Lean source, workflow, Makefile or bibliography; narrow exact-diff and exact-head re-check required before readiness |
+| PC-005 | `b64bac1f9426cbeb60090a6dbdc147c5e67386ac -> native fixed-ratio writer successor` | B | replaces the append-only fixed-ratio proposition by native standing data `eta in (0,1)` throughout the article; defines `B={q prime: eta Z<=q<Z}` from the start; transports fixed-ratio prime moments, anchor rigidity, fingerprint entropy, row multiplicity and observability, adaptive retained-pair disjointness, actual variance, six-sector estimates, realization, moving-target saturation and sharp quantitative coefficients; deletes the standalone annex and removes the conflicting Hamming-rate use of `eta` | explicitly Owner-authorized by `#issuecomment-5150232754`; writer output only; exact-head manuscript/Lean validation and a separate independent whole-article mathematical/naturalness audit are required before adoption or readiness |
+
+## Native fixed-ratio dependency amendment
+
+The writer successor governed by PC-005 preserves the same one-anchor/fingerprint architecture.  Its standing data are
+
+```text
+t=a/b in (0,1), b squarefree,
+gamma>1 fixed and admissible,
+eta in (0,1) fixed,
+Z=X^gamma,
+B={q prime: eta Z<=q<Z}.
+```
+
+The native prime moments are
+
+```text
+|B|=(1-eta+o_eta(1)) Z/log Z,
+sum_(q in B) 1/q=(log(1/eta)+o_eta(1))/log Z,
+sum_(q in B) 1/q^2=(eta^(-1)-1+o_eta(1))/(Z log Z).
+```
+
+Consequently
+
+```text
+sigma_E^2
+ ~ alpha_(t,gamma)(1-alpha_(t,gamma))
+   {1/(2X^2 log^2 X)
+    +(eta^(-1)-1)tau(b)/(Z log Z)}.
+```
+
+The structural complete-pair coefficient `1/2`, centred CRT interval, `X^2/4` phase cutoff, entropy threshold at `1/2`, Gaussian normalization and all other non-anchor uses of `1/2` are unchanged.  The proof is uniform for `eta` in compact subsets of `(0,1)`.  A varying ratio `eta=eta(X)->1` and the corresponding shrinking-width/thin-anchor or reciprocal-flow theory remain outside this article.
 
 ## Architecture transition
 
@@ -101,7 +133,7 @@ The verified parameterized manuscript, retained in the recovered integration at 
 - local replacement distinguished from simultaneous globally proper replacement;
 - the preserved entropy, diversity, height, refinement and global-transfer consequences.
 
-This is an adopted, independently verified mathematical reformulation of the article architecture, not a metadata invention. The recovery integration is a forensic reconstruction of the rendered manuscript evidence and does not claim invisible historical source identity.
+PC-005 reparameterizes that same architecture by a fixed native anchor ratio.  It does not add a second anchor theory, thin-anchor exponent theorem, reciprocal-flow provider or stronger headline theorem.
 
 ## Lifecycle heads and publication-gate boundary
 
@@ -109,39 +141,17 @@ This is an adopted, independently verified mathematical reformulation of the art
 - `a4fb7ed78bf217ce310ab147c82af2a49f0029bb` is the unrefrozen integration writer candidate that required bounded repair.
 - `544d42d510bcab3ad0ddd7855525770e0d4b0926` is the independently verified historical 39-page parameterized manuscript baseline.
 - `c2dfc5120eec017718ef07cbe43f9c151803769c` is the recovered-source integration checkpoint. Its 42-page manuscript and Lean workflows succeeded, and the comparative audit found no mathematical repair.
-- The BR-01--BR-03 successor is a bounded Class-A provenance/control repair and must receive a narrow independent exact-diff and exact-head re-check before any Owner readiness disposition.
+- `b64bac1f9426cbeb60090a6dbdc147c5e67386ac` is the rejected append-only fixed-ratio absorption head and the exact authorized starting head for PC-005.
+- The PC-005 successor is a bounded Class-B whole-article reparameterization writer result. It is not independently certified, refrozen, ready for review, merged, licensed, released, uploaded or submitted by this ledger.
 - No refreeze or publication gate transfers automatically from an earlier head.
-
-## Protected no-change boundary for this repair
-
-The bounded provenance/control repair may change only:
-
-- `paper/e306-anchor-fibre-v1/manuscript/BUILD.md`;
-- `paper/e306-anchor-fibre-v1/CONTROL.md`;
-- `paper/e306-anchor-fibre-v1/ARTICLE_ARCHITECTURE.md`;
-- `paper/e306-anchor-fibre-v1/THEOREM_DAG.md`;
-- `paper/e306-anchor-fibre-v1/PROOF_OBLIGATION_LEDGER.md`;
-- `paper/e306-anchor-fibre-v1/PROOF_CHANGE_LEDGER.md`;
-- PR `#9` body metadata.
-
-It changes none of the following:
-
-- manuscript mathematical section source or article prose;
-- theorem, proposition, lemma, corollary, definition, proof or displayed equation;
-- Lean source;
-- workflow or Makefile;
-- bibliography;
-- licence, tag, release, DOI, Zenodo, arXiv or journal surface.
-
-The exhaustive comparison against `c2dfc5120eec017718ef07cbe43f9c151803769c` is the controlling exact-file and no-mathematical-change check.
 
 ## Current disposition
 
 ```text
-RECOVERED SOURCE INTEGRATED AT c2dfc5120eec017718ef07cbe43f9c151803769c
-42-PAGE EXACT-HEAD MANUSCRIPT AND LEAN WORKFLOWS SUCCESSFUL
-COMPARATIVE AUDIT FOUND NO MATHEMATICAL REPAIR
-BR-01--BR-03 PROVENANCE/CONTROL REPAIR ONLY
-REPAIR SUCCESSOR PENDING NARROW EXACT-DIFF AND EXACT-HEAD RE-CHECK
+NATIVE FIXED-RATIO WHOLE-ARTICLE REPARAMETERIZATION WRITER ACTIVE
+APPEND-ONLY FIXED-RATIO ANNEX REMOVED
+DEFAULT TYPOGRAPHY PRESERVED
+INDEPENDENT WHOLE-ARTICLE MATHEMATICAL/NATURALNESS AUDIT REQUIRED
+PR #9 REMAINS OPEN / DRAFT / UNMERGED
 NOT REFROZEN / NO PUBLICATION GATE TRANSFERRED
 ```
