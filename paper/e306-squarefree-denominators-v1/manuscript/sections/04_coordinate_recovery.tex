@@ -4,7 +4,7 @@
 Fix an anchor assignment. The remaining coordinates are recovered through the factors joining them to the anchor. Before estimating those rows, we record the exact product estimate used to retain one decoded row tuple.
 
 \begin{lemma}[Unnormalised product-fibre compression]
-\label{thm:weighted-compression}
+\label{lem:unnormalised-product-fibre}
 Let $R$ be finite. For each $r\in R$, let $X_r$ be finite, let $a_r:X_r\to[0,\infty)$, and choose $x_r^*\in X_r$. Put
 \[
  \alpha_r=a_r(x_r^*),\qquad \beta_r=\sum_{x\neq x_r^*}a_r(x).
@@ -121,7 +121,9 @@ For the fixed anchor assignment, assign every factor involving one anchor prime 
  F(a_B,x_R)=T_B(a_B)\prod_{r\in R_{\rm rows}}A_r(x_r)H_{a_B}(x_R),
  \qquad |H_{a_B}(x_R)|\leq1.
 \end{equation}
-Put $\alpha_r=A_r(x_r^*)$ and $\beta_r=\sum_{x\neq x_r^*}A_r(x)$. By \cref{thm:weighted-compression}, the nondecoder contribution above this anchor assignment is at most
+If the full assigned row modulus $T_B(a_B)\prod_{r\in R_{\rm rows}}A_r(x_r)$ vanishes, define $H_{a_B}(x_R)=0$. This convention requires no division by an assigned modulus or decoder weight.
+
+Put $\alpha_r=A_r(x_r^*)$ and $\beta_r=\sum_{x\neq x_r^*}A_r(x)$. By \cref{lem:unnormalised-product-fibre}, the nondecoder contribution above this anchor assignment is at most
 \[
  T_B\left\{\prod_r(\alpha_r+\beta_r)-\prod_r\alpha_r\right\}
  \leq T_B\left(\exp\left(\sum_r\delta_r\right)-1\right).

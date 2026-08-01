@@ -1,7 +1,7 @@
 \section{Frequency ranges and positivity}
 \label{sec:frequency-positivity}
 
-After fibre compression, it remains to estimate the decoded frequency $h_m$ attached to each coherent anchor label $m$. Noncoherent anchor assignments and nondecoder row tuples already have the bounds \cref{eq:noncoherent-top-tail,eq:global-fibre-error}. The retained prime-pair factors provide the remaining decay.
+After fibre compression, it remains to estimate the decoded frequency $h_m$ attached to each coherent anchor label $m$. Noncoherent anchor assignments and nondecoder row tuples already have the bounds \cref{eq:noncoherent-anchor-tail,eq:global-fibre-error}. The retained prime-pair factors provide the remaining decay.
 
 \subsection{Elementary summation bounds}
 
@@ -100,7 +100,7 @@ Thus, for sufficiently large $X$,
 \]
 The decoder/nondecoder split is made first. Every nondecoder row tuple belongs to Range~VI. Among decoded tuples, every noncoherent anchor assignment also belongs to Range~VI. A coherent assignment has one unique integer label $m$ and enters exactly one of the following disjoint ranges:
 \begin{center}
-\begin{tabular}{@{}c p{5.2cm} p{5.0cm}@{}}
+\begin{tabular}{@{}c p{4.6cm} p{5.6cm}@{}}
 \toprule
 Range & condition & arithmetic control \\
 \midrule
@@ -109,13 +109,13 @@ II & $N<|m|\leq T_0$ & total-variance Gaussian decay \\
 III & $T_0<|m|\leq X^2/4$ & prime-pair Gaussian decay \\
 IV & $X^2/4<|m|\leq M_{\rm dec}$ & adaptive retained pairs \\
 V & $|m|>M_{\rm dec}$ & internal anchor energy \\
-VI & noncoherent decoded assignment, or a nondecoder row tuple & anchor counting and fibre error \\
+VI & \mbox{noncoherent} decoded assignment,\newline or a nondecoder row tuple & anchor counting\newline and fibre error \\
 \bottomrule
 \end{tabular}
 \end{center}
 These cases are pairwise disjoint and exhaustive because the CRT coordinate map is a bijection, each row fibre has one chosen decoder tuple, and every coherent anchor assignment has exactly one label.
 
-For Range~V, the anchor factor and \cref{eq:top-exact-energy} give
+For Range~V, the anchor factor and \cref{eq:anchor-exact-energy} give
 \[
  |F(h_m)|\leq\exp(-\kappa_{\rm mod}m^2\sigma_{B,0}^2).
 \]

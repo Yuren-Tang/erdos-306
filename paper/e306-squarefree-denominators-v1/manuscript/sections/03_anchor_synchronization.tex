@@ -1,7 +1,7 @@
 \section{Synchronization of the anchor coordinates}
 \label{sec:anchor-synchronization}
 
-The anchor block has two purposes: low internal energy forces all of its CRT coordinates to come from one integer, while the remaining assignments have small total Fourier weight.
+The argument has three stages. Reciprocal dispersion first supplies a forcing floor; below that floor every anchor coordinate is synchronized to one exact integer label, while above it fingerprint counting gives a small weighted noncoherent tail. We prove these statements for a fixed-ratio prime block and then apply them to the anchor block $B$.
 
 \subsection{A fixed-ratio reciprocal prime code}
 
@@ -60,10 +60,12 @@ Put $d=m'-m$. At most one prime in $C_{m'}$ divides $d$. Fix any remaining $q\in
 \[
  \dist{dp^{-1}/q}\leq\frac{|H_{pq}|}{pq}+\frac{|m|}{pq}.
 \]
-By \cref{lem:reciprocal-dispersion}, at least half of the left sides exceed a constant times $|C_m|/Y$. The size hypothesis makes $|m|/(pq)$ at most half that amount. Thus these $p$ contribute $\gg_\delta |C_m|^3/Y^2$ for each admissible $q$, and summing over $q$ proves the lemma.
+The proof of \cref{lem:reciprocal-dispersion}, applied with $\mathcal F=C_m$, shows that at least half of the left sides exceed a constant times $|C_m|/Y$. The size hypothesis makes $|m|/(pq)$ at most half that amount. Thus these $p$ contribute $\gg_\delta |C_m|^3/Y^2$ for each admissible $q$, and summing over $q$ proves the lemma.
 \end{proof}
 
 \subsection{Low energy forces one exact label}
+
+We first show that energy below the forcing scale produces one dominant class, and then remove the remaining exceptional coordinates.
 
 \begin{proposition}[Nondominant forcing]
 \label{prop:nondominant-forcing}
@@ -98,14 +100,27 @@ Writing $u=B_0/Y$, the case $u<1$ contradicts $N\to\infty$, while $u\geq1$ gives
 
 Otherwise remove $p_0$, its bad neighbours, and all small classes. The remaining substantial classes have total size $S\geq(1-\rho/2)N$, each has size at least $s_0$, and no one has size above $(1-\rho)N$. Applying \cref{lem:cross-label-energy} between distinct classes gives
 \[
- R\gg_\delta\frac1{Y^2}\sum_i n_i^3\sum_{j\neq i}(n_j-1)
- \gg_{\delta,\rho}\frac{N^4}{M_0^2Y^2}.
+ R\gg_\delta\frac1{Y^2}\sum_i n_i^3\sum_{j\neq i}(n_j-1).
+\]
+Since every other substantial class has at least $s_0$ elements,
+\[
+ \sum_{j\neq i}(n_j-1)\geq\frac12(S-n_i).
+\]
+If some class has size at least $S/2$, then its complement has size at least $\rho N/2$, and its term is $\gg_\rho N^4$. Otherwise $S-n_i\geq S/2$ for every $i$, while power mean gives
+\[
+ \sum_i n_i^3\geq\frac{S^3}{M_0^2}.
+\]
+In either case,
+\[
+ R\gg_{\delta,\rho}\frac{N^4}{M_0^2Y^2}.
 \]
 If $u<1$, this is $\gg Y^2/\log^4Y$; if $u\geq1$, substituting $M_0^2\ll_{\delta,\rho}RY^2/N^2$ gives $R\gg N^3/Y^2$. Both contradict the assumed upper bound for sufficiently small $c$. Thus a dominant label exists.
 \end{proof}
 
+The next proposition is the zero-exception step: low energy does not merely yield an almost-global label.
+
 \begin{proposition}[Exact anchor rigidity]
-\label{prop:exact-cold-rigidity}
+\label{prop:exact-anchor-rigidity}
 After decreasing $c_w(\delta)$ if necessary, every assignment satisfying
 \[
  \mathcal Q(a)<c_w(\delta)\frac{Y}{\log^3Y}
@@ -124,7 +139,11 @@ Let $C$ be the dominant class with label $m$. Internal pairs in $C$ have centred
 \[
  \mathcal Q(a)\geq m^2\sum_{p<q\in C}\frac1{p^2q^2}\gg_{\delta,\rho}m^2\sigma_Q^2.
 \]
-This proves the label bound. If $q\notin C$, put $d\equiv a_q-m\pmod q$. As in \cref{lem:cross-label-energy}, reciprocal dispersion against $p\in C$ forces the edges incident with $q$ to contribute $\gg_\delta |C|^3/Y^2$. Distinct exceptional $q$ give disjoint edge sets, whence
+This proves the label bound. Together with the low-energy hypothesis, $\sigma_Q\asymp_\delta1/(Y\log Y)$ and $|C|\asymp_{\delta,\rho}Y/\log Y$, it gives
+\[
+ |m|=O_{\delta,\rho,c_w}\!\left(\frac{Y^{3/2}}{\sqrt{\log Y}}\right)=o_\delta(|C|Y).
+\]
+If $q\notin C$, put $d\equiv a_q-m\pmod q$. The preceding estimate absorbs the term $|m|/(pq)$, so, as in the proof of \cref{lem:cross-label-energy}, reciprocal dispersion against $p\in C$ forces the edges incident with $q$ to contribute $\gg_\delta |C|^3/Y^2$. Distinct exceptional $q$ give disjoint edge sets, whence
 \[
  |Q\setminus C|\ll_\delta \mathcal Q(a)Y^2/N^3<C_\delta c_w(\delta).
 \]
@@ -132,6 +151,8 @@ Choosing $c_w(\delta)$ so that the last quantity is below one leaves no exceptio
 \end{proof}
 
 \subsection{Fingerprint counting}
+
+Below the forcing floor the preceding propositions give exact coherent labels. At and above that floor we instead count assignments through a small fixed fingerprint and use the resulting count only after weighting by the anchor modulus.
 
 \begin{lemma}[Fingerprint rigidity]
 \label{lem:fingerprint-rigidity}
@@ -195,9 +216,10 @@ There is a forcing floor
 \]
 such that every anchor assignment with $Q_B<F_B$ has one exact integer label $m$, and then
 \begin{equation}
-\label{eq:top-exact-energy}
+\label{eq:anchor-exact-energy}
  Q_B(a_B)=m^2\sigma_{B,0}^2.
 \end{equation}
+We call precisely these below-floor assignments \emph{coherent}; assignments with $Q_B\geq F_B$ are \emph{noncoherent} and will be controlled only through their total weighted mass.
 
 Define the anchor modulus
 \[
@@ -205,7 +227,7 @@ Define the anchor modulus
 \]
 By \cref{eq:bernoulli-modulus}, $T_B(a_B)\leq\exp(-\kappa_{\rm mod}Q_B(a_B))$. The fingerprint bound, summed over unit energy shells, gives
 \begin{equation}
-\label{eq:noncoherent-top-tail}
+\label{eq:noncoherent-anchor-tail}
  \sum_{Q_B\geq F_B}T_B(a_B)\ll_\eta\exp(-c_\eta F_B).
 \end{equation}
 Below the floor, distinct assignments have distinct labels, and therefore
@@ -214,11 +236,11 @@ Below the floor, distinct assignments have distinct labels, and therefore
 \]
 
 \begin{proposition}[Anchor partition]
-\label{prop:top-partition}
+\label{prop:anchor-partition}
 The complete anchor weight satisfies
 \begin{equation}
-\label{eq:P-top}
+\label{eq:anchor-weight-total}
  P_{\mathrm{anc}}:=\sum_{a_B}T_B(a_B)\ll_\eta Z\log Z,
 \end{equation}
-while its noncoherent part satisfies \cref{eq:noncoherent-top-tail}. Every coherent anchor assignment carries a unique exact integer label and obeys \cref{eq:top-exact-energy}.
+while its noncoherent part satisfies \cref{eq:noncoherent-anchor-tail}. Every coherent anchor assignment carries a unique exact integer label and obeys \cref{eq:anchor-exact-energy}.
 \end{proposition}

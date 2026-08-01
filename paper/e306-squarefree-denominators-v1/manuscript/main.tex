@@ -4,7 +4,6 @@
 \usepackage[greek,british]{babel}
 \usepackage{csquotes}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
-\usepackage{aliascnt}
 \usepackage{newpxtext,newpxmath}
 \usepackage{newtxtt}
 \usepackage{microtype}
@@ -24,13 +23,13 @@
 \numberwithin{equation}{section}
 
 \newtheorem{theorem}{Theorem}[section]
-\newaliascnt{proposition}{theorem}\newtheorem{proposition}[proposition]{Proposition}\aliascntresetthe{proposition}
-\newaliascnt{lemma}{theorem}\newtheorem{lemma}[lemma]{Lemma}\aliascntresetthe{lemma}
-\newaliascnt{corollary}{theorem}\newtheorem{corollary}[corollary]{Corollary}\aliascntresetthe{corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
 \theoremstyle{definition}
-\newaliascnt{definition}{theorem}\newtheorem{definition}[definition]{Definition}\aliascntresetthe{definition}
+\newtheorem{definition}[theorem]{Definition}
 \theoremstyle{remark}
-\newaliascnt{remark}{theorem}\newtheorem{remark}[remark]{Remark}\aliascntresetthe{remark}
+\newtheorem{remark}[theorem]{Remark}
 
 \newcommand{\T}{\mathbb{R}/\mathbb{Z}}
 \newcommand{\e}{\mathrm{e}}
@@ -39,7 +38,6 @@
 \newcommand{\RePart}{\operatorname{Re}}
 \newcommand{\Hom}{\operatorname{Hom}}
 \newcommand{\dist}[1]{\left\lVert #1\right\rVert}
-\newcommand{\InputSectionBody}[1]{\begingroup\renewcommand{\section}[1]{}\input{#1}\endgroup}
 
 \title{Squarefree Denominators and Reciprocal Sums of Distinct Semiprimes}
 \author{Yuren Tang}
