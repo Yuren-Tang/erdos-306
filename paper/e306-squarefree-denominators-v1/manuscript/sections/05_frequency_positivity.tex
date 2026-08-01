@@ -1,0 +1,199 @@
+\section{Frequency ranges and positivity}
+\label{sec:frequency-positivity}
+
+After fibre compression, it remains to estimate the decoded frequency $h_m$ attached to each coherent anchor label $m$. Noncoherent anchor assignments and nondecoder row tuples already have the bounds \cref{eq:noncoherent-top-tail,eq:global-fibre-error}. The retained prime-pair factors provide the remaining decay.
+
+\subsection{Elementary summation bounds}
+
+\begin{lemma}[Gaussian and stretched-exponential tails]
+\label{lem:tail-summation}
+Fix $c>0$ and a nonnegative integer $d$.
+\begin{enumerate}[label=(\roman*)]
+\item There are constants $C,c'>0$ such that, for $B\geq1$ and $A\geq B$,
+\[
+ \sum_{m\geq A}(1+m/B)^d\exp(-cm^2/B^2)
+ \leq CB(1+A/B)^d\exp(-c'A^2/B^2).
+\]
+\item There are constants $C,c'>0$ and $A_0$ such that, for $A\geq A_0$,
+\[
+ \sum_{m\geq A}m^d\exp\left(-\frac{cm}{(\log m)^2}\right)
+ \leq C\exp\left(-\frac{c'A}{(\log A)^2}\right).
+\]
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+For~(i), compare with the corresponding integral, put $u=x/B$, and use the standard Gaussian tail bound. For~(ii), split into dyadic intervals. On the $j$th interval the exponential decay absorbs the polynomial length and weight, and the resulting geometric series is dominated by its first term.
+\end{proof}
+
+\subsection{The prime-only transition}
+
+For $T_0<|m|\leq X^2/4$, every coordinate indexed by $P$ equals $m$. Hence every complete-pair factor has phase $m/(pq)$ in the linear circle range, and
+\begin{equation}
+\label{eq:transition-pointwise}
+ |F(h_m)|\leq\exp\left(-c\frac{m^2}{X^2\log^2X}\right).
+\end{equation}
+Moreover,
+\[
+ \frac{T_0^2}{X^2\log^2X}\longrightarrow\infty
+\]
+for every fixed $\gamma>1$. Applying \cref{lem:tail-summation}(i),
+\begin{equation}
+\label{eq:transition-total}
+ \sum_{T_0<|m|\leq X^2/4}|F(h_m)|=o(1)=o(\sigma_{\mathcal E}^{-1}).
+\end{equation}
+This range uses no target coordinate.
+
+\subsection{Adaptive retained-pair damping}
+
+For $X^2/4<|m|\leq M_{\rm dec}$ put
+\[
+ I_m=[2\sqrt{|m|},3\sqrt{|m|}].
+\]
+
+\begin{proposition}[Adaptive prime interval]
+\label{prop:adaptive-prime-interval}
+For every such $m$, the interval $I_m$ lies in $[X,\eta Z)$ for all sufficiently large $X$ and contains
+\[
+ K_m\gg\frac{\sqrt{|m|}}{\log|m|}
+\]
+primes. The retained prime-pair energy satisfies
+\begin{equation}
+\label{eq:adaptive-energy}
+ Q_{\rm pair}(m)\gg\frac{|m|}{(\log|m|)^2}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+The lower inclusion follows from $2\sqrt{|m|}>X$. At the upper endpoint,
+\[
+ 3\sqrt{|m|}\leq\frac{3\sqrt{XZ}}{\log Z}=o_\eta(Z)<\eta Z.
+\]
+The prime number theorem in a fixed-ratio interval gives the count. For distinct primes $p,q\in I_m$, one has $1/9\leq|m|/(pq)\leq1/4$, so every retained pair contributes a fixed positive amount of circle energy. Summing over the pairs proves \cref{eq:adaptive-energy}.
+\end{proof}
+
+Thus
+\[
+ |F(h_m)|\leq\exp\left(-c\frac{|m|}{(\log|m|)^2}\right),
+\]
+and \cref{lem:tail-summation}(ii) gives
+\begin{equation}
+\label{eq:adaptive-total}
+ \sum_{X^2/4<|m|\leq M_{\rm dec}}|F(h_m)|
+ \ll\exp\left(-c'\frac{X^2}{\log^2X}\right)
+ =o(1)=o(\sigma_{\mathcal E}^{-1}).
+\end{equation}
+
+\subsection{The six exhaustive ranges}
+
+Fix $C\geq1$, to be chosen before $X$, and put
+\begin{equation}
+\label{eq:N-major}
+ N=\left\lfloor\frac{C}{\sigma_{\mathcal E}}\right\rfloor.
+\end{equation}
+For fixed $C$, the total variance gives
+\begin{equation}
+\label{eq:N-below-full}
+ N=o(T_0).
+\end{equation}
+Thus, for sufficiently large $X$,
+\[
+ N<T_0<\frac{X^2}{4}<M_{\rm dec}.
+\]
+The decoder/nondecoder split is made first. Every nondecoder row tuple belongs to Range~VI. Among decoded tuples, every noncoherent anchor assignment also belongs to Range~VI. A coherent assignment has one unique integer label $m$ and enters exactly one of the following disjoint ranges:
+\begin{center}
+\begin{tabular}{@{}c p{5.2cm} p{5.0cm}@{}}
+\toprule
+Range & condition & arithmetic control \\
+\midrule
+I & $|m|\leq N$ & positive Taylor main term \\
+II & $N<|m|\leq T_0$ & total-variance Gaussian decay \\
+III & $T_0<|m|\leq X^2/4$ & prime-pair Gaussian decay \\
+IV & $X^2/4<|m|\leq M_{\rm dec}$ & adaptive retained pairs \\
+V & $|m|>M_{\rm dec}$ & internal anchor energy \\
+VI & noncoherent decoded assignment, or a nondecoder row tuple & anchor counting and fibre error \\
+\bottomrule
+\end{tabular}
+\end{center}
+These cases are pairwise disjoint and exhaustive because the CRT coordinate map is a bijection, each row fibre has one chosen decoder tuple, and every coherent anchor assignment has exactly one label.
+
+For Range~V, the anchor factor and \cref{eq:top-exact-energy} give
+\[
+ |F(h_m)|\leq\exp(-\kappa_{\rm mod}m^2\sigma_{B,0}^2).
+\]
+Since $M_{\rm dec}\sigma_{B,0}\asymp_\eta X/\log^3Z\to\infty$, \cref{lem:tail-summation}(i) yields
+\begin{equation}
+\label{eq:anchor-tail-total}
+ \sum_{|m|>M_{\rm dec}}|F(h_m)|
+ \ll_\eta Z\log Z\exp\left(-c_\eta\frac{X^2}{\log^6Z}\right)
+ =o(1)=o(\sigma_{\mathcal E}^{-1}).
+\end{equation}
+Range~VI has total modulus
+\begin{equation}
+\label{eq:terminal-error-total}
+ \ll_\eta\exp(-c_\eta F_B)+P_{\rm anc}(\exp(\Delta)-1)
+ =o(1)=o(\sigma_{\mathcal E}^{-1}).
+\end{equation}
+
+\subsection{The central range}
+
+Compactness of the Bernoulli interval gives constants $\rho>0$ and $M<\infty$ such that, uniformly for $\theta\in I_{t,\gamma,\eta}$ and $|z|\leq\rho$,
+\begin{equation}
+\label{eq:local-log-expansion}
+ \log\bigl((1-\theta)+\theta\exp(2\pi iz)\bigr)
+ =2\pi i\theta z-2\pi^2\theta(1-\theta)z^2+R_\theta(z),
+ \qquad |R_\theta(z)|\leq M|z|^3.
+\end{equation}
+Let $e_{\min}=\min_{e\in\mathcal E}e\asymp_{b,\eta}\min(X^2,Z)$. For $|m|\leq N$,
+\[
+ \sum_{e\in\mathcal E}|m/e|^3
+ \leq\frac{|m|^3}{e_{\min}}\sum_{e\in\mathcal E}\frac1{e^2}
+ \ll_{b,\eta}\frac{C^3}{\sigma_{\mathcal E}e_{\min}}=o(1).
+\]
+Also $N=o(e_{\min})$, so every phase lies in the Taylor disk.
+
+For $|m|\leq N$, \cref{eq:h-m-full-identification} identifies the decoded frequency with the integer $m$. The linear phase cancels exactly by \cref{eq:exact-centering-load}; the quadratic term is the total actual variance. Uniformly in this range,
+\begin{equation}
+\label{eq:major-local-gaussian}
+ F(m)=\exp\bigl(-2\pi^2m^2\sigma_{\mathcal E}^2+\varepsilon_m\bigr),
+ \qquad \max_{|m|\leq N}|\varepsilon_m|\to0.
+\end{equation}
+It follows that
+\begin{proposition}[Positive Gaussian contribution]
+\label{prop:positive-major}
+For every fixed $C\geq1$ and all sufficiently large $X$,
+\begin{equation}
+\label{eq:positive-major}
+ \RePart\sum_{|m|\leq N}F(m)\geq\frac{c_{\rm maj}}{\sigma_{\mathcal E}},
+\end{equation}
+where $c_{\rm maj}>0$ is independent of $C$ and $X$.
+\end{proposition}
+
+\subsection{The first Gaussian tail and final assembly}
+
+For $N<|m|\leq T_0$, every coordinate is again the integer $m$, and $|m|/e\leq1/4$ for all $e\in\mathcal E$. Hence
+\[
+ |F(m)|\leq\exp(-cm^2\sigma_{\mathcal E}^2).
+\]
+The Gaussian tail estimate gives
+\begin{equation}
+\label{eq:range-II-tail}
+ \sum_{|m|>N}\exp(-cm^2\sigma_{\mathcal E}^2)
+ \leq K\sigma_{\mathcal E}^{-1}\exp(-c'C^2).
+\end{equation}
+Choose $C$ so large that this is at most $c_{\rm maj}/(8\sigma_{\mathcal E})$, and then take $X$ large enough for all preceding estimates.
+
+The complete Fourier sum is the sum of the positive Range~I contribution, the decoded contributions in Ranges~II--V, and the Range~VI error. By the triangle inequality, \cref{eq:transition-total,eq:adaptive-total,eq:anchor-tail-total,eq:terminal-error-total,eq:range-II-tail} and \cref{eq:positive-major} give
+\[
+ \RePart\sum_{h\bmod L}F(h)
+ \geq\frac{c_{\rm maj}}{\sigma_{\mathcal E}}
+ -\frac{c_{\rm maj}}{8\sigma_{\mathcal E}}
+ -o(\sigma_{\mathcal E}^{-1})>0.
+\]
+We have proved:
+
+\begin{theorem}[Positive Fourier numerator]
+\label{thm:positive-fourier-numerator}
+For every fixed reduced $t=a/b\in(0,1)$ with squarefree $b$, every fixed $\eta\in(0,1)$, every fixed $\gamma$ satisfying \cref{eq:admissible-region}, and every finite forbidden set $\mathcal T$, one has, for all sufficiently large $X$,
+\[
+ \RePart\sum_{h\bmod L}F(h)>0.
+\]
+\end{theorem}
