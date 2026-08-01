@@ -23,9 +23,11 @@ Quantitative multiplicity is known in the unrestricted setting on its natural am
 
 An earlier Lean~4 formalization established the original Erd\H{o}s 306 existence statement~\cite{tang-erdos-306-formal}.  The present article proves a broader theorem through a substantially reorganized analytic argument.
 
-\subsection{The mechanism}
+\subsection{The mechanism and its interfaces}
 
-The proof is organized around one continuous Fourier--CRT mechanism.  Finite Fourier inversion first encodes the coefficient of a fixed reciprocal target.  A block of the largest primes then acts as an anchor: sufficiently small internal energy forces all anchor coordinates to be residues of one integer label $m$.  The factors joining an anchor prime to a remaining prime form anchor-cross rows.  Their cyclic energy identifies the remaining prime coordinates; analogous rows indexed by the prime divisors of the reduced target denominator observe the target coordinates.
+The proof is organized around one continuous Fourier--CRT mechanism.  The exact coefficient identity is separated from the estimates used to prove positivity.  In the compact composition theorem of \cref{thm:one-well-composition}, finite Fourier semantics, an admissible observation/compression provider, the actual local kernel, a source-uniform weighted tail estimate and exact realization are distinct inputs.  The reciprocal construction supplies each input concretely.
+
+A block of the largest primes acts as an anchor: sufficiently small internal energy forces all anchor coordinates to be residues of one integer label $m$.  The factors joining an anchor prime to a remaining prime form anchor-cross rows.  Their cyclic energy identifies the remaining prime coordinates; analogous rows indexed by the prime divisors of the reduced target denominator observe the target coordinates.
 
 The row estimates alone cannot be multiplied over the raw set of anchor assignments.  The exact weighted fibre identity of \cref{thm:weighted-compression} performs the required compression: above each anchor assignment it retains one decoded tuple and bounds the full off-decoder mass without dividing by decoder weights.  Every factor not assigned to a row remains on the decoded skeleton.  This preservation is essential.  The lower--lower prime-pair factors survive the compression and provide the Gaussian transition and adaptive damping which control frequencies beyond the full-coordinate range.
 
@@ -33,7 +35,7 @@ The central range then has the expected Gaussian form.  Exact centring cancels t
 
 The prime number theorem is the sole non-elementary number-theoretic input; a standard reference is Montgomery and Vaughan~\cite[Chapter~1]{montgomery-vaughan-2007}.  We use it for prime counts, Chebyshev's function, reciprocal prime mass and prime square load.  The anchor rigidity, row separation, fibre compression, target observability and Fourier-sector estimates are proved here.
 
-\subsection{The direct fixed-target theorem}
+\subsection{The direct fixed-family theorem}
 
 Fix a reduced rational
 \[
@@ -63,7 +65,7 @@ Let $t=a/b\in(0,1)$ be reduced with squarefree $b$, let $\gamma$ satisfy \cref{e
 \[
  \sum_{e\in\mathcal A}\frac1e=t.
 \]
-Its exact target coefficient satisfies the sharp Gaussian asymptotic of \cref{thm:sharp-target-coefficient}; no moving-target uniformity is asserted.
+Its exact target coefficient satisfies the sharp Gaussian asymptotic of \cref{thm:sharp-target-coefficient}; the same fixed family satisfies the compact-window moving-target theorem \cref{thm:compact-moving-target}.
 \end{theorem}
 
 Put
@@ -91,6 +93,8 @@ The fixed-target coefficient satisfies
 \[
  L_XP_X(t)\sim\frac1{\sqrt{2\pi}\,\sigma_X}.
 \]
+More generally, for each fixed $U>0$, the same family has the uniform Gaussian profile of \cref{thm:compact-moving-target} for integers $|j|\leq U L_X\sigma_X$ while the shifted target remains in the exact load and no-wrap range.  No growing standardized window is claimed.
+
 The representations in the direct family have exponential rate
 \[
  H(\alpha_{t,\gamma})
@@ -105,4 +109,4 @@ The terms \emph{anchor assignment}, \emph{coherent label}, \emph{row decoder}, \
 
 Throughout the direct construction, $t$, $\gamma$, $b$ and the finite forbidden set are fixed while $X\to\infty$.  The constants $\kappa_{\rm mod}=\kappa_{\rm mod}(t,\gamma)$, $c_{\rm row}=c_{\rm row}(t,\gamma,b)$ and $\kappa_0=\kappa_0(t,\gamma,b)$ have distinct roles.  Other unnamed constants may depend on the fixed tuple and fixed numerical choices, but not on $X$ or on the later Gaussian cutoff $C$.  Whenever $C$ occurs, $X\to\infty$ is taken with $C$ fixed, and only afterwards may $C\to\infty$.
 
-\Cref{sec:fourier-selection} gives the Fourier selection identity and the exactness interface.  \Cref{sec:structural-tools} develops the general collision, compression, syndrome and skeleton principles.  \Cref{sec:denominator-system,sec:anchor-block,sec:fibre-decoding} build the arithmetic family and prove capacity, variance, anchor rigidity and row decoding.  \Cref{sec:decoded-skeleton,sec:major-budget} estimate the six frequency sectors and establish positivity.  \Cref{sec:exact-completion} proves exact representation, the characterization and the refinement theorems.  \Cref{sec:quantitative-multiplicity} proves the sharp coefficient and its quantitative consequences, and \cref{sec:scope} records the remaining scope.
+\Cref{sec:composition-interface} gives exact coefficient semantics, the compact composition theorem and its deterministic providers.  \Cref{sec:denominator-system,sec:anchor-block,sec:fibre-decoding} build the reciprocal family and establish capacity, variance, one-anchor rigidity, row observability and weighted compression.  \Cref{sec:decoded-skeleton,sec:major-budget} prove the decoded-tail and actual-well estimates.  \Cref{sec:positive-realization} separates quotient positivity, realization and no-wrap.  \Cref{sec:characterization-proof} proves the characterization and refinement theorems.  \Cref{sec:saturation-quantitative} proves compact fixed-family saturation and the quantitative consequence cluster, and \cref{sec:scope} records the exact boundaries and nonclaims.
