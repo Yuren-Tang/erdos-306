@@ -1,0 +1,41 @@
+\section{Compact fixed-family saturation and quantitative consequences}
+\label{sec:saturation-quantitative}
+
+The direct family is kept fixed throughout this section.  Its sharp fixed-target coefficient and entropy consequences are first recorded exactly as proved.
+
+\InputSectionBody{sections/10_quantitative_multiplicity_part1}
+
+\subsection{Compact fixed-family local saturation}
+
+\begin{theorem}[Compact fixed-family moving-target saturation]
+\label{thm:compact-moving-target}
+Fix a reduced target $t=a/b\in(0,1)$ with squarefree $b$, fix an exponent $\gamma$ satisfying \cref{eq:admissible-region}, and construct the single family $\mathcal E_X$ and the quantities $L_X$ and $\sigma_X$ as above.  For every fixed $U>0$, uniformly for integers $j$ satisfying
+\[
+ |j|\leq U L_X\sigma_X
+\]
+and for which the shifted target $t+j/L_X$ remains in the exact load and no-wrap interval, one has
+\begin{equation}
+\label{eq:compact-moving-target}
+ L_X\Prob\!\left(
+   \sum_{e\in\mathcal E_X}\frac{\varepsilon_e}{e}
+   =t+\frac{j}{L_X}
+ \right)
+ =\frac{1}{\sqrt{2\pi}\,\sigma_X}
+   \exp\!\left[-\frac12
+     \left(\frac{j}{L_X\sigma_X}\right)^2\right]
+  +o(\sigma_X^{-1}).
+\end{equation}
+The error is uniform in the displayed fixed compact window.  Consequently every such shifted target has a representation by a subset of the same family for all sufficiently large $X$.
+\end{theorem}
+
+\begin{proof}
+Apply \cref{thm:one-well-composition} with source parameter
+\[
+ u=\frac{j}{L_X\sigma_X}\in[-U,U].
+\]
+The sourced coefficient identity is unchanged.  The anchor, row-observability and weighted fibre-compression providers are source-uniform on this fixed compact window; the local actual-kernel calculation acquires the source character whose Gaussian transform is the factor in \cref{eq:compact-moving-target}; and the retained-factor six-sector bound is uniform in the same window.  Thus SEM, OBS/COMP, LOCAL and TAIL give the uniform asymptotic.  Positivity yields a quotient witness, and the separately assumed exact load/no-wrap interval lifts it to the displayed rational equality.
+\end{proof}
+
+No family is retuned with $j$, and the proof is not a union bound over separately chosen fixed targets.  The compactness of $[-U,U]$ is essential here: the theorem neither exchanges the fixed-family and growing-window quantifiers nor asserts a moderate-deviation range.
+
+\input{sections/10_quantitative_multiplicity_part2}
