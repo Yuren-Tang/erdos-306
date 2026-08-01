@@ -1,0 +1,72 @@
+\documentclass[11pt,a4paper,reqno]{amsart}
+
+\usepackage[LGR,T1]{fontenc}
+\usepackage[greek,british]{babel}
+\usepackage{csquotes}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{aliascnt}
+\usepackage[etbb]{newtx}
+\usepackage{newtxtt}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage[backend=biber,style=numeric,sorting=nyt,sortcites=true,giveninits=true,maxbibnames=99,doi=true,url=true,eprint=true,urldate=long]{biblatex}
+\addbibresource{references.bib}
+\AtEveryBibitem{%
+  \iffieldundef{doi}
+    {\iffieldundef{eprint}{}{\clearfield{url}\clearfield{urldate}\clearfield{urlyear}\clearfield{urlmonth}\clearfield{urlday}}}
+    {\clearfield{url}\clearfield{urldate}\clearfield{urlyear}\clearfield{urlmonth}\clearfield{urlday}}}
+\DeclareFontSubstitution{LGR}{artemisia}{m}{n}
+\ifdefined\pdfglyphtounicode\pdfglyphtounicode{Omega}{03A9}\fi
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{proposition}{theorem}\newtheorem{proposition}[proposition]{Proposition}\aliascntresetthe{proposition}
+\newaliascnt{lemma}{theorem}\newtheorem{lemma}[lemma]{Lemma}\aliascntresetthe{lemma}
+\newaliascnt{corollary}{theorem}\newtheorem{corollary}[corollary]{Corollary}\aliascntresetthe{corollary}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}\newtheorem{definition}[definition]{Definition}\aliascntresetthe{definition}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}\newtheorem{remark}[remark]{Remark}\aliascntresetthe{remark}
+
+\newcommand{\T}{\mathbb{R}/\mathbb{Z}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\RePart}{\operatorname{Re}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\dist}[1]{\left\lVert #1\right\rVert}
+\newcommand{\InputSectionBody}[1]{\begingroup\renewcommand{\section}[1]{}\input{#1}\endgroup}
+
+\title{Squarefree Denominators and Reciprocal Sums of Distinct Semiprimes}
+\author{Yuren Tang}
+\thanks{ORCID: \href{https://orcid.org/0009-0006-0847-3330}{0009-0006-0847-3330}.}
+\dedicatory{\vspace{8pt}{\normalfont\fontencoding{LGR}\fontfamily{artemisia}\fontseries{m}\fontshape{n}\fontsize{10}{15}\selectfont\foreignlanguage{greek}{ΤΟΙΣ ΕΜΕ ΦΙΛΟΥΣΙΝ\\ΚΑΙ ΟΙΣ ΦΙΛΩ}}\vspace{12pt}}
+\subjclass[2020]{Primary 11D68; Secondary 11B75, 11L07}
+\keywords{Egyptian fractions, squarefree semiprimes, reciprocal sums, finite Fourier analysis, Chinese remainder theorem}
+\hypersetup{pdftitle={Squarefree Denominators and Reciprocal Sums of Distinct Semiprimes},pdfauthor={Yuren Tang},pdfsubject={Characterization of reciprocal sums of distinct squarefree semiprimes},pdfkeywords={Egyptian fractions, squarefree semiprimes, reciprocal sums, finite Fourier analysis, Chinese remainder theorem}}
+\date{}
+
+\begin{document}
+\begin{abstract}
+We characterize the positive rational numbers that are finite sums of reciprocals of distinct squarefree semiprimes. Such a representation exists if and only if the denominator in lowest terms is squarefree; moreover, the representing denominators may avoid any prescribed finite set. For a reduced target $t=a/b\in(0,1)$ with squarefree $b$, we construct an explicit family consisting of products of two primes in $[X,X^\gamma)$ together with auxiliary rows indexed by the prime divisors of $b$. Finite Fourier inversion reduces the problem to positivity of one coefficient. An upper fixed-ratio block of primes synchronizes the relevant Chinese-remainder coordinates, row estimates recover the remaining coordinates, and retained prime-pair factors control the noncentral frequencies. The central range has a positive Gaussian contribution, and a no-wrap argument converts the resulting congruence into exact equality. Prime dilution then gives the full characterization and finite avoidance.
+\end{abstract}
+\maketitle
+
+\input{sections/01_introduction}
+\input{sections/02_family_fourier}
+\input{sections/03_anchor_synchronization}
+\input{sections/04_coordinate_recovery}
+\input{sections/05_frequency_positivity}
+\input{sections/06_exact_realization}
+\input{sections/07_consequences_limitations}
+
+\section*{Acknowledgements}
+Generative-AI systems were used as research and editorial assistants during proof exploration, Lean development, source checking, and manuscript revision. The author is solely responsible for the final mathematical content, citations, and wording.
+
+\printbibliography
+\thispagestyle{plain}
+\end{document}
