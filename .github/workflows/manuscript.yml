@@ -32,68 +32,87 @@ jobs:
             texlive-latex-extra \
             texlive-plain-generic
 
-      - name: Clean Biber build
+      - name: Clean default and Garamond builds
         shell: bash
         run: |
           set -o pipefail
           make clean
           make pdf 2>&1 | tee build-output.log
+          make garamond 2>&1 | tee build-garamond-output.log
 
       - name: Upload build diagnostics
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: e306-manuscript-diagnostics-${{ github.sha }}
+          name: e306-manuscript-preview-diagnostics-${{ github.sha }}
           path: |
             paper/e306-anchor-fibre-v1/manuscript/build-output.log
+            paper/e306-anchor-fibre-v1/manuscript/build-garamond-output.log
             paper/e306-anchor-fibre-v1/manuscript/main.log
             paper/e306-anchor-fibre-v1/manuscript/main.blg
+            paper/e306-anchor-fibre-v1/manuscript/main-garamond.log
+            paper/e306-anchor-fibre-v1/manuscript/main-garamond.blg
           if-no-files-found: warn
           retention-days: 30
 
       - name: Gate bibliography, references, and labels
+        shell: bash
         run: |
-          test -s main.pdf
-          test -s main.bbl
-          if grep -E "LaTeX Warning: (There were undefined references|Citation .* undefined|Reference .* undefined|Label .* multiply defined)" main.log; then
-            echo "::error::unresolved or duplicate references remain"
-            exit 1
-          fi
-          if grep -E "There were undefined references|undefined citations|multiply-defined labels" main.log; then
-            echo "::error::unresolved or duplicate references remain"
-            exit 1
-          fi
-          if grep -E "^(WARN|ERROR) -" main.blg; then
-            echo "::error::Biber reported a warning or error"
-            exit 1
-          fi
+          for stem in main main-garamond; do
+            test -s "$stem.pdf"
+            test -s "$stem.bbl"
+            if grep -E "LaTeX Warning: (There were undefined references|Citation .* undefined|Reference .* undefined|Label .* multiply defined)" "$stem.log"; then
+              echo "::error::$stem has unresolved or duplicate references"
+              exit 1
+            fi
+            if grep -E "There were undefined references|undefined citations|multiply-defined labels" "$stem.log"; then
+              echo "::error::$stem has unresolved or duplicate references"
+              exit 1
+            fi
+            if grep -E "^(WARN|ERROR) -" "$stem.blg"; then
+              echo "::error::Biber reported a warning or error for $stem"
+              exit 1
+            fi
+          done
 
       - name: Verify embedded fonts
+        shell: bash
         run: |
-          pdffonts main.pdf | tee main-fonts.txt
-          if grep -q "Type 3" main-fonts.txt; then
-            echo "::error::Type 3 fonts are not permitted"
-            exit 1
-          fi
-          awk 'NR > 2 && $(NF-4) != "yes" { bad=1 } END { exit bad }' main-fonts.txt
+          for stem in main main-garamond; do
+            pdffonts "$stem.pdf" | tee "$stem-fonts.txt"
+            if grep -q "Type 3" "$stem-fonts.txt"; then
+              echo "::error::Type 3 fonts are not permitted in $stem.pdf"
+              exit 1
+            fi
+            awk 'NR > 2 && $(NF-4) != "yes" { bad=1 } END { exit bad }' "$stem-fonts.txt"
+          done
 
       - name: Build summary
         run: |
           {
-            echo "## E306 manuscript build"
+            echo "## E306 manuscript Owner preview"
             echo
             echo "- Commit: $GITHUB_SHA"
-            echo "- Entry point: \`paper/e306-anchor-fibre-v1/manuscript/main.tex\`"
-            echo "- Command: \`make clean && make pdf\`"
+            echo "- Default entry point: \`paper/e306-anchor-fibre-v1/manuscript/main.tex\`"
+            echo "- Garamond entry point: \`paper/e306-anchor-fibre-v1/manuscript/main-garamond.tex\`"
             echo "- Bibliography backend: Biber"
-            echo "- Result: clean PDF build, bibliography gate, and font-embedding gate passed"
-            echo "- PDF size: $(stat -c%s main.pdf) bytes"
+            echo "- Result: both PDFs passed clean build, bibliography/reference/label and embedded-font gates"
+            echo "- Default PDF size: $(stat -c%s main.pdf) bytes"
+            echo "- Garamond PDF size: $(stat -c%s main-garamond.pdf) bytes"
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Upload manuscript PDF
+      - name: Upload default manuscript PDF
         uses: actions/upload-artifact@v4
         with:
-          name: e306-manuscript-${{ github.sha }}
+          name: e306-manuscript-default-preview-${{ github.sha }}
           path: paper/e306-anchor-fibre-v1/manuscript/main.pdf
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload Garamond manuscript PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: e306-manuscript-garamond-preview-${{ github.sha }}
+          path: paper/e306-anchor-fibre-v1/manuscript/main-garamond.pdf
           if-no-files-found: error
           retention-days: 30
