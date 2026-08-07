@@ -1,133 +1,68 @@
-\documentclass[11pt,a4paper,reqno]{amsart}
+\documentclass[11pt]{amsart}
 
-\usepackage[LGR,T1]{fontenc}
-\usepackage[greek,british]{babel}
-\usepackage{csquotes}
-\usepackage{amsmath,amssymb,amsthm,mathtools}
-\usepackage{aliascnt}
-\usepackage[etbb]{newtx}
-\usepackage{newtxtt}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
 \usepackage{microtype}
+\usepackage{amsmath,amssymb,mathtools}
 \usepackage{enumitem}
-\usepackage{booktabs}
-\usepackage[hidelinks]{hyperref}
-\usepackage[nameinlink,noabbrev]{cleveref}
-\usepackage[
-  backend=biber,
-  style=numeric,
-  sorting=nyt,
-  sortcites=true,
-  giveninits=true,
-  maxbibnames=99,
-  doi=true,
-  url=true,
-  eprint=true,
-  urldate=long
-]{biblatex}
-\addbibresource{references.bib}
-\AtEveryBibitem{%
-  \iffieldundef{doi}
-    {\iffieldundef{eprint}
-       {}
-       {\clearfield{url}%
-        \clearfield{urldate}%
-        \clearfield{urlyear}%
-        \clearfield{urlmonth}%
-        \clearfield{urlday}}}
-    {\clearfield{url}%
-     \clearfield{urldate}%
-     \clearfield{urlyear}%
-     \clearfield{urlmonth}%
-     \clearfield{urlday}}}
-
-\DeclareFontSubstitution{LGR}{artemisia}{m}{n}
-\ifdefined\pdfglyphtounicode
-  \pdfglyphtounicode{Omega}{03A9}
-\fi
-
-\setlength{\emergencystretch}{2em}
-\numberwithin{equation}{section}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
 
 \newtheorem{theorem}{Theorem}[section]
-\newaliascnt{proposition}{theorem}
-\newtheorem{proposition}[proposition]{Proposition}
-\aliascntresetthe{proposition}
-\newaliascnt{lemma}{theorem}
-\newtheorem{lemma}[lemma]{Lemma}
-\aliascntresetthe{lemma}
-\newaliascnt{corollary}{theorem}
-\newtheorem{corollary}[corollary]{Corollary}
-\aliascntresetthe{corollary}
-\theoremstyle{definition}
-\newaliascnt{definition}{theorem}
-\newtheorem{definition}[definition]{Definition}
-\aliascntresetthe{definition}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
 \theoremstyle{remark}
-\newaliascnt{remark}{theorem}
-\newtheorem{remark}[remark]{Remark}
-\aliascntresetthe{remark}
+\newtheorem{remark}[theorem]{Remark}
 
-\newcommand{\T}{\mathbb{R}/\mathbb{Z}}
-\newcommand{\e}{\mathrm{e}}
-\newcommand{\E}{\mathbb{E}}
-\newcommand{\Prob}{\mathbb{P}}
-\newcommand{\RePart}{\operatorname{Re}}
-\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\e}{\mathrm e}
 \newcommand{\dist}[1]{\left\lVert #1\right\rVert}
-\newcommand{\InputSectionBody}[1]{%
-  \begingroup
-  \renewcommand{\section}[1]{}%
-  \input{#1}%
-  \endgroup
-}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
 
-\title{Reciprocal Sums of Distinct Squarefree Semiprimes}
+% The manuscript uses explicit section-equation tags.  Give every manual tag
+% the same string as a LaTeX label, so \eqref{6.28}, etc. are real cross-references.
+\makeatletter
+\let\E306rawtag\tag
+\renewcommand{\tag}[1]{\E306rawtag{#1}\label{#1}}
+\makeatother
+
+\title[Squarefree Semiprime Unit Fractions]{Squarefree Semiprime Unit Fractions:\\Local Limits and Erd\H{o}s Problem 306}
 \author{Yuren Tang}
-\thanks{ORCID: \href{https://orcid.org/0009-0006-0847-3330}{0009-0006-0847-3330}.}
-\dedicatory{%
-  \vspace{8pt}%
-  {\normalfont
-   \fontencoding{LGR}\fontfamily{artemisia}\fontseries{m}\fontshape{n}%
-   \fontsize{10}{15}\selectfont
-   \foreignlanguage{greek}{ΤΟΙΣ ΕΜΕ ΦΙΛΟΥΣΙΝ\\
-   ΚΑΙ ΟΙΣ ΦΙΛΩ}}%
-  \vspace{12pt}%
-}
-\subjclass[2020]{Primary 11D68; Secondary 11B75, 11L07}
-\keywords{Egyptian fractions, squarefree semiprimes, reciprocal sums, finite Fourier analysis, Chinese remainder theorem}
-\hypersetup{
-  pdftitle={Reciprocal Sums of Distinct Squarefree Semiprimes},
-  pdfauthor={Yuren Tang},
-  pdfsubject={Characterization and fixed-family local saturation for reciprocal sums of distinct squarefree semiprimes},
-  pdfkeywords={Egyptian fractions, squarefree semiprimes, reciprocal sums, finite Fourier analysis, Chinese remainder theorem}
-}
 \date{}
+
+\subjclass[2020]{Primary 11D68; Secondary 11B13, 11L07}
+\keywords{Egyptian fractions, semiprimes, local limit theorem, finite Fourier analysis, Erd\H{o}s problems}
 
 \begin{document}
 
 \begin{abstract}
-A positive rational is a finite sum of reciprocals of distinct squarefree semiprimes if and only if its reduced denominator is squarefree; the representing denominators may moreover avoid any prescribed finite set.  For a fixed reduced target $t=a/b\in(0,1)$ and a fixed $\gamma>1$ with $t<(\log\gamma)^2/2<1$, we construct one family from primes in $[X,X^\gamma)$.  The proof is organized through a source-twisted one-well composition interface: exact finite Fourier coefficients are combined with one-anchor observability, weighted fibre compression, an actual-kernel Gaussian well, source-uniform retained-factor tail bounds and a separate realization/no-wrap step.  This yields the exact fixed-target coefficient asymptotic and, uniformly on every fixed standardized compact window, a Gaussian moving-target profile for the same family.  Entropy-rate multiplicity, exact-cardinality and Hamming-separated subfamilies, proper-refinement branching and global transfer follow without introducing a second proof centre.
+We characterize the positive rationals that are finite sums of reciprocals of distinct squarefree semiprimes. A reduced rational $a/b>0$ admits such a representation if and only if $b$ is squarefree; moreover, the representation may be chosen to avoid any prescribed finite set of denominators. This resolves Erd\H{o}s Problem 306.
+
+For a fixed squarefree $b\ge3$ we construct a finite family $\mathcal E_X$ of squarefree semiprimes and place an independent Bernoulli law on its subsets, centred so that the expected reciprocal sum is $1/b$. Finite Fourier inversion, one-anchor rigidity, quantitative row observability, and retained damping show that the exact representation fibre has a local Gaussian profile. If $L_X$ is the natural common denominator, $\sigma_X^2$ is the reciprocal-sum variance, and $W_X(t)$ is the Bernoulli mass of exact representations of $t$ by the same family, then for every fixed $U>0$, uniformly for $|j|\le U L_X\sigma_X$,
+\[
+L_X\sigma_X W_X\!\left(\frac1b+\frac{j}{L_X}\right)
+=
+\frac{1}{\sqrt{2\pi}}
+\exp\!\left(-\frac{j^2}{2L_X^2\sigma_X^2}\right)+o_U(1).
+\]
+In particular, the target $1/b$ has the expected local-limit mass. This yields exponentially many exact representations, with the ambient entropy exponent in a mesoscopic typical-cardinality window, and shows that one fixed family realizes a growing consecutive block of nearby lattice targets.
 \end{abstract}
 
 \maketitle
 
-\input{sections/arch_e_01_introduction}
-\input{sections/arch_e_02_composition_interface}
-\input{sections/arch_e_03_reciprocal_system}
-\input{sections/arch_e_04_one_anchor}
-\input{sections/arch_e_05_rows_fibres}
-\input{sections/arch_e_06_decoded_tail}
-\input{sections/arch_e_07_actual_well}
-\input{sections/arch_e_08_positive_realization}
-\input{sections/arch_e_09_characterization}
-\input{sections/arch_e_10_saturation_quantitative}
-\input{sections/arch_e_11_scope}
+\input{sections/01_introduction}
+\input{sections/02_direct_family}
+\input{sections/03_fourier_and_no_wrap}
+\input{sections/04_one_anchor_rigidity}
+\input{sections/05_row_observability_and_compression}
+\input{sections/06_local_gaussian_analysis}
+\input{sections/07_multiplicity_and_entropy}
+\input{sections/08_moving_target_local_saturation}
+\input{sections/09_characterization_and_finite_avoidance}
+\input{sections/10_scope_and_outlook}
 
-\section*{Acknowledgements}
-Generative-AI systems assisted proof exploration, source checking and editorial revision.  The author takes full responsibility for the mathematics, citations and text.
-
-\clearpage
-\printbibliography
-\thispagestyle{plain}
+\bibliographystyle{alpha}
+\bibliography{references}
 
 \end{document}
