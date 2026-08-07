@@ -25,12 +25,8 @@ jobs:
             latexmk \
             lmodern \
             poppler-utils \
-            texlive-bibtex-extra \
-            texlive-fonts-extra \
             texlive-fonts-recommended \
-            texlive-lang-greek \
-            texlive-latex-extra \
-            texlive-plain-generic
+            texlive-latex-extra
 
       - name: Clean BibTeX build
         shell: bash
