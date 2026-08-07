@@ -18,6 +18,42 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Guard Oxford manuscript spelling
+        run: |
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+
+          files = [Path("main.tex"), *sorted(Path("sections").glob("*.tex"))]
+          forbidden = {
+              r"\bcentered\b": "centred",
+              r"\bfibers?\b": "fibre/fibres",
+              r"\banalyz(?:e|ed|es|ing)\b": "analyse/analysed/analyses/analysing",
+              r"\bbehavior(?:s|al)?\b": "behaviour...",
+              r"\blabel(?:ed|ing)\b": "labelled/labelling",
+              r"\bmodel(?:ed|ing)\b": "modelled/modelling",
+              r"\bcharacteris(?:e|ed|es|ing|ation|ations)\b": "characteriz...",
+              r"\bnormalis(?:e|ed|es|ing|ation|ations)\b": "normaliz...",
+              r"\borganis(?:e|ed|es|ing|ation|ations)\b": "organiz...",
+              r"\brealis(?:e|ed|es|ing|ation|ations)\b": "realiz...",
+              r"\brecognis(?:e|ed|es|ing|ation|ations)\b": "recogniz...",
+              r"\bstandardis(?:e|ed|es|ing|ation|ations)\b": "standardiz...",
+              r"\boptimis(?:e|ed|es|ing|ation|ations)\b": "optimiz...",
+              r"\bminimis(?:e|ed|es|ing|ation|ations)\b": "minimiz...",
+              r"\bmaximis(?:e|ed|es|ing|ation|ations)\b": "maximiz...",
+              r"\bsummaris(?:e|ed|es|ing|ation|ations)\b": "summariz...",
+          }
+          bad = []
+          for path in files:
+              text = path.read_text(encoding="utf-8")
+              for pattern, preferred in forbidden.items():
+                  for match in re.finditer(pattern, text, flags=re.IGNORECASE):
+                      line = text.count("\n", 0, match.start()) + 1
+                      bad.append(f"{path}:{line}: {match.group(0)!r} -> prefer {preferred}")
+          if bad:
+              raise SystemExit("Oxford-spelling guard failed:\n" + "\n".join(bad))
+          PY
+
       - name: Install TeX toolchain
         run: |
           sudo apt-get update
@@ -117,7 +153,7 @@ jobs:
             echo "- Command: \`make clean && make pdf\`"
             echo "- Engine: XeLaTeX"
             echo "- Bibliography backend: Biber"
-            echo "- Result: clean PDF build, bibliography/reference/label gate, font-embedding gate, and Unicode-dedication extraction gate passed"
+            echo "- Result: Oxford-spelling guard, clean PDF build, bibliography/reference/label gate, font-embedding gate, and Unicode-dedication extraction gate passed"
             echo "- PDF size: $(stat -c%s main.pdf) bytes"
             echo "- Pages: $(pdfinfo main.pdf | awk '/^Pages:/ {print $2}')"
           } >> "$GITHUB_STEP_SUMMARY"
