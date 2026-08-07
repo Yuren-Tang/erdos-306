@@ -15,50 +15,18 @@
 
 A committed control document does not attempt to contain its own commit hash. The exact current branch head is the head of PR `#9`.
 
-## August 2026 supersession
+## August 2026 supersession and audit closure
 
-On 2026-08-07, issue `#11#issuecomment-5216568870` superseded the July frozen candidate `f03105e95dc2ec5595a931293f6ca951e4bc424a` for future publication preparation and authorized controlled replacement of the manuscript source plus build/visual/publication-engineering gates.
+On 2026-08-07, issue `#11#issuecomment-5216568870` superseded the July frozen candidate `f03105e95dc2ec5595a931293f6ca951e4bc424a` for future publication preparation and authorized controlled replacement of the manuscript source plus build/visual/publication-engineering gates. The July candidate remains immutable historical evidence, not the current publication candidate.
 
-The July candidate remains immutable historical evidence. It is not the current publication candidate.
-
-The controlling clean source was promoted from exactly
+The clean mathematical source was promoted from
 
 ```text
 Yuren-Tang/research-workbench@43c205356fe5def721d54206af83928e95338fac
 intake/2026-08-07-e306-arxiv-v1/latex/
 ```
 
-The active manuscript files on this branch were checked by Git blob identity against that audited source. The promotion itself introduced no manuscript-text change.
-
-## Mathematical audit boundary
-
-### Direct one-anchor proof
-
-Primary proof source:
-
-```text
-Yuren-Tang/erdos-306@07ed8dcaff334ba9da4b9c87337455c2eca25002
-proof-development/ONE-ANCHOR-HUMAN-PROOF.md
-```
-
-Independent route audit:
-
-```text
-1d63273ede93e1b83abf1ab9073d91b76600c23c
-PASS / GENUINE STRICT SIMPLIFICATION
-```
-
-### Clean-v1 whole-manuscript audit
-
-The August clean manuscript received a genuinely independent mathematical/source audit:
-
-```text
-E306-CLEAN-V1-INDEPENDENT-AUDIT-01
-```
-
-Verdict: all three public theorem blocks and all five load-bearing interfaces passed mathematically; four source-only repairs were requested.
-
-Those four repairs were applied at the controlling research-workbench source above and independently re-checked:
+The clean manuscript received the genuinely independent audit `E306-CLEAN-V1-INDEPENDENT-AUDIT-01`. All three public theorem blocks and all five load-bearing interfaces passed mathematically. Four source-only repairs were applied and then independently closed by
 
 ```text
 [PASS E306-CLEAN-V1-BOUNDED-RECHECK-01]
@@ -66,9 +34,7 @@ Those four repairs were applied at the controlling research-workbench source abo
 
 No mathematical repair, theorem restriction, exponent change, or new estimate remains pending.
 
-### Formal Lean axis
-
-The archived Lean release remains an orthogonal existence/priority record. The present analytic manuscript is not a line-by-line formalization and does not inherit human-proof assurance from Lean or vice versa.
+The post-promotion publication edits in `main.tex`, Section 10, bibliography metadata, build plumbing, and style-profile files are presentation/source-engineering changes only. Mathematical Sections 1–9 remain the independently audited clean source unless a later disposition explicitly states otherwise.
 
 ## Public theorem package
 
@@ -80,21 +46,9 @@ The article intentionally has three main mathematical blocks.
 
 The fixed-target local limit is the central value of the local-profile theorem, not a separate proof route.
 
-## Deliberate scope exclusions
+## Deliberate mathematical scope
 
-The current article does **not** make any of the following load-bearing or claim them as part of v1:
-
-- the fully abstract anchor--fibre transference theorem;
-- general fixed targets `t` with free `gamma,eta` parameters;
-- the multiblock or sparse-sensor proof as a second full proof;
-- restricted-prime/AP/Chebotarev extensions;
-- reciprocal-incidence graph algebra;
-- thin-sensor/GFF/end-point programmes;
-- finite-prefix CRT programmes;
-- a growing standardized moving-target radius `U_X -> infinity`;
-- quantitative transfer to denominators `b=1,2`.
-
-These remain separate research/publication reserves rather than material to be consumed in this first paper.
+The current article does not make the fully abstract anchor–fibre transference theorem, general fixed targets with free parameters, alternative multiblock/sparse proofs, restricted-prime extensions, reciprocal-incidence graph algebra, finite-prefix CRT programmes, growing standardized target radius, or quantitative `b=1,2` transfer load-bearing. These remain outside this paper unless separately disposed.
 
 ## Manuscript architecture
 
@@ -109,7 +63,7 @@ The active public manuscript has ten sections:
 7. Multiplicity and typical cardinality.
 8. Moving-target local saturation.
 9. Characterization and finite-avoidance consequences.
-10. Scope, limitations, and further directions.
+10. Further questions and perspective.
 
 The narrative spine is
 
@@ -124,31 +78,49 @@ arithmetic family
 
 Technical Fourier sectors are subordinate proof ranges, not the article's organizing principle.
 
+## Language and presentation control
+
+The controlling project profile is `MANUSCRIPT_STYLE_PROFILE.md` in this directory. Its present decisions include:
+
+- British English with Oxford spelling and philological attention to Greek/Latin-derived vocabulary;
+- `amsart`, A4, 11 pt, right equation numbers;
+- TeX Gyre Pagella text, NewPX mathematics, Inconsolata monospace;
+- XeLaTeX for semantic Unicode handling;
+- the Greek dedication in literal Unicode, not LGR/transliteration;
+- no institutional affiliation or email in arXiv v1;
+- a visible linked ORCID with the author identity;
+- concise AI disclosure with no Lean-development claim in this article;
+- `biblatex`/Biber with alphabetic pure-mathematics labels and no forced bibliography page break;
+- quiet hyperlinks and restrained mathematical-humanist typography.
+
+The portfolio manuscript standard specialized by this profile is recorded at `research-workbench@3b34de193647335c1c8ddfb3974554b76c21bbe5`. At adoption time that general standard was authorially complete but its independent cross-project audit was still pending; it must not be described as fully ratified until that audit is actually closed.
+
+## Working-tree hygiene
+
+The superseded July manuscript sections, Architecture-E wrappers, obsolete proof/architecture ledgers, and draft mathematics files were removed from the current publication branch on 2026-08-07. Their history remains recoverable through Git. The working branch is intentionally the surface of the current paper, not an archive of superseded candidates.
+
 ## Source and build surface
 
 - manuscript entry point: `paper/e306-anchor-fibre-v1/manuscript/main.tex`;
 - build command: `make clean && make pdf`;
-- bibliography backend: **BibTeX**;
+- engine: **XeLaTeX**;
+- bibliography backend: **Biber**;
 - CI workflow: `.github/workflows/manuscript.yml`;
 - active public source consists of `main.tex`, `references.bib`, and the ten files named by the `\input` statements in `main.tex`.
 
-Files left in `manuscript/sections/` from the July candidate are historical branch artifacts only. They are not active source and must not be included in a minimal arXiv source archive unless explicitly referenced by the current `main.tex`.
+The arXiv source archive must contain only the files required by that build. Internal control/profile files are not part of the submission source.
 
-Actual TeX/BibTeX, reference/label, font/glyph, extraction, PDF visual, and arXiv-portability evidence must come from post-promotion build gates; no pre-August 42-page forensic build evidence transfers to the clean manuscript.
+## Formal Lean axis
 
-## Legacy-control boundary
-
-Control and architecture documents created before the 2026-08-07 supersession describe earlier manuscript candidates. In particular, older versions of `ARTICLE_ARCHITECTURE.md`, `THEOREM_DAG.md`, `PROOF_OBLIGATION_LEDGER.md`, and `PROOF_CHANGE_LEDGER.md` are retained as historical process evidence but are **noncontrolling for the clean August manuscript unless this file or a later dated disposition explicitly imports a statement from them**.
-
-This rule prevents stale Architecture-E, general-parameter, Biber, or old publication-freeze statements from silently governing the clean candidate.
+The archived Lean release remains an orthogonal existence/priority record. The present analytic manuscript contains no Lean argument and the AI acknowledgement must not imply that Lean development is part of the paper's contents. No manuscript theorem depends on the formal artifact.
 
 ## Product rules
 
 - One article, one branch, one draft PR.
 - No task-, auditor-, repair-, or revision-specific manuscript branches.
 - Mathematical changes after the independent PASS require explicit disposition and appropriate re-audit.
-- Pure build/plumbing repairs may proceed under the August supersession authorization, but must not alter audited mathematics silently.
-- Owner approval is required before marking PR `#9` ready, merge, release, DOI action, licence selection, arXiv upload, journal submission, or external contact.
+- Pure presentation/build/plumbing repairs may proceed under the August supersession authorization, but must not alter audited mathematics silently.
+- Owner approval is required before marking PR `#9` ready, merge, release, DOI action, arXiv upload, journal submission, or external contact.
 
 ## Current state
 
@@ -156,8 +128,8 @@ This rule prevents stale Architecture-E, general-parameter, Biber, or old public
 [CLEAN AUGUST V1 CONTROLLING CANDIDATE]
 [MATHEMATICAL AUDIT CLOSED]
 [BOUNDED SOURCE RE-CHECK PASS]
-[AUDITED SOURCE PROMOTED BYTE-FOR-BYTE]
-[PUBLICATION ENGINEERING IN PROGRESS]
+[SUPERSEDED WORKING FILES REMOVED]
+[FINAL STYLE / UNICODE / BIBLIOGRAPHY ENGINEERING IN PROGRESS]
 [PR #9 OPEN / DRAFT / UNMERGED]
 [NO EXTERNAL PUBLICATION ACTION AUTHORIZED]
 ```

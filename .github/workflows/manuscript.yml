@@ -23,17 +23,27 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             latexmk \
-            lmodern \
+            biber \
             poppler-utils \
+            texlive-bibtex-extra \
+            texlive-fonts-extra \
             texlive-fonts-recommended \
-            texlive-latex-extra
+            texlive-latex-extra \
+            texlive-xetex
 
-      - name: Clean BibTeX build
+      - name: Clean XeLaTeX and Biber build
         shell: bash
         run: |
           set -o pipefail
           make clean
           make pdf 2>&1 | tee build-output.log
+
+      - name: Extract PDF text
+        if: always()
+        run: |
+          if test -s main.pdf; then
+            pdftotext -enc UTF-8 main.pdf main.txt
+          fi
 
       - name: Upload build diagnostics
         if: always()
@@ -44,6 +54,7 @@ jobs:
             paper/e306-anchor-fibre-v1/manuscript/build-output.log
             paper/e306-anchor-fibre-v1/manuscript/main.log
             paper/e306-anchor-fibre-v1/manuscript/main.blg
+            paper/e306-anchor-fibre-v1/manuscript/main.txt
           if-no-files-found: warn
           retention-days: 30
 
@@ -59,12 +70,12 @@ jobs:
             echo "::error::unresolved or duplicate references remain"
             exit 1
           fi
-          if grep -E "^Warning--" main.blg; then
-            echo "::error::BibTeX reported a warning"
+          if grep -E "(^|[[:space:]])(WARN|ERROR) -" main.blg; then
+            echo "::error::Biber reported a warning or error"
             exit 1
           fi
 
-      - name: Verify embedded fonts
+      - name: Verify embedded fonts and Unicode dedication
         run: |
           pdffonts main.pdf | tee main-fonts.txt
           if grep -q "Type 3" main-fonts.txt; then
@@ -72,6 +83,15 @@ jobs:
             exit 1
           fi
           awk 'NR > 2 && $(NF-4) != "yes" { bad=1 } END { exit bad }' main-fonts.txt
+          python3 - <<'PY'
+          import unicodedata
+          from pathlib import Path
+          text = unicodedata.normalize("NFC", Path("main.txt").read_text(encoding="utf-8"))
+          required = ["τοῖς ἐμὲ φιλοῦσιν", "καὶ οἷς φιλῶ"]
+          missing = [s for s in required if s not in text]
+          if missing:
+              raise SystemExit("Unicode dedication extraction failed: " + repr(missing))
+          PY
 
       - name: Build summary
         run: |
@@ -81,8 +101,9 @@ jobs:
             echo "- Commit: $GITHUB_SHA"
             echo "- Entry point: \`paper/e306-anchor-fibre-v1/manuscript/main.tex\`"
             echo "- Command: \`make clean && make pdf\`"
-            echo "- Bibliography backend: BibTeX"
-            echo "- Result: clean PDF build, bibliography/reference/label gate, and font-embedding gate passed"
+            echo "- Engine: XeLaTeX"
+            echo "- Bibliography backend: Biber"
+            echo "- Result: clean PDF build, bibliography/reference/label gate, font-embedding gate, and Unicode-dedication extraction gate passed"
             echo "- PDF size: $(stat -c%s main.pdf) bytes"
             echo "- Pages: $(pdfinfo main.pdf | awk '/^Pages:/ {print $2}')"
           } >> "$GITHUB_STEP_SUMMARY"

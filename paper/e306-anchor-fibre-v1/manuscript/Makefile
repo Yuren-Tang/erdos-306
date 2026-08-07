@@ -5,7 +5,7 @@ LATEXMK ?= latexmk
 all: pdf
 
 pdf:
-	$(LATEXMK) -pdf -interaction=nonstopmode -halt-on-error -file-line-error main.tex
+	$(LATEXMK) -xelatex -interaction=nonstopmode -halt-on-error -file-line-error main.tex
 
 clean:
 	$(LATEXMK) -c main.tex

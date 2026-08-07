@@ -1,11 +1,43 @@
-\documentclass[11pt]{amsart}
+\documentclass[11pt,a4paper,reqno]{amsart}
 
+\usepackage[british]{babel}
 \usepackage[T1]{fontenc}
-\usepackage{lmodern}
-\usepackage{microtype}
 \usepackage{amsmath,amssymb,mathtools}
+\usepackage[nohelv,nott]{newpxmath}
+\usepackage[no-math]{fontspec}
+\setmainfont{texgyrepagella-regular.otf}[
+  BoldFont=texgyrepagella-bold.otf,
+  ItalicFont=texgyrepagella-italic.otf,
+  BoldItalicFont=texgyrepagella-bolditalic.otf,
+  Ligatures=TeX
+]
+\setmonofont{Inconsolatazi4-Regular.otf}[
+  BoldFont=Inconsolatazi4-Bold.otf,
+  Scale=MatchLowercase
+]
+\newfontfamily\greekdedicationfont{GFSPorson.otf}
+\usepackage{microtype}
 \usepackage{enumitem}
-\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{csquotes}
+\usepackage[
+  backend=biber,
+  style=alphabetic,
+  sorting=nyt,
+  sortcites=true,
+  giveninits=true,
+  maxbibnames=99,
+  doi=true,
+  url=true,
+  eprint=true
+]{biblatex}
+\addbibresource{references.bib}
+\AtEveryBibitem{%
+  \iffieldundef{doi}
+    {\iffieldundef{eprint}
+       {}
+       {\clearfield{url}}}
+    {\clearfield{url}}}
+\usepackage[hidelinks]{hyperref}
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}[theorem]{Proposition}
@@ -34,12 +66,28 @@
   }
 \ExplSyntaxOff
 
-\title[Squarefree Semiprime Unit Fractions]{Squarefree Semiprime Unit Fractions:\\Local Limits and Erd\H{o}s Problem 306}
-\author{Yuren Tang}
+\title[Squarefree Semiprime Unit Fractions]{Squarefree Semiprime Unit Fractions:\\
+A Characterization and a Local Limit Theorem}
+\author{Yuren Tang\\[-0.15em]
+  {\normalfont\footnotesize
+   \href{https://orcid.org/0009-0006-0847-3330}{ORCID: 0009-0006-0847-3330}}}
+\renewcommand{\shortauthors}{Yuren Tang}
 \date{}
 
+\dedicatory{%
+  {\normalfont\greekdedicationfont\fontsize{10.5}{15}\selectfont
+   τοῖς ἐμὲ φιλοῦσιν\\
+   καὶ οἷς φιλῶ}%
+}
+
 \subjclass[2020]{Primary 11D68; Secondary 11B13, 11L07}
-\keywords{Egyptian fractions, semiprimes, local limit theorem, finite Fourier analysis, Erd\H{o}s problems}
+\keywords{Egyptian fractions, squarefree semiprimes, local limit theorem, finite Fourier analysis, Erdős Problem 306}
+\hypersetup{
+  pdftitle={Squarefree Semiprime Unit Fractions: A Characterization and a Local Limit Theorem},
+  pdfauthor={Yuren Tang},
+  pdfsubject={Characterization and local Gaussian statistics for reciprocal representations by distinct squarefree semiprimes},
+  pdfkeywords={Egyptian fractions, squarefree semiprimes, local limit theorem, finite Fourier analysis, Erdős Problem 306}
+}
 
 \begin{document}
 
@@ -69,7 +117,9 @@ In particular, the target $1/b$ has the expected local-limit mass. This yields e
 \input{sections/09_characterization_and_finite_avoidance}
 \input{sections/10_scope_and_outlook}
 
-\bibliographystyle{alpha}
-\bibliography{references}
+\section*{Acknowledgements}
+Generative-AI systems assisted mathematical exploration, proof development, source and citation checking, and editorial revision. The author takes full responsibility for the mathematics, citations, and text.
+
+\printbibliography
 
 \end{document}
