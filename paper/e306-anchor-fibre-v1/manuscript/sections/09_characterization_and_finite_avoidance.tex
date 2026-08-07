@@ -1,0 +1,134 @@
+\section{Characterization and finite-avoidance consequences}\label{sec:characterization}
+
+The analytic work is complete. We now pass from the direct unit target to arbitrary positive rationals and record the qualitative consequences of finite avoidance.
+
+\subsection{The avoiding unit theorem}
+
+\begin{theorem}[Avoiding representation of $1/b$]\label{thm:avoiding-unit}
+Let $b\ge3$ be squarefree, and let $T\subset\N$ be finite. Then there is a finite set $A$ of pairwise distinct squarefree semiprimes, disjoint from $T$, such that
+\[
+\sum_{e\in A}\frac1e=\frac1b.
+\tag{9.1}
+\]
+\end{theorem}
+
+\begin{proof}
+Choose $X$ so large that every denominator in the direct family $\mathcal E_X$ exceeds every element of $T$. By Lemma \ref{lem:arithmetic-shape}, the members of $\mathcal E_X$ are pairwise distinct squarefree semiprimes outside $T$. The central local limit \eqref{6.28} gives $P>0$ for all sufficiently large $X$, so some subset of $\mathcal E_X$ represents $1/b$ exactly.
+\end{proof}
+
+\subsection{Arbitrary numerators and small denominators}
+
+\begin{lemma}[Numerator induction]\label{lem:numerator-induction}
+Fix squarefree $b\ge3$. For every integer $a\ge1$ and every finite forbidden set $T$, there is a representation
+\[
+\frac ab=\sum_{e\in A}\frac1e
+\tag{9.2}
+\]
+by distinct squarefree semiprimes outside $T$.
+\end{lemma}
+
+\begin{proof}
+Induct on $a$. The case $a=1$ is Theorem \ref{thm:avoiding-unit}. Suppose $a/b$ has been represented on a finite support $A_0$ disjoint from $T$. Apply Theorem \ref{thm:avoiding-unit} with forbidden set $T\cup A_0$, obtaining a fresh support $A_1$ whose reciprocal sum is $1/b$. Then $A_0\sqcup A_1$ represents $(a+1)/b$ and still avoids $T$.
+\end{proof}
+
+\begin{lemma}[Denominators $1$ and $2$]\label{lem:small-denominators}
+Finite-avoiding unit representations also exist for $1$ and $1/2$.
+\end{lemma}
+
+\begin{proof}
+For $1/2$, choose disjoint avoiding representations of $1/3$ and $1/6$ and use
+\[
+\frac12=\frac13+\frac16.
+\]
+For $1$, choose three successive pairwise disjoint avoiding representations of $1/3$. At each stage all previously used denominators are added to the forbidden set.
+\end{proof}
+
+We can now prove Theorem \ref{thm:characterization}.
+
+\begin{proof}[Proof of Theorem \ref{thm:characterization}]
+For necessity, suppose
+\[
+q=\sum_{e\in A}\frac1e
+\]
+with every $e$ squarefree, and put $M=\operatorname{lcm}(A)$. Then
+\[
+q=\frac{\sum_{e\in A}M/e}{M}.
+\]
+The reduced denominator of $q$ divides the squarefree integer $M$, and is therefore squarefree.
+
+Conversely, let $q=a/b>0$ be reduced with squarefree $b$. If $b\ge3$, apply Lemma \ref{lem:numerator-induction}. If $b=1$ or $2$, first obtain a finite-avoiding unit representation from Lemma \ref{lem:small-denominators} and then repeat the same numerator-induction argument. This proves both sufficiency and arbitrary finite avoidance.
+\end{proof}
+
+\subsection{Thresholds, disjoint supports, and many terms}
+
+\begin{corollary}\label{cor:qualitative-abundance}
+Let $q>0$ have squarefree reduced denominator.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item For every $N$, $q$ has a representation all of whose denominators exceed $N$.
+\item $q$ has infinitely many representations with pairwise disjoint supports.
+\item $q$ has representations with arbitrarily many terms.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+For (i), forbid $\{1,\ldots,N\}$. For (ii), construct representations recursively, at each stage forbidding every denominator used earlier. For (iii), use (i): if every denominator exceeds $N$, then every unit fraction is less than $1/N$, so any representation of the fixed positive number $q$ has more than $qN$ terms once $N$ is large.
+\end{proof}
+
+\subsection{Finite prescription}
+
+\begin{proposition}[Extension of a partial support]\label{prop:finite-prescription}
+Let $q>0$ have squarefree reduced denominator. Let $S$ be a finite set of distinct squarefree semiprimes such that
+\[
+\sum_{e\in S}\frac1e\le q,
+\tag{9.3}
+\]
+and let $T$ be a finite set disjoint from $S$. Then $S$ extends to a representation of $q$ by distinct squarefree semiprimes which avoids $T$.
+\end{proposition}
+
+\begin{proof}
+If equality holds in \eqref{9.3}, there is nothing to add. Otherwise set
+\[
+r=q-\sum_{e\in S}\frac1e>0.
+\]
+Write $q$ and all $1/e$, $e\in S$, over one common denominator $D$. Since the reduced denominator of $q$ and every $e\in S$ is squarefree, $D$ is squarefree. Thus $r=N/D$ for some positive integer $N$, and the reduced denominator of $r$ divides $D$. Theorem \ref{thm:characterization} therefore represents $r$ using denominators outside $S\cup T$. Adjoining that support to $S$ gives the result.
+\end{proof}
+
+\subsection{Common proper refinements}
+
+\begin{proposition}[Common proper refinement]\label{prop:common-refinement}
+Any finite family of squarefree-semiprime representations of the same positive rational $q$ with squarefree reduced denominator admits a common proper refinement. The refining denominators may also be required to avoid any prescribed finite set.
+\end{proposition}
+
+\begin{proof}
+It is enough to treat two representations and then iterate. Write
+\[
+q=\sum_{i=1}^r\frac1{e_i}
+=
+\sum_{j=1}^s\frac1{f_j}.
+\]
+Let $D$ be the least common multiple of all $e_i$ and $f_j$. It is squarefree. Put
+\[
+a_i=\frac{D}{e_i},
+\qquad
+b_j=\frac{D}{f_j}.
+\]
+Then
+\[
+\sum_i a_i=\sum_j b_j=qD.
+\]
+Choose a nonnegative integral matrix $(x_{ij})$ with row sums $a_i$ and column sums $b_j$; the usual northwest-corner construction gives one.
+
+For every positive entry $x_{ij}$, the rational $x_{ij}/D$ has squarefree reduced denominator. Apply Theorem \ref{thm:characterization} successively to realize each positive $x_{ij}/D$, forbidding all original denominators, the externally prescribed finite set, and every denominator already used in an earlier cell. The cell supports are then pairwise disjoint.
+
+For fixed $i$, the union of the row-$i$ supports has reciprocal sum
+\[
+\sum_j\frac{x_{ij}}D
+=
+\frac{a_i}{D}
+=
+\frac1{e_i};
+\]
+for fixed $j$, the column union similarly sums to $1/f_j$. The same new family therefore refines both original representations. Since no original denominator is reused, the refinement is proper. Iterating gives a common refinement of any finite family.
+\end{proof}
+
+Repeated application produces infinite chains of proper refinements with pairwise disjoint new levels. These structural consequences are not used elsewhere; they are included to show that finite avoidance is substantially stronger than bare existence.
