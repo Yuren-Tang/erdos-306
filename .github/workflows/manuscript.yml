@@ -25,12 +25,19 @@ jobs:
             latexmk \
             biber \
             poppler-utils \
+            tex-gyre \
             texlive-bibtex-extra \
             texlive-fonts-extra \
             texlive-fonts-recommended \
             texlive-latex-extra \
             texlive-plain-generic \
             texlive-xetex
+
+      - name: Verify required TeX Live font files
+        run: |
+          kpsewhich texgyrepagella-regular.otf
+          kpsewhich GFSPorson.otf
+          kpsewhich Inconsolatazi4-Regular.otf
 
       - name: Clean XeLaTeX and Biber build
         shell: bash
