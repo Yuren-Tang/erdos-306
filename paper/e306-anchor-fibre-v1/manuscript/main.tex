@@ -1,21 +1,32 @@
 \documentclass[11pt,a4paper,reqno]{amsart}
 
 \usepackage[british]{babel}
-\usepackage[T1]{fontenc}
 \usepackage{amsmath,amssymb,mathtools}
 \usepackage{newpxmath}
 \usepackage[no-math]{fontspec}
-\setmainfont{texgyrepagella-regular.otf}[
-  BoldFont=texgyrepagella-bold.otf,
-  ItalicFont=texgyrepagella-italic.otf,
-  BoldItalicFont=texgyrepagella-bolditalic.otf,
-  Ligatures=TeX
-]
-\setmonofont{Inconsolatazi4-Regular.otf}[
-  BoldFont=Inconsolatazi4-Bold.otf,
-  Scale=MatchLowercase
-]
-\newfontfamily\greekdedicationfont{GFSPorson.otf}
+\IfFontExistsTF{TeX Gyre Pagella}{%
+  \setmainfont{TeX Gyre Pagella}[Ligatures=TeX]%
+}{%
+  \setmainfont{texgyrepagella-regular.otf}[
+    BoldFont=texgyrepagella-bold.otf,
+    ItalicFont=texgyrepagella-italic.otf,
+    BoldItalicFont=texgyrepagella-bolditalic.otf,
+    Ligatures=TeX
+  ]%
+}
+\IfFontExistsTF{Inconsolata}{%
+  \setmonofont{Inconsolata}[Scale=MatchLowercase]%
+}{%
+  \setmonofont{Inconsolatazi4-Regular.otf}[
+    BoldFont=Inconsolatazi4-Bold.otf,
+    Scale=MatchLowercase
+  ]%
+}
+\IfFontExistsTF{GFS Porson}{%
+  \newfontfamily\greekdedicationfont{GFS Porson}%
+}{%
+  \newfontfamily\greekdedicationfont{GFSPorson.otf}%
+}
 \usepackage{microtype}
 \usepackage{enumitem}
 \usepackage{csquotes}
