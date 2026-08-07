@@ -1,150 +1,163 @@
-# E306-PAPER-01 — control surface
+# E306-PAPER-01 — controlling publication surface
 
 ## Product identity
 
 - **Repository:** `Yuren-Tang/erdos-306`
 - **Controlling issue:** `#8`
+- **Publication gate:** `#11`
 - **Draft PR:** `#9`
 - **Lifecycle:** persistent single-product manuscript lane
 - **Sole branch:** `paper/e306-anchor-fibre-v1`
-- **Exact base:** `main@5a6207a493067f02c67b1cfa69fa8c5498f2c005`
+- **Base:** `main@5a6207a493067f02c67b1cfa69fa8c5498f2c005`
 - **Writer capacity:** one writer at a time
-- **Audit capacity:** one-off read-only roles with no branch ownership
-- **Shared writer allocation:** none
-- **Publication state:** Owner hold
+- **Independent audit capacity:** one-off read-only roles with no branch ownership
+- **External publication state:** not authorized; internal publication engineering only
 
-The exact current branch head is recorded in PR `#9` and the latest durable issue return. A committed control document does not attempt to contain its own commit hash.
+A committed control document does not attempt to contain its own commit hash. The exact current branch head is the head of PR `#9`.
 
-## Current writer disposition
+## August 2026 supersession
 
-Authorized role:
+On 2026-08-07, issue `#11#issuecomment-5216568870` superseded the July frozen candidate `f03105e95dc2ec5595a931293f6ca951e4bc424a` for future publication preparation and authorized controlled replacement of the manuscript source plus build/visual/publication-engineering gates.
 
-```text
-E306 — Native Fixed-Ratio Anchor Whole-Article Reparameterization Writer 01
-E306-NATIVE-FIXED-RATIO-ANCHOR-WHOLE-ARTICLE-REPARAMETERIZATION-WRITER-01
-```
+The July candidate remains immutable historical evidence. It is not the current publication candidate.
 
-Authorization: `#issuecomment-5150232754`.
-
-Exact authorized starting head:
+The controlling clean source was promoted from exactly
 
 ```text
-b64bac1f9426cbeb60090a6dbdc147c5e67386ac
+Yuren-Tang/research-workbench@43c205356fe5def721d54206af83928e95338fac
+intake/2026-08-07-e306-arxiv-v1/latex/
 ```
 
-That starting head contained an append-only fixed-ratio proposition whose architecture was rejected by the Director correction at `#issuecomment-5150229586`. The current writer successor removes the standalone annex and makes the fixed anchor ratio native throughout the article. It is a writer result, not an independent audit or certification.
+The active manuscript files on this branch were checked by Git blob identity against that audited source. The promotion itself introduced no manuscript-text change.
 
-## Mathematical source hierarchy
+## Mathematical audit boundary
 
-### Preferred ordinary proof
+### Direct one-anchor proof
 
-- source: `proof-development/e306-one-anchor-v1@07ed8dcaff334ba9da4b9c87337455c2eca25002`
-- audit source: `review/e306-one-anchor-proof-audit-v1@1d63273ede93e1b83abf1ab9073d91b76600c23c`
-- disposition: `PASS / GENUINE STRICT SIMPLIFICATION`
+Primary proof source:
 
-### General anchor–fibre structures
+```text
+Yuren-Tang/erdos-306@07ed8dcaff334ba9da4b9c87337455c2eca25002
+proof-development/ONE-ANCHOR-HUMAN-PROOF.md
+```
 
-- original source: `research/e306-anchor-fibre-transference-v1@2f49ab25c36326e9ea39e3fc0ed1d22a22b11693`
-- adoption audit: `E306-AFT-AUDIT-02`
-- repair verification: `E306-AFT-REPAIR-VERIFY-01`
-- verified repair head: `5945a2b9d3c596bed13f42201be11a39d4a0068c`
-- disposition: all bounded statement and specialization-bridge repairs passed.
+Independent route audit:
 
-### Fixed-ratio source and value boundary
+```text
+1d63273ede93e1b83abf1ab9073d91b76600c23c
+PASS / GENUINE STRICT SIMPLIFICATION
+```
 
-The accepted fixed-ratio research and value audit establish that the existing one-anchor/fingerprint proof works for every fixed `eta in (0,1)` with constants depending on `eta`, uniformly on compact subsets of `(0,1)`. They also establish that a shrinking-width terminal block and reciprocal-flow machinery form a second anchor theory and are not load-bearing for this article.
+### Clean-v1 whole-manuscript audit
 
-### Formal lineage
+The August clean manuscript received a genuinely independent mathematical/source audit:
 
-The headline theorem was first obtained in the author's archived Lean 4 release `0.0.3`. The present article grew out of that formal work and develops the same Fourier-analytic lineage into a conceptually refined one-anchor exposition. The archived code does not formalize the article line by line.
+```text
+E306-CLEAN-V1-INDEPENDENT-AUDIT-01
+```
 
-## Governing mathematical disposition
+Verdict: all three public theorem blocks and all five load-bearing interfaces passed mathematically; four source-only repairs were requested.
 
-1. Fix a reduced target `t=a/b in (0,1)` with squarefree `b`, a fixed exponent `gamma>1`, a fixed anchor ratio `eta in (0,1)`, finite forbidden data, and `Z=X^gamma`.
-2. The native anchor is `B={q prime: eta Z<=q<Z}`.
-3. The exact fixed-ratio moments are
+Those four repairs were applied at the controlling research-workbench source above and independently re-checked:
 
-   ```text
-   |B|=(1-eta+o_eta(1)) Z/log Z,
-   sum_(q in B)1/q=(log(1/eta)+o_eta(1))/log Z,
-   sum_(q in B)1/q^2=(eta^(-1)-1+o_eta(1))/(Z log Z).
-   ```
+```text
+[PASS E306-CLEAN-V1-BOUNDED-RECHECK-01]
+```
 
-4. The sharp admissible region is `t<(log gamma)^2/2<1`, with exact centring `theta Lambda=t` and limiting parameter `2t/(log gamma)^2`.
-5. Target rows are indexed by `S_b`, with `tau(b)=sum_(r in S_b)1/r^2`.
-6. The total actual-family variance is
+No mathematical repair, theorem restriction, exponent change, or new estimate remains pending.
 
-   ```text
-   sigma_E^2
-    ~ alpha_(t,gamma)(1-alpha_(t,gamma))
-      {1/(2X^2 log^2 X)
-       +(eta^(-1)-1)tau(b)/(Z log Z)}.
-   ```
+### Formal Lean axis
 
-7. The structural factor `1/2` in the complete-pair identity is preserved; it is unrelated to the former dyadic anchor endpoint.
-8. Fixed-ratio reciprocal dispersion, exact anchor rigidity, fingerprint entropy and the weighted anchor partition use `eta`-dependent constants.
-9. The lower-prime row distance is supplied by the multiplicity-sensitive cyclic-energy lemma with interval multiplicity `1+(1-eta)Z/r`.
-10. The universal full-coordinate cutoff is `T_0=kappa_0(t,gamma,eta,b) min(X^2,Z)`.
-11. The adaptive retained-prime interval lies below `eta Z` for sufficiently large `X`.
-12. One pairwise-disjoint exhaustive six-sector architecture applies for every fixed `(gamma,eta)`.
-13. Quotient positivity is followed by deterministic no-wrap to give direct fixed-target exactness.
-14. The full characterization follows by prime dilution.
-15. The quantitative branch uses the native total variance and preserves the leading entropy and height rates; the former Hamming exponent notation is renamed so that `eta` denotes only the anchor ratio.
-16. A varying `eta=eta(X)->1`, shrinking terminal width, thin-anchor exponent theorem and reciprocal-flow machinery are outside the article.
+The archived Lean release remains an orthogonal existence/priority record. The present analytic manuscript is not a line-by-line formalization and does not inherit human-proof assurance from Lean or vice versa.
 
-## Maintained manuscript architecture
+## Public theorem package
 
-The live manuscript remains an eleven-section Architecture-E article:
+The article intentionally has three main mathematical blocks.
 
-1. Introduction and main results.
-2. Composition interface.
-3. Reciprocal-semiprime system.
-4. One anchor and rigidity.
-5. Rows, observability and fibres.
-6. Decoded tail.
-7. Actual local well.
-8. Positive coefficient, realization and no-wrap.
-9. Characterization and refinement.
-10. Compact fixed-family saturation and quantitative consequences.
-11. Scope, boundaries and future interfaces.
+1. **Squarefree-denominator characterization with finite avoidance.** A positive reduced rational `a/b` is a finite sum of reciprocals of distinct squarefree semiprimes iff `b` is squarefree; the support can avoid any prescribed finite set.
+2. **Local Gaussian profile.** For the direct `Z=X^3` family attached to fixed squarefree `b>=3`, the exact target fibre has a compact-uniform Gaussian local profile on `|j| <= U L_X sigma_X` for every fixed `U`.
+3. **Multiplicity and entropy.** The same family has exponentially many exact representations, ambient entropy exponent in a mesoscopic typical-cardinality window, and at least one exact cardinality with that exponent.
 
-The detailed architecture and dependencies are controlled by `ARTICLE_ARCHITECTURE.md` and `THEOREM_DAG.md`. Mathematical changes are recorded in `PROOF_CHANGE_LEDGER.md`; current obligations are recorded in `PROOF_OBLIGATION_LEDGER.md`.
+The fixed-target local limit is the central value of the local-profile theorem, not a separate proof route.
 
-## Recovery and historical boundary
+## Deliberate scope exclusions
 
-The recovered holistic manuscript source was integrated at `c2dfc5120eec017718ef07cbe43f9c151803769c`, with provenance in `RECOVERED_SOURCE_PROVENANCE.md`. The comparative audit at `#issuecomment-5141204793` retained that manuscript as the mathematical and expository successor to the historical source and authorized only bounded provenance/control repair.
+The current article does **not** make any of the following load-bearing or claim them as part of v1:
 
-The later Architecture-E migration, coherence audit, BCR-01 repair and narrow re-audit were accepted before the fixed-ratio work. Their dependency and cross-reference locks remain controlling. The append-only fixed-ratio absorption at `b64bac1f...` was subsequently rejected only as article architecture; its fixed-ratio mathematics was not rejected.
+- the fully abstract anchor--fibre transference theorem;
+- general fixed targets `t` with free `gamma,eta` parameters;
+- the multiblock or sparse-sensor proof as a second full proof;
+- restricted-prime/AP/Chebotarev extensions;
+- reciprocal-incidence graph algebra;
+- thin-sensor/GFF/end-point programmes;
+- finite-prefix CRT programmes;
+- a growing standardized moving-target radius `U_X -> infinity`;
+- quantitative transfer to denominators `b=1,2`.
 
-The historical fixed-`Z=X^3`, five-sector candidate and its publication gate are nontransferable. No earlier refreeze or publication gate transfers to the native fixed-ratio writer successor.
+These remain separate research/publication reserves rather than material to be consumed in this first paper.
 
-## Source and build assurance
+## Manuscript architecture
+
+The active public manuscript has ten sections:
+
+1. Introduction and main theorems.
+2. The direct semiprime family.
+3. Fourier inversion and exactness.
+4. One-anchor rigidity.
+5. Row observability and decoded-skeleton compression.
+6. Local Gaussian analysis.
+7. Multiplicity and typical cardinality.
+8. Moving-target local saturation.
+9. Characterization and finite-avoidance consequences.
+10. Scope, limitations, and further directions.
+
+The narrative spine is
+
+```text
+arithmetic family
+ -> anchor rigidity
+ -> row observability / decoding
+ -> weighted fibre compression
+ -> Gaussian localization
+ -> exact representation fibres.
+```
+
+Technical Fourier sectors are subordinate proof ranges, not the article's organizing principle.
+
+## Source and build surface
 
 - manuscript entry point: `paper/e306-anchor-fibre-v1/manuscript/main.tex`;
-- local entry point: `make clean && make pdf`;
-- bibliography backend: Biber through the configured `latexmk` cycle;
-- controlling arXiv environment: TeX Live 2025;
-- TeX Live 2023/Debian workflow: secondary compatibility check;
-- reproducibility workflow: `.github/workflows/manuscript.yml`;
-- recovery provenance: `paper/e306-anchor-fibre-v1/RECOVERED_SOURCE_PROVENANCE.md`.
+- build command: `make clean && make pdf`;
+- bibliography backend: **BibTeX**;
+- CI workflow: `.github/workflows/manuscript.yml`;
+- active public source consists of `main.tex`, `references.bib`, and the ten files named by the `\input` statements in `main.tex`.
+
+Files left in `manuscript/sections/` from the July candidate are historical branch artifacts only. They are not active source and must not be included in a minimal arXiv source archive unless explicitly referenced by the current `main.tex`.
+
+Actual TeX/BibTeX, reference/label, font/glyph, extraction, PDF visual, and arXiv-portability evidence must come from post-promotion build gates; no pre-August 42-page forensic build evidence transfers to the clean manuscript.
+
+## Legacy-control boundary
+
+Control and architecture documents created before the 2026-08-07 supersession describe earlier manuscript candidates. In particular, older versions of `ARTICLE_ARCHITECTURE.md`, `THEOREM_DAG.md`, `PROOF_OBLIGATION_LEDGER.md`, and `PROOF_CHANGE_LEDGER.md` are retained as historical process evidence but are **noncontrolling for the clean August manuscript unless this file or a later dated disposition explicitly imports a statement from them**.
+
+This rule prevents stale Architecture-E, general-parameter, Biber, or old publication-freeze statements from silently governing the clean candidate.
 
 ## Product rules
 
 - One article, one branch, one draft PR.
-- No task-, auditor-, repair-, review- or revision-specific branches.
-- Mathematical changes require an explicit `PROOF_CHANGE_LEDGER.md` entry and independent verification.
-- Read-only reviewers do not write to the branch.
-- Owner approval is required before ready-for-review, merge, refreeze, release, DOI action, licence selection, arXiv upload or journal submission.
-- `lean-graph.yml`, Lean analytic-provider refactoring, E307 and a future thin-anchor/reciprocal-flow project remain outside this workstream.
+- No task-, auditor-, repair-, or revision-specific manuscript branches.
+- Mathematical changes after the independent PASS require explicit disposition and appropriate re-audit.
+- Pure build/plumbing repairs may proceed under the August supersession authorization, but must not alter audited mathematics silently.
+- Owner approval is required before marking PR `#9` ready, merge, release, DOI action, licence selection, arXiv upload, journal submission, or external contact.
 
 ## Current state
 
 ```text
-[NATIVE FIXED-RATIO WHOLE-ARTICLE WRITER SUCCESSOR]
-[APPEND-ONLY ANNEX REMOVED]
-[DEFAULT TYPOGRAPHY PRESERVED]
-[FINAL EXACT-HEAD WORKFLOWS REQUIRED]
-[SEPARATE INDEPENDENT WHOLE-ARTICLE AUDIT REQUIRED]
-[OWNER HOLD / PR #9 OPEN, DRAFT AND UNMERGED]
-[NO LICENCE, RELEASE, DOI, UPLOAD OR SUBMISSION AUTHORIZED]
+[CLEAN AUGUST V1 CONTROLLING CANDIDATE]
+[MATHEMATICAL AUDIT CLOSED]
+[BOUNDED SOURCE RE-CHECK PASS]
+[AUDITED SOURCE PROMOTED BYTE-FOR-BYTE]
+[PUBLICATION ENGINEERING IN PROGRESS]
+[PR #9 OPEN / DRAFT / UNMERGED]
+[NO EXTERNAL PUBLICATION ACTION AUTHORIZED]
 ```
