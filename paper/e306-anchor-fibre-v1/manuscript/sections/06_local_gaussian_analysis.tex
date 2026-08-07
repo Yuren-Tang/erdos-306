@@ -1,0 +1,271 @@
+\section{Local Gaussian analysis}\label{sec:gaussian}
+
+Recall from \eqref{3.3} that
+\[
+L P^{\mathrm{quot}}=\sum_{h\bmod L}F(h).
+\tag{6.1}
+\]
+We now evaluate this coefficient on its natural scale $1/\sigma$.
+
+Fix $C\ge1$. The limit $X\to\infty$ will be taken with $C$ fixed, and only afterwards will $C\to\infty$. Put
+\[
+N=\left\lfloor\frac{C}{\sigma}\right\rfloor.
+\tag{6.2}
+\]
+Since $\sigma^{-1}\asymp_bX\log X$, for fixed $C$ and large $X$,
+\[
+N<X^2/4<M_{\mathrm{dec}}.
+\tag{6.3}
+\]
+
+By Section \ref{sec:anchor}, every top assignment is either noncoherent, with anchor energy at least $F_{\mathcal B}$, or coherent with a unique exact integer label $m$. For a coherent assignment, exactly one of the ranges
+\[
+\begin{array}{ll}
+\mathrm{I}.& |m|\le N,\\
+\mathrm{II}.& N<|m|\le X^2/4,\\
+\mathrm{III}.& X^2/4<|m|\le M_{\mathrm{dec}},\\
+\mathrm{IV}.& |m|>M_{\mathrm{dec}}
+\end{array}
+\tag{6.4}
+\]
+holds. Lemma \ref{lem:weighted-skeleton} then separates, within each anchor fibre, the decoded skeleton from all other row states. This partitions the full Fourier sum into a Gaussian core, three coherent tails, and the noncoherent/nondecoder remainder.
+
+\subsection{The Gaussian core}
+
+For $|m|\le N$, Propositions \ref{prop:lower-decoder} and \ref{prop:target-decoder} identify the decoded skeleton with the genuine integer frequency $h=m\pmod L$. Since $\theta$ stays in a compact subinterval of $(0,1)$, there are constants $\rho_b>0$ and $M_b<\infty$ such that, uniformly for $|z|\le\rho_b$,
+\[
+\log\bigl((1-\theta)+\theta e(z)\bigr)
+=
+2\pi i\theta z
+-2\pi^2\theta(1-\theta)z^2
++R_\theta(z),
+\tag{6.5}
+\]
+with
+\[
+|R_\theta(z)|\le M_b|z|^3.
+\tag{6.6}
+\]
+Every denominator in $\mathcal E$ is at least $X^2$ for large $X$. Uniformly for $|m|\le C/\sigma$,
+\[
+\max_{e\in\mathcal E}\frac{|m|}{e}
+\ll_C\frac{\log X}{X}
+\longrightarrow0.
+\tag{6.7}
+\]
+Moreover
+\[
+\sum_{e\in\mathcal E}\left|\frac{m}{e}\right|^3
+\le
+\frac{|m|^3}{X^2}
+\sum_{e\in\mathcal E}\frac1{e^2}
+\ll_b
+\frac{C^3}{\sigma X^2}
+\ll_b
+C^3\frac{\log X}{X}
+\longrightarrow0.
+\tag{6.8}
+\]
+Thus the aggregate cubic remainder in \eqref{6.5} is $o_C(1)$ uniformly throughout the major range.
+
+The linear term cancels exactly by \eqref{2.11}:
+\[
+2\pi i m\theta\sum_{e\in\mathcal E}\frac1e
+-\frac{2\pi i m}{b}=0.
+\tag{6.9}
+\]
+The quadratic term is $-2\pi^2m^2\sigma^2$. Therefore
+\[
+F(m)
+=
+\exp\bigl(-2\pi^2m^2\sigma^2+\varepsilon_{X,m}\bigr),
+\qquad
+\max_{|m|\le N}|\varepsilon_{X,m}|
+\longrightarrow0
+\tag{6.10}
+\]
+for every fixed $C$.
+
+\begin{proposition}[Normalized major arc]\label{prop:normalized-major}
+For every fixed $C>0$,
+\[
+\sigma
+\sum_{|m|\le C/\sigma}F(m)
+\longrightarrow
+\int_{-C}^{C}e^{-2\pi^2u^2}\,du.
+\tag{6.11}
+\]
+\end{proposition}
+
+\begin{proof}
+Put $u_m=m\sigma$. The mesh is $\sigma\to0$, and \eqref{6.10} is uniform on $[-C,C]$. Thus the left side is a Riemann sum for the integral in \eqref{6.11}.
+\end{proof}
+
+The Gaussian core is therefore of order $1/\sigma$. We compare every remaining contribution with this same scale.
+
+\subsection{The first coherent tail}
+
+For
+\[
+N<|m|\le X^2/4,
+\tag{6.12}
+\]
+the decoded skeleton is still the genuine integer frequency $m$. Since every denominator is at least $X^2$,
+\[
+|m|/e\le1/4,
+\]
+so $\|m/e\|=|m|/e$. Lemma \ref{lem:bernoulli-modulus} gives
+\[
+|F(m)|\le e^{-c_bm^2\sigma^2}.
+\tag{6.13}
+\]
+A Gaussian integral comparison yields
+\[
+\sum_{|m|>C/\sigma}e^{-c_bm^2\sigma^2}
+\le
+K_b\sigma^{-1}e^{-c_bC^2/2}.
+\tag{6.14}
+\]
+Hence
+\[
+\limsup_{X\to\infty}
+\sigma
+\sum_{N<|m|\le X^2/4}|F(m)|
+\le
+K_be^{-c_bC^2/2}.
+\tag{6.15}
+\]
+This is the only complementary range whose normalized bound need not tend to zero at fixed $C$; it will disappear when $C\to\infty$.
+
+\subsection{The intermediate coherent tail}
+
+Suppose
+\[
+X^2/4<|m|\le M_{\mathrm{dec}}.
+\tag{6.16}
+\]
+All prime coordinates still decode to $m$. By \eqref{5.25},
+\[
+|F(h_m)|
+\le
+\exp\!\left(-c\frac{|m|}{(\log|m|)^2}\right).
+\tag{6.17}
+\]
+Throughout \eqref{6.16}, $\log|m|\asymp\log X$. There are at most $2M_{\mathrm{dec}}+1=O(X^4)$ labels, so
+\[
+\sum_{X^2/4<|m|\le M_{\mathrm{dec}}}|F(h_m)|
+\ll
+X^4\exp\!\left(-c\frac{X^2}{\log^2X}\right)
+=o(\sigma^{-1}).
+\tag{6.18}
+\]
+
+\subsection{Large coherent anchor labels}
+
+For a coherent top label $m$, the internal anchor factor is at most
+\[
+\exp(-\kappa_bm^2\sigma_{\mathcal B,0}^2).
+\]
+All row and residual factors have modulus at most one. Thus
+\[
+\sum_{|m|>M_{\mathrm{dec}}}|F(h_m)|
+\ll
+\sigma_{\mathcal B,0}^{-1}
+\exp\!\left(-cM_{\mathrm{dec}}^2\sigma_{\mathcal B,0}^2\right).
+\tag{6.19}
+\]
+From \eqref{4.38} and \eqref{5.17},
+\[
+M_{\mathrm{dec}}^2\sigma_{\mathcal B,0}^2
+\gg
+\frac{X^2}{\log^6Z},
+\tag{6.20}
+\]
+while $\sigma_{\mathcal B,0}^{-1}=O(Z\log Z)$. Hence
+\[
+\sum_{|m|>M_{\mathrm{dec}}}|F(h_m)|
+=o(\sigma^{-1}).
+\tag{6.21}
+\]
+
+\subsection{Incoherent anchors and nondecoder states}
+
+By \eqref{4.44}, the total anchor modulus of noncoherent assignments is
+\[
+O(e^{-cF_{\mathcal B}}).
+\tag{6.22}
+\]
+By \eqref{5.14}, the complete contribution of nondecoder row states, over coherent and noncoherent anchors alike, is
+\[
+O\!\left(
+Z\log Z\cdot
+Z^2e^{-cZ/\log^3Z}
+\right).
+\tag{6.23}
+\]
+Both \eqref{6.22} and \eqref{6.23} are $o(\sigma^{-1})$, because $\sigma^{-1}\asymp_bX\log X$ and $Z=X^3$.
+
+\subsection{Assembly and the local limit}
+
+Let $\mathfrak R_{X,C}$ be the full Fourier contribution outside the genuine integer range $|m|\le C/\sigma$. Equations \eqref{6.15}, \eqref{6.18}, \eqref{6.21}, \eqref{6.22}, and \eqref{6.23} give
+\[
+\limsup_{X\to\infty}
+\sigma|\mathfrak R_{X,C}|
+\le
+K_be^{-c_bC^2/2}.
+\tag{6.24}
+\]
+Combining this with Proposition \ref{prop:normalized-major},
+\[
+\limsup_{X\to\infty}
+\left|
+\sigma L P^{\mathrm{quot}}
+-
+\int_{-C}^{C}e^{-2\pi^2u^2}\,du
+\right|
+\le
+K_be^{-c_bC^2/2}.
+\tag{6.25}
+\]
+Now let $C\to\infty$. Since
+\[
+\int_{\R}e^{-2\pi^2u^2}\,du
+=
+\frac1{\sqrt{2\pi}},
+\tag{6.26}
+\]
+we obtain
+\[
+\sigma L P^{\mathrm{quot}}
+\longrightarrow
+\frac1{\sqrt{2\pi}}.
+\tag{6.27}
+\]
+By Lemma \ref{lem:no-wrap}, $P^{\mathrm{quot}}=P$. Therefore
+\[
+L P
+\sim
+\frac1{\sqrt{2\pi}\,\sigma}.
+\tag{6.28}
+\]
+This is the central value \eqref{1.7} of Theorem \ref{thm:local-profile}.
+
+The order of limits is part of the argument:
+\[
+X\to\infty\quad\text{at fixed }C,
+\qquad\text{then}\qquad
+C\to\infty.
+\tag{6.29}
+\]
+No diagonal choice $C=C(X)\to\infty$ is asserted.
+
+\begin{corollary}[Quantitative positivity]\label{cor:positive}
+There is $c_b>0$ such that, for all sufficiently large $X$,
+\[
+LP\ge\frac{c_b}{\sigma}.
+\tag{6.30}
+\]
+In particular $P>0$.
+\end{corollary}
+
+The stronger asymptotic \eqref{6.28}, rather than mere positivity, will drive the entropy-scale conclusions of Section \ref{sec:multiplicity}. The full moving-target form of Theorem \ref{thm:local-profile} is proved in Section \ref{sec:moving-target} by inserting one unit character into the same analysis.
