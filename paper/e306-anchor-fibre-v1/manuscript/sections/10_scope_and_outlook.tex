@@ -1,0 +1,57 @@
+\section{Scope, limitations, and further directions}\label{sec:scope}
+
+The characterization in Theorem \ref{thm:characterization} applies to every positive rational with squarefree reduced denominator. The quantitative theorems have a narrower scope: they concern the single direct family attached to a fixed squarefree denominator $b\ge3$.
+
+\subsection{Quantitative boundaries}
+
+The elementary closure for denominators $1$ and $2$ does not produce one common family $\mathcal E_X$, one Bernoulli parameter, or one cardinality scale to which Theorems \ref{thm:local-profile} and \ref{thm:multiplicity} could be transferred. We make no quantitative claim for $b=1,2$.
+
+The moving-target theorem is uniform on every fixed standardized compact interval
+\[
+\left|\frac{j}{L_X\sigma_X}\right|\le U.
+\]
+The threshold in $X$ may depend on $U$. We do not obtain a growing standardized radius $U=U_X\to\infty$, nor a gap-free theorem on a fixed target-independent primorial family. The real target window has radius $U\sigma_X\to0$; what grows is the number of lattice points inside that shrinking interval.
+
+Likewise, Theorem \ref{thm:multiplicity} gives the ambient entropy exponent in a mesoscopic cardinality window and at least one exact cardinality. It does not give a prescribed-cardinality asymptotic, a conditional central limit theorem on the natural $\sqrt{M_X}$ scale, or a bivariate local limit for reciprocal sum and cardinality.
+
+\subsection{Finite avoidance is not deletion resilience}
+
+Finite avoidance allows the family to be chosen after a fixed finite forbidden set is named. It does not assert robustness of one already constructed family under a small adversarial deletion.
+
+Fix a prime $r\mid b$ and delete the entire target row
+\[
+\mathcal D_{r,X}
+=
+\{rq:q\in\mathcal B_X\}.
+\tag{10.1}
+\]
+Its size is $|\mathcal B_X|=o(M_X)$. After this deletion, every remaining integer weight $L_X/e$ is divisible by $r$, whereas
+\[
+\frac{L_X}{b}
+=
+\prod_{p\in\mathcal P_X}p
+\]
+is nonzero modulo $r$. Thus no remaining subset can represent $1/b$, even modulo $r$.
+
+The example clarifies the role of the target rows. They are negligible in reciprocal mass but load-bearing in observability. Any genuine resilience theorem would have to preserve these sensors together with enough anchor rigidity, variance, retained damping, lattice span, and no-wrap structure.
+
+\subsection{A reusable finite-Fourier pattern}
+
+The proof separates into four ingredients which are more general than the particular statement proved here:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item a weighted anchor partition which turns low internal energy into a small family of coherent labels;
+\item quantitative row observability which identifies the remaining CRT coordinates;
+\item a decoded-skeleton compression which sums off-decoder states without paying the raw fibre cardinality;
+\item retained factors which suppress coherent labels after the decoder has done its work.
+\end{enumerate}
+Together with a positive Gaussian major term and a no-wrap condition, these ingredients form a useful finite-Fourier transference pattern.
+
+We have deliberately not formulated a general abstract transference theorem here. The arithmetic specialization above is self-contained, and at present the reciprocal-semiprime problem is the cleanest reason for introducing the mechanism. A broader theorem becomes more compelling when it has genuinely different arithmetic consumers rather than several encodings of one proof.
+
+There are natural directions in which the arithmetic providers, rather than the Fourier architecture, change. One may restrict the allowed prime factors to structured positive-density sets, thin the anchor sensors, or ask for larger target windows and joint local statistics. These questions require additional inputs and lie outside the present article.
+
+\subsection{Final perspective}
+
+The squarefree denominator is both the elementary obstruction and the exact one. The converse is not proved by recursively splitting unit fractions. Instead we construct a large arithmetic family, use its prime factors as a finite system of sensors, and show that the exact target coefficient has the local form predicted by a Gaussian lattice heuristic.
+
+Thus the resolution of Erd\H{o}s Problem 306 comes with a stronger phenomenon. For every fixed squarefree $b\ge3$, the direct family contains exponentially many representations of $1/b$; these representations occupy cardinality layers at the ambient entropy rate; and the same family realizes a growing consecutive block of nearby exact targets with a Gaussian profile. This local fibre geometry is the main reason to regard the Fourier construction as more than an existence argument.
