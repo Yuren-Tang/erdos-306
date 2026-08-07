@@ -53,9 +53,9 @@ That portfolio standard is authorially complete but, at the time this profile wa
 
 ## Acknowledgements and AI disclosure
 
-- Keep a concise public disclosure of generative-AI assistance by function, not a model-by-model inventory.
+- Keep a concise public disclosure of generative AI assistance by function, not a model-by-model inventory.
 - The E306 article contains no Lean material; do not list Lean development as a function of AI assistance in this paper's acknowledgement.
-- Current text: “Generative-AI systems assisted mathematical exploration, proof development, source and citation checking, and editorial revision. The author takes full responsibility for the mathematics, citations, and text.”
+- Current text: “Generative AI systems assisted mathematical exploration, proof development, source and citation checking, and editorial revision. The author takes full responsibility for the mathematics, citations, and text.”
 - Personal acknowledgements must not be invented.
 
 ## Citations and bibliography
