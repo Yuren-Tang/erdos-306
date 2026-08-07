@@ -29,6 +29,7 @@ jobs:
             texlive-fonts-extra \
             texlive-fonts-recommended \
             texlive-latex-extra \
+            texlive-plain-generic \
             texlive-xetex
 
       - name: Clean XeLaTeX and Biber build
