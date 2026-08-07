@@ -125,7 +125,7 @@ jobs:
             exit 1
           fi
 
-      - name: Verify embedded fonts and Unicode dedication
+      - name: Verify embedded fonts, Unicode, and extracted identity text
         run: |
           pdffonts main.pdf | tee main-fonts.txt
           if grep -q "Type 3" main-fonts.txt; then
@@ -134,13 +134,21 @@ jobs:
           fi
           awk 'NR > 2 && $(NF-4) != "yes" { bad=1 } END { exit bad }' main-fonts.txt
           python3 - <<'PY'
+          import re
           import unicodedata
           from pathlib import Path
           text = unicodedata.normalize("NFC", Path("main.txt").read_text(encoding="utf-8"))
-          required = ["τοῖς ἐμὲ φιλοῦσιν", "καὶ οἷς φιλῶ"]
+          required = [
+              "τοῖς ἐμὲ φιλοῦσιν",
+              "καὶ οἷς φιλῶ",
+              "https://orcid.org/0009-0006-0847-3330",
+          ]
           missing = [s for s in required if s not in text]
           if missing:
-              raise SystemExit("Unicode dedication extraction failed: " + repr(missing))
+              raise SystemExit("Required Unicode/identity extraction failed: " + repr(missing))
+          leaked = sorted(set(re.findall(r"\b(?:eq|thm|sec|lem|prop):[A-Za-z0-9_.:-]+", text)))
+          if leaked:
+              raise SystemExit("Internal LaTeX label names leaked into PDF text: " + repr(leaked))
           PY
 
       - name: Build summary
@@ -153,7 +161,7 @@ jobs:
             echo "- Command: \`make clean && make pdf\`"
             echo "- Engine: XeLaTeX"
             echo "- Bibliography backend: Biber"
-            echo "- Result: Oxford-spelling guard, clean PDF build, bibliography/reference/label gate, font-embedding gate, and Unicode-dedication extraction gate passed"
+            echo "- Result: Oxford-spelling guard, clean PDF build, bibliography/reference/label gate, font-embedding gate, Unicode/ORCID extraction gate, and leaked-label gate passed"
             echo "- PDF size: $(stat -c%s main.pdf) bytes"
             echo "- Pages: $(pdfinfo main.pdf | awk '/^Pages:/ {print $2}')"
           } >> "$GITHUB_STEP_SUMMARY"
