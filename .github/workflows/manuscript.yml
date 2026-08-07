@@ -22,8 +22,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
-            biber \
             latexmk \
+            lmodern \
             poppler-utils \
             texlive-bibtex-extra \
             texlive-fonts-extra \
@@ -32,7 +32,7 @@ jobs:
             texlive-latex-extra \
             texlive-plain-generic
 
-      - name: Clean Biber build
+      - name: Clean BibTeX build
         shell: bash
         run: |
           set -o pipefail
@@ -63,8 +63,8 @@ jobs:
             echo "::error::unresolved or duplicate references remain"
             exit 1
           fi
-          if grep -E "^(WARN|ERROR) -" main.blg; then
-            echo "::error::Biber reported a warning or error"
+          if grep -E "^Warning--" main.blg; then
+            echo "::error::BibTeX reported a warning"
             exit 1
           fi
 
@@ -85,9 +85,10 @@ jobs:
             echo "- Commit: $GITHUB_SHA"
             echo "- Entry point: \`paper/e306-anchor-fibre-v1/manuscript/main.tex\`"
             echo "- Command: \`make clean && make pdf\`"
-            echo "- Bibliography backend: Biber"
-            echo "- Result: clean PDF build, bibliography gate, and font-embedding gate passed"
+            echo "- Bibliography backend: BibTeX"
+            echo "- Result: clean PDF build, bibliography/reference/label gate, and font-embedding gate passed"
             echo "- PDF size: $(stat -c%s main.pdf) bytes"
+            echo "- Pages: $(pdfinfo main.pdf | awk '/^Pages:/ {print $2}')"
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload manuscript PDF
