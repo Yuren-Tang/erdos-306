@@ -1,0 +1,521 @@
+\section{One-anchor rigidity}\label{sec:anchor}
+
+We isolate the combinatorial statement used on the top block. Let $Y\to\infty$, and let $Q$ be a set of primes in $[Y,2Y)$ satisfying
+\[
+c\frac{Y}{\log Y}
+\le N:=|Q|
+\le C\frac{Y}{\log Y}.
+\tag{4.1}
+\]
+An assignment is a tuple $a=(a_p)_{p\in Q}$ with $a_p\in\Z/p\Z$. For distinct $p,q\in Q$, let $H_{pq}(a)$ be the centred simultaneous CRT lift
+\[
+H_{pq}\equiv a_p\pmod p,
+\qquad
+H_{pq}\equiv a_q\pmod q,
+\qquad
+-\frac{pq}{2}<H_{pq}\le\frac{pq}{2}.
+\tag{4.2}
+\]
+Define
+\[
+\mathcal Q(a)
+=
+\sum_{p<q\in Q}
+\left(\frac{H_{pq}(a)}{pq}\right)^2,
+\qquad
+\sigma_Q^2
+=
+\sum_{p<q\in Q}\frac1{p^2q^2}.
+\tag{4.3}
+\]
+Then
+\[
+\sigma_Q^2\asymp\frac1{Y^2\log^2Y}.
+\tag{4.4}
+\]
+The main conclusion of this section is that energy below the scale $Y/\log^3Y$ forces an exact integer state on every coordinate.
+
+\subsection{Reciprocal dispersion}
+
+\begin{lemma}[Reciprocal dispersion]\label{lem:reciprocal-dispersion}
+Let $q$ be prime with $Y\le q<4Y$, let $F$ be a set of $s\ge16$ primes in $[Y,2Y)$, none equal to $q$, and let $d\not\equiv0\pmod q$. Then at least $s/2$ primes $p\in F$ satisfy
+\[
+\left\|\frac{d p^{-1}}q\right\|
+\ge \frac{s}{64Y}.
+\]
+Consequently
+\[
+\sum_{p\in F}
+\left\|\frac{d p^{-1}}q\right\|^2
+\ge c_D\frac{s^3}{Y^2}
+\tag{4.5}
+\]
+for an absolute constant $c_D>0$.
+\end{lemma}
+
+\begin{proof}
+Put $\delta=s/(64Y)$. If
+\[
+\left\|\frac{dp^{-1}}q\right\|\le\delta,
+\]
+choose the nearest integer $\ell$ and write
+\[
+v=dp^{-1}-\ell q.
+\]
+Then
+\[
+|v|\le\delta q\le s/16,
+\qquad
+vp\equiv d\pmod q.
+\]
+For a fixed nonzero integer $v$, the last congruence places $p$ in one residue class modulo $q$. Since $[Y,2Y)$ has length at most $q$, such a class contains at most two integers. There are at most $2(s/16)+1$ possible values of $v$. Hence fewer than $s/2$ primes can satisfy the displayed small-distance condition. At least $s/2$ primes therefore have distance at least $\delta$, and summing their squares proves \eqref{4.5}.
+\end{proof}
+
+The hypothesis $s\ge16$ will be retained explicitly whenever Lemma \ref{lem:reciprocal-dispersion} is used.
+
+\subsection{Repulsion between label classes}
+
+Fix $\rho\in(0,1/4)$. An integer $m$ is called a \emph{dominant label} for $a$ if $|m|\le Y^2/2$ and
+\[
+a_p\equiv m\pmod p
+\]
+for at least $(1-\rho)N$ primes $p\in Q$. Two dominant labels are equal: their classes overlap in at least two primes, whose product divides their difference, while the difference has absolute value at most $Y^2$.
+
+\begin{lemma}[Cross-label energy]\label{lem:cross-label}
+Let $C_m,C_{m'}\subseteq Q$ be disjoint label classes with $m\ne m'$, and suppose
+\[
+|m|,|m'|\le B_0<Y^2/4,
+\]
+\[
+|C_m|\ge\max\left(16,\frac{128B_0}{Y}\right),
+\qquad
+|C_{m'}|\ge2.
+\tag{4.6}
+\]
+Then
+\[
+\sum_{p\in C_m}
+\sum_{q\in C_{m'}}
+\left(\frac{H_{pq}}{pq}\right)^2
+\ge
+c_E\frac{|C_m|^3(|C_{m'}|-1)}{Y^2}.
+\tag{4.7}
+\]
+\end{lemma}
+
+\begin{proof}
+Put $d=m'-m$. Since $0<|d|<Y^2/2$, at most one prime in $C_{m'}$ can divide $d$. Fix any other $q\in C_{m'}$. For $p\in C_m$, write
+\[
+H_{pq}=m+jp.
+\]
+Reducing modulo $q$ gives $jp\equiv d\pmod q$, and therefore
+\[
+\left\|\frac{dp^{-1}}q\right\|
+\le
+\frac{|H_{pq}|}{pq}+\frac{|m|}{pq}.
+\tag{4.8}
+\]
+By Lemma \ref{lem:reciprocal-dispersion}, for at least half the primes $p\in C_m$ the left side is at least $|C_m|/(64Y)$. The size condition in \eqref{4.6} gives
+\[
+\frac{|m|}{pq}
+\le
+\frac{B_0}{Y^2}
+\le
+\frac{|C_m|}{128Y}.
+\]
+Thus at least half the $p$ satisfy
+\[
+\frac{|H_{pq}|}{pq}
+\ge
+\frac{|C_m|}{128Y}.
+\]
+The energy contributed by this fixed $q$ is $\gg |C_m|^3/Y^2$. Summing over all but at most one $q\in C_{m'}$ gives \eqref{4.7}.
+\end{proof}
+
+The factor $|C_{m'}|-1$ in \eqref{4.7} is important and will be kept when the class energies are summed.
+
+\subsection{Low energy forces a dominant label}
+
+\begin{proposition}[Dominant-label forcing]\label{prop:dominant-label}
+There is $c_w>0$ such that, for all sufficiently large $Y$,
+\[
+\mathcal Q(a)<c_w\frac{Y}{\log^3Y}
+\tag{4.9}
+\]
+implies that $a$ has a unique dominant label.
+\end{proposition}
+
+\begin{proof}
+If $\mathcal Q(a)=0$, every centred pair lift vanishes, so every coordinate is the residue of the integer $0$. We may therefore assume
+\[
+0<R:=\mathcal Q(a)<c\frac{Y}{\log^3Y},
+\tag{4.10}
+\]
+with $c$ to be chosen sufficiently small.
+
+Set
+\[
+B_0=A_\rho\frac{\sqrt R\,Y^2}{N},
+\tag{4.11}
+\]
+where $A_\rho$ is a large fixed constant. Call an edge $\{p,q\}$ bad if $|H_{pq}|>B_0$. Since $pq<4Y^2$, every bad edge contributes more than $B_0^2/(16Y^4)$ to $R$, so
+\[
+\#\{\text{bad edges}\}
+\le
+\frac{16RY^4}{B_0^2}.
+\tag{4.12}
+\]
+Some base prime $p_0$ has bad degree at most
+\[
+\frac{32RY^4}{B_0^2N}
+=
+\frac{32N}{A_\rho^2}.
+\tag{4.13}
+\]
+Choose $A_\rho$ so that this is at most $\rho N/8$.
+
+For every nonbad neighbour $q$ of $p_0$, set
+\[
+\ell(q)=H_{p_0q}.
+\]
+Then $|\ell(q)|\le B_0$, $\ell(q)\equiv a_q\pmod q$, and all $\ell(q)$ lie in one residue class modulo $p_0$. Hence the number $M_0$ of possible integer labels satisfies
+\[
+M_0\le\frac{2B_0}{Y}+2.
+\tag{4.14}
+\]
+For sufficiently small $c$ and large $Y$, \eqref{4.10}--\eqref{4.11} also give $B_0<Y^2/4$.
+
+Assume for contradiction that no class is dominant. Call a label class small if its size is less than
+\[
+s_0=256\left(\frac{B_0}{Y}+1\right).
+\tag{4.15}
+\]
+Then $s_0\ge16$ and $s_0\ge128B_0/Y$, so Lemma \ref{lem:cross-label} applies to every substantial class.
+
+Suppose first that the small classes contain at least $\rho N/4$ vertices. Then
+\[
+\frac{\rho N}{4}
+\le M_0s_0
+\le C_\rho\left(\frac{B_0}{Y}+1\right)^2.
+\tag{4.16}
+\]
+If $B_0/Y<1$, the right side is bounded while $N\to\infty$, a contradiction. Otherwise \eqref{4.11} and \eqref{4.16} imply
+\[
+N\le C_\rho\frac{B_0^2}{Y^2}
+=C_\rho A_\rho^2\frac{RY^2}{N^2},
+\]
+and hence
+\[
+R\gg\frac{N^3}{Y^2}\gg\frac{Y}{\log^3Y},
+\]
+contradicting \eqref{4.10} for sufficiently small $c$.
+
+We may therefore assume that the small classes contain fewer than $\rho N/4$ vertices. After removing $p_0$ and its bad neighbours, the substantial classes have total size
+\[
+S\ge(1-\rho/2)N
+\tag{4.17}
+\]
+for large $Y$. Let their sizes be $n_1,\ldots,n_t$. Each $n_i\ge s_0$, while no $n_i$ exceeds $(1-\rho)N$.
+
+Apply Lemma \ref{lem:cross-label} to ordered pairs of distinct substantial classes. Every undirected cross edge is counted twice, so, after absorbing the factor $1/2$ into the constant,
+\[
+R
+\ge
+\frac{c}{Y^2}
+\sum_i n_i^3
+\sum_{j\ne i}(n_j-1).
+\tag{4.18}
+\]
+The inner sum is exactly
+\[
+\sum_{j\ne i}(n_j-1)
+=(S-n_i)-(t-1).
+\tag{4.19}
+\]
+Because every other substantial class has size at least $s_0$,
+\[
+S-n_i\ge(t-1)s_0,
+\]
+and hence
+\[
+(S-n_i)-(t-1)
+\ge
+\left(1-\frac1{s_0}\right)(S-n_i)
+\ge
+\frac{255}{256}(S-n_i).
+\tag{4.20}
+\]
+Thus
+\[
+R\ge\frac{c}{Y^2}\sum_i n_i^3(S-n_i).
+\tag{4.21}
+\]
+
+If the largest class has size at least $S/2$, then it contains $\gg N$ vertices while \eqref{4.17} and non-dominance leave $\gg_\rho N$ substantial vertices outside it. Its single term in \eqref{4.21} is therefore $\gg_\rho N^4/Y^2$, too large for \eqref{4.10}.
+
+If every class has size less than $S/2$, then $S-n_i\ge S/2$, and power mean gives
+\[
+\sum_i n_i^3
+\ge
+\frac{S^3}{t^2}
+\ge
+\frac{S^3}{M_0^2}.
+\]
+Hence
+\[
+R\ge c_\rho\frac{N^4}{M_0^2Y^2}.
+\tag{4.22}
+\]
+If $B_0/Y<1$, this again exceeds the scale in \eqref{4.10}. Otherwise, by \eqref{4.14},
+\[
+M_0^2
+\le C\frac{B_0^2}{Y^2}
+=C A_\rho^2\frac{RY^2}{N^2}.
+\]
+Substitution into \eqref{4.22} yields
+\[
+R^2\ge c\frac{N^6}{Y^4},
+\qquad
+R\ge c\frac{N^3}{Y^2}\gg\frac{Y}{\log^3Y},
+\]
+again a contradiction. Choosing $c_w$ below the finitely many constants above proves the proposition.
+\end{proof}
+
+\subsection{No exceptional coordinates}
+
+\begin{proposition}[Exact zero-exception rigidity]\label{prop:zero-exception}
+After decreasing $c_w$ if necessary, every assignment satisfying \eqref{4.9} is represented by one integer $m$:
+\[
+a_p\equiv m\pmod p
+\qquad(p\in Q).
+\tag{4.23}
+\]
+Moreover
+\[
+|m|
+\le
+C_\rho\frac{\sqrt{\mathcal Q(a)}}{\sigma_Q}.
+\tag{4.24}
+\]
+\end{proposition}
+
+\begin{proof}
+By Proposition \ref{prop:dominant-label}, there is a dominant class $C\subseteq Q$ with label $m$. For $p,q\in C$, the centred lift is exactly $m$. Hence
+\[
+\mathcal Q(a)
+\ge
+m^2\sum_{p<q\in C}\frac1{p^2q^2}
+\ge
+c_\rho m^2\sigma_Q^2,
+\]
+which proves \eqref{4.24}.
+
+Let $E_0=Q\setminus C$. The label bound and the low-energy hypothesis imply, for large $Y$,
+\[
+|m|\le\frac{|C|Y}{128}.
+\tag{4.25}
+\]
+For each $q\in E_0$, the residue difference $d=a_q-m$ is nonzero modulo $q$. The same CRT subtraction as in Lemma \ref{lem:cross-label}, followed by Lemma \ref{lem:reciprocal-dispersion}, shows that the edges from $q$ into $C$ contribute at least
+\[
+c\frac{|C|^3}{Y^2}
+\]
+to $\mathcal Q(a)$. These edge sets are disjoint as $q$ varies. Therefore
+\[
+|E_0|\,c\frac{|C|^3}{Y^2}
+\le
+\mathcal Q(a).
+\tag{4.26}
+\]
+Since $|C|\gg Y/\log Y$,
+\[
+|E_0|
+\le
+C\frac{\mathcal Q(a)Y^2}{N^3}
+<C'c_w.
+\tag{4.27}
+\]
+Choose $c_w$ so that $C'c_w<1$. The quantity $|E_0|$ is an integer, hence $E_0=\varnothing$.
+\end{proof}
+
+The last integer step is the reason the argument gives exact coherence rather than merely a density-one label class.
+
+\subsection{Fingerprint entropy}
+
+Above the forcing threshold we need a weighted count of anchor assignments. A small fingerprint controls the possible completions.
+
+\begin{lemma}[Fingerprint rigidity]\label{lem:fingerprint-rigidity}
+Fix $F\subset Q$ with $|F|=s\ge16$ and fix the residues on $F$. For $q\in Q\setminus F$ and $w\pmod q$, put
+\[
+t_q(w)
+=
+\sum_{p\in F}
+\left(\frac{H_{pq}(a_p,w)}{pq}\right)^2.
+\tag{4.28}
+\]
+For a sufficiently small absolute $g>0$, at most one residue $w\pmod q$ satisfies
+\[
+t_q(w)<g\frac{s^3}{Y^2}.
+\tag{4.29}
+\]
+\end{lemma}
+
+\begin{proof}
+If $w\ne w'$, the difference of the corresponding CRT lifts is divisible by $p$ and reduces modulo $q$ to $w-w'$. Hence
+\[
+\left\|\frac{(w-w')p^{-1}}q\right\|
+\le
+\frac{|H_{pq}(a_p,w)|}{pq}
++
+\frac{|H_{pq}(a_p,w')|}{pq}.
+\]
+After squaring and summing over $p\in F$, Lemma \ref{lem:reciprocal-dispersion} prevents both energies from satisfying \eqref{4.29} when $g$ is sufficiently small.
+\end{proof}
+
+\begin{proposition}[Fingerprint entropy]\label{prop:fingerprint-entropy}
+For every $\varepsilon>0$, all sufficiently large blocks satisfy
+\[
+\#\{a:\mathcal Q(a)\le R\}
+\le e^{\varepsilon R}
+\tag{4.30}
+\]
+uniformly for
+\[
+R\ge c_w\frac{Y}{\log^3Y}.
+\tag{4.31}
+\]
+\end{proposition}
+
+\begin{proof}
+First suppose
+\[
+R\le c_*\frac{N^4}{Y^2},
+\tag{4.32}
+\]
+where $c_*>0$ is sufficiently small. Choose
+\[
+s=\left\lceil A(RY^2)^{1/4}\right\rceil
+\tag{4.33}
+\]
+with $A$ a fixed large constant, and use a predetermined fingerprint set $F$ of size $s$. The lower bound \eqref{4.31} gives $s\ge16$ for large $Y$, while \eqref{4.32} gives $s\le N/2$ after $c_*$ is fixed small enough.
+
+There are at most $(2Y)^s$ assignments on $F$. For a complete assignment,
+\[
+\sum_{q\notin F}t_q(a_q)\le R.
+\]
+By Lemma \ref{lem:fingerprint-rigidity}, all but at most
+\[
+t\le\frac{RY^2}{gs^3}\le C_A s
+\tag{4.34}
+\]
+coordinates outside $F$ are forced to a unique residue. Choosing the exceptional coordinates and their residues contributes at most
+\[
+\sum_{j\le t}\binom Nj(2Y)^j
+\le
+\exp(C(s+t)\log Y).
+\]
+Thus the logarithm of the total count is
+\[
+O\bigl((RY^2)^{1/4}\log Y\bigr).
+\tag{4.35}
+\]
+After division by $R$, the worst case occurs at the forcing floor \eqref{4.31}, where \eqref{4.35} gives
+\[
+O\bigl(Y^{-1/4}\log^{13/4}Y\bigr)\longrightarrow0.
+\tag{4.36}
+\]
+This is uniform in the range \eqref{4.32}.
+
+If instead $R>c_*N^4/Y^2$, the trivial number of assignments is at most $(2Y)^N$, whose logarithm is $O(Y)$, while
+\[
+R\gg\frac{N^4}{Y^2}\gg\frac{Y^2}{\log^4Y}.
+\]
+Thus again $O(Y)\le\varepsilon R$ for large $Y$.
+\end{proof}
+
+\subsection{The weighted top partition}
+
+We apply the preceding statements to the top block $\mathcal B\subset[Z/2,Z)$, taking $Y=Z/2$. Define
+\[
+\mathcal Q_{\mathcal B}(a_{\mathcal B})
+=
+\sum_{q<q'\in\mathcal B}
+\left(\frac{H_{qq'}(a_{\mathcal B})}{qq'}\right)^2,
+\qquad
+\sigma_{\mathcal B,0}^2
+=
+\sum_{q<q'\in\mathcal B}\frac1{q^2q'^2}.
+\tag{4.37}
+\]
+Then
+\[
+\sigma_{\mathcal B,0}^2
+\asymp\frac1{Z^2\log^2Z}.
+\tag{4.38}
+\]
+There is a forcing floor
+\[
+F_{\mathcal B}=c_{\mathcal B}\frac{Z}{\log^3Z}
+\tag{4.39}
+\]
+such that every assignment with $\mathcal Q_{\mathcal B}<F_{\mathcal B}$ has a unique exact integer label $m$. Proposition \ref{prop:zero-exception} gives
+\[
+|m|
+\ll
+\frac{\sqrt{F_{\mathcal B}}}{\sigma_{\mathcal B,0}}
+=
+O\!\left(\frac{Z^{3/2}}{\sqrt{\log Z}}\right)
+=o(Z^2).
+\tag{4.40}
+\]
+Thus $m$ is the centred lift on every internal top pair and
+\[
+\mathcal Q_{\mathcal B}=m^2\sigma_{\mathcal B,0}^2.
+\tag{4.41}
+\]
+
+Let
+\[
+T_{\mathcal B}(a_{\mathcal B})
+=
+\prod_{q<q'\in\mathcal B}
+\left|(1-\theta)+\theta e(H_{qq'}/(qq'))\right|.
+\tag{4.42}
+\]
+Lemma \ref{lem:bernoulli-modulus} gives
+\[
+T_{\mathcal B}(a_{\mathcal B})
+\le
+\exp(-\kappa_b\mathcal Q_{\mathcal B}(a_{\mathcal B})).
+\tag{4.43}
+\]
+Choose $\varepsilon<\kappa_b/2$ in Proposition \ref{prop:fingerprint-entropy}. Summing unit energy shells above the forcing floor yields
+\[
+\sum_{\mathcal Q_{\mathcal B}\ge F_{\mathcal B}}
+T_{\mathcal B}(a_{\mathcal B})
+\ll
+\exp(-cF_{\mathcal B}).
+\tag{4.44}
+\]
+Below the floor, distinct assignments have distinct labels: if two such labels differed, two top primes would divide their difference, while both labels are $o(Z^2)$. Therefore
+\[
+\sum_{\mathcal Q_{\mathcal B}<F_{\mathcal B}}
+T_{\mathcal B}(a_{\mathcal B})
+\le
+\sum_{m\in\Z}
+ e^{-\kappa_bm^2\sigma_{\mathcal B,0}^2}
+\ll
+\sigma_{\mathcal B,0}^{-1}
+\ll Z\log Z.
+\tag{4.45}
+\]
+Hence the complete weighted top partition satisfies
+\[
+P_{\mathrm{top}}
+:=
+\sum_{a_{\mathcal B}}T_{\mathcal B}(a_{\mathcal B})
+\ll Z\log Z,
+\tag{4.46}
+\]
+while its noncoherent part is exponentially small by \eqref{4.44}.
+
+The distinction between raw cardinality and weighted mass in \eqref{4.46} is essential. Section \ref{sec:rows} will sum row fibres only after multiplying by this anchor weight.
