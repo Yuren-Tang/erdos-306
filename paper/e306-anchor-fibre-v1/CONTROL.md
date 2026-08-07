@@ -11,9 +11,9 @@
 - **Base:** `main@5a6207a493067f02c67b1cfa69fa8c5498f2c005`
 - **Writer capacity:** one writer at a time
 - **Independent audit capacity:** one-off read-only roles with no branch ownership
-- **External publication state:** not authorized; internal publication engineering only
+- **External publication state:** not authorized; publication candidate internally complete
 
-A committed control document does not attempt to contain its own commit hash. The exact current branch head is the head of PR `#9`.
+A committed control document does not attempt to contain its own commit hash. The exact current branch head is the head of PR `#9`. The final manuscript-source checkpoint recorded below is immutable unless a later disposition explicitly reopens the source.
 
 ## August 2026 supersession and audit closure
 
@@ -108,18 +108,52 @@ The superseded July manuscript sections, Architecture-E wrappers, obsolete proof
 - CI workflow: `.github/workflows/manuscript.yml`;
 - active public source consists of `main.tex`, `references.bib`, and the ten files named by the `\input` statements in `main.tex`.
 
-The arXiv source archive must contain only the files required by that build. Internal control/profile files are not part of the submission source.
+The arXiv source archive must contain only the files required by that build. Internal control/profile files are not part of the submission source, and no font files are to be bundled.
+
+## Final publication-engineering evidence
+
+The final manuscript-source checkpoint is
+
+```text
+dba5400f67acc2a8c05dedc1a1861700e17ee33d
+```
+
+At that exact source checkpoint:
+
+- manuscript workflow: `verify-e306-manuscript` run **#170**, run id `31207031067`, PASS;
+- formal workflow: `verify-erdos-306` run **#893**, run id `31207030427`, PASS;
+- Oxford-spelling guard: PASS;
+- TeX Gyre Pagella / GFS Porson / Inconsolata family preflight: PASS;
+- clean XeLaTeX + Biber build: PASS;
+- citations, symbolic references, labels, and Biber diagnostics: PASS;
+- embedded-font / no-Type-3 gate: PASS;
+- NFC extraction of both Unicode Greek dedication lines: PASS;
+- extraction of the lowercase linked ORCID URI: PASS;
+- leaked internal-label-name gate: PASS;
+- PDF metadata: PASS;
+- page size: A4;
+- final length: **34 pages**;
+- final PDF SHA-256:
+  `97a0041c46cba4bc6f37e9b59af6c3421c2397df8e808ee7559fff8f886668b0`;
+- PDF artifact id: `9005219904`;
+- diagnostics artifact id: `9005219255`.
+
+A full 180-dpi render was inspected. The title page, author/ORCID line, Unicode Greek dedication, moving-target references, Section 10, acknowledgements, and final bibliography were also inspected directly at page scale. No clipping, black squares, broken glyphs, leaked labels, malformed references, or bibliography tail page remains. The six references fit naturally on page 34 without a forced page break.
+
+Two display equations retain benign overfull-box diagnostics (16.47493 pt and 4.3234 pt) in the direct-family definition as it appears in the Introduction and Section 2. Both were inspected visually and remain safely inside the physical page margins. They are accepted rather than perturbing an audited mathematical display solely to obtain a warning-free log. The remaining underfull bibliography line is also benign.
+
+No further manuscript-source edit is authorized by this engineering disposition without reopening the corresponding gate.
 
 ## Formal Lean axis
 
-The archived Lean release remains an orthogonal existence/priority record. The present analytic manuscript contains no Lean argument and the AI acknowledgement must not imply that Lean development is part of the paper's contents. No manuscript theorem depends on the formal artifact.
+The archived Lean release remains an orthogonal existence/priority record. The present analytic manuscript contains no Lean argument and the AI acknowledgement does not imply that Lean development is part of the paper's contents. No manuscript theorem depends on the formal artifact.
 
 ## Product rules
 
 - One article, one branch, one draft PR.
 - No task-, auditor-, repair-, or revision-specific manuscript branches.
 - Mathematical changes after the independent PASS require explicit disposition and appropriate re-audit.
-- Pure presentation/build/plumbing repairs may proceed under the August supersession authorization, but must not alter audited mathematics silently.
+- Pure presentation/build/plumbing repairs may proceed only under explicit publication-control disposition and must not alter audited mathematics silently.
 - Owner approval is required before marking PR `#9` ready, merge, release, DOI action, arXiv upload, journal submission, or external contact.
 
 ## Current state
@@ -129,7 +163,8 @@ The archived Lean release remains an orthogonal existence/priority record. The p
 [MATHEMATICAL AUDIT CLOSED]
 [BOUNDED SOURCE RE-CHECK PASS]
 [SUPERSEDED WORKING FILES REMOVED]
-[FINAL STYLE / UNICODE / BIBLIOGRAPHY ENGINEERING IN PROGRESS]
+[FINAL PUBLICATION ENGINEERING PASS]
+[ARXIV SOURCE PACKET READY]
 [PR #9 OPEN / DRAFT / UNMERGED]
 [NO EXTERNAL PUBLICATION ACTION AUTHORIZED]
 ```
