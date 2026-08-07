@@ -1,0 +1,162 @@
+\section{Multiplicity and typical cardinality}\label{sec:multiplicity}
+
+Fix squarefree $b\ge3$ and retain the direct family $\mathcal E=\mathcal E_X$. Put
+\[
+M=|\mathcal E|,
+\qquad
+\mathcal R_X(b)=
+\left\{A\subseteq\mathcal E:
+\sum_{e\in A}\frac1e=\frac1b\right\}.
+\tag{7.1}
+\]
+Let
+\[
+q_X=\max(\theta,1-\theta),
+\qquad
+q_b=\max(\alpha_b,1-\alpha_b).
+\tag{7.2}
+\]
+Then $q_X\to q_b$, while Lemma \ref{lem:family-size} and \eqref{2.19} give
+\[
+\log L=o(M),
+\qquad
+|\log\sigma|=o(M).
+\tag{7.3}
+\]
+
+\subsection{Exponentially many exact representations}
+
+The exact target probability is
+\[
+P
+=
+\sum_{A\in\mathcal R_X(b)}
+\theta^{|A|}(1-\theta)^{M-|A|}.
+\tag{7.4}
+\]
+Every summand is at most $q_X^M$. Hence
+\[
+|\mathcal R_X(b)|
+\ge Pq_X^{-M}.
+\tag{7.5}
+\]
+By \eqref{6.28},
+\[
+P\asymp_b\frac1{L\sigma}.
+\tag{7.6}
+\]
+Taking logarithms and using \eqref{7.3},
+\[
+\log|\mathcal R_X(b)|
+\ge
+-M\log q_X-o(M)
+=
+[-\log q_b+o_b(1)]M.
+\tag{7.7}
+\]
+This proves \eqref{1.9}.
+
+\subsection{The typical-cardinality window}
+
+Let
+\[
+K=\sum_{e\in\mathcal E}\xi_e
+\]
+be the number of selected denominators under the ambient Bernoulli law, and set
+\[
+w=
+\left\lceil2\sqrt{M\log L}\right\rceil.
+\tag{7.8}
+\]
+Since $\log L=o(M)$,
+\[
+\sqrt M\ll w=o(M).
+\tag{7.9}
+\]
+Hoeffding's inequality \cite{Hoeffding1963} gives
+\[
+\Pr(|K-\theta M|>w)
+\le
+2\exp\left(-\frac{2w^2}{M}\right)
+\le
+2L^{-8}.
+\tag{7.10}
+\]
+The local limit \eqref{6.28} implies
+\[
+2L^{-8}=o(P).
+\tag{7.11}
+\]
+Consequently the exact target mass in the window satisfies
+\[
+\sum_{\substack{A\in\mathcal R_X(b)\\
+||A|-\theta M|\le w}}
+\theta^{|A|}(1-\theta)^{M-|A|}
+=(1-o(1))P.
+\tag{7.12}
+\]
+
+If $|k-\theta M|\le w$, write $k=\theta M+\delta$. Then
+\[
+\log\bigl(\theta^k(1-\theta)^{M-k}\bigr)
+=
+-MH(\theta)
++\delta\log\frac{\theta}{1-\theta},
+\tag{7.13}
+\]
+where
+\[
+H(u)=-u\log u-(1-u)\log(1-u).
+\]
+Since $\theta$ remains in a compact subinterval of $(0,1)$,
+\[
+\theta^k(1-\theta)^{M-k}
+\le
+\exp\bigl(-MH(\theta)+O_b(w)\bigr)
+\tag{7.14}
+\]
+uniformly in the window. Dividing \eqref{7.12} by this maximum atom and using
+\[
+\log P=-\log L-\log\sigma+O_b(1)=o(M),
+\qquad
+w=o(M),
+\qquad
+H(\theta)\to H(\alpha_b),
+\]
+gives
+\[
+\#\left\{A\in\mathcal R_X(b):
+\bigl||A|-\theta M\bigr|\le w\right\}
+\ge
+\exp\bigl([H(\alpha_b)-o_b(1)]M\bigr).
+\tag{7.15}
+\]
+This is \eqref{1.10}.
+
+The exponent is optimal at ambient exponential scale: the standard entropy estimate for binomial coefficients gives
+\[
+\#\left\{A\subseteq\mathcal E:
+\bigl||A|-\theta M\bigr|\le w\right\}
+\le
+\exp\bigl([H(\alpha_b)+o_b(1)]M\bigr).
+\tag{7.16}
+\]
+Thus imposing the exact reciprocal-sum constraint costs only a subexponential factor within this mesoscopic cardinality window.
+
+\subsection{One exact cardinality}
+
+The interval $|k-\theta M|\le w$ contains at most $2w+1=\exp(o(M))$ integers. By pigeonhole applied to \eqref{7.15}, there is an integer
+\[
+k_X=\theta M+O(w)
+\tag{7.17}
+\]
+such that
+\[
+\#\{A\in\mathcal R_X(b):|A|=k_X\}
+\ge
+\exp\bigl([H(\alpha_b)-o_b(1)]M\bigr).
+\tag{7.18}
+\]
+This proves \eqref{1.11} and completes Theorem \ref{thm:multiplicity}.
+
+The conclusion is deliberately mesoscopic. We do not prove a prescribed-cardinality asymptotic, a conditional central limit theorem for $|A|$ on the natural $\sqrt M$ scale, or a bivariate local limit for reciprocal sum and cardinality.
