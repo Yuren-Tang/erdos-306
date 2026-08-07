@@ -1,116 +1,227 @@
 \section{Introduction}
-\label{sec:introduction}
 
-An integer is a \emph{squarefree semiprime} if it is the product of two distinct primes.  We resolve the reciprocal-representation question posed by Erd\H{o}s and Graham~\cite{erdos-graham-1980} and now recorded as Erd\H{o}s Problem~306~\cite{erdos-problem-306}.
-
-\begin{theorem}[Squarefree-denominator characterization with finite avoidance]
-\label{thm:main}
-Let $q>0$ be rational.  The denominator of $q$ in lowest terms is squarefree if and only if, for every finite set $\mathcal T$ of positive integers, there is a finite set $\mathcal N$ of pairwise distinct squarefree semiprimes, disjoint from $\mathcal T$, such that
+An Egyptian-fraction representation of a positive rational number is an expression
 \[
- q=\sum_{n\in\mathcal N}\frac1n.
+q=\frac1{n_1}+\cdots+\frac1{n_k},
+\qquad
+1<n_1<\cdots<n_k,
+\]
+and a classical line of questions asks what remains possible when the denominators are arithmetically restricted. Erd\H{o}s and Graham asked whether every positive rational $a/b$ with squarefree reduced denominator can be represented using only products of two distinct primes \cite{ErdosGraham1980}. This is now commonly listed as Erd\H{o}s Problem 306.
+
+The analogous problem with three distinct prime factors has a longer history. Butler, Erd\H{o}s and Graham proved that every natural number is a sum of distinct unit fractions whose denominators have three distinct prime divisors \cite{ButlerErdosGraham2015}. For two prime factors, the integer case remained conjectural there. Recently Li proved that every natural number is a sum of distinct semiprime unit fractions and extended the method to rationals with squarefree denominator above an explicit threshold \cite{Li2026}. The same paper isolates the remaining low rational range as the unresolved part of the two-prime problem.
+
+Our first result closes that range and gives the exact answer.
+
+\begin{theorem}[Squarefree-denominator characterization]\label{thm:characterization}
+Let $q=a/b>0$ be in lowest terms. Then $q$ is a finite sum of reciprocals of pairwise distinct squarefree semiprimes if and only if $b$ is squarefree. More strongly, if $T\subset\N$ is finite, then the representing denominators may be chosen outside $T$.
+\end{theorem}
+
+The necessity is immediate: the least common multiple of finitely many squarefree integers is squarefree, and the reduced denominator of their reciprocal sum divides that least common multiple. The content is the converse, including the finite-avoidance statement.
+
+The proof is quantitative and, in the direct family used here, gives substantially more than existence. Fix a squarefree integer $b\ge3$, let $X\to\infty$, and put
+\[
+Z=X^3,
+\qquad
+\mathcal P_X=\{p\text{ prime}:X\le p<Z\},
+\qquad
+\mathcal B_X=\{q\text{ prime}:Z/2\le q<Z\}.
+\]
+If $S_b$ is the set of prime divisors of $b$, define
+\[
+\mathcal E_X
+=
+\{pq:p,q\in\mathcal P_X,\ p<q\}
+\sqcup
+\{rq:r\in S_b,\ q\in\mathcal B_X\}.
+\tag{1.1}
+\]
+For large $X$, every element of $\mathcal E_X$ is a distinct squarefree semiprime and any fixed finite forbidden set is automatically avoided. Write
+\[
+\Lambda_X=\sum_{e\in\mathcal E_X}\frac1e,
+\qquad
+L_X=b\prod_{p\in\mathcal P_X}p,
+\qquad
+\theta_X=\frac1{b\Lambda_X}.
+\tag{1.2}
+\]
+The prime number theorem gives
+\[
+\Lambda_X\longrightarrow\frac{(\log3)^2}{2}\in(1/3,1),
+\tag{1.3}
+\]
+so $\theta_X$ stays in a compact subinterval of $(0,1)$. Select each $e\in\mathcal E_X$ independently with probability $\theta_X$ and set
+\[
+S_X=\sum_{e\in\mathcal E_X}\frac{\xi_e}{e},
+\qquad
+\sigma_X^2=\operatorname{Var}(S_X).
+\tag{1.4}
+\]
+Then $\mathbb E S_X=1/b$ and
+\[
+\sigma_X^2
+\sim
+\frac{\alpha_b(1-\alpha_b)}{2X^2\log^2X},
+\qquad
+\alpha_b=\frac{2}{b(\log3)^2}.
+\tag{1.5}
+\]
+
+Let
+\[
+W_X(t)=
+\Pr\!\left(S_X=t\right)
+\]
+for lattice targets $t\in L_X^{-1}\Z$. The exact representation fibre has a local Gaussian profile.
+
+\begin{theorem}[Local Gaussian profile]\label{thm:local-profile}
+Fix squarefree $b\ge3$. For every fixed $U>0$, uniformly for integers
+\[
+|j|\le U L_X\sigma_X,
+\]
+one has
+\[
+L_X\sigma_X
+W_X\!\left(\frac1b+\frac{j}{L_X}\right)
+=
+\Phi\!\left(\frac{j}{L_X\sigma_X}\right)+o_U(1),
+\tag{1.6}
+\]
+where
+\[
+\Phi(u)=\frac1{\sqrt{2\pi}}e^{-u^2/2}.
+\]
+In particular,
+\[
+L_XW_X(1/b)
+\sim
+\frac1{\sqrt{2\pi}\,\sigma_X}.
+\tag{1.7}
 \]
 \end{theorem}
 
-The obstruction is elementary: a finite sum of reciprocals of squarefree integers has squarefree reduced denominator.  The content of \cref{thm:main} is the sufficiency direction, strengthened by finite avoidance.  The same result gives finite prescription, disjoint realization, common refinements, and countably infinite proper refinement chains.
+Thus the target coefficient has the size suggested by a lattice local central limit heuristic, even though the Fourier side lives on the highly composite group $\Z/L_X\Z$ and contains an enormous collection of noninteger Chinese-remainder configurations.
 
-\subsection{Context and comparison}
-
-Egyptian-fraction representations and their restricted-denominator variants have a long history; see Bloom and Elsholtz~\cite{bloom-elsholtz-2022} for a recent survey.  Barbeau gave the first known representation of $1$ by reciprocals of distinct squarefree semiprimes, using $101$ terms; Watanabe later found the currently shortest known examples, with $47$ terms~\cite{barbeau-1977,watanabe-2020}.  Butler, Erd\H{o}s and Graham proved that every positive integer is a sum of distinct unit fractions whose denominators have three distinct prime factors, and conjectured the corresponding statement with two prime factors~\cite{butler-erdos-graham-2015}.
-
-A recent preprint of Li proves the two-prime conjecture for every positive integer.  For a general squarefree denominator $b$, it also represents $a/b$ above an explicit threshold and leaves the remaining below-threshold $\omega=2$ regime open~\cite{li-2026-semiprime}.  The theorem above settles that remaining rational case.  Li's proof uses additive-combinatorial subset-sum input and induction.  Here a fixed target is obtained directly from a positive finite Fourier coefficient; prime dilution on disjoint supports then gives the global characterization.
-
-Quantitative multiplicity is known in the unrestricted setting on its natural ambient scale.  Conlon, Fox, He, Mubayi, Pham, Suk and Verstra\"ete prove that, for every fixed positive rational $q$, there are $2^{(c_q+o(1))N}$ representations by distinct denominators at most $N$~\cite{conlon-et-al-2025}.  Our quantitative statements concern the much thinner squarefree-semiprime system and are measured by the size of the explicit family constructed below.
-
-An earlier Lean~4 formalization established the original Erd\H{o}s 306 existence statement~\cite{tang-erdos-306-formal}.  The present article proves a broader theorem through a substantially reorganized analytic argument.
-
-\subsection{The mechanism and its interfaces}
-
-The proof is organized around one continuous Fourier--CRT mechanism.  The exact coefficient identity is separated from the estimates used to prove positivity.  In the compact composition theorem of \cref{thm:one-well-composition}, finite Fourier semantics, an admissible observation/compression provider, the actual local kernel, a source-uniform weighted tail estimate and exact realization are distinct inputs.  The reciprocal construction supplies each input concretely.
-
-A fixed upper-ratio block of the largest primes acts as an anchor: sufficiently small internal energy forces all anchor coordinates to be residues of one integer label $m$.  The factors joining an anchor prime to a remaining prime form anchor-cross rows.  Their cyclic energy identifies the remaining prime coordinates; analogous rows indexed by the prime divisors of the reduced target denominator observe the target coordinates.
-
-The row estimates alone cannot be multiplied over the raw set of anchor assignments.  The exact weighted fibre identity of \cref{thm:weighted-compression} performs the required compression: above each anchor assignment it retains one decoded tuple and bounds the full off-decoder mass without dividing by decoder weights.  Every factor not assigned to a row remains on the decoded skeleton.  This preservation is essential.  The lower--lower prime-pair factors survive the compression and provide the Gaussian transition and adaptive damping which control frequencies beyond the full-coordinate range.
-
-The central range then has the expected Gaussian form.  Exact centring cancels the linear phase, the full family supplies the quadratic variance, and the aggregate cubic error is negligible.  The resulting positive quotient coefficient is converted to exact equality only afterwards: all subset sums and the target lie in one interval of length less than one.  Finally, prime dilution, finite avoidance and replacement transfer the fixed-target theorem to arbitrary positive rationals with squarefree reduced denominator.
-
-The prime number theorem is the sole non-elementary number-theoretic input; a standard reference is Montgomery and Vaughan~\cite[Chapter~1]{montgomery-vaughan-2007}.  We use it for prime counts, Chebyshev's function, reciprocal prime mass and prime square load.  The anchor rigidity, row separation, fibre compression, target observability and Fourier-sector estimates are proved here.
-
-\subsection{The direct fixed-family theorem}
-
-Fix a reduced rational
+The central value in \eqref{1.7} already yields Theorem \ref{thm:characterization} for the unit target $1/b$. It also gives a large exact fibre. Put
 \[
- t=\frac ab\in(0,1),
+M_X=|\mathcal E_X|,
+\qquad
+\mathcal R_X(b)
+=
+\left\{A\subseteq\mathcal E_X:
+\sum_{e\in A}\frac1e=\frac1b\right\},
+\tag{1.8}
 \]
-with squarefree $b$, a fixed anchor ratio $\eta\in(0,1)$, and a fixed exponent $\gamma>1$.  Since $t$ is positive and less than one, reducedness entails $b>1$.  At scale $X$ put $Z=X^\gamma$, take primes in $[X,Z)$, and designate
-\[
- B=\{q\text{ prime}:\eta Z\leq q<Z\}
-\]
-as the anchor.  The denominator family consists of all unordered products of two distinct primes in $[X,Z)$, together with rows $rq$ for $r\mid b$ prime and $q\in B$.  Its reciprocal load tends to
-\[
- \lambda_\gamma=\frac{(\log\gamma)^2}{2}.
-\]
-The centred no-wrap construction applies in the exact range
-\begin{equation}
-\label{eq:intro-admissible-region}
- t<\lambda_\gamma<1,
- \qquad\text{equivalently}\qquad
- \exp(\sqrt{2t})<\gamma<\exp(\sqrt2).
-\end{equation}
-Exact centring chooses $\theta\Lambda=t$, so
-\[
- \theta\longrightarrow\alpha_{t,\gamma}
- =\frac{t}{\lambda_\gamma}
- =\frac{2t}{(\log\gamma)^2}.
-\]
+and let $H(u)=-u\log u-(1-u)\log(1-u)$.
 
-\begin{theorem}[Parameterized direct fixed-target theorem]
-\label{thm:parameterized-direct-target-intro}
-Let $t=a/b\in(0,1)$ be reduced with squarefree $b$, let $\eta\in(0,1)$ be fixed, let $\gamma$ satisfy \cref{eq:intro-admissible-region}, and let $\mathcal T$ be finite.  For all sufficiently large $X$, the parameterized family of \cref{sec:denominator-system} contains a subset $\mathcal A$, disjoint from $\mathcal T$, such that
+\begin{theorem}[Multiplicity and typical cardinality]\label{thm:multiplicity}
+Let $b\ge3$ be fixed and squarefree, and put
 \[
- \sum_{e\in\mathcal A}\frac1e=t.
+q_b=\max(\alpha_b,1-\alpha_b),
+\qquad
+w_X=\left\lceil2\sqrt{M_X\log L_X}\right\rceil.
 \]
-Its exact target coefficient satisfies the sharp Gaussian asymptotic of \cref{thm:sharp-target-coefficient}; the same fixed family satisfies \cref{thm:compact-moving-target}.
+Then
+\[
+\log|\mathcal R_X(b)|
+\ge
+[-\log q_b+o_b(1)]M_X.
+\tag{1.9}
+\]
+Moreover,
+\[
+\#\left\{A\in\mathcal R_X(b):
+\bigl||A|-\theta_XM_X\bigr|\le w_X\right\}
+\ge
+\exp\bigl([H(\alpha_b)-o_b(1)]M_X\bigr).
+\tag{1.10}
+\]
+For some integer
+\[
+k_X=\theta_XM_X+O(w_X)
+\]
+one also has
+\[
+\#\{A\in\mathcal R_X(b):|A|=k_X\}
+\ge
+\exp\bigl([H(\alpha_b)-o_b(1)]M_X\bigr).
+\tag{1.11}
+\]
 \end{theorem}
 
-Put
+The exponent $H(\alpha_b)$ is the ambient binomial entropy exponent near the typical Bernoulli cardinality. At exponential scale, the exact reciprocal-sum constraint therefore costs only the subexponential lattice factor already visible in the local limit.
+
+The moving part of Theorem \ref{thm:local-profile} gives a second form of abundance. Since $L_X\sigma_X\to\infty$ while $\sigma_X\to0$, one fixed family $\mathcal E_X$ realizes a consecutive block of
 \[
- \tau(b)=\sum_{\substack{r\mid b\\r\ \mathrm{prime}}}\frac1{r^2}>0.
+2\lfloor U L_X\sigma_X\rfloor+1
 \]
-The variance of the actual Bernoulli family has the single asymptotic
+nearby lattice targets, whose number tends to infinity although the corresponding real interval has radius $U\sigma_X\to0$. Thus exact representations form a locally Gaussian fibre rather than isolated solutions.
+
+\subsection{Fourier architecture}
+
+Character orthogonality gives
 \[
- \sigma_{\mathcal E}^2
- \sim\alpha_{t,\gamma}(1-\alpha_{t,\gamma})
- \left(
-  \frac1{2X^2\log^2X}
-  +\frac{(\eta^{-1}-1)\tau(b)}{Z\log Z}
- \right).
+L_XW_X(1/b)
+=
+\sum_{h\bmod L_X}F_X(h),
+\tag{1.12}
 \]
-At $\gamma=2$ the dominant contribution changes: prime pairs dominate for $\gamma>2$, while the target rows dominate for $1<\gamma\leq2$.  The proof itself remains uniform.  A full-coordinate cutoff
+where
 \[
- T_0=\kappa_0\min(X^2,Z)
+F_X(h)
+=
+e(-h/b)
+\prod_{e\in\mathcal E_X}
+\bigl((1-\theta_X)+\theta_Xe(h/e)\bigr),
+\qquad
+e(t)=e^{2\pi it}.
+\tag{1.13}
 \]
-is followed by a prime-only Gaussian transition and an adaptive retained-pair range, giving one pairwise-disjoint six-sector decomposition for every fixed $\gamma>1$ and $\eta\in(0,1)$.
-
-\subsection{The coefficient and its consequences}
-
-The fixed-target coefficient satisfies
+For a genuine integer frequency $h=m$, Taylor expansion gives
 \[
- L_XP_X(t)\sim\frac1{\sqrt{2\pi}\,\sigma_X}.
+F_X(m)
+=
+\exp(-2\pi^2m^2\sigma_X^2+o(1))
 \]
-More generally, for each fixed $U>0$, the same family has the uniform Gaussian profile of \cref{thm:compact-moving-target} for integers $|j|\leq U L_X\sigma_X$ while the shifted target remains in the exact load and no-wrap range.  No growing standardized window is claimed.
+uniformly on each fixed standardized interval $|m|\le C/\sigma_X$. If only these frequencies mattered, Theorem \ref{thm:local-profile} would be a routine Gaussian Riemann-sum calculation.
 
-The representations in the direct family have exponential rate
+The difficulty is that $L_X$ contains every prime in $\mathcal P_X$. A general frequency has one CRT coordinate modulo each of these primes, and many noninteger assignments can make large subsets of the Bernoulli factors nearly undamped. The proof uses the geometry of the denominator family to compress this space.
+
+The top block $\mathcal B_X$ acts as an \emph{anchor}. Denominators $qq'$ with $q,q'\in\mathcal B_X$ measure an internal quadratic energy. We prove that sufficiently low anchor energy forces every anchor coordinate to be the reduction of one and the same integer $m$, with no exceptional coordinates. Above the forcing threshold, a fingerprint argument controls the complete weighted population of anchor assignments.
+
+Once the anchor label $m$ is known, the factors $rq$ with $q\in\mathcal B_X$ observe each remaining CRT coordinate against the common anchor. A multiplicity-sensitive inverse-residue estimate gives a quantitative distance between different row states, so in the local-limit range the unique least-energy state is exactly $m$ modulo the row prime. Factors not used for decoding are retained and later suppress coherent labels outside the Gaussian range.
+
+The Fourier sum therefore has three conceptual pieces:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item a Gaussian core of genuine integer frequencies $|m|=O(\sigma_X^{-1})$;
+\item coherent tails, suppressed either by the full variance or by retained complete-pair damping;
+\item an incoherent remainder consisting of energetic anchor assignments and nondecoder row states, whose total weighted mass is exponentially small.
+\end{enumerate}
+The technical proof subdivides the coherent tails at two transition scales, but these are subordinate to the three-part structure above.
+
+The moving-target statement requires no new minor-frequency analysis. Replacing $1/b$ by $1/b+j/L_X$ simply multiplies \eqref{1.13} by the unit character
 \[
- H(\alpha_{t,\gamma})
- =-\alpha_{t,\gamma}\log\alpha_{t,\gamma}
-  -(1-\alpha_{t,\gamma})\log(1-\alpha_{t,\gamma}).
+e(-hj/L_X).
 \]
-For $0<t<1/2$, the maximum $\log2$ is attained uniquely at $\gamma=\exp(2\sqrt t)$.  At $t=1/2$ it is a non-attained supremum, and for $1/2<t<1$ the non-attained supremum is $H(t)$.  The same coefficient yields exact-cardinality extraction, exponentially large Hamming-separated families, balanced signed reciprocal relations and denominator-height estimates.  Finite replacement and prime dilution then give quantitative proper-refinement branching and transfer to every admissible rational.
+Every modulus estimate is unchanged. On the integer frequencies this factor becomes the Fourier variable in the Gaussian Riemann sum and yields the profile $\Phi$.
 
-\subsection{Conventions and organization}
+\subsection{Exact equality and finite avoidance}
 
-The terms \emph{anchor assignment}, \emph{coherent label}, \emph{row decoder}, \emph{fibre} and \emph{decoded skeleton} refer respectively to the CRT coordinates on the anchor block, the synchronizing integer $m$, the minimizing residue in one anchor-cross row, the product of all row coordinates over a fixed anchor assignment, and the single decoded tuple together with every unassigned factor.  The integer label $m$ and the decoded residue class $h_m\in\mathbb Z/L\mathbb Z$ are distinct objects; they coincide as a full CRT tuple only in the full-coordinate range.
+The Fourier calculation first detects a subset whose integer weights sum to $L_X/b$ modulo $L_X$. Exact equality is then deterministic: every subset reciprocal sum lies in $[0,\Lambda_X]$ with $\Lambda_X<1$, and so does the target $1/b$. Two such numbers congruent modulo one must be equal.
 
-Throughout the direct construction, $t$, $\gamma$, $\eta$, $b$ and the finite forbidden set are fixed while $X\to\infty$.  The constants $\kappa_{\rm mod}=\kappa_{\rm mod}(t,\gamma,\eta)$, $c_{\rm row}=c_{\rm row}(t,\gamma,\eta,b)$ and $\kappa_0=\kappa_0(t,\gamma,\eta,b)$ have distinct roles.  Other unnamed constants may depend on the fixed tuple and fixed numerical choices, but not on $X$ or on the later Gaussian cutoff $C$.  Fixed-ratio estimates are uniform for $\eta$ in compact subsets of $(0,1)$.  Whenever $C$ occurs, $X\to\infty$ is taken with $C$ fixed, and only afterwards may $C\to\infty$.
+The analytic argument is needed only for an avoiding representation of $1/b$ with squarefree $b\ge3$. Arbitrary numerators are obtained by repeatedly adjoining fresh avoiding unit representations. The denominators $1$ and $2$ are reduced to the already proved cases using
+\[
+\frac12=\frac13+\frac16,
+\qquad
+1=\frac13+\frac13+\frac13,
+\]
+where each summand on the right is represented on a separately chosen support.
 
-\Cref{sec:composition-interface} gives exact coefficient semantics, the compact composition theorem and its deterministic providers.  \Cref{sec:denominator-system,sec:anchor-block,sec:fibre-decoding} build the reciprocal family and establish capacity, variance, one-anchor rigidity, row observability and weighted compression.  \Cref{sec:decoded-skeleton,sec:major-budget} prove the decoded-tail and actual-well estimates.  \Cref{sec:positive-realization} separates quotient positivity, realization and no-wrap.  \Cref{sec:characterization-proof} proves the characterization and refinement theorems.  \Cref{sec:saturation-quantitative} proves compact fixed-family saturation and the quantitative consequence cluster, and \cref{sec:scope} records the exact boundaries and nonclaims.
+The quantitative results are deliberately not transferred through this closure: Theorems \ref{thm:local-profile} and \ref{thm:multiplicity} concern the single direct family associated with a fixed squarefree $b\ge3$.
+
+\subsection{Related restricted-denominator work}
+
+The present problem belongs to a wider literature on Egyptian fractions with restricted prime support. For explicit short representations of $1$ by semiprime denominators, see for example Watanabe \cite{Watanabe2020}. Different restrictions, in which all prime factors are drawn from a fixed finite set, are studied by Czenky, McGovern, Plavnik, Rowell and Watkins \cite{CzenkyEtAl2025}. These directions are complementary to the expanding squarefree-semiprime family used here.
+
+\subsection{Organization}
+
+Section 2 constructs the direct family and records its reciprocal mass, variance, and lattice scale. Section 3 gives the finite Fourier formula and separates the no-wrap exactness step. Section 4 proves one-anchor rigidity, including the zero-exception and fingerprint estimates. Section 5 establishes row observability, decoder identification, weighted fibre compression, and retained damping. Section 6 evaluates the Fourier coefficient on the local-limit scale. Section 7 derives multiplicity and entropy consequences, Section 8 proves the moving-target profile, Section 9 completes the characterization and finite-avoidance consequences, and Section 10 records the exact scope and limitations of the method.
