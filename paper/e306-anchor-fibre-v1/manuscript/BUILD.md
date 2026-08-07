@@ -1,56 +1,82 @@
-# Forensic reconstruction build
+# Clean August v1 — build and source boundary
 
-This directory contains the recovered manuscript source integrated into GitHub on `paper/e306-anchor-fibre-v1` at recovery checkpoint `c2dfc5120eec017718ef07cbe43f9c151803769c`. It is a forensic reconstruction: under the recorded reproducible-build environment it reproduces the surviving 42-page evidence PDF byte-for-byte, but it does not certify invisible historical source identity such as comments, whitespace or equivalent TeX syntax.
+This directory contains the active publication source for the August 2026 clean rewrite of the E306 article.
+
+## Source provenance
+
+The manuscript text was promoted from the independently audited source
+
+```text
+Yuren-Tang/research-workbench@43c205356fe5def721d54206af83928e95338fac
+intake/2026-08-07-e306-arxiv-v1/latex/
+```
+
+The active files on `paper/e306-anchor-fibre-v1` were checked by Git blob identity against that fixed source. The mathematical/source audit chain is recorded in `../CONTROL.md`.
+
+The older 42-page forensic reconstruction remains available in Git history and in its historical provenance records, but its page count, PDF digest, Biber configuration, visual comparison, and byte-exact reproduction claims do **not** transfer to this clean manuscript.
+
+## Active source
+
+The public source package is exactly:
+
+- `main.tex`;
+- `references.bib`;
+- the ten section files named by the `\input` commands in `main.tex`.
+
+Other legacy `.tex` files still present under `sections/` are historical branch artifacts and are not active inputs. A minimal arXiv source archive should include only the active source plus any build files actually required by arXiv.
 
 ## Ordinary build
 
-The source uses PDFLaTeX with Biber. From this directory run:
+The manuscript uses PDFLaTeX and BibTeX through `latexmk`.
+
+From this directory run:
 
 ```bash
 latexmk -C main.tex
 latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error main.tex
 ```
 
-The included `Makefile` provides the equivalent `make clean` / `make pdf` entrypoints.
-
-## Byte-exact forensic reproduction
-
-The surviving 42-page evidence PDF records the creation/modification time
-`2026-07-30 23:38:20 UTC`, whose Unix epoch is `1785454700`.
-With the recovered source candidate and the original toolchain, the following reproducible build produces a PDF byte-for-byte identical to the evidence object:
+The included `Makefile` provides the equivalent commands:
 
 ```bash
-export SOURCE_DATE_EPOCH=1785454700
-export FORCE_SOURCE_DATE=1
-latexmk -C main.tex
-latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error main.tex
-sha256sum main.pdf
+make clean
+make pdf
 ```
 
-Expected SHA-256:
+## CI environment
+
+The compatibility workflow is
 
 ```text
-d0bc466283dc591b90e7039bb6461ecaa040d6a80b63d7270c1211e7377992c2  main.pdf
+.github/workflows/manuscript.yml
 ```
 
-This equality establishes exact recovery of the compiled evidence object. It does not prove that invisible source details such as comments, harmless blank lines or equivalent TeX spellings are identical to the lost source.
+It installs the required TeX packages explicitly, including `lmodern`, and checks:
 
-## Validation performed
+1. clean PDFLaTeX/BibTeX completion through `latexmk`;
+2. nonempty `main.pdf` and `main.bbl`;
+3. no undefined citations or references;
+4. no multiply-defined labels reported by LaTeX;
+5. no BibTeX warnings;
+6. all PDF fonts embedded;
+7. no Type 3 fonts;
+8. upload of build diagnostics and the resulting PDF artifact.
 
-1. every `\input` target is present;
-2. Biber completes without warnings or errors;
-3. there are no undefined citations or cross-references;
-4. there are no duplicate labels;
-5. all PDF fonts are embedded and no Type 3 font occurs;
-6. the dedication extracts literally as `ΤΟΙΣ ΕΜΕ ΦΙΛΟΥΣΙΝ` / `ΚΑΙ ΟΙΣ ΦΙΛΩ`;
-7. the bibliography begins on a separate page;
-8. the output has 42 pages;
-9. normalized full text agrees token-for-token with the evidence PDF;
-10. all 42 pages agree pixel-for-pixel at 200 dpi;
-11. the evidence-timestamp build agrees byte-for-byte with the evidence PDF.
+The workflow's current Ubuntu/TeX Live environment is a compatibility build. arXiv portability is a separate gate and must be checked against the current arXiv TeX environment before upload.
 
-The final build records one nonfatal underfull box and no overfull box.
+## Manual engineering gates still required before external publication
+
+A successful CI build is necessary but does not by itself authorize publication. Before an arXiv upload or journal submission, the fixed candidate must also receive the applicable publication-engineering checks, including:
+
+- source-package minimality and arXiv portability;
+- PDF metadata/page-size inspection;
+- text extraction and glyph sanity;
+- visual inspection of every page for clipping, overflow, broken equations, headings, bibliography layout, and obvious typography defects;
+- final current-literature/metadata refresh;
+- assistance/declaration/licence decisions as required by the selected external route.
+
+Exact run IDs, artifact IDs, PDF hashes, page count, and final engineering disposition are durable run evidence and should be recorded in the controlling issue after the final candidate passes; they are not hard-coded here so this file does not become self-stale after every build.
 
 ## Authority boundary
 
-This candidate is for independent mathematical-content preservation review. It authorizes no branch change, commit, push, PR transition, merge, release, licence selection, DOI action, arXiv upload or journal submission.
+Internal source promotion and build/visual preparation are authorized by the 2026-08-07 supersession disposition on issue `#11`. No merge, licence selection, release, DOI action, arXiv upload, journal submission, or external contact is authorized by this file.
