@@ -1,0 +1,183 @@
+\section{Moving-target local saturation}\label{sec:moving-target}
+
+Fix squarefree $b\ge3$. For each $X$, keep the direct family $\mathcal E=\mathcal E_X$, the common denominator $L=L_X$, and the Bernoulli parameter $\theta=1/(b\Lambda)$. For a lattice target $t\in L^{-1}\Z$, write
+\[
+W_X(t)=
+\Pr\left(\sum_{e\in\mathcal E}\frac{\xi_e}{e}=t\right).
+\tag{8.1}
+\]
+We prove the full statement of Theorem \ref{thm:local-profile}.
+
+\subsection{The target shift is a unit character}
+
+Let
+\[
+t_j=\frac1b+\frac{j}{L},
+\qquad j\in\Z.
+\tag{8.2}
+\]
+The quotient coefficient at $t_j$ is
+\[
+L W_X^{\mathrm{quot}}(t_j)
+=
+\sum_{h\bmod L}F_j(h),
+\tag{8.3}
+\]
+where
+\[
+F_j(h)
+=
+e(-ht_j)
+\prod_{e\in\mathcal E}
+\bigl((1-\theta)+\theta e(h/e)\bigr).
+\]
+Comparing with the central target $t_0=1/b$ gives the exact identity
+\[
+F_j(h)=e(-hj/L)F_0(h).
+\tag{8.4}\label{eq:unit-character}
+\]
+Hence
+\[
+|F_j(h)|=|F_0(h)|
+\tag{8.5}
+\]
+for every $h$ and $j$. All anchor, row, decoder, fibre, and coherent-tail estimates in Sections \ref{sec:anchor}--\ref{sec:gaussian} are therefore unchanged.
+
+\subsection{The Gaussian phase}
+
+Fix $U>0$ and consider integers satisfying
+\[
+|j|\le UL\sigma.
+\tag{8.6}
+\]
+Put
+\[
+u_j=\frac{j}{L\sigma},
+\qquad |u_j|\le U.
+\tag{8.7}
+\]
+On a genuine integer frequency $m$, equations \eqref{6.10} and \eqref{eq:unit-character} give, uniformly for $|m|\le C/\sigma$,
+\[
+F_j(m)
+=
+\exp\left(
+-2\pi^2m^2\sigma^2
+-\frac{2\pi i mj}{L}
++\varepsilon_{X,m}
+\right).
+\tag{8.8}
+\]
+With $x_m=m\sigma$, the new phase is
+\[
+\exp(-2\pi i x_m u_j).
+\tag{8.9}
+\]
+
+\begin{proposition}[Compact-uniform major limit]\label{prop:moving-major}
+For fixed $C,U>0$, uniformly for integers $j$ satisfying \eqref{8.6},
+\[
+\sigma
+\sum_{|m|\le C/\sigma}F_j(m)
+-
+\int_{-C}^{C}e^{-2\pi^2x^2}e(-u_jx)\,dx
+\longrightarrow0.
+\tag{8.10}
+\]
+\end{proposition}
+
+\begin{proof}
+The Taylor remainder is the same uniform error as in \eqref{6.10}. For $|u|\le U$, the functions
+\[
+x\mapsto e^{-2\pi^2x^2}e(-ux)
+\]
+have uniformly bounded derivative on $[-C,C]$. The Riemann-sum approximation is therefore uniform in $u\in[-U,U]$.
+\end{proof}
+
+The full Fourier transform is
+\[
+\int_{\R}e^{-2\pi^2x^2}e(-ux)\,dx
+=
+\Phi(u)
+:=
+\frac1{\sqrt{2\pi}}e^{-u^2/2}.
+\tag{8.11}
+\]
+The truncation tail outside $[-C,C]$ is bounded by the absolute Gaussian tail, uniformly in $u$.
+
+\subsection{Uniform complementary estimates}
+
+By \eqref{8.5}, every modulus estimate in Sections 6.2--6.5 is unchanged. If $\mathfrak R_{X,C}(j)$ is the complete contribution outside the genuine integer range $|m|\le C/\sigma$, then
+\[
+\limsup_{X\to\infty}
+\sup_{|j|\le UL\sigma}
+\sigma|\mathfrak R_{X,C}(j)|
+\le
+K_be^{-c_bC^2/2}.
+\tag{8.12}
+\]
+No factor counting the number of targets appears; the estimate is already uniform in the inserted unit character.
+
+Combining Proposition \ref{prop:moving-major} with \eqref{8.12}, first taking $X\to\infty$ with $C,U$ fixed and then $C\to\infty$, gives
+\[
+L\sigma W_X^{\mathrm{quot}}(t_j)
+=
+\Phi(u_j)+o_U(1)
+\tag{8.13}
+\]
+uniformly for \eqref{8.6}.
+
+\subsection{No-wrap and simultaneous exact realization}
+
+The limiting load satisfies
+\[
+\Lambda\longrightarrow\frac{(\log3)^2}{2}>\frac13\ge\frac1b.
+\]
+Thus $1/b$ lies a fixed positive distance from the endpoints of the eventual interval $[0,\Lambda]$. Since $\sigma\to0$, for each fixed $U$ all targets $t_j$ with \eqref{8.6} lie in $[0,\Lambda]$ for sufficiently large $X$. Lemma \ref{lem:no-wrap} therefore gives
+\[
+W_X^{\mathrm{quot}}(t_j)=W_X(t_j).
+\tag{8.14}
+\]
+Together with \eqref{8.13}, this proves
+\[
+L\sigma
+W_X\!\left(\frac1b+\frac{j}{L}\right)
+=
+\Phi\!\left(\frac{j}{L\sigma}\right)+o_U(1),
+\tag{8.15}\label{eq:moving-profile}
+\]
+uniformly for $|j|\le UL\sigma$, which is Theorem \ref{thm:local-profile}.
+
+Since $\Phi$ has a positive minimum on $[-U,U]$, every coefficient in this window is eventually positive simultaneously. Hence the integer subset-sum image
+\[
+\mathcal S_X
+=
+\left\{\sum_{e\in A}\frac{L}{e}:A\subseteq\mathcal E\right\}
+\tag{8.16}
+\]
+contains the entire block
+\[
+\left\{\frac{L}{b}+j:
+|j|\le\lfloor UL\sigma\rfloor\right\}.
+\tag{8.17}
+\]
+By \eqref{2.19} and Lemma \ref{lem:family-size},
+\[
+\sigma\to0,
+\qquad
+L\sigma\to\infty.
+\tag{8.18}
+\]
+Thus the number of represented lattice points tends to infinity while their radius after division by $L$ is at most $U\sigma\to0$.
+
+Dividing \eqref{eq:moving-profile} by the central local limit also gives
+\[
+\frac{W_X(1/b+j/L)}{W_X(1/b)}
+=
+\exp\left(-\frac{j^2}{2L^2\sigma^2}\right)+o_U(1)
+\tag{8.19}
+\]
+uniformly on the same window.
+
+\begin{remark}
+There is no largest finite admissible $U$: every fixed $U$ works after a threshold depending on $U$. The proof does not give a growing standardized radius $U=U_X\to\infty$; such a statement would require quantitative errors small enough to compete with $e^{-U_X^2/2}$.
+\end{remark}
