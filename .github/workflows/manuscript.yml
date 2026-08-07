@@ -26,6 +26,9 @@ jobs:
             biber \
             poppler-utils \
             tex-gyre \
+            fonts-texgyre \
+            fonts-gfs-porson \
+            fonts-inconsolata \
             texlive-bibtex-extra \
             texlive-fonts-extra \
             texlive-fonts-recommended \
@@ -33,11 +36,14 @@ jobs:
             texlive-plain-generic \
             texlive-xetex
 
-      - name: Verify required TeX Live font files
+      - name: Verify required font families
         run: |
-          kpsewhich texgyrepagella-regular.otf
-          kpsewhich GFSPorson.otf
-          kpsewhich Inconsolatazi4-Regular.otf
+          fc-match "TeX Gyre Pagella" | tee /tmp/pagella-match.txt
+          fc-match "GFS Porson" | tee /tmp/porson-match.txt
+          fc-match "Inconsolata" | tee /tmp/inconsolata-match.txt
+          grep -qi "pagella" /tmp/pagella-match.txt
+          grep -qi "porson" /tmp/porson-match.txt
+          grep -qi "inconsolata" /tmp/inconsolata-match.txt
 
       - name: Clean XeLaTeX and Biber build
         shell: bash
