@@ -71,14 +71,14 @@ E306-specific Owner decisions and accepted publication-style checkpoints take pr
 
 ## Current theorem-scope rewrite
 
-The former external-review presentation checkpoint has been superseded as a current review object by the Owner-authorized theorem-scope rewrite. After the proper-target rewrite, moving-target no-wrap/provenance reconciliation, and one bounded interface repair (`kappa_b -> kappa` in Section 4 so the unchanged rigidity argument uses the new Section 3 damping constant), the exact manuscript-source checkpoint is
+The former external-review presentation checkpoint has been superseded as a current review object by the Owner-authorized theorem-scope rewrite. After the proper-target rewrite, moving-target no-wrap/provenance reconciliation, the bounded `kappa_b -> kappa` interface repair, and the final empty-forbidden-set wording repair, the exact manuscript-source checkpoint is
 
-`03f073b2c1a21f88883598796f8e01d6ee5f8d34`.
+`eec3e6798ed86845ec42fd599aab6748bb08979a`.
 
 The selected typography above remains controlling, but no current PDF checkpoint is frozen until the new source has passed an independent mathematical/source review and clean compilation. In particular:
 
 - the old byte-identity gate against `dba5400f...` is historical and must not be applied to the new source;
-- the current workflow freezes `main.tex`, `references.bib`, and `sections/` against `03f073b2...`;
+- the current workflow freezes `main.tex`, `references.bib`, and `sections/` against `eec3e679...`;
 - the old 33-page PDF and its SHA are archival evidence, not the current review copy;
 - the old arXiv packet is superseded and must not be submitted;
 - the equation-label mechanism introduced by the scope rewrite is part of the source object and must be clean-compiled and source-reviewed before acceptance.
