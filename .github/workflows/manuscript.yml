@@ -17,6 +17,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify frozen manuscript source
+        run: |
+          git diff --exit-code dba5400f67acc2a8c05dedc1a1861700e17ee33d -- \
+            main.tex references.bib sections
 
       - name: Guard Oxford manuscript spelling
         run: |
@@ -151,17 +158,55 @@ jobs:
               raise SystemExit("Internal LaTeX label names leaked into PDF text: " + repr(leaked))
           PY
 
+      - name: Create minimal arXiv source archive
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
+
+          frozen = "dba5400f67acc2a8c05dedc1a1861700e17ee33d"
+          files = [Path("main.tex"), Path("references.bib"), *sorted(Path("sections").glob("*.tex"))]
+          expected = 12
+          if len(files) != expected:
+              raise SystemExit(f"expected {expected} arXiv source files, found {len(files)}")
+          out = Path(f"e306-arxiv-v1-source-{frozen[:12]}.zip")
+          with ZipFile(out, "w", compression=ZIP_DEFLATED, compresslevel=9) as zf:
+              for path in files:
+                  data = path.read_bytes()
+                  info = ZipInfo(path.as_posix(), date_time=(2026, 8, 7, 0, 0, 0))
+                  info.compress_type = ZIP_DEFLATED
+                  info.external_attr = 0o100644 << 16
+                  zf.writestr(info, data)
+          print(out)
+          with ZipFile(out) as zf:
+              names = zf.namelist()
+          if names != [p.as_posix() for p in files]:
+              raise SystemExit("archive manifest mismatch")
+          forbidden_suffixes = {".pdf", ".bbl", ".aux", ".log", ".blg", ".otf", ".ttf"}
+          if any(Path(name).suffix.lower() in forbidden_suffixes for name in names):
+              raise SystemExit("forbidden generated/font file entered arXiv archive")
+          PY
+
+      - name: Upload minimal arXiv source archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: e306-arxiv-v1-source-${{ github.sha }}
+          path: paper/e306-anchor-fibre-v1/manuscript/e306-arxiv-v1-source-dba5400f67ac.zip
+          if-no-files-found: error
+          retention-days: 90
+
       - name: Build summary
         run: |
           {
             echo "## E306 manuscript build"
             echo
             echo "- Commit: $GITHUB_SHA"
+            echo "- Frozen manuscript source: \`dba5400f67acc2a8c05dedc1a1861700e17ee33d\`"
             echo "- Entry point: \`paper/e306-anchor-fibre-v1/manuscript/main.tex\`"
             echo "- Command: \`make clean && make pdf\`"
             echo "- Engine: XeLaTeX"
             echo "- Bibliography backend: Biber"
-            echo "- Result: Oxford-spelling guard, clean PDF build, bibliography/reference/label gate, font-embedding gate, Unicode/ORCID extraction gate, and leaked-label gate passed"
+            echo "- Result: frozen-source check, Oxford-spelling guard, clean PDF build, bibliography/reference/label gate, font-embedding gate, Unicode/ORCID extraction gate, leaked-label gate, and minimal arXiv source packaging passed"
             echo "- PDF size: $(stat -c%s main.pdf) bytes"
             echo "- Pages: $(pdfinfo main.pdf | awk '/^Pages:/ {print $2}')"
           } >> "$GITHUB_STEP_SUMMARY"
