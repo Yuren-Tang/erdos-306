@@ -6,7 +6,7 @@ Status: controlling project profile for the current E306 article branch.
 
 This profile specializes the authorial portfolio manuscript standard at
 `Yuren-Tang/research-workbench@3b34de193647335c1c8ddfb3974554b76c21bbe5`.
-E306-specific Owner decisions and accepted publication-style checkpoints take precedence where they are more specific. The presentation choices below restore the accepted August E306 defaults while preserving later Unicode-source improvements.
+E306-specific Owner decisions and accepted publication-style checkpoints take precedence where they are more specific. The theorem-scope rewrite of 2026-08-08 reopens the mathematical review object but does not reopen the selected visual design.
 
 ## Language and prose
 
@@ -63,25 +63,34 @@ E306-specific Owner decisions and accepted publication-style checkpoints take pr
 ## Citations and bibliography
 
 - Backend: `biblatex` + Biber.
-- Citation style: numeric, restoring the accepted E306 presentation checkpoint.
+- Citation style: numeric.
 - Sorting: author/name–year–title (`nyt`); numeric labels follow that stable bibliography order.
 - Rationale: the bibliography is small, and numeric citation marks are visually quieter in dense mathematical prose; author names remain available in prose whenever attribution matters.
 - Show DOI and arXiv/eprint metadata where available; suppress redundant bare URLs when a DOI or eprint supplies the stable locator.
 - References follow the article continuously. Do not force the bibliography onto a new page; natural pagination is allowed.
 
-## Frozen mathematics during external-review preparation
+## Current theorem-scope rewrite
 
-- The presentation revision may change `main.tex`, this profile, and build/control plumbing.
-- `references.bib` and every file under `manuscript/sections/` remain frozen against the independently audited August mathematical checkpoint unless a later mathematical disposition explicitly reopens them.
-- No theorem statement, proof, estimate, exponent, scope boundary, or mathematical prose is reopened by the typography revision.
+The former external-review presentation checkpoint has been superseded as a current review object by the Owner-authorized theorem-scope rewrite. The mathematical source checkpoint is
 
-## Validation
+`f6a3d388c358679c93b25f3900f0783bcb6299f2`.
 
-An external-review presentation candidate must pass all of the following on one exact manuscript head:
+The selected typography above remains controlling, but no current PDF checkpoint is frozen until the new source has passed an independent mathematical/source review and clean compilation. In particular:
 
-1. `references.bib` and all section files byte-identical to the frozen mathematical baseline;
-2. clean XeLaTeX/Biber build;
-3. no unresolved or multiply defined symbolic references/citations;
+- the old byte-identity gate against `dba5400f...` is historical and must not be applied to the new source;
+- the old 33-page PDF and its SHA are archival evidence, not the current review copy;
+- the old arXiv packet is superseded and must not be submitted;
+- the equation-label mechanism introduced by the scope rewrite is part of the source object and must be clean-compiled and source-reviewed before acceptance.
+
+No typography experiment is authorized merely because the mathematics was reopened. The intended next review should compare mathematical/source correctness, not restart font selection.
+
+## Validation for the next fixed object
+
+Before the rewritten manuscript becomes a new external-review checkpoint, one exact source object must pass:
+
+1. an independent mathematical/source review of the proper-target `gamma>2` transport and all changed theorem statements;
+2. clean XeLaTeX/Biber compilation from the exact source;
+3. no unresolved, duplicate, or multiply defined labels/citations, including the legacy-key equation-label bridge;
 4. no Biber warnings requiring bibliographic repair;
 5. no missing-glyph diagnostics in the final TeX pass;
 6. all PDF fonts embedded and no Type 3 fonts;
@@ -89,6 +98,7 @@ An external-review presentation candidate must pass all of the following on one 
 8. extraction of the ORCID compact iD and `Erdős`;
 9. PDF metadata check;
 10. full-page visual inspection for clipping, overflow, glyph corruption, equation damage, bibliography failure, and front-matter balance;
-11. prose audit against the Oxford/philological language rule.
+11. prose audit against the Oxford/philological language rule;
+12. an exact comparison confirming that any post-review bounded repairs are limited to their declared dependency cone.
 
-The external-review presentation checkpoint is fixed separately from later governance-only commits. A new arXiv source packet is generated only after external review has returned and any resulting bounded changes are closed.
+Remote CI remains manual-only. A workflow run is optional execution evidence, not a substitute for the independent mathematical/source review.
