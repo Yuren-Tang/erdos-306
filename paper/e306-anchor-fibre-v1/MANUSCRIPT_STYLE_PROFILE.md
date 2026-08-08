@@ -6,7 +6,7 @@ Status: controlling project profile for the current E306 article branch.
 
 This profile specializes the authorial portfolio manuscript standard at
 `Yuren-Tang/research-workbench@3b34de193647335c1c8ddfb3974554b76c21bbe5`.
-That portfolio standard is authorially complete but, at the time this profile was adopted, its independent cross-project audit remained pending. E306-specific publication-style decisions already accepted on the E306 control thread take precedence where they are more specific. A contemporaneous Owner decision overrides either source.
+E306-specific Owner decisions and accepted publication-style checkpoints take precedence where they are more specific. The presentation choices below restore the accepted August E306 defaults while preserving later Unicode-source improvements.
 
 ## Language and prose
 
@@ -20,25 +20,27 @@ That portfolio standard is authorially complete but, at the time this profile wa
 - Class: `amsart`.
 - Body: 11 pt, A4 paper.
 - Display equation numbers: right aligned (`reqno`).
-- Text: TeX Gyre Pagella.
-- Mathematics: NewPX math.
-- Monospace: Inconsolata.
+- Text: ETbb, the Bembo-derived humanist family used by the accepted E306 presentation checkpoint.
+- Mathematics: NewTX math, matched to ETbb.
+- Monospace: NewTX typewriter.
 - Microtypography: `microtype`.
 - Links: functional but visually quiet (`hidelinks`).
-- No decorative boxes, colour coding, pseudo-antique ornaments, or display devices without mathematical function.
+- The Garamond build is historical comparison material only; it is not the selected body typography.
+- No decorative boxes, colour coding, drop capitals, ornaments, or pseudo-antique display devices in the mathematical body.
 
 ## Engine, font lookup, and Unicode
 
-- Engine: XeLaTeX. The reason is semantic Unicode handling for the Greek dedication while retaining the Pagella/NewPX mathematical design.
-- Font lookup is deliberately dual-path for portability: `fontspec` first uses the standard family name when the platform exposes the font through fontconfig, and otherwise falls back to the canonical TeX Live OpenType filename. This avoids binding the source either to Ubuntu filesystem paths or to one font-discovery mechanism.
-- Greek prose is Unicode text, never Latin transliteration or an LGR encoding surrogate.
-- The dedication is exactly
+- Engine: XeLaTeX. This permits literal Unicode Greek while keeping the ETbb/NewTX body design.
+- Font lookup may use the family name when available and must retain a canonical TeX Live filename fallback for arXiv portability.
+- Greek source is literal Unicode, never Latin transliteration or an LGR encoding surrogate.
+- The dedication deliberately uses an inscriptional convention rather than ordinary accented Greek prose. Its exact public text is
 
-  `τοῖς ἐμὲ φιλοῦσιν`
+  `ΤΟΙΣ ΕΜΕ ΦΙΛΟΥΣΙΝ`
 
-  `καὶ οἷς φιλῶ`
+  `ΚΑΙ ΟΙΣ ΦΙΛΩ`
 
-  and is set in GFS Porson.
+  i.e. two centred lines, uppercase and without diacritics. It is set in GFS Artemisia, restoring the accepted E306 dedication family while keeping Unicode source.
+- The inscriptional effect comes from capitalization, absence of diacritics, isolation, and spacing; Garamond is not part of the dedication specification.
 - Final validation must check both visual glyphs and Unicode text extraction from the generated PDF.
 
 ## Front matter
@@ -48,8 +50,8 @@ That portfolio standard is authorially complete but, at the time this profile wa
 - Author: Yuren Tang.
 - No institutional affiliation in arXiv v1.
 - No email address in the PDF for arXiv v1.
-- ORCID is displayed visibly and unobtrusively immediately with the author identity as the full linked URI `https://orcid.org/0009-0006-0847-3330`; it is not relegated solely to an end address or hidden metadata.
-- Preserve the Unicode Greek dedication above.
+- ORCID is placed in the conventional unobtrusive `amsart` author footnote as a linked compact iD: `0009-0006-0847-3330`. The PDF does not place a full URI directly below the author's name.
+- The arXiv account/metadata layer should also carry the ORCID when submitted.
 
 ## Acknowledgements and AI disclosure
 
@@ -61,21 +63,31 @@ That portfolio standard is authorially complete but, at the time this profile wa
 ## Citations and bibliography
 
 - Backend: `biblatex` + Biber.
-- Citation style: alphabetic labels appropriate for pure mathematics.
-- Sorting: author/name–year–title (`nyt`).
+- Citation style: numeric, restoring the accepted E306 presentation checkpoint.
+- Sorting: author/name–year–title (`nyt`); numeric labels follow that stable bibliography order.
+- Rationale: the bibliography is small, and numeric citation marks are visually quieter in dense mathematical prose; author names remain available in prose whenever attribution matters.
 - Show DOI and arXiv/eprint metadata where available; suppress redundant bare URLs when a DOI or eprint supplies the stable locator.
 - References follow the article continuously. Do not force the bibliography onto a new page; natural pagination is allowed.
 
+## Frozen mathematics during external-review preparation
+
+- The presentation revision may change `main.tex`, this profile, and build/control plumbing.
+- `references.bib` and every file under `manuscript/sections/` remain frozen against the independently audited August mathematical checkpoint unless a later mathematical disposition explicitly reopens them.
+- No theorem statement, proof, estimate, exponent, scope boundary, or mathematical prose is reopened by the typography revision.
+
 ## Validation
 
-A release candidate must pass all of the following on one exact head:
+An external-review presentation candidate must pass all of the following on one exact head:
 
-1. clean XeLaTeX/Biber build;
-2. no unresolved or multiply defined symbolic references/citations;
-3. no Biber warnings requiring bibliographic repair;
-4. all PDF fonts embedded and no Type 3 fonts;
-5. Unicode extraction of both Greek dedication lines after NFC normalization;
-6. PDF metadata check;
-7. full-page visual inspection for clipping, overflow, glyph corruption, equation damage, bibliography failure, and front-matter balance;
-8. prose audit against the Oxford/philological language rule;
-9. arXiv source-minimality check: only files actually needed by the submission build are packaged.
+1. `references.bib` and all section files byte-identical to the frozen mathematical baseline;
+2. clean XeLaTeX/Biber build;
+3. no unresolved or multiply defined symbolic references/citations;
+4. no Biber warnings requiring bibliographic repair;
+5. all PDF fonts embedded and no Type 3 fonts;
+6. Unicode extraction of both inscriptional Greek dedication lines after NFC normalization;
+7. extraction of the ORCID compact iD;
+8. PDF metadata check;
+9. full-page visual inspection for clipping, overflow, glyph corruption, equation damage, bibliography failure, and front-matter balance;
+10. prose audit against the Oxford/philological language rule.
+
+A new arXiv source packet is generated only after external review has returned and any resulting bounded changes are closed.
