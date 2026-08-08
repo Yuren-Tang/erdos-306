@@ -4,100 +4,89 @@ Status: controlling project profile for the current E306 article branch.
 
 ## Authority
 
-This profile specializes the authorial portfolio manuscript standard at
-`Yuren-Tang/research-workbench@3b34de193647335c1c8ddfb3974554b76c21bbe5`.
-E306-specific Owner decisions and accepted publication-style checkpoints take precedence where they are more specific. The theorem-scope rewrite of 2026-08-08 reopens the mathematical review object but does not reopen the selected visual design.
+This profile specializes the authorial portfolio manuscript standard at `Yuren-Tang/research-workbench@3b34de193647335c1c8ddfb3974554b76c21bbe5`. E306-specific Owner decisions and accepted publication-style checkpoints take precedence where more specific. The 2026-08-08 theorem-scope rewrite reopened the mathematical review object but did not reopen the selected visual design.
 
 ## Language and prose
 
-- Use British English with Oxford spelling, not generic British spelling.
+- British English with Oxford spelling.
 - Prefer etymologically appropriate `-ize` / `-ization` forms (`characterize`, `normalization`) while retaining British forms such as `analyse`, `centred`, and `fibre`.
-- Treat Greek- and Latin-derived terminology philologically: verify spelling, morphology, diacritics, transliteration when genuinely needed, and classical plurals when deliberately retained. Do not substitute faux-Latin forms merely because they are common; for example, where the classical plural is intended, use `octopodes`, not `octopi`.
-- Prefer mathematical mechanism to project-management or manuscript-aware prose. No internal roles, packets, audits, branch language, or publication strategy belongs in the article.
+- Treat Greek/Latin terminology philologically; do not substitute faux-Latin forms merely because common.
+- Prefer mathematical mechanism to project-management prose. No internal roles, packets, audits, branch language, or publication strategy belongs in the article.
 
 ## Page and typography
 
-- Class: `amsart`.
-- Body: 11 pt, A4 paper.
-- Display equation numbers: right aligned (`reqno`).
-- Text: ETbb, the Bembo-derived humanist family used by the accepted E306 presentation checkpoint. The public body is loaded from the OpenType ETbb files so Unicode names and bibliography data remain semantically intact.
-- Mathematics: NewTX math, matched to ETbb.
-- URL/DOI material inherits the surrounding roman face (`\urlstyle{same}`).
-- Microtypography: `microtype`.
-- Links: functional but visually quiet (`hidelinks`).
-- The Garamond build is historical comparison material only; it is not the selected body typography.
-- No decorative boxes, colour coding, drop capitals, ornaments, or pseudo-antique display devices in the mathematical body.
+- `amsart`, 11 pt, A4, `reqno`.
+- ETbb OpenType text; NewTX mathematics.
+- `microtype`; `hidelinks`; URL/DOI material inherits surrounding roman face.
+- Garamond is historical comparison only.
+- No decorative boxes, colour coding, drop capitals, ornaments, or pseudo-antique devices in the mathematical body.
 
 ## Engine, font lookup, and Unicode
 
-- Engine: XeLaTeX.
-- ETbb is loaded from canonical TeX Live OpenType filenames. NewTX supplies mathematics only.
+- XeLaTeX.
+- ETbb from canonical TeX Live OpenType files; NewTX supplies mathematics only.
 - Greek source is literal Unicode.
-- The dedication deliberately uses an inscriptional convention. Its exact public text is
+- Dedication is exactly two centred upright GFS Artemisia lines, uppercase without diacritics:
 
   `ΤΟΙΣ ΕΜΕ ΦΙΛΟΥΣΙΝ`
 
   `ΚΑΙ ΟΙΣ ΦΙΛΩ`
 
-  i.e. two centred lines, uppercase and without diacritics, upright in GFS Artemisia.
-- Final validation must check both visual glyphs and Unicode text extraction from the PDF, and the final TeX pass must contain no `Missing character:` diagnostics.
+- Final validation checks both visual glyphs and Unicode extraction; no `Missing character:` diagnostic is allowed.
 
 ## Front matter
 
-- Working title: **Squarefree Semiprime Unit Fractions: A Characterization and a Local Limit Theorem**.
-- `Erdős Problem 306` remains prominent in the abstract, introduction, keywords, and discovery metadata rather than governing the mathematical title.
+- Title: **Squarefree Semiprime Unit Fractions: A Characterization and a Local Limit Theorem**.
+- `Erdős Problem 306` remains prominent in abstract/introduction/keywords/metadata rather than governing the mathematical title.
 - Author: Yuren Tang.
-- No institutional affiliation or email address in arXiv v1.
-- ORCID appears in the conventional unobtrusive `amsart` author footnote as linked compact iD `0009-0006-0847-3330`; arXiv metadata should also carry it.
+- No institutional affiliation or email in arXiv v1.
+- Linked compact ORCID `0009-0006-0847-3330` in the `amsart` author footnote; arXiv metadata should also carry it.
 
 ## Acknowledgements and AI disclosure
 
-- Keep a concise public disclosure of generative AI assistance by function, not a model-by-model inventory.
-- Do not list Lean development as a function of AI assistance in this paper's acknowledgement.
-- Current text: “Generative AI systems assisted mathematical exploration, proof development, source and citation checking, and editorial revision. The author takes full responsibility for the mathematics, citations, and text.”
-- Personal acknowledgements must not be invented.
+Keep the concise function-based disclosure:
+
+> Generative AI systems assisted mathematical exploration, proof development, source and citation checking, and editorial revision. The author takes full responsibility for the mathematics, citations, and text.
+
+Do not invent personal acknowledgements or list Lean development as an AI-assistance function in this article.
 
 ## Citations and bibliography
 
-- Backend: `biblatex` + Biber.
-- Citation style: numeric.
-- Sorting: author/name–year–title (`nyt`).
-- Show DOI and arXiv/eprint metadata where available; suppress redundant bare URLs when a DOI or eprint supplies the stable locator.
-- References follow the article continuously; do not force the bibliography onto a new page.
-- Citation metadata is part of the frozen source surface. The final pre-Owner audit corrected the Butler--Erdős--Graham A51 DOI to `10.5281/zenodo.10456673` from the erroneous A52 locator.
+- `biblatex` + Biber, numeric style, `nyt` sorting.
+- Show DOI and arXiv/eprint metadata where available; suppress redundant bare URLs.
+- References follow continuously; no forced bibliography page break.
+- Butler--Erdős--Graham A51 uses corrected DOI `10.5281/zenodo.10456673`.
 
-## Current theorem-scope rewrite
+## Current exact review source and equation references
 
-The former external-review presentation checkpoint has been superseded by the Owner-authorized theorem-scope rewrite. After the proper-target rewrite, moving-target no-wrap/provenance reconciliation, the bounded `kappa_b -> kappa` interface repair, the empty-forbidden-set wording repair, and the A51 DOI correction, the exact manuscript-source checkpoint is
+The exact Owner-review manuscript source is
 
-`0157295776c404f73fbc8e4c45883457c047132f`.
+`654189fe67b575bd539092f1700754835ee7ebda`.
 
-The selected typography above remains controlling, but no current PDF checkpoint is frozen until this exact source has passed clean compilation. In particular:
+The source retains the reviewed manuscript's explicit numeric `\tag{section.number}` equation numbers. The first clean-review build exposed that an attempted synthetic label bridge did not in fact create those labels under `amsmath` and caused internal label names to appear in extracted PDF text. The bounded repair therefore renders matching numeric `\eqref` keys directly and uses the stable numeric key `(8.4)` for the one formerly named equation reference. The repair changes no mathematical content or visible numbering.
 
-- the old byte-identity gate against `dba5400f...` is historical;
-- the current workflow freezes `main.tex`, `references.bib`, and `sections/` against `01572957...`;
-- the old 33-page PDF and its SHA are archival evidence, not the current review copy;
-- the old arXiv packet is superseded and must not be submitted;
-- the equation-label mechanism is part of the source object and must be clean-compiled and source-reviewed before acceptance.
+This is now the controlling equation-reference convention for this review object. Do not reintroduce the synthetic label bridge merely to obtain equation hyperlinks.
 
-No typography experiment is authorized merely because the mathematics was reopened. Owner review should judge the mathematical article, not restart font selection.
+## Validated review PDF
 
-## Validation for the exact source
+GitHub Actions run `31256191144` clean-built exact manuscript source `654189fe...` into a **34-page A4 PDF** and passed:
 
-Before the rewritten manuscript becomes a new external-review checkpoint, the exact source must pass:
+1. frozen-source identity;
+2. Oxford-spelling guard;
+3. clean XeLaTeX/Biber build;
+4. no unresolved or multiply defined references/citations/labels;
+5. no Biber warning/error requiring repair;
+6. no missing glyphs;
+7. all fonts embedded, no Type 3;
+8. Unicode extraction of both dedication lines;
+9. ORCID and `Erdős` extraction;
+10. internal-label leak gate;
+11. PDF artifact upload.
 
-1. Owner mathematical/expository read;
-2. an independent mathematical/source review after Owner disposition;
-3. clean XeLaTeX/Biber compilation from the exact source;
-4. no unresolved, duplicate, or multiply defined labels/citations, including the legacy-key equation-label bridge;
-5. no Biber warnings requiring bibliographic repair;
-6. no missing-glyph diagnostics;
-7. all PDF fonts embedded and no Type 3 fonts;
-8. Unicode extraction of both inscriptional Greek dedication lines after NFC normalization;
-9. extraction of the ORCID compact iD and `Erdős`;
-10. PDF metadata check;
-11. full-page visual inspection for clipping, overflow, glyph corruption, equation damage, bibliography failure, and front-matter balance;
-12. prose audit against the Oxford/philological language rule;
-13. exact comparison confirming that any later bounded repairs are limited to their declared dependency cone.
+A representative visual inspection after download found no clipping, gross overflow, glyph corruption, equation damage, bibliography failure, or front-matter break. Minor TeX box/font-substitution diagnostics remain non-blocking presentation details and may be considered only if the Owner notices a visible defect.
 
-Remote CI remains manual-only. A workflow run is execution evidence, not a substitute for mathematical/source review.
+This build is presentation/execution evidence, not independent mathematical review.
+
+## Review and later validation
+
+The selected typography is frozen absent a concrete Owner or independent-review defect. Owner review comes next. After Owner disposition, obtain an independent mathematical/source review of the same exact source. Any later bounded source repair must create a new SHA and be re-built through the same gates.
