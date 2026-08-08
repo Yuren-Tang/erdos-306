@@ -2,30 +2,23 @@
 
 \usepackage[british]{babel}
 \usepackage{amsmath,amssymb,mathtools}
-\usepackage{newpxmath}
 \usepackage[no-math]{fontspec}
-\IfFontExistsTF{TeX Gyre Pagella}{%
-  \setmainfont{TeX Gyre Pagella}[Ligatures=TeX]%
+\IfFontExistsTF{ETbb}{%
+  \setmainfont{ETbb}[Ligatures=TeX]%
 }{%
-  \setmainfont{texgyrepagella-regular.otf}[
-    BoldFont=texgyrepagella-bold.otf,
-    ItalicFont=texgyrepagella-italic.otf,
-    BoldItalicFont=texgyrepagella-bolditalic.otf,
+  \setmainfont{ETbb-Regular.otf}[
+    BoldFont=ETbb-Bold.otf,
+    ItalicFont=ETbb-Italic.otf,
+    BoldItalicFont=ETbb-BoldItalic.otf,
     Ligatures=TeX
   ]%
 }
-\IfFontExistsTF{Inconsolata}{%
-  \setmonofont{Inconsolata}[Scale=MatchLowercase]%
+\usepackage{newtxmath}
+\usepackage{newtxtt}
+\IfFontExistsTF{GFS Artemisia}{%
+  \newfontfamily\greekdedicationfont{GFS Artemisia}%
 }{%
-  \setmonofont{Inconsolatazi4-Regular.otf}[
-    BoldFont=Inconsolatazi4-Bold.otf,
-    Scale=MatchLowercase
-  ]%
-}
-\IfFontExistsTF{GFS Porson}{%
-  \newfontfamily\greekdedicationfont{GFS Porson}%
-}{%
-  \newfontfamily\greekdedicationfont{GFSPorson.otf}%
+  \newfontfamily\greekdedicationfont{GFSArtemisia.otf}%
 }
 \usepackage{microtype}
 \setlength{\emergencystretch}{2em}
@@ -33,7 +26,7 @@
 \usepackage{csquotes}
 \usepackage[
   backend=biber,
-  style=alphabetic,
+  style=numeric,
   sorting=nyt,
   sortcites=true,
   giveninits=true,
@@ -81,16 +74,17 @@
 
 \title[Squarefree Semiprime Unit Fractions]{Squarefree Semiprime Unit Fractions:\\
 A Characterization and a Local Limit Theorem}
-\author{Yuren Tang\\
-  {\normalfont\footnotesize
-   \MakeLowercase{\href{https://orcid.org/0009-0006-0847-3330}{https://orcid.org/0009-0006-0847-3330}}}}
+\author{Yuren Tang}
+\thanks{ORCID: \href{https://orcid.org/0009-0006-0847-3330}{0009-0006-0847-3330}.}
 \renewcommand{\shortauthors}{Yuren Tang}
 \date{}
 
 \dedicatory{%
-  {\normalfont\greekdedicationfont\fontsize{10.5}{15}\selectfont
-   τοῖς ἐμὲ φιλοῦσιν\\
-   καὶ οἷς φιλῶ}%
+  \vspace{8pt}%
+  {\normalfont\greekdedicationfont\fontsize{10}{15}\selectfont
+   ΤΟΙΣ ΕΜΕ ΦΙΛΟΥΣΙΝ\\
+   ΚΑΙ ΟΙΣ ΦΙΛΩ}%
+  \vspace{12pt}%
 }
 
 \subjclass[2020]{Primary 11D68; Secondary 11B34, 11L07}
