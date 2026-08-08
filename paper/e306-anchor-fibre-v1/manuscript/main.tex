@@ -2,19 +2,7 @@
 
 \usepackage[british]{babel}
 \usepackage{amsmath,amssymb,mathtools}
-\usepackage[no-math]{fontspec}
-\IfFontExistsTF{ETbb}{%
-  \setmainfont{ETbb}[Ligatures=TeX]%
-}{%
-  \setmainfont{ETbb-Regular.otf}[
-    BoldFont=ETbb-Bold.otf,
-    ItalicFont=ETbb-Italic.otf,
-    BoldItalicFont=ETbb-BoldItalic.otf,
-    Ligatures=TeX
-  ]%
-}
-\usepackage{newtxmath}
-\usepackage{newtxtt}
+\usepackage[etbb]{newtx}
 \IfFontExistsTF{GFS Artemisia}{%
   \newfontfamily\greekdedicationfont{GFS Artemisia}%
 }{%
