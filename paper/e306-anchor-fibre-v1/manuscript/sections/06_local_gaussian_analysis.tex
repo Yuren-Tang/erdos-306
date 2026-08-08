@@ -12,7 +12,7 @@ Fix $C\ge1$. The limit $X\to\infty$ will be taken with $C$ fixed, and only after
 N=\left\lfloor\frac{C}{\sigma}\right\rfloor.
 \tag{6.2}
 \]
-Since $\sigma^{-1}\asymp_bX\log X$, for fixed $C$ and large $X$,
+Since $\sigma^{-1}\asymp_{t,\gamma}X\log X$, for fixed $C$ and large $X$,
 \[
 N<X^2/4<M_{\mathrm{dec}}.
 \tag{6.3}
@@ -28,11 +28,11 @@ By Section \ref{sec:anchor}, every top assignment is either noncoherent, with an
 \end{array}
 \tag{6.4}
 \]
-holds. Lemma \ref{lem:weighted-skeleton} then separates, within each anchor fibre, the decoded skeleton from all other row states. This partitions the full Fourier sum into a Gaussian core, three coherent tails, and the noncoherent/nondecoder remainder.
+holds. Lemma \ref{lem:weighted-skeleton} separates, within every anchor fibre, the distinguished row-minimizer state from all other row states. This partitions the full Fourier sum into a Gaussian core, three coherent tails, and the noncoherent/off-minimizer remainder.
 
 \subsection{The Gaussian core}
 
-For $|m|\le N$, Propositions \ref{prop:lower-decoder} and \ref{prop:target-decoder} identify the decoded skeleton with the genuine integer frequency $h=m\pmod L$. Since $\theta$ stays in a compact subinterval of $(0,1)$, there are constants $\rho_b>0$ and $M_b<\infty$ such that, uniformly for $|z|\le\rho_b$,
+For $|m|\le N$, Propositions \ref{prop:lower-decoder} and \ref{prop:target-decoder} identify the distinguished state with the genuine integer frequency $h=m\pmod L$. Since $\theta$ stays in a compact subinterval of $(0,1)$, there are constants $\rho>0$ and $M_0<\infty$ such that, uniformly for $|z|\le\rho$,
 \[
 \log\bigl((1-\theta)+\theta e(z)\bigr)
 =
@@ -43,10 +43,10 @@ For $|m|\le N$, Propositions \ref{prop:lower-decoder} and \ref{prop:target-decod
 \]
 with
 \[
-|R_\theta(z)|\le M_b|z|^3.
+|R_\theta(z)|\le M_0|z|^3.
 \tag{6.6}
 \]
-Every denominator in $\mathcal E$ is at least $X^2$ for large $X$. Uniformly for $|m|\le C/\sigma$,
+Because $\gamma>2$, every denominator in $\mathcal E$ is at least $X^2$ for large $X$. Uniformly for $|m|\le C/\sigma$,
 \[
 \max_{e\in\mathcal E}\frac{|m|}{e}
 \ll_C\frac{\log X}{X}
@@ -59,19 +59,19 @@ Moreover
 \le
 \frac{|m|^3}{X^2}
 \sum_{e\in\mathcal E}\frac1{e^2}
-\ll_b
+\ll
 \frac{C^3}{\sigma X^2}
-\ll_b
+\ll
 C^3\frac{\log X}{X}
 \longrightarrow0.
 \tag{6.8}
 \]
 Thus the aggregate cubic remainder in \eqref{6.5} is $o_C(1)$ uniformly throughout the major range.
 
-The linear term cancels exactly by \eqref{2.11}:
+The linear term cancels exactly by \eqref{2.12}:
 \[
 2\pi i m\theta\sum_{e\in\mathcal E}\frac1e
--\frac{2\pi i m}{b}=0.
+-2\pi i mt=0.
 \tag{6.9}
 \]
 The quadratic term is $-2\pi^2m^2\sigma^2$. Therefore
@@ -110,20 +110,20 @@ For
 N<|m|\le X^2/4,
 \tag{6.12}
 \]
-the decoded skeleton is still the genuine integer frequency $m$. Since every denominator is at least $X^2$,
+the distinguished state is still the genuine integer frequency $m$. Since every denominator is at least $X^2$,
 \[
 |m|/e\le1/4,
 \]
 so $\|m/e\|=|m|/e$. Lemma \ref{lem:bernoulli-modulus} gives
 \[
-|F(m)|\le e^{-c_bm^2\sigma^2}.
+|F(m)|\le e^{-cm^2\sigma^2}.
 \tag{6.13}
 \]
 A Gaussian integral comparison yields
 \[
-\sum_{|m|>C/\sigma}e^{-c_bm^2\sigma^2}
+\sum_{|m|>C/\sigma}e^{-cm^2\sigma^2}
 \le
-K_b\sigma^{-1}e^{-c_bC^2/2}.
+K\sigma^{-1}e^{-cC^2/2}.
 \tag{6.14}
 \]
 Hence
@@ -132,10 +132,10 @@ Hence
 \sigma
 \sum_{N<|m|\le X^2/4}|F(m)|
 \le
-K_be^{-c_bC^2/2}.
+Ke^{-cC^2/2}.
 \tag{6.15}
 \]
-This is the only complementary range whose normalized bound need not tend to zero at fixed $C$; it will disappear when $C\to\infty$.
+This is the only complementary range whose normalized bound need not tend to zero at fixed $C$; it disappears when $C\to\infty$.
 
 \subsection{The intermediate coherent tail}
 
@@ -151,24 +151,27 @@ All prime coordinates still decode to $m$. By \eqref{5.25},
 \exp\!\left(-c\frac{|m|}{(\log|m|)^2}\right).
 \tag{6.17}
 \]
-Throughout \eqref{6.16}, $\log|m|\asymp\log X$. There are at most $2M_{\mathrm{dec}}+1=O(X^4)$ labels, so
+Throughout \eqref{6.16}, $\log|m|\asymp\log X$. There are at most $2M_{\mathrm{dec}}+1=O(XZ)$ labels, so
 \[
 \sum_{X^2/4<|m|\le M_{\mathrm{dec}}}|F(h_m)|
 \ll
-X^4\exp\!\left(-c\frac{X^2}{\log^2X}\right)
+XZ\exp\!\left(-c\frac{X^2}{\log^2X}\right)
 =o(\sigma^{-1}).
 \tag{6.18}
 \]
+Here and below fixed powers of $X$ are harmless because $\gamma$ is fixed.
 
 \subsection{Large coherent anchor labels}
 
-For a coherent top label $m$, the internal anchor factor is at most
+For a coherent top label $m$ with $|m|>M_{\mathrm{dec}}$, let $h_m^*$ denote the single distinguished row-minimizer state above that anchor assignment. No decoder identification is asserted in this range. The internal anchor factor alone gives
 \[
-\exp(-\kappa_bm^2\sigma_{\mathcal B,0}^2).
+|F(h_m^*)|
+\le
+\exp(-\kappa m^2\sigma_{\mathcal B,0}^2),
 \]
-All row and residual factors have modulus at most one. Thus
+while every row and residual factor has modulus at most one. Therefore
 \[
-\sum_{|m|>M_{\mathrm{dec}}}|F(h_m)|
+\sum_{|m|>M_{\mathrm{dec}}}|F(h_m^*)|
 \ll
 \sigma_{\mathcal B,0}^{-1}
 \exp\!\left(-cM_{\mathrm{dec}}^2\sigma_{\mathcal B,0}^2\right).
@@ -183,19 +186,19 @@ M_{\mathrm{dec}}^2\sigma_{\mathcal B,0}^2
 \]
 while $\sigma_{\mathcal B,0}^{-1}=O(Z\log Z)$. Hence
 \[
-\sum_{|m|>M_{\mathrm{dec}}}|F(h_m)|
+\sum_{|m|>M_{\mathrm{dec}}}|F(h_m^*)|
 =o(\sigma^{-1}).
 \tag{6.21}
 \]
 
-\subsection{Incoherent anchors and nondecoder states}
+\subsection{Incoherent anchors and off-minimizer row states}
 
 By \eqref{4.44}, the total anchor modulus of noncoherent assignments is
 \[
 O(e^{-cF_{\mathcal B}}).
 \tag{6.22}
 \]
-By \eqref{5.14}, the complete contribution of nondecoder row states, over coherent and noncoherent anchors alike, is
+This controls the distinguished row-minimizer contribution above every noncoherent anchor assignment, since all remaining factors have modulus at most one. Independently, \eqref{5.14} controls the sum of all off-minimizer row states over \emph{every} anchor assignment, coherent or not:
 \[
 O\!\left(
 Z\log Z\cdot
@@ -203,7 +206,7 @@ Z^2e^{-cZ/\log^3Z}
 \right).
 \tag{6.23}
 \]
-Both \eqref{6.22} and \eqref{6.23} are $o(\sigma^{-1})$, because $\sigma^{-1}\asymp_bX\log X$ and $Z=X^3$.
+Thus no row fibre is omitted from the assembly: noncoherent distinguished states are covered by \eqref{6.22}, and all off-minimizer states are covered once and for all by \eqref{6.23}. Both quantities are $o(\sigma^{-1})$, because $\sigma^{-1}\asymp X\log X$ while $Z=X^\gamma$ with fixed $\gamma>2$.
 
 \subsection{Assembly and the local limit}
 
@@ -212,7 +215,7 @@ Let $\mathfrak R_{X,C}$ be the full Fourier contribution outside the genuine int
 \limsup_{X\to\infty}
 \sigma|\mathfrak R_{X,C}|
 \le
-K_be^{-c_bC^2/2}.
+Ke^{-cC^2/2}.
 \tag{6.24}
 \]
 Combining this with Proposition \ref{prop:normalized-major},
@@ -224,7 +227,7 @@ Combining this with Proposition \ref{prop:normalized-major},
 \int_{-C}^{C}e^{-2\pi^2u^2}\,du
 \right|
 \le
-K_be^{-c_bC^2/2}.
+Ke^{-cC^2/2}.
 \tag{6.25}
 \]
 Now let $C\to\infty$. Since
@@ -248,7 +251,7 @@ L P
 \frac1{\sqrt{2\pi}\,\sigma}.
 \tag{6.28}
 \]
-This is the central value \eqref{1.7} of Theorem \ref{thm:local-profile}.
+This is the central value of Theorem \ref{thm:local-profile}.
 
 The order of limits is part of the argument:
 \[
@@ -260,12 +263,12 @@ C\to\infty.
 No diagonal choice $C=C(X)\to\infty$ is asserted.
 
 \begin{corollary}[Quantitative positivity]\label{cor:positive}
-There is $c_b>0$ such that, for all sufficiently large $X$,
+There is $c>0$ such that, for all sufficiently large $X$,
 \[
-LP\ge\frac{c_b}{\sigma}.
+LP\ge\frac{c}{\sigma}.
 \tag{6.30}
 \]
 In particular $P>0$.
 \end{corollary}
 
-The stronger asymptotic \eqref{6.28}, rather than mere positivity, will drive the entropy-scale conclusions of Section \ref{sec:multiplicity}. The full moving-target form of Theorem \ref{thm:local-profile} is proved in Section \ref{sec:moving-target} by inserting one unit character into the same analysis.
+The asymptotic \eqref{6.28}, rather than mere positivity, drives the entropy-scale conclusions of Section \ref{sec:multiplicity}. The full moving-target form of Theorem \ref{thm:local-profile} is proved in Section \ref{sec:moving-target} by inserting one unit character into the same analysis.
