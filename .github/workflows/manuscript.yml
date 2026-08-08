@@ -28,7 +28,7 @@ jobs:
 
       - name: Verify frozen mathematical source
         run: |
-          git diff --exit-code 0157295776c404f73fbc8e4c45883457c047132f -- \
+          git diff --exit-code 3ccbee22d5f546f45620c908e547262f78585a1d -- \
             main.tex references.bib sections
 
       - name: Guard Oxford manuscript spelling
@@ -162,7 +162,7 @@ jobs:
           ]
           missing = [s for s in required if s not in text]
           if missing:
-              raise SystemExit("Required dedication/identity/text extraction failed: " + repr(missing))
+            raise SystemExit("Required dedication/identity/text extraction failed: " + repr(missing))
           leaked = sorted(set(re.findall(r"\b(?:eq|thm|sec|lem|prop):[A-Za-z0-9_.:-]+", text)))
           if leaked:
             raise SystemExit("Internal LaTeX label names leaked into PDF text: " + repr(leaked))
@@ -174,7 +174,7 @@ jobs:
             echo "## E306 proper-target review build"
             echo
             echo "- Commit: $GITHUB_SHA"
-            echo "- Frozen manuscript source: \`0157295776c404f73fbc8e4c45883457c047132f\` (main.tex + references + sections)"
+            echo "- Frozen manuscript source: \`3ccbee22d5f546f45620c908e547262f78585a1d\` (main.tex + references + sections)"
             echo "- Entry point: \`paper/e306-anchor-fibre-v1/manuscript/main.tex\`"
             echo "- Command: \`make clean && make pdf\`"
             echo "- Engine: XeLaTeX"
