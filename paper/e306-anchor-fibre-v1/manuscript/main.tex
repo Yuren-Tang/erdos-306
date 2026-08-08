@@ -55,15 +55,24 @@
 \newcommand{\Z}{\mathbb Z}
 \newcommand{\N}{\mathbb N}
 
-% The present source still retains the frozen explicit equation tags from the
-% independently reviewed version.  A separate mechanical pass will restore
-% ordinary symbolic labels after the mathematical scope rewrite is frozen.
+% The reviewed source used explicit numeric \tag keys.  They are retained only
+% as stable internal label keys: visible equation numbers now come from LaTeX's
+% sectioned equation counter, and numeric \eqref calls resolve through genuine
+% hyperlink labels.  Inserting or deleting a numbered display therefore no
+% longer requires synchronising visible numbers or references by hand.
+\numberwithin{equation}{section}
+\let\EThreeZeroSixOriginalTag\tag
+\RenewDocumentCommand{\tag}{m}{%
+  \refstepcounter{equation}%
+  \EThreeZeroSixOriginalTag{\theequation}%
+  \label{e306eq:#1}%
+}
 \ExplSyntaxOn
 \cs_new_eq:NN \e_three_zero_six_original_eqref:n \eqref
 \RenewDocumentCommand{\eqref}{m}
   {
     \regex_match:nnTF { \A [0-9]+ \. [0-9]+ \Z } { #1 }
-      { \textup{(#1)} }
+      { \e_three_zero_six_original_eqref:n {e306eq:#1} }
       { \e_three_zero_six_original_eqref:n {#1} }
   }
 \ExplSyntaxOff
