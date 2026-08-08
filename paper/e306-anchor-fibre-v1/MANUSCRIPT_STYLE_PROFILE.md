@@ -71,13 +71,14 @@ E306-specific Owner decisions and accepted publication-style checkpoints take pr
 
 ## Current theorem-scope rewrite
 
-The former external-review presentation checkpoint has been superseded as a current review object by the Owner-authorized theorem-scope rewrite. The mathematical source checkpoint is
+The former external-review presentation checkpoint has been superseded as a current review object by the Owner-authorized theorem-scope rewrite. After reconciling the provisional `f6a3d388...` checkpoint with the bounded moving-target no-wrap and provenance repairs made before review freeze, the exact manuscript-source checkpoint is
 
-`f6a3d388c358679c93b25f3900f0783bcb6299f2`.
+`8cf83598e9cb282d7fb84b02ccced318d3dfb997`.
 
 The selected typography above remains controlling, but no current PDF checkpoint is frozen until the new source has passed an independent mathematical/source review and clean compilation. In particular:
 
 - the old byte-identity gate against `dba5400f...` is historical and must not be applied to the new source;
+- the current workflow freezes `main.tex`, `references.bib`, and `sections/` against `8cf83598...`;
 - the old 33-page PDF and its SHA are archival evidence, not the current review copy;
 - the old arXiv packet is superseded and must not be submitted;
 - the equation-label mechanism introduced by the scope rewrite is part of the source object and must be clean-compiled and source-reviewed before acceptance.
