@@ -84,7 +84,6 @@ jobs:
           kpsewhich ETbb-Italic.otf
           kpsewhich ETbb-BoldItalic.otf
           kpsewhich newtxmath.sty
-          kpsewhich newtxtt.sty
           fc-match "GFS Artemisia" | tee /tmp/artemisia-match.txt
           grep -qi "artemisia" /tmp/artemisia-match.txt
 
@@ -115,7 +114,7 @@ jobs:
           if-no-files-found: warn
           retention-days: 30
 
-      - name: Gate bibliography, references, and labels
+      - name: Gate bibliography, references, labels, and glyph coverage
         run: |
           test -s main.pdf
           test -s main.bbl
@@ -125,6 +124,11 @@ jobs:
           fi
           if grep -E "There were undefined references|undefined citations|multiply-defined labels" main.log; then
             echo "::error::unresolved or duplicate references remain"
+            exit 1
+          fi
+          if grep -q "Missing character:" main.log; then
+            echo "::error::the final TeX pass contains missing glyphs"
+            grep "Missing character:" main.log
             exit 1
           fi
           if grep -E "(^|[[:space:]])(WARN|ERROR) -" main.blg; then
@@ -149,10 +153,11 @@ jobs:
               "ΤΟΙΣ ΕΜΕ ΦΙΛΟΥΣΙΝ",
               "ΚΑΙ ΟΙΣ ΦΙΛΩ",
               "0009-0006-0847-3330",
+              "Erdős",
           ]
           missing = [s for s in required if s not in text]
           if missing:
-              raise SystemExit("Required dedication/identity extraction failed: " + repr(missing))
+              raise SystemExit("Required dedication/identity/text extraction failed: " + repr(missing))
           leaked = sorted(set(re.findall(r"\b(?:eq|thm|sec|lem|prop):[A-Za-z0-9_.:-]+", text)))
           if leaked:
               raise SystemExit("Internal LaTeX label names leaked into PDF text: " + repr(leaked))
@@ -168,9 +173,9 @@ jobs:
             echo "- Entry point: \`paper/e306-anchor-fibre-v1/manuscript/main.tex\`"
             echo "- Command: \`make clean && make pdf\`"
             echo "- Engine: XeLaTeX"
-            echo "- Text/math typography: ETbb / NewTX"
+            echo "- Text/math typography: ETbb OpenType / NewTX"
             echo "- Bibliography backend/style: Biber / numeric"
-            echo "- Result: frozen-mathematics check, Oxford-spelling guard, clean PDF build, bibliography/reference/label gate, font-embedding gate, Unicode dedication/ORCID extraction gate, and leaked-label gate passed"
+            echo "- Result: frozen-mathematics check, Oxford-spelling guard, clean PDF build, bibliography/reference/label/missing-glyph gate, font-embedding gate, Unicode dedication/ORCID/Erdős extraction gate, and leaked-label gate passed"
             echo "- PDF size: $(stat -c%s main.pdf) bytes"
             echo "- Pages: $(pdfinfo main.pdf | awk '/^Pages:/ {print $2}')"
           } >> "$GITHUB_STEP_SUMMARY"
