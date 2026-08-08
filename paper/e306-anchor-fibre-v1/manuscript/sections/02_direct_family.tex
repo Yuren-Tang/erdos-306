@@ -1,15 +1,26 @@
 \section{The direct semiprime family}\label{sec:direct-family}
 
-Throughout Sections \ref{sec:direct-family}--\ref{sec:moving-target}, fix a squarefree integer $b\ge3$ and a finite set $T\subset\N$. All implicit constants may depend on $b$ unless explicitly stated otherwise, and $T$ is fixed before $X\to\infty$.
+Throughout Sections \ref{sec:direct-family}--\ref{sec:moving-target}, fix a reduced rational
+\[
+t=\frac ab\in(0,1),
+\]
+with squarefree denominator $b$, a finite set $T\subset\N$, and a real number $\gamma$ satisfying
+\[
+\gamma>2,
+\qquad
+t<\lambda_\gamma:=\frac{(\log\gamma)^2}{2}<1.
+\tag{2.1}
+\]
+All implicit constants may depend on the fixed data $t,\gamma,b$, unless explicitly stated otherwise, and $T$ is fixed before $X\to\infty$.
 
 Set
 \[
-Z=X^3,
+Z=X^\gamma,
 \qquad
 \mathcal P=\{p\text{ prime}:X\le p<Z\},
 \qquad
 \mathcal B=\{q\text{ prime}:Z/2\le q<Z\},
-\tag{2.1}
+\tag{2.2}
 \]
 and let $S_b$ denote the set of prime divisors of $b$. Define
 \[
@@ -20,7 +31,7 @@ and let $S_b$ denote the set of prime divisors of $b$. Define
 \mathcal E_b
 =
 \{rq:r\in S_b,\ q\in\mathcal B\},
-\tag{2.2}
+\tag{2.3}
 \]
 \[
 \mathcal E
@@ -28,9 +39,9 @@ and let $S_b$ denote the set of prime divisors of $b$. Define
 \mathcal E_{\mathrm{pair}}\sqcup\mathcal E_b,
 \qquad
 L=b\prod_{p\in\mathcal P}p.
-\tag{2.3}
+\tag{2.4}
 \]
-For sufficiently large $X$, every prime in $\mathcal P$ exceeds every prime divisor of $b$, and every denominator in \eqref{2.2} exceeds $\max T$.
+For sufficiently large $X$, every prime in $\mathcal P$ exceeds every prime divisor of $b$, and every denominator in \eqref{2.3} exceeds $\max T$.
 
 \begin{lemma}[Arithmetic shape]\label{lem:arithmetic-shape}
 For all sufficiently large $X$:
@@ -43,7 +54,7 @@ For all sufficiently large $X$:
 \end{lemma}
 
 \begin{proof}
-The two factors of every denominator in \eqref{2.2} are distinct once $X$ exceeds the prime divisors of $b$. Unique factorization separates products of two primes from $\mathcal P$ from products $rq$ with $r\mid b$ and $q\in\mathcal B$, and also proves distinctness inside each family. The choice of $X$ gives avoidance of $T$. Since $b$ is squarefree and disjoint in prime support from $\mathcal P$, the integer $L$ is squarefree and every denominator in \eqref{2.2} divides it.
+The two factors of every denominator in \eqref{2.3} are distinct once $X$ exceeds the prime divisors of $b$. Unique factorization separates products of two primes from $\mathcal P$ from products $rq$ with $r\mid b$ and $q\in\mathcal B$, and also proves distinctness inside each family. The choice of $X$ gives avoidance of $T$. Since $b$ is squarefree and disjoint in prime support from $\mathcal P$, the integer $L$ is squarefree and every denominator in \eqref{2.3} divides it.
 \end{proof}
 
 \subsection{Reciprocal load and variance}
@@ -56,10 +67,10 @@ U_X=\sum_{p\in\mathcal P}\frac1{p^2}.
 \]
 The prime number theorem and partial summation give
 \[
-S_X=\log3+o(1),
+S_X=\log\gamma+o(1),
 \qquad
-U_X=O\!\left(\frac1{X\log X}\right).
-\tag{2.4}
+U_X\sim\frac1{X\log X}.
+\tag{2.5}
 \]
 Consequently
 \[
@@ -67,8 +78,8 @@ Consequently
 =
 \frac12(S_X^2-U_X)
 \longrightarrow
-\lambda_3:=\frac{(\log3)^2}{2}.
-\tag{2.5}
+\lambda_\gamma=\frac{(\log\gamma)^2}{2}.
+\tag{2.6}
 \]
 For the target rows,
 \[
@@ -77,48 +88,39 @@ For the target rows,
 \left(\sum_{r\in S_b}\frac1r\right)
 \left(\sum_{q\in\mathcal B}\frac1q\right)
 =O_b\!\left(\frac1{\log Z}\right).
-\tag{2.6}
+\tag{2.7}
 \]
 Thus, with
 \[
 \Lambda=\sum_{e\in\mathcal E}\frac1e,
-\tag{2.7}
+\tag{2.8}
 \]
 one has
 \[
-\Lambda\longrightarrow\lambda_3.
-\tag{2.8}
+\Lambda\longrightarrow\lambda_\gamma.
+\tag{2.9}
 \]
 Fix constants
 \[
-\frac13<\lambda_-<\lambda_3<\lambda_+<1.
-\tag{2.9}
+t<\lambda_-<\lambda_\gamma<\lambda_+<1.
+\tag{2.10}
 \]
 For all sufficiently large $X$, $\Lambda\in(\lambda_-,\lambda_+)$. Define
 \[
-\theta=\frac1{b\Lambda}.
-\tag{2.10}
+\theta=\frac{t}{\Lambda}.
+\tag{2.11}
 \]
 Then $\theta$ remains in a fixed compact subinterval of $(0,1)$ and
 \[
-\theta\Lambda=\frac1b.
-\tag{2.11}
-\]
-
-We next compute the inverse-square scale. The complete-pair identity gives
-\[
-\sum_{p<q\in\mathcal P}\frac1{p^2q^2}
-=
-\frac12\left(U_X^2-\sum_{p\in\mathcal P}\frac1{p^4}\right).
-\]
-A dyadic PNT estimate gives
-\[
-U_X\sim\frac1{X\log X},
+\theta\Lambda=t.
 \tag{2.12}
 \]
-and the fourth-power term is negligible. Hence
+
+The complete-pair identity gives
 \[
 \sum_{e\in\mathcal E_{\mathrm{pair}}}\frac1{e^2}
+=
+\frac12\left(U_X^2-\sum_{p\in\mathcal P}\frac1{p^4}\right)
 \sim
 \frac1{2X^2\log^2X}.
 \tag{2.13}
@@ -129,19 +131,19 @@ The target-row square mass is
 =
 \left(\sum_{r\in S_b}\frac1{r^2}\right)
 \left(\sum_{q\in\mathcal B}\frac1{q^2}\right)
-=O_b\!\left(\frac1{Z\log Z}\right),
+=O_b\!\left(\frac1{Z\log Z}\right).
 \tag{2.14}
 \]
-which is $o(X^{-2}\log^{-2}X)$ because $Z=X^3$.
+Because $Z=X^\gamma$ and $\gamma>2$, the quantity in \eqref{2.14} is $o(X^{-2}\log^{-2}X)$.
 
 Let $(\xi_e)_{e\in\mathcal E}$ be independent Bernoulli variables with parameter $\theta$, and set
 \[
 S=\sum_{e\in\mathcal E}\frac{\xi_e}{e}.
 \tag{2.15}
 \]
-Then, by \eqref{2.11},
+Then, by \eqref{2.12},
 \[
-\mathbb E S=\frac1b,
+\mathbb E S=t,
 \tag{2.16}
 \]
 and
@@ -155,16 +157,18 @@ and
 Since
 \[
 \theta\longrightarrow
-\alpha_b:=\frac{2}{b(\log3)^2},
+\alpha:=\alpha_{t,\gamma}
+:=\frac{t}{\lambda_\gamma}
+=\frac{2t}{(\log\gamma)^2}\in(0,1),
 \tag{2.18}
 \]
 we obtain
 \[
 \sigma^2
 \sim
-\frac{\alpha_b(1-\alpha_b)}{2X^2\log^2X},
+\frac{\alpha(1-\alpha)}{2X^2\log^2X},
 \qquad
-\sigma^{-1}\asymp_b X\log X.
+\sigma^{-1}\asymp_{t,\gamma}X\log X.
 \tag{2.19}
 \]
 
@@ -174,11 +178,11 @@ we obtain
 As $X\to\infty$,
 \[
 M:=|\mathcal E|
-=(1+o(1))\frac{X^6}{18\log^2X},
+=(1+o(1))\frac{Z^2}{2\log^2Z},
 \tag{2.20}
 \]
 \[
-\log L=(1+o(1))X^3=o(M),
+\log L=(1+o(1))Z=o(M),
 \tag{2.21}
 \]
 and
@@ -191,30 +195,29 @@ L\sigma\longrightarrow\infty.
 \begin{proof}
 The prime number theorem gives
 \[
-|\mathcal P|
-=(1+o(1))\frac{X^3}{3\log X},
+|\mathcal P|=(1+o(1))\frac{Z}{\log Z},
 \]
 so
 \[
 |\mathcal E_{\mathrm{pair}}|
 =\binom{|\mathcal P|}{2}
-=(1+o(1))\frac{X^6}{18\log^2X}.
+=(1+o(1))\frac{Z^2}{2\log^2Z}.
 \]
-The target rows have only $O_b(Z/\log Z)=O_b(X^3/\log X)$ elements, which is negligible at this scale. This proves \eqref{2.20}.
+The target rows have only $O_b(Z/\log Z)$ elements, which is negligible at this scale. This proves \eqref{2.20}.
 
 By Chebyshev's form of the prime number theorem,
 \[
 \log L
 =
-O_b(1)+\sum_{X\le p<X^3}\log p
-=(1+o(1))X^3,
+O_b(1)+\sum_{X\le p<Z}\log p
+=(1+o(1))Z,
 \]
-which gives \eqref{2.21}. Finally \eqref{2.19} and the exponential size of $L$ immediately imply \eqref{2.22}.
+which gives \eqref{2.21}. Finally \eqref{2.19} and the exponential size of $L$ imply \eqref{2.22}.
 \end{proof}
 
-Because every $e\in\mathcal E$ divides $L$, the random variable $LS$ is integer-valued. Thus the exact event
+Because every $e\in\mathcal E$ divides $L$ and $Lt=aL/b$ is an integer, the random variable $LS$ is integer-valued and the exact event
 \[
-S=\frac1b
+S=t
 \tag{2.23}
 \]
-is a single lattice atom, corresponding to $LS=L/b$. The purpose of Sections \ref{sec:fourier}--\ref{sec:gaussian} is to determine its asymptotic mass.
+is a single lattice atom. Sections \ref{sec:fourier}--\ref{sec:gaussian} determine its asymptotic mass.
