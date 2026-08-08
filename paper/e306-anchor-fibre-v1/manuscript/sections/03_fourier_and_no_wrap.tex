@@ -110,15 +110,15 @@ This produces the Gaussian main term in Section \ref{sec:gaussian}. Before the T
 The Fourier calculation takes place in $\Z/L\Z$, whereas the theorem is an equality in $\Q$. We keep these two assertions logically separate.
 
 \begin{lemma}[No-wrap]\label{lem:no-wrap}
-If $A\subseteq\mathcal E$ satisfies
+Let $s\in L^{-1}\Z\cap[0,\Lambda]$. If $A\subseteq\mathcal E$ satisfies
 \[
 \sum_{e\in A}\frac{L}{e}
-\equiv Lt\pmod L,
+\equiv Ls\pmod L,
 \tag{3.9}
 \]
 then
 \[
-\sum_{e\in A}\frac1e=t.
+\sum_{e\in A}\frac1e=s.
 \tag{3.10}
 \]
 \end{lemma}
@@ -127,25 +127,19 @@ then
 After division by $L$,
 \[
 D=
-\sum_{e\in A}\frac1e-t
+\sum_{e\in A}\frac1e-s
 \]
-is an integer. On the other hand,
-\[
-0\le\sum_{e\in A}\frac1e\le\Lambda<1,
-\qquad
-0<t<1.
-\]
-Thus $-1<D<1$, so $D=0$.
+is an integer. Both terms lie in $[0,\Lambda]$, and $\Lambda<1$, so $-1<D<1$. Hence $D=0$.
 \end{proof}
 
-Consequently
+Taking $s=t$ gives
 \[
 P^{\mathrm{quot}}=P.
 \tag{3.11}
 \]
 We nevertheless retain the quotient notation during the Fourier estimates to emphasize that positivity in the finite group and exactness in the fundamental interval are different inputs.
 
-The same observation applies to moving targets. If
+The same lemma applies verbatim to moving targets. If
 \[
 t_j=t+\frac{j}{L}
 \]
