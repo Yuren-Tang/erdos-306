@@ -28,7 +28,7 @@ jobs:
 
       - name: Verify frozen mathematical source
         run: |
-          git diff --exit-code 3ccbee22d5f546f45620c908e547262f78585a1d -- \
+          git diff --exit-code 654189fe67b575bd539092f1700754835ee7ebda -- \
             main.tex references.bib sections
 
       - name: Guard Oxford manuscript spelling
@@ -174,7 +174,7 @@ jobs:
             echo "## E306 proper-target review build"
             echo
             echo "- Commit: $GITHUB_SHA"
-            echo "- Frozen manuscript source: \`3ccbee22d5f546f45620c908e547262f78585a1d\` (main.tex + references + sections)"
+            echo "- Frozen manuscript source: \`654189fe67b575bd539092f1700754835ee7ebda\` (main.tex + references + sections)"
             echo "- Entry point: \`paper/e306-anchor-fibre-v1/manuscript/main.tex\`"
             echo "- Command: \`make clean && make pdf\`"
             echo "- Engine: XeLaTeX"
