@@ -1,0 +1,50 @@
+name: verify-e306-paper-a
+
+on:
+  push:
+    branches: [paper/e306-squarefree-denominators-v1]
+    paths:
+      - 'paper/e306-squarefree-denominators-v1/**'
+      - '.github/workflows/paper-a-manuscript.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'paper/e306-squarefree-denominators-v1/**'
+      - '.github/workflows/paper-a-manuscript.yml'
+
+jobs:
+  manuscript:
+    runs-on: ubuntu-latest
+    container: texlive/texlive:latest
+    defaults:
+      run:
+        working-directory: paper/e306-squarefree-denominators-v1/manuscript
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install PDF inspection tools
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends poppler-utils
+          rm -rf /var/lib/apt/lists/*
+      - name: Clean build
+        run: make clean && make pdf
+      - name: Reference and layout gates
+        run: |
+          ! grep -E 'undefined references|undefined citations|Citation .* undefined|Reference .* undefined|multiply defined|Overfull' main.log
+          test "$(pdfinfo main.pdf | awk '/Pages:/ {print $2}')" -gt 0
+          pdfinfo main.pdf | grep -q 'Page size:.*A4'
+      - name: Font and extraction gates
+        run: |
+          ! pdffonts main.pdf | tail -n +3 | grep -E 'Type 3| no '
+          pdftotext main.pdf main.txt
+          test -s main.txt
+      - name: Public-language gate
+        run: |
+          ! grep -Eiq 'architecture|provider|obligation|lane|terminal budget|decoded skeleton|composition interface|moving-target|local limit|entropy optimisation|Hamming|balanced relations|denominator-height|exact-cardinality|sharp coefficient|independent proof|orthogonal proof|separate proof|PR #|branch|audit|repair' main.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: e306-paper-a-manuscript
+          path: |
+            paper/e306-squarefree-denominators-v1/manuscript/main.pdf
+            paper/e306-squarefree-denominators-v1/manuscript/main.log
+            paper/e306-squarefree-denominators-v1/manuscript/main.txt

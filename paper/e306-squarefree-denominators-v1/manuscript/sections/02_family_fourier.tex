@@ -1,0 +1,287 @@
+\section{The semiprime family and its Fourier coefficient}
+\label{sec:family-fourier}
+
+We first record the finite Fourier identity and then construct the reciprocal family to which it will be applied.
+
+\label{sec:fourier-selection}
+
+The construction begins with a finite-group coefficient. We record the selection identity in a form suited to a fixed rational target and keep the later passage from a quotient congruence to exact equality logically separate.
+
+\subsection{Character orthogonality}
+
+Let $A$ be a finite abelian group and let $\widehat A$ be its character group. For $a,t\in A$,
+\[
+ \frac1{|A|}\sum_{\chi\in\widehat A}\overline{\chi(t)}\chi(a)=\mathbf 1_{a=t}.
+\]
+Consequently, if $T$ is an $A$-valued random variable, then
+\begin{equation}
+\label{eq:finite-fourier-coefficient}
+ \Prob(T=t)=\frac1{|A|}\sum_{\chi\in\widehat A}\overline{\chi(t)}\E\chi(T).
+\end{equation}
+The numerator is the real nonnegative number $|A|\Prob(T=t)$, so it is enough to prove that its real part is positive.
+
+\begin{lemma}[Independent product formula]
+\label{lem:independent-product}
+Let $v_j\in A$, and let $\xi_j$ be independent Bernoulli random variables with parameters $\theta_j\in[0,1]$. For $T=\sum_j\xi_jv_j$ and every $\chi\in\widehat A$,
+\[
+ \E\chi(T)=\prod_j\bigl((1-\theta_j)+\theta_j\chi(v_j)\bigr).
+\]
+\end{lemma}
+\begin{proof}
+Since $\chi$ is a homomorphism, $\chi(T)=\prod_j\chi(v_j)^{\xi_j}$. Independence gives the product of expectations.
+\end{proof}
+
+\subsection{Reciprocal subset sums at a fixed target}
+
+Let $\mathcal E$ be a finite set of positive integers and let $L$ be divisible by every $e\in\mathcal E$. Associate to $e$ the residue $v_e=L/e\pmod L$. Let
+\[
+ t=\frac ab\in(0,1)
+\]
+be reduced, with $b\mid L$, and let $\xi_e$ be independent Bernoulli variables with common parameter $\theta$. Then
+\[
+ T=\sum_{e\in\mathcal E}\xi_ev_e
+\]
+encodes the subset reciprocal sum modulo one: the congruence $T=aL/b\pmod L$ is equivalent to
+\[
+ \sum_{e\in\mathcal E}\frac{\xi_e}{e}\equiv\frac ab\pmod1.
+\]
+Writing characters as $h\mapsto\exp(2\pi i h\,\cdot/L)$, \cref{eq:finite-fourier-coefficient} gives
+\begin{equation}
+\label{eq:reciprocal-fourier}
+ L\Prob\left(T=\frac{aL}{b}\right)=\sum_{h\bmod L}\exp\left(-\frac{2\pi i a h}{b}\right)\prod_{e\in\mathcal E}\left((1-\theta)+\theta\exp\left(\frac{2\pi i h}{e}\right)\right).
+\end{equation}
+We shall prove that the real part of the right side is positive.
+
+The linear phase is centred by choosing
+\begin{equation}
+\label{eq:theta-centering}
+ \theta\sum_{e\in\mathcal E}\frac1e=t.
+\end{equation}
+For the parameterized semiprime family this is $\theta=t/\Lambda$, where $\Lambda$ is the total reciprocal load. Apart from its scalar effect through this centring parameter, the numerator $a$ enters the Fourier geometry only through the target character in \cref{eq:reciprocal-fourier}; the CRT rows which observe the target depend only on the prime divisors of $b$.
+
+\subsection{From congruence to equality}
+
+The Fourier coefficient gives a reciprocal subset sum congruent to $t$ modulo one. In the present construction every subset sum lies in $[0,\Lambda]$ and $\Lambda<1$, while $t\in(0,1)$. Hence the congruence can represent only exact equality. We shall invoke this no-wrap observation only after positivity has been proved.
+
+\subsection{Chinese-remainder coordinates}
+
+The period $L$ is squarefree. Hence the Chinese remainder theorem identifies
+\[
+ \mathbb Z/L\mathbb Z\cong\prod_{p\mid L}\mathbb Z/p\mathbb Z.
+\]
+A chosen block of large prime coordinates forms the anchor block. The remaining prime coordinates are grouped into anchor-cross rows whose kernels depend on the anchor assignment. Denominator factors involving two anchor primes contribute to the anchor weight; factors involving one anchor prime and one row prime contribute to that row; every other factor remains in a residual term after the row choices have been compressed. This is an exact partition of the original Fourier product.
+
+The only complete-family identity needed in the arithmetic construction is the following elementary formula, placed here at the point of use.
+
+\begin{lemma}[Complete-pair identity]
+\label{lem:complete-pair-identity}
+For a finite family of nonnegative numbers $(u_i)$,
+\[
+ \sum_{i<j}u_i u_j
+ =\frac12\left\{\left(\sum_i u_i\right)^2-\sum_i u_i^2\right\}.
+\]
+\end{lemma}
+\begin{proof}
+Expand the square of $\sum_i u_i$ and separate the diagonal terms.
+\end{proof}
+
+\label{sec:denominator-system}
+
+Fix throughout a reduced target
+\[
+ t=\frac ab\in(0,1)
+\]
+with squarefree $b$, a fixed anchor ratio $\eta\in(0,1)$, a finite forbidden set $\mathcal T$, and a fixed exponent $\gamma>1$. Reducedness and $0<t<1$ imply $b>1$. Thus the set $S_b$ of prime divisors of $b$ is nonempty and
+\begin{equation}
+\label{eq:tau-positive}
+ \tau(b):=\sum_{r\in S_b}\frac1{r^2}>0.
+\end{equation}
+Put
+\begin{equation}
+\label{eq:lambda-gamma}
+ \lambda_\gamma=\frac{(\log\gamma)^2}{2}.
+\end{equation}
+We assume
+\begin{equation}
+\label{eq:admissible-region}
+ t<\lambda_\gamma<1,
+\end{equation}
+equivalently $\exp(\sqrt{2t})<\gamma<\exp(\sqrt2)$. All asymptotic statements are for $X\to\infty$ with $t,\gamma,\eta,b$ and $\mathcal T$ fixed. The estimates are uniform when $\eta$ ranges in a compact subset of $(0,1)$.
+
+\subsection{Prime blocks and reciprocal masses}
+
+Put
+\begin{equation}
+\label{eq:prime-blocks}
+ Z=X^\gamma,
+ \qquad P=\{p\text{ prime}:X\leq p<Z\},
+ \qquad B=\{q\text{ prime}:\eta Z\leq q<Z\}.
+\end{equation}
+We take $X$ so large that every prime in $P$ exceeds every prime divisor of $b$, and every denominator below exceeds every element of $\mathcal T$.
+
+We use the prime number theorem and its standard partial-summation consequences~\cite[Chapter~1]{montgomery-vaughan-2007}.
+
+\begin{lemma}[Prime supply in fixed-ratio intervals]
+\label{lem:fixed-ratio-prime-supply}
+For fixed $0<u<v$, as $y\to\infty$,
+\[
+ \#\{p\text{ prime}:uy\leq p<vy\}
+ =\bigl(v-u+o_{u,v}(1)\bigr)\frac{y}{\log y}.
+\]
+The error is uniform on compact subsets of $0<u<v$.
+\end{lemma}
+\begin{proof}
+Apply the prime number theorem at $uy$ and $vy$.
+\end{proof}
+
+Define
+\[
+ S_X=\sum_{p\in P}\frac1p,
+ \quad U_X=\sum_{p\in P}\frac1{p^2},
+ \quad V_B=\sum_{q\in B}\frac1q,
+ \quad W_B=\sum_{q\in B}\frac1{q^2}.
+\]
+
+\begin{lemma}[Prime reciprocal estimates]
+\label{lem:reciprocal-prime-estimates}
+As $X\to\infty$,
+\begin{align}
+ S_X&=\log\gamma+o(1), & U_X&\sim\frac1{X\log X},\label{eq:prime-moments}\\
+ |P|&\sim\frac{Z}{\log Z}, & |B|&=\bigl(1-\eta+o_\eta(1)\bigr)\frac{Z}{\log Z},\label{eq:B-cardinality}\\
+ V_B&=\frac{\log(1/\eta)+o_\eta(1)}{\log Z}, &
+ W_B&=\frac{\eta^{-1}-1+o_\eta(1)}{Z\log Z}.
+ \label{eq:B-power-sums}
+\end{align}
+\end{lemma}
+\begin{proof}
+Partial summation gives
+\[
+ \sum_{X\leq p<X^\gamma}\frac1p
+ =\int_X^{X^\gamma}\frac{du}{u\log u}+o(1)=\log\gamma+o(1)
+\]
+and
+\[
+ \sum_{X\leq p<X^\gamma}\frac1{p^2}
+ =\int_X^{X^\gamma}\frac{du}{u^2\log u}(1+o(1))\sim\frac1{X\log X}.
+\]
+The cardinalities follow from \cref{lem:fixed-ratio-prime-supply}. The same calculation on $[\eta Z,Z)$ gives the two displayed anchor moments.
+\end{proof}
+
+\subsection{The denominator family}
+
+Define
+\[
+ \mathcal E_{\rm pair}=\{pq:p,q\in P,\ p<q\},
+ \qquad
+ \mathcal E_b=\{rq:r\in S_b,\ q\in B\},
+\]
+and
+\begin{equation}
+\label{eq:E-and-L}
+ \mathcal E=\mathcal E_{\rm pair}\sqcup\mathcal E_b,
+ \qquad L=b\prod_{p\in P}p.
+\end{equation}
+Put $\Lambda=\sum_{e\in\mathcal E}1/e$.
+
+\begin{proposition}[Arithmetic capacity]
+\label{prop:arithmetic-capacity}
+For all sufficiently large $X$, the elements of $\mathcal E$ are pairwise distinct squarefree semiprimes, they avoid $\mathcal T$, and they divide $L$. Moreover,
+\begin{equation}
+\label{eq:load-limit}
+ \Lambda\longrightarrow\lambda_\gamma,
+\end{equation}
+and
+\begin{equation}
+\label{eq:complete-square-load}
+ \sum_{e\in\mathcal E}\frac1{e^2}
+ =\frac{1+o(1)}{2X^2\log^2X}
+ +\frac{(\eta^{-1}-1)\tau(b)+o_{b,\eta}(1)}{Z\log Z}.
+\end{equation}
+In particular, $t<\Lambda<1$ for all sufficiently large $X$.
+\end{proposition}
+\begin{proof}
+Unique factorization gives the elementary assertions. The complete-pair identity yields
+\[
+ \sum_{p<q\in P}\frac1{pq}=\frac12(S_X^2-U_X)\longrightarrow\frac{(\log\gamma)^2}{2}.
+\]
+The target-row load is
+\[
+ \left(\sum_{r\in S_b}\frac1r\right)V_B=o_{b,\eta}(1),
+\]
+proving \cref{eq:load-limit}. Applying the same identity to $u_p=p^{-2}$ gives
+\[
+ \sum_{p<q\in P}\frac1{p^2q^2}
+ =\frac12\left(U_X^2-\sum_{p\in P}\frac1{p^4}\right)
+ \sim\frac1{2X^2\log^2X}.
+\]
+The target rows contribute $\tau(b)W_B$, which gives \cref{eq:complete-square-load}.
+\end{proof}
+
+\subsection{Exact centring and the actual variance}
+
+Set
+\begin{equation}
+\label{eq:theta-definition}
+ \theta=\frac{t}{\Lambda}.
+\end{equation}
+Then $\theta$ lies in a fixed compact subinterval $I_{t,\gamma,\eta}\subset(0,1)$ and
+\begin{equation}
+\label{eq:theta-limit}
+ \theta\longrightarrow\alpha_{t,\gamma}:=\frac{2t}{(\log\gamma)^2}.
+\end{equation}
+Moreover,
+\begin{equation}
+\label{eq:exact-centering-load}
+ \theta\sum_{e\in\mathcal E}\frac1e=t,
+ \qquad \Lambda<1.
+\end{equation}
+Define
+\begin{equation}
+\label{eq:sigma-E}
+ \sigma_{\mathcal E}^2=\theta(1-\theta)\sum_{e\in\mathcal E}\frac1{e^2}.
+\end{equation}
+
+\begin{proposition}[Total actual-family variance]
+\label{prop:variance-regimes}
+With $\alpha=\alpha_{t,\gamma}$,
+\begin{equation}
+\label{eq:total-variance}
+ \sigma_{\mathcal E}^2\sim\alpha(1-\alpha)
+ \left(\frac1{2X^2\log^2X}+\frac{(\eta^{-1}-1)\tau(b)}{Z\log Z}\right).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Combine \cref{eq:theta-limit,eq:complete-square-load,eq:sigma-E}.
+\end{proof}
+
+The prime-pair term dominates when $\gamma>2$; the target-row term dominates when $1<\gamma\leq2$. The proof below always uses the sum in \cref{eq:total-variance}, so no separate argument is required at the boundary.
+
+The finite Fourier numerator is
+\begin{equation}
+\label{eq:Fh-definition}
+ F(h)=\exp\left(-\frac{2\pi i a h}{b}\right)
+ \prod_{e\in\mathcal E}\left((1-\theta)+\theta\exp\left(\frac{2\pi i h}{e}\right)\right).
+\end{equation}
+Compactness of $I_{t,\gamma,\eta}$ gives $\kappa_{\rm mod}>0$ such that
+\begin{equation}
+\label{eq:bernoulli-modulus}
+ |(1-\theta)+\theta\exp(2\pi i u)|
+ \leq\exp(-\kappa_{\rm mod}\dist{u}^2).
+\end{equation}
+
+\subsection{Exact factor partition}
+
+Chinese-remainder coordinates split the frequency into those indexed by $B$, by $P\setminus B$, and by $S_b$. The denominator factors are assigned exactly once:
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Denominator class & use \\
+\midrule
+$q q'$ with $q,q'\in B$ & internal anchor factor \\
+$r q$ with $r\in P\setminus B$, $q\in B$ & lower-prime row $r$ \\
+$r q$ with $r\in S_b$, $q\in B$ & target-coordinate row $r$ \\
+$p p'$ with $p,p'\in P\setminus B$ & retained prime-pair factor \\
+\bottomrule
+\end{tabular}
+\end{center}
+The target character and every phase not absorbed into a row remain in the complex residual factor.
