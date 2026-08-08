@@ -20,9 +20,9 @@ E306-specific Owner decisions and accepted publication-style checkpoints take pr
 - Class: `amsart`.
 - Body: 11 pt, A4 paper.
 - Display equation numbers: right aligned (`reqno`).
-- Text: ETbb, the Bembo-derived humanist family used by the accepted E306 presentation checkpoint.
+- Text: ETbb, the Bembo-derived humanist family used by the accepted E306 presentation checkpoint. The public body is loaded from the OpenType ETbb files so Unicode names and bibliography data remain semantically intact.
 - Mathematics: NewTX math, matched to ETbb.
-- Monospace: NewTX typewriter.
+- The current public manuscript contains no semantic need for a separate monospaced face. URL/DOI material inherits the surrounding roman face (`\urlstyle{same}`), avoiding a second T1 text encoding solely for locators.
 - Microtypography: `microtype`.
 - Links: functional but visually quiet (`hidelinks`).
 - The Garamond build is historical comparison material only; it is not the selected body typography.
@@ -30,8 +30,8 @@ E306-specific Owner decisions and accepted publication-style checkpoints take pr
 
 ## Engine, font lookup, and Unicode
 
-- Engine: XeLaTeX. This permits literal Unicode Greek while keeping the ETbb/NewTX body design.
-- Font lookup may use the family name when available and must retain a canonical TeX Live filename fallback for arXiv portability.
+- Engine: XeLaTeX. This permits literal Unicode Greek and bibliographic names while keeping the ETbb/NewTX body design.
+- ETbb is loaded from canonical TeX Live OpenType filenames. NewTX supplies mathematics only; it does not control the text encoding.
 - Greek source is literal Unicode, never Latin transliteration or an LGR encoding surrogate.
 - The dedication deliberately uses an inscriptional convention rather than ordinary accented Greek prose. Its exact public text is
 
@@ -39,9 +39,9 @@ E306-specific Owner decisions and accepted publication-style checkpoints take pr
 
   `ΚΑΙ ΟΙΣ ΦΙΛΩ`
 
-  i.e. two centred lines, uppercase and without diacritics. It is set in GFS Artemisia, restoring the accepted E306 dedication family while keeping Unicode source.
+  i.e. two centred lines, uppercase and without diacritics. It is set upright in GFS Artemisia, restoring the accepted E306 dedication family while keeping Unicode source.
 - The inscriptional effect comes from capitalization, absence of diacritics, isolation, and spacing; Garamond is not part of the dedication specification.
-- Final validation must check both visual glyphs and Unicode text extraction from the generated PDF.
+- Final validation must check both visual glyphs and Unicode text extraction from the generated PDF, and the final TeX pass must contain no `Missing character:` diagnostics.
 
 ## Front matter
 
@@ -77,17 +77,18 @@ E306-specific Owner decisions and accepted publication-style checkpoints take pr
 
 ## Validation
 
-An external-review presentation candidate must pass all of the following on one exact head:
+An external-review presentation candidate must pass all of the following on one exact manuscript head:
 
 1. `references.bib` and all section files byte-identical to the frozen mathematical baseline;
 2. clean XeLaTeX/Biber build;
 3. no unresolved or multiply defined symbolic references/citations;
 4. no Biber warnings requiring bibliographic repair;
-5. all PDF fonts embedded and no Type 3 fonts;
-6. Unicode extraction of both inscriptional Greek dedication lines after NFC normalization;
-7. extraction of the ORCID compact iD;
-8. PDF metadata check;
-9. full-page visual inspection for clipping, overflow, glyph corruption, equation damage, bibliography failure, and front-matter balance;
-10. prose audit against the Oxford/philological language rule.
+5. no missing-glyph diagnostics in the final TeX pass;
+6. all PDF fonts embedded and no Type 3 fonts;
+7. Unicode extraction of both inscriptional Greek dedication lines after NFC normalization;
+8. extraction of the ORCID compact iD and `Erdős`;
+9. PDF metadata check;
+10. full-page visual inspection for clipping, overflow, glyph corruption, equation damage, bibliography failure, and front-matter balance;
+11. prose audit against the Oxford/philological language rule.
 
-A new arXiv source packet is generated only after external review has returned and any resulting bounded changes are closed.
+The external-review presentation checkpoint is fixed separately from later governance-only commits. A new arXiv source packet is generated only after external review has returned and any resulting bounded changes are closed.
