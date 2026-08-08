@@ -1,49 +1,36 @@
 \section{Characterization and finite-avoidance consequences}\label{sec:characterization}
 
-The analytic work is complete. We now pass from the direct unit target to arbitrary positive rationals and record the qualitative consequences of finite avoidance.
+The analytic work is complete. We now pass from a direct proper target to arbitrary positive rationals and record the qualitative consequences of finite avoidance.
 
-\subsection{The avoiding unit theorem}
+\subsection{The direct proper-target theorem}
 
-\begin{theorem}[Avoiding representation of $1/b$]\label{thm:avoiding-unit}
-Let $b\ge3$ be squarefree, and let $T\subset\N$ be finite. Then there is a finite set $A$ of pairwise distinct squarefree semiprimes, disjoint from $T$, such that
+\begin{theorem}[Avoiding representation of a proper target]\label{thm:avoiding-target}
+Let $t=a/b\in(0,1)$ be reduced with squarefree $b$, let $T\subset\N$ be finite, and fix $\gamma>2$ with
 \[
-\sum_{e\in A}\frac1e=\frac1b.
+t<\frac{(\log\gamma)^2}{2}<1.
+\]
+Then, for all sufficiently large $X$, there is a finite set $A\subseteq\mathcal E_X$ of pairwise distinct squarefree semiprimes, disjoint from $T$, such that
+\[
+\sum_{e\in A}\frac1e=t.
 \tag{9.1}
 \]
 \end{theorem}
 
 \begin{proof}
-Choose $X$ so large that every denominator in the direct family $\mathcal E_X$ exceeds every element of $T$. By Lemma \ref{lem:arithmetic-shape}, the members of $\mathcal E_X$ are pairwise distinct squarefree semiprimes outside $T$. The central local limit \eqref{6.28} gives $P>0$ for all sufficiently large $X$, so some subset of $\mathcal E_X$ represents $1/b$ exactly.
+By Lemma \ref{lem:arithmetic-shape}, for sufficiently large $X$ the direct family consists of pairwise distinct squarefree semiprimes outside $T$. The central local limit \eqref{6.28} gives $P=W_X(t)>0$ for all sufficiently large $X$, so some subset represents $t$ exactly.
 \end{proof}
 
-\subsection{Arbitrary numerators and small denominators}
-
-\begin{lemma}[Numerator induction]\label{lem:numerator-induction}
-Fix squarefree $b\ge3$. For every integer $a\ge1$ and every finite forbidden set $T$, there is a representation
+Every proper rational target is covered by some exponent in this pair-dominant regime. Indeed, for $0<t<1$ the interval
 \[
-\frac ab=\sum_{e\in A}\frac1e
+\max\!\left(2,e^{\sqrt{2t}}\right)
+<\gamma<e^{\sqrt2}
 \tag{9.2}
 \]
-by distinct squarefree semiprimes outside $T$.
-\end{lemma}
+is nonempty.
 
-\begin{proof}
-Induct on $a$. The case $a=1$ is Theorem \ref{thm:avoiding-unit}. Suppose $a/b$ has been represented on a finite support $A_0$ disjoint from $T$. Apply Theorem \ref{thm:avoiding-unit} with forbidden set $T\cup A_0$, obtaining a fresh support $A_1$ whose reciprocal sum is $1/b$. Then $A_0\sqcup A_1$ represents $(a+1)/b$ and still avoids $T$.
-\end{proof}
+\subsection{The squarefree-denominator characterization}
 
-\begin{lemma}[Denominators $1$ and $2$]\label{lem:small-denominators}
-Finite-avoiding unit representations also exist for $1$ and $1/2$.
-\end{lemma}
-
-\begin{proof}
-For $1/2$, choose disjoint avoiding representations of $1/3$ and $1/6$ and use
-\[
-\frac12=\frac13+\frac16.
-\]
-For $1$, choose three successive pairwise disjoint avoiding representations of $1/3$. At each stage all previously used denominators are added to the forbidden set.
-\end{proof}
-
-We can now prove Theorem \ref{thm:characterization}.
+We can now prove Theorem \ref{thm:characterization} without numerator induction or special cases for reduced denominators $1$ and $2$.
 
 \begin{proof}[Proof of Theorem \ref{thm:characterization}]
 For necessity, suppose
@@ -56,7 +43,26 @@ q=\frac{\sum_{e\in A}M/e}{M}.
 \]
 The reduced denominator of $q$ divides the squarefree integer $M$, and is therefore squarefree.
 
-Conversely, let $q=a/b>0$ be reduced with squarefree $b$. If $b\ge3$, apply Lemma \ref{lem:numerator-induction}. If $b=1$ or $2$, first obtain a finite-avoiding unit representation from Lemma \ref{lem:small-denominators} and then repeat the same numerator-induction argument. This proves both sufficiency and arbitrary finite avoidance.
+Conversely, let
+\[
+q=\frac ab>0
+\]
+be reduced with squarefree $b$, and let $T$ be a prescribed finite forbidden set. Choose a prime $p>a$ with $p\nmid b$ and set
+\[
+t=\frac{a}{bp}.
+\tag{9.3}
+\]
+Then $0<t<1$. Since $p>a$, one has $p\nmid a$; together with $(a,b)=1$ and $p\nmid b$, this shows that \eqref{9.3} is reduced and has squarefree denominator $bp$.
+
+Choose once and for all a $\gamma$ satisfying \eqref{9.2} for this $t$. Construct supports $A_1,\ldots,A_p$ successively. At stage $j$, apply Theorem \ref{thm:avoiding-target} to $t$, forbidding
+\[
+T\cup A_1\cup\cdots\cup A_{j-1}.
+\]
+The supports are pairwise disjoint, each avoids $T$, and each has reciprocal sum $t$. Their union therefore represents
+\[
+pt=\frac ab=q.
+\]
+This proves sufficiency and arbitrary finite avoidance for every squarefree reduced denominator, including $1$ and $2$.
 \end{proof}
 
 \subsection{Thresholds, disjoint supports, and many terms}
@@ -80,13 +86,13 @@ For (i), forbid $\{1,\ldots,N\}$. For (ii), construct representations recursivel
 Let $q>0$ have squarefree reduced denominator. Let $S$ be a finite set of distinct squarefree semiprimes such that
 \[
 \sum_{e\in S}\frac1e\le q,
-\tag{9.3}
+\tag{9.4}
 \]
 and let $T$ be a finite set disjoint from $S$. Then $S$ extends to a representation of $q$ by distinct squarefree semiprimes which avoids $T$.
 \end{proposition}
 
 \begin{proof}
-If equality holds in \eqref{9.3}, there is nothing to add. Otherwise set
+If equality holds in \eqref{9.4}, there is nothing to add. Otherwise set
 \[
 r=q-\sum_{e\in S}\frac1e>0.
 \]
@@ -103,8 +109,7 @@ Any finite family of squarefree-semiprime representations of the same positive r
 It is enough to treat two representations and then iterate. Write
 \[
 q=\sum_{i=1}^r\frac1{e_i}
-=
-\sum_{j=1}^s\frac1{f_j}.
+=\sum_{j=1}^s\frac1{f_j}.
 \]
 Let $D$ be the least common multiple of all $e_i$ and $f_j$. It is squarefree. Put
 \[
