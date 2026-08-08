@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "paper/e306-anchor-fibre-v1/manuscript/**"
+      - "paper/e306-anchor-fibre-v1/MANUSCRIPT_STYLE_PROFILE.md"
       - ".github/workflows/manuscript.yml"
   workflow_dispatch:
 
@@ -68,6 +69,7 @@ jobs:
             latexmk \
             biber \
             poppler-utils \
+            fonts-gfs-artemisia \
             texlive-bibtex-extra \
             texlive-fonts-extra \
             texlive-fonts-recommended \
@@ -81,9 +83,10 @@ jobs:
           kpsewhich ETbb-Bold.otf
           kpsewhich ETbb-Italic.otf
           kpsewhich ETbb-BoldItalic.otf
-          kpsewhich GFSArtemisia.otf
           kpsewhich newtxmath.sty
           kpsewhich newtxtt.sty
+          fc-match "GFS Artemisia" | tee /tmp/artemisia-match.txt
+          grep -qi "artemisia" /tmp/artemisia-match.txt
 
       - name: Clean XeLaTeX and Biber build
         shell: bash
