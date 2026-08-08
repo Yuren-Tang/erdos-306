@@ -1,9 +1,9 @@
 \section{Moving-target local saturation}\label{sec:moving-target}
 
-Fix squarefree $b\ge3$. For each $X$, keep the direct family $\mathcal E=\mathcal E_X$, the common denominator $L=L_X$, and the Bernoulli parameter $\theta=1/(b\Lambda)$. For a lattice target $t\in L^{-1}\Z$, write
+Keep the fixed reduced target $t=a/b\in(0,1)$, exponent $\gamma$, direct family $\mathcal E=\mathcal E_X$, common denominator $L=L_X$, and Bernoulli parameter $\theta=t/\Lambda$. For a lattice target $s\in L^{-1}\Z$, write
 \[
-W_X(t)=
-\Pr\left(\sum_{e\in\mathcal E}\frac{\xi_e}{e}=t\right).
+W_X(s)=
+\Pr\left(\sum_{e\in\mathcal E}\frac{\xi_e}{e}=s\right).
 \tag{8.1}
 \]
 We prove the full statement of Theorem \ref{thm:local-profile}.
@@ -12,7 +12,7 @@ We prove the full statement of Theorem \ref{thm:local-profile}.
 
 Let
 \[
-t_j=\frac1b+\frac{j}{L},
+t_j=t+\frac{j}{L},
 \qquad j\in\Z.
 \tag{8.2}
 \]
@@ -31,7 +31,7 @@ e(-ht_j)
 \prod_{e\in\mathcal E}
 \bigl((1-\theta)+\theta e(h/e)\bigr).
 \]
-Comparing with the central target $t_0=1/b$ gives the exact identity
+Comparing with the central target $t_0=t$ gives the exact identity
 \[
 F_j(h)=e(-hj/L)F_0(h).
 \tag{8.4}\label{eq:unit-character}
@@ -41,7 +41,7 @@ Hence
 |F_j(h)|=|F_0(h)|
 \tag{8.5}
 \]
-for every $h$ and $j$. All anchor, row, decoder, fibre, and coherent-tail estimates in Sections \ref{sec:anchor}--\ref{sec:gaussian} are therefore unchanged.
+for every $h$ and $j$. All anchor, row, decoder, compression, and coherent-tail estimates in Sections \ref{sec:anchor}--\ref{sec:gaussian} are therefore unchanged.
 
 \subsection{The Gaussian phase}
 
@@ -56,7 +56,7 @@ u_j=\frac{j}{L\sigma},
 \qquad |u_j|\le U.
 \tag{8.7}
 \]
-On a genuine integer frequency $m$, equations \eqref{6.10} and \eqref{8.4} give, uniformly for $|m|\le C/\sigma$,
+On a genuine integer frequency $m$, equations \eqref{6.10} and \eqref{eq:unit-character} give, uniformly for $|m|\le C/\sigma$,
 \[
 F_j(m)
 =
@@ -112,7 +112,7 @@ By \eqref{8.5}, every modulus estimate in Sections 6.2--6.5 is unchanged. If $\m
 \sup_{|j|\le UL\sigma}
 \sigma|\mathfrak R_{X,C}(j)|
 \le
-K_be^{-c_bC^2/2}.
+K e^{-cC^2/2}.
 \tag{8.12}
 \]
 No factor counting the number of targets appears; the estimate is already uniform in the inserted unit character.
@@ -128,11 +128,7 @@ uniformly for \eqref{8.6}.
 
 \subsection{No-wrap and simultaneous exact realization}
 
-The limiting load satisfies
-\[
-\Lambda\longrightarrow\frac{(\log3)^2}{2}>\frac13\ge\frac1b.
-\]
-Thus $1/b$ lies a fixed positive distance from the endpoints of the eventual interval $[0,\Lambda]$. Since $\sigma\to0$, for each fixed $U$ all targets $t_j$ with \eqref{8.6} lie in $[0,\Lambda]$ for sufficiently large $X$. Lemma \ref{lem:no-wrap} therefore gives
+By \eqref{2.9} and \eqref{2.10}, the fixed centre $t$ lies a positive distance from both endpoints of the eventual interval $[0,\Lambda]$. Since $\sigma\to0$, for each fixed $U$ all targets $t_j$ with \eqref{8.6} lie in $[0,\Lambda]$ for sufficiently large $X$. Lemma \ref{lem:no-wrap} therefore gives
 \[
 W_X^{\mathrm{quot}}(t_j)=W_X(t_j).
 \tag{8.14}
@@ -140,9 +136,9 @@ W_X^{\mathrm{quot}}(t_j)=W_X(t_j).
 Together with \eqref{8.13}, this proves
 \[
 L\sigma
-W_X\!\left(\frac1b+\frac{j}{L}\right)
+W_X\!\left(t+\frac{j}{L}\right)
 =
-\Phi\!\left(\frac{j}{L\sigma}\right)+o_U(1),
+\Phi\!\left(\frac{j}{L\sigma}\right)+o_U(1)
 \tag{8.15}\label{eq:moving-profile}
 \]
 uniformly for $|j|\le UL\sigma$, which is Theorem \ref{thm:local-profile}.
@@ -156,7 +152,7 @@ Since $\Phi$ has a positive minimum on $[-U,U]$, every coefficient in this windo
 \]
 contains the entire block
 \[
-\left\{\frac{L}{b}+j:
+\left\{Lt+j:
 |j|\le\lfloor UL\sigma\rfloor\right\}.
 \tag{8.17}
 \]
@@ -171,7 +167,7 @@ Thus the number of represented lattice points tends to infinity while their radi
 
 Dividing \eqref{8.15} by the central local limit also gives
 \[
-\frac{W_X(1/b+j/L)}{W_X(1/b)}
+\frac{W_X(t+j/L)}{W_X(t)}
 =
 \exp\left(-\frac{j^2}{2L^2\sigma^2}\right)+o_U(1)
 \tag{8.19}
