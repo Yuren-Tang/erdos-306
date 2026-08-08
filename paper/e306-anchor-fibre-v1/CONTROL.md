@@ -6,27 +6,23 @@
 - **Controlling issue:** `#8`
 - **Publication gate:** `#11`
 - **Draft PR:** `#9`
-- **Lifecycle:** persistent single-product manuscript lane
-- **Sole branch:** `paper/e306-anchor-fibre-v1`
+- **Sole article branch:** `paper/e306-anchor-fibre-v1`
 - **Base:** `main@5a6207a493067f02c67b1cfa69fa8c5498f2c005`
-- **Writer capacity:** one writer at a time
-- **Independent audit capacity:** one-off read-only roles with no branch ownership
-- **External publication state:** not authorized; publication candidate internally complete
+- **PR state:** open / draft / unmerged
+- **Publication state:** external review is authorized; arXiv upload, journal submission, merge, release, DOI action, and other publication actions are not yet authorized.
 
-A committed control document does not attempt to contain its own commit hash. The exact current branch head is the head of PR `#9`. The final manuscript-source checkpoint recorded below is immutable unless a later disposition explicitly reopens the source.
+A governance commit may advance the branch after a manuscript checkpoint. The exact external-review manuscript source is therefore recorded explicitly below rather than inferred from moving HEAD.
 
-## August 2026 supersession and audit closure
+## Mathematical audit closure
 
-On 2026-08-07, issue `#11#issuecomment-5216568870` superseded the July frozen candidate `f03105e95dc2ec5595a931293f6ca951e4bc424a` for future publication preparation and authorized controlled replacement of the manuscript source plus build/visual/publication-engineering gates. The July candidate remains immutable historical evidence, not the current publication candidate.
-
-The clean mathematical source was promoted from
+The clean August mathematical source was promoted from
 
 ```text
 Yuren-Tang/research-workbench@43c205356fe5def721d54206af83928e95338fac
 intake/2026-08-07-e306-arxiv-v1/latex/
 ```
 
-The clean manuscript received the genuinely independent audit `E306-CLEAN-V1-INDEPENDENT-AUDIT-01`. All three public theorem blocks and all five load-bearing interfaces passed mathematically. Four source-only repairs were applied and then independently closed by
+and independently audited under `E306-CLEAN-V1-INDEPENDENT-AUDIT-01`. All three public theorem blocks and all five load-bearing interfaces passed mathematically. Four bounded source/exposition repairs were made and independently closed by
 
 ```text
 [PASS E306-CLEAN-V1-BOUNDED-RECHECK-01]
@@ -34,11 +30,15 @@ The clean manuscript received the genuinely independent audit `E306-CLEAN-V1-IND
 
 No mathematical repair, theorem restriction, exponent change, or new estimate remains pending.
 
-The post-promotion publication edits in `main.tex`, Section 10, bibliography metadata, build plumbing, and style-profile files are presentation/source-engineering changes only. Mathematical Sections 1–9 remain the independently audited clean source unless a later disposition explicitly states otherwise.
+The frozen mathematical baseline used by the presentation CI is
+
+```text
+dba5400f67acc2a8c05dedc1a1861700e17ee33d
+```
+
+for `references.bib` and every file under `manuscript/sections/`. The external-review presentation revision changes only `main.tex` and presentation/build/control surfaces. CI verifies those mathematical files remain byte-identical to this baseline.
 
 ## Public theorem package
-
-The article intentionally has three main mathematical blocks.
 
 1. **Squarefree-denominator characterization with finite avoidance.** A positive reduced rational `a/b` is a finite sum of reciprocals of distinct squarefree semiprimes iff `b` is squarefree; the support can avoid any prescribed finite set.
 2. **Local Gaussian profile.** For the direct `Z=X^3` family attached to fixed squarefree `b>=3`, the exact target fibre has a compact-uniform Gaussian local profile on `|j| <= U L_X sigma_X` for every fixed `U`.
@@ -46,13 +46,13 @@ The article intentionally has three main mathematical blocks.
 
 The fixed-target local limit is the central value of the local-profile theorem, not a separate proof route.
 
-## Deliberate mathematical scope
+## Deliberate scope
 
-The current article does not make the fully abstract anchor–fibre transference theorem, general fixed targets with free parameters, alternative multiblock/sparse proofs, restricted-prime extensions, reciprocal-incidence graph algebra, finite-prefix CRT programmes, growing standardized target radius, or quantitative `b=1,2` transfer load-bearing. These remain outside this paper unless separately disposed.
+The article does not make the fully abstract anchor–fibre transference theorem, general fixed targets with free parameters, alternative multiblock/sparse proofs, restricted-prime extensions, reciprocal-incidence graph algebra, finite-prefix CRT programmes, growing standardized target radius, prescribed-cardinality local asymptotics, or quantitative `b=1,2` transfer load-bearing.
 
-## Manuscript architecture
+## Article architecture
 
-The active public manuscript has ten sections:
+The active manuscript has ten sections:
 
 1. Introduction and main theorems.
 2. The direct semiprime family.
@@ -65,7 +65,7 @@ The active public manuscript has ten sections:
 9. Characterization and finite-avoidance consequences.
 10. Further questions and perspective.
 
-The narrative spine is
+Narrative spine:
 
 ```text
 arithmetic family
@@ -76,95 +76,96 @@ arithmetic family
  -> exact representation fibres.
 ```
 
-Technical Fourier sectors are subordinate proof ranges, not the article's organizing principle.
+## External-review presentation
 
-## Language and presentation control
+The controlling presentation profile is `MANUSCRIPT_STYLE_PROFILE.md`.
 
-The controlling project profile is `MANUSCRIPT_STYLE_PROFILE.md` in this directory. Its present decisions include:
+The external-review design is:
 
-- British English with Oxford spelling and philological attention to Greek/Latin-derived vocabulary;
+- British English with Oxford spelling and philological attention to Greek/Latin-derived terminology;
 - `amsart`, A4, 11 pt, right equation numbers;
-- TeX Gyre Pagella text, NewPX mathematics, Inconsolata monospace;
-- XeLaTeX for semantic Unicode handling;
-- the Greek dedication in literal Unicode, not LGR/transliteration;
-- no institutional affiliation or email in arXiv v1;
-- a visible linked ORCID with the author identity;
-- concise AI disclosure with no Lean-development claim in this article;
-- `biblatex`/Biber with alphabetic pure-mathematics labels and no forced bibliography page break;
-- quiet hyperlinks and restrained mathematical-humanist typography.
+- **ETbb OpenType** for the public text;
+- **NewTX** mathematics;
+- URLs/DOIs inherit the surrounding roman face rather than introducing a separate T1 typewriter encoding;
+- XeLaTeX for semantic Unicode text;
+- dedication in literal Unicode, two centred lines, uppercase and without diacritics, set **upright in GFS Artemisia**:
 
-The portfolio manuscript standard specialized by this profile is recorded at `research-workbench@3b34de193647335c1c8ddfb3974554b76c21bbe5`. At adoption time that general standard was authorially complete but its independent cross-project audit was still pending; it must not be described as fully ratified until that audit is actually closed.
+  ```text
+  ΤΟΙΣ ΕΜΕ ΦΙΛΟΥΣΙΝ
+  ΚΑΙ ΟΙΣ ΦΙΛΩ
+  ```
 
-## Working-tree hygiene
+- no institutional affiliation or email;
+- linked compact ORCID in the conventional `amsart` author footnote;
+- concise generative-AI disclosure, with no Lean-development claim in this article;
+- `biblatex` + Biber, **numeric citations**, bibliography sorted `nyt`;
+- no forced bibliography page break;
+- quiet hyperlinks and no decorative manuscript devices.
 
-The superseded July manuscript sections, Architecture-E wrappers, obsolete proof/architecture ledgers, and draft mathematics files were removed from the current publication branch on 2026-08-07. Their history remains recoverable through Git. The working branch is intentionally the surface of the current paper, not an archive of superseded candidates.
+The Garamond build and the later Pagella/NewPX candidate are historical comparison/presentation evidence only. Neither is the selected external-review design.
 
-## Source and build surface
+## Exact external-review checkpoint
 
-- manuscript entry point: `paper/e306-anchor-fibre-v1/manuscript/main.tex`;
-- build command: `make clean && make pdf`;
-- engine: **XeLaTeX**;
-- bibliography backend: **Biber**;
-- CI workflow: `.github/workflows/manuscript.yml`;
-- active public source consists of `main.tex`, `references.bib`, and the ten files named by the `\input` statements in `main.tex`.
-
-The arXiv source archive must contain only the files required by that build. Internal control/profile files are not part of the submission source, and no font files are to be bundled.
-
-## Final publication-engineering evidence
-
-The final manuscript-source checkpoint is
+The exact manuscript-source checkpoint for external review is
 
 ```text
-dba5400f67acc2a8c05dedc1a1861700e17ee33d
+bb94f26fa9a33cf7df8ceda7beaeae9f4f129a14
 ```
 
-At that exact source checkpoint:
+with presentation/build workflow at that checkpoint given by `verify-e306-manuscript` run **#181**, run id `31240197085`.
 
-- manuscript workflow: `verify-e306-manuscript` run **#170**, run id `31207031067`, PASS;
-- formal workflow: `verify-erdos-306` run **#893**, run id `31207030427`, PASS;
+At that exact manuscript checkpoint:
+
+- frozen mathematical source check against `dba5400f...`: PASS;
 - Oxford-spelling guard: PASS;
-- TeX Gyre Pagella / GFS Porson / Inconsolata family preflight: PASS;
 - clean XeLaTeX + Biber build: PASS;
-- citations, symbolic references, labels, and Biber diagnostics: PASS;
-- embedded-font / no-Type-3 gate: PASS;
-- NFC extraction of both Unicode Greek dedication lines: PASS;
-- extraction of the lowercase linked ORCID URI: PASS;
-- leaked internal-label-name gate: PASS;
-- PDF metadata: PASS;
+- citations, references, labels, and Biber diagnostics: PASS;
+- final-pass missing-glyph gate: PASS;
+- all PDF fonts embedded, no Type 3: PASS;
+- ETbb text is CID/OpenType and preserves literal `Erdős`: PASS;
+- dedication extracts as literal Unicode: PASS;
+- ORCID compact iD extracts correctly: PASS;
+- no internal LaTeX label names leak into PDF text: PASS;
+- same-head Lean workflow `verify-erdos-306` run **#915**, run id `31240197087`: PASS;
 - page size: A4;
-- final length: **34 pages**;
+- length: **33 pages**;
+- PDF artifact id: `9016794980`;
+- diagnostics artifact id: `9016794816`;
 - final PDF SHA-256:
-  `97a0041c46cba4bc6f37e9b59af6c3421c2397df8e808ee7559fff8f886668b0`;
-- PDF artifact id: `9005219904`;
-- diagnostics artifact id: `9005219255`.
 
-A full 180-dpi render was inspected. The title page, author/ORCID line, Unicode Greek dedication, moving-target references, Section 10, acknowledgements, and final bibliography were also inspected directly at page scale. No clipping, black squares, broken glyphs, leaked labels, malformed references, or bibliography tail page remains. The six references fit naturally on page 34 without a forced page break.
+  ```text
+  187f5c7b30311b486ac463f0fa9e609f1708cb8d0905383909dd9857caeb5a13
+  ```
 
-Two display equations retain benign overfull-box diagnostics (16.47493 pt and 4.3234 pt) in the direct-family definition as it appears in the Introduction and Section 2. Both were inspected visually and remain safely inside the physical page margins. They are accepted rather than perturbing an audited mathematical display solely to obtain a warning-free log. The remaining underfull bibliography line is also benign.
+The immediately preceding Unicode-safe presentation differed only in the dedication's inherited italic shape. A render diff against the corrected checkpoint reports **exactly one changed page (page 1)**, with the changed bounding box confined to the two dedication lines; pages 2–33 are pixel-identical. Page 1 of the corrected checkpoint was inspected directly and the PDF embeds `GFSArtemisia-Regular`, not Italic.
 
-No further manuscript-source edit is authorized by this engineering disposition without reopening the corresponding gate.
+The 33-page ETbb/NewTX presentation was also compared visually with the preceding 34-page Pagella/NewPX candidate. ETbb/NewTX is retained because the text is denser without crowding, the math/text weight is more coherent across Fourier/CRT pages, numeric citations are quieter in the small bibliography, and the inscriptional dedication plus ORCID footnote produce a less intrusive title block.
+
+## Superseded publication packet
+
+The arXiv source packet previously generated from `dba5400f...` belongs to the superseded Pagella/NewPX presentation candidate. It is archival only and must not be submitted. A fresh arXiv packet will be generated only after external review and closure of any bounded review repairs.
 
 ## Formal Lean axis
 
-The archived Lean release remains an orthogonal existence/priority record. The present analytic manuscript contains no Lean argument and the AI acknowledgement does not imply that Lean development is part of the paper's contents. No manuscript theorem depends on the formal artifact.
+The archived Lean release remains orthogonal evidence for existence/priority. The analytic manuscript contains no Lean argument; the AI acknowledgement does not imply otherwise, and no manuscript theorem depends on the formal artifact.
 
-## Product rules
+## Product rules from this checkpoint
 
-- One article, one branch, one draft PR.
-- No task-, auditor-, repair-, or revision-specific manuscript branches.
-- Mathematical changes after the independent PASS require explicit disposition and appropriate re-audit.
-- Pure presentation/build/plumbing repairs may proceed only under explicit publication-control disposition and must not alter audited mathematics silently.
-- Owner approval is required before marking PR `#9` ready, merge, release, DOI action, arXiv upload, journal submission, or external contact.
+- Mathematical Sections 1–10 and `references.bib` remain closed unless external review identifies a concrete mathematical/source issue requiring a new bounded disposition.
+- Presentation changes are also closed for the external-review copy unless the review itself identifies a reason to reopen them.
+- The Owner may distribute the fixed PDF for external review.
+- Do not mark PR #9 ready, merge, release, upload to arXiv, submit to a journal, or make DOI/publication changes without a new contemporaneous Owner disposition.
 
 ## Current state
 
 ```text
-[CLEAN AUGUST V1 CONTROLLING CANDIDATE]
-[MATHEMATICAL AUDIT CLOSED]
+[CLEAN AUGUST MATHEMATICS — INDEPENDENT PASS]
 [BOUNDED SOURCE RE-CHECK PASS]
-[SUPERSEDED WORKING FILES REMOVED]
-[FINAL PUBLICATION ENGINEERING PASS]
-[ARXIV SOURCE PACKET READY]
+[EXTERNAL-REVIEW PRESENTATION FIXED]
+[ETbb / NewTX / NUMERIC / UNICODE INSCRIPTION]
+[33-PAGE PDF ENGINEERING PASS]
+[EXTERNAL REVIEW AUTHORIZED]
+[OLD ARXIV PACKET SUPERSEDED]
 [PR #9 OPEN / DRAFT / UNMERGED]
-[NO EXTERNAL PUBLICATION ACTION AUTHORIZED]
+[NO PUBLICATION SUBMISSION YET]
 ```
