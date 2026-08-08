@@ -2,14 +2,14 @@
 
 \usepackage[british]{babel}
 \usepackage{amsmath,amssymb,mathtools}
-\usepackage[etbb]{newtx}
+\usepackage{newtxmath}
+\usepackage[no-math]{fontspec}
 \setmainfont{ETbb-Regular.otf}[
   BoldFont=ETbb-Bold.otf,
   ItalicFont=ETbb-Italic.otf,
   BoldItalicFont=ETbb-BoldItalic.otf,
   Ligatures=TeX
 ]
-\usepackage{newtxtt}
 \IfFontExistsTF{GFS Artemisia}{%
   \newfontfamily\greekdedicationfont{GFS Artemisia}%
 }{%
@@ -39,6 +39,7 @@
     {\clearfield{url}}}
 \renewcommand*{\bibfont}{\footnotesize}
 \usepackage[hidelinks]{hyperref}
+\urlstyle{same}
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}[theorem]{Proposition}
@@ -76,7 +77,7 @@ A Characterization and a Local Limit Theorem}
 
 \dedicatory{%
   \vspace{8pt}%
-  {\normalfont\greekdedicationfont\fontsize{10}{15}\selectfont
+  {\greekdedicationfont\fontsize{10}{15}\selectfont
    ΤΟΙΣ ΕΜΕ ΦΙΛΟΥΣΙΝ\\
    ΚΑΙ ΟΙΣ ΦΙΛΩ}%
   \vspace{12pt}%
