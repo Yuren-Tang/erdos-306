@@ -21,8 +21,8 @@ jobs:
 
       - name: Verify frozen mathematical source
         run: |
-          git diff --exit-code dba5400f67acc2a8c05dedc1a1861700e17ee33d -- \
-            references.bib sections
+          git diff --exit-code 8cf83598e9cb282d7fb84b02ccced318d3dfb997 -- \
+            main.tex references.bib sections
 
       - name: Guard Oxford manuscript spelling
         run: |
@@ -164,16 +164,16 @@ jobs:
       - name: Build summary
         run: |
           {
-            echo "## E306 external-review presentation build"
+            echo "## E306 proper-target review build"
             echo
             echo "- Commit: $GITHUB_SHA"
-            echo "- Mathematical source baseline: \`dba5400f67acc2a8c05dedc1a1861700e17ee33d\` (references + sections frozen)"
+            echo "- Frozen manuscript source: \`8cf83598e9cb282d7fb84b02ccced318d3dfb997\` (main.tex + references + sections)"
             echo "- Entry point: \`paper/e306-anchor-fibre-v1/manuscript/main.tex\`"
             echo "- Command: \`make clean && make pdf\`"
             echo "- Engine: XeLaTeX"
             echo "- Text/math typography: ETbb OpenType / NewTX"
             echo "- Bibliography backend/style: Biber / numeric"
-            echo "- Result: frozen-mathematics check, Oxford-spelling guard, clean PDF build, bibliography/reference/label/missing-glyph gate, font-embedding gate, Unicode dedication/ORCID/Erdős extraction gate, and leaked-label gate passed"
+            echo "- Result: frozen-source check, Oxford-spelling guard, clean PDF build, bibliography/reference/label/missing-glyph gate, font-embedding gate, Unicode dedication/ORCID/Erdős extraction gate, and leaked-label gate passed"
             echo "- PDF size: $(stat -c%s main.pdf) bytes"
             echo "- Pages: $(pdfinfo main.pdf | awk '/^Pages:/ {print $2}')"
           } >> "$GITHUB_STEP_SUMMARY"
@@ -181,7 +181,7 @@ jobs:
       - name: Upload manuscript PDF
         uses: actions/upload-artifact@v4
         with:
-          name: e306-external-review-pdf-${{ github.sha }}
+          name: e306-proper-target-review-pdf-${{ github.sha }}
           path: paper/e306-anchor-fibre-v1/manuscript/main.pdf
           if-no-files-found: error
           retention-days: 30
