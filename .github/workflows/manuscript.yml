@@ -1,10 +1,17 @@
 name: verify-e306-manuscript
 
-# Remote manuscript verification is intentionally manual-only. The workflow is
-# retained for explicit clean-room builds before publication or external review.
+# Manuscript verification runs automatically when the review manuscript or this
+# workflow changes on the article branch. Manual dispatch remains available for
+# explicit clean-room rebuilds before publication or external review.
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - paper/e306-anchor-fibre-v1
+    paths:
+      - 'paper/e306-anchor-fibre-v1/manuscript/**'
+      - '.github/workflows/manuscript.yml'
 
 jobs:
   build-manuscript:
