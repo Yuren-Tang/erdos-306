@@ -9,56 +9,115 @@
 - **Sole article branch:** `paper/e306-anchor-fibre-v1`
 - **Base:** `main@5a6207a493067f02c67b1cfa69fa8c5498f2c005`
 - **PR state:** open / draft / unmerged
-- **Publication state:** external review is authorized; arXiv upload, journal submission, merge, release, DOI action, and other publication actions are not yet authorized.
+- **Publication state:** theorem-scope rewrite complete at authorial-candidate level; independent review of the new fixed object is required before a new external-review or submission checkpoint may be declared.
 
-A governance commit may advance the branch after a manuscript checkpoint. The exact external-review manuscript source is therefore recorded explicitly below rather than inferred from moving HEAD.
+## Why the previous freeze was reopened
 
-## Mathematical audit closure
-
-The clean August mathematical source was promoted from
+The 33-page ETbb/NewTX external-review checkpoint at
 
 ```text
-Yuren-Tang/research-workbench@43c205356fe5def721d54206af83928e95338fac
-intake/2026-08-07-e306-arxiv-v1/latex/
+bb94f26fa9a33cf7df8ceda7beaeae9f4f129a14
 ```
 
-and independently audited under `E306-CLEAN-V1-INDEPENDENT-AUDIT-01`. All three public theorem blocks and all five load-bearing interfaces passed mathematically. Four bounded source/exposition repairs were made and independently closed by
+was mathematically sound in its audited scope, but an independent external read identified a natural theorem-scope improvement. A connected-neighbourhood audit in `research-workbench` then showed that the clean proof spine extends, without restoring the older six-sector parameterized architecture, from the unit target `1/b` at `gamma=3` to every fixed proper rational target in the pair-dominant regime.
+
+The Owner authorized reopening the freeze. The durable issue record is `#8` comment `5225095307`.
+
+The former 33-page PDF and its presentation PASS remain historical evidence only. They are not the current review object and must not be submitted.
+
+## Current manuscript-source checkpoint
+
+The theorem-scope rewrite is fixed at exact manuscript-source commit
 
 ```text
-[PASS E306-CLEAN-V1-BOUNDED-RECHECK-01]
+f6a3d388c358679c93b25f3900f0783bcb6299f2
 ```
 
-No mathematical repair, theorem restriction, exponent change, or new estimate remains pending.
-
-The frozen mathematical baseline used by the presentation CI is
+relative to the former external-review branch head
 
 ```text
-dba5400f67acc2a8c05dedc1a1861700e17ee33d
+751fb07f120c6892fedbfc2b736fbba12282f284.
 ```
 
-for `references.bib` and every file under `manuscript/sections/`. The external-review presentation revision changes only `main.tex` and presentation/build/control surfaces. CI verifies those mathematical files remain byte-identical to this baseline.
+The rewrite changes `main.tex` and Sections 1, 2, 3, 5, 6, 7, 8, 9, and 10. Section 4, the one-anchor rigidity proof, is byte-unchanged. The rewrite therefore changes the theorem language and the interfaces that genuinely depend on the target and exponent while preserving the independently audited rigidity core.
 
-## Public theorem package
+No independent audit of this exact new object has yet returned. No manuscript workflow was dispatched for this rewrite; remote workflows remain manual-only by Owner disposition. A green historical workflow is not evidence for this new checkpoint.
+
+## Current theorem package
 
 1. **Squarefree-denominator characterization with finite avoidance.** A positive reduced rational `a/b` is a finite sum of reciprocals of distinct squarefree semiprimes iff `b` is squarefree; the support can avoid any prescribed finite set.
-2. **Local Gaussian profile.** For the direct `Z=X^3` family attached to fixed squarefree `b>=3`, the exact target fibre has a compact-uniform Gaussian local profile on `|j| <= U L_X sigma_X` for every fixed `U`.
-3. **Multiplicity and entropy.** The same family has exponentially many exact representations, ambient entropy exponent in a mesoscopic typical-cardinality window, and at least one exact cardinality with that exponent.
+2. **Direct proper-target theorem.** Fix a reduced `t=a/b in (0,1)` with squarefree `b`, and fixed `gamma>2` satisfying
+   ```text
+   t < (log gamma)^2/2 < 1.
+   ```
+   With `Z=X^gamma`, the direct pair family plus target rows represents `t` for all sufficiently large `X` and avoids every prescribed finite set.
+3. **Local Gaussian profile.** For the same fixed target-adapted family, the Bernoulli-weighted exact coefficients on every fixed standardized compact target window have the Gaussian profile
+   ```text
+   L_X sigma_X W_X(t+j/L_X)
+     = Phi(j/(L_X sigma_X)) + o_U(1).
+   ```
+4. **Multiplicity and entropy.** In the mesoscopic typical-cardinality window the exact fibre has at least
+   ```text
+   exp([H(alpha)-o(1)] M_X),
+   alpha = 2t/(log gamma)^2,
+   ```
+   representations. The whole exact fibre inherits the same lower bound, and at least one exact cardinality has the same exponential rate. No matching upper bound for the total fibre is claimed.
+5. **Qualitative closure by prime dilution.** Arbitrary positive rationals with squarefree reduced denominator are reached from the proper-target theorem by replacing `a/b` with `a/(bp)` for a fresh prime `p>a` and taking `p` pairwise disjoint avoiding representations. Reduced denominators `1` and `2` need no special cases.
 
-The fixed-target local limit is the central value of the local-profile theorem, not a separate proof route.
+For every fixed `0<t<1`, an admissible exponent with `gamma>2` exists because
+
+```text
+max(2, exp(sqrt(2t))) < gamma < exp(sqrt(2).
+```
+
+(The displayed upper endpoint means `exp(sqrt(2))`.)
 
 ## Deliberate scope
 
-The article does not make the fully abstract anchor–fibre transference theorem, general fixed targets with free parameters, alternative multiblock/sparse proofs, restricted-prime extensions, reciprocal-incidence graph algebra, finite-prefix CRT programmes, growing standardized target radius, prescribed-cardinality local asymptotics, or quantitative `b=1,2` transfer load-bearing.
+The article does **not** restore:
+
+- the older `1<gamma<=2` target-row-dominant variance regimes or their extra transition sector;
+- arbitrary fixed anchor ratio `eta` as standing notation;
+- a varying or shrinking anchor ratio;
+- entropy optimization over `gamma`;
+- the fully abstract anchor–fibre transference theorem;
+- alternative multiblock or sparse-sensor routes;
+- restricted-prime / progression / Chebotarev variants;
+- finite-prefix CRT or reciprocal-incidence programmes;
+- growing standardized target radius;
+- prescribed-cardinality asymptotics or a bivariate local limit;
+- adversarial deletion resilience.
+
+These remain knowledge-plane mathematics or frontiers rather than Article 1 scope.
+
+## Review repairs absorbed in the rewrite
+
+The bounded rewrite also closes the cheap issues identified by the external reader:
+
+- `b=2` is no longer patched separately; it is a special case of the proper-target theorem;
+- the large coherent-label range no longer misuses `h_m` outside the decoder theorem: it uses a distinct `h_m^*` distinguished row-minimizer state and explicitly asserts no decoder identification there;
+- Section 6 now states the complete bookkeeping: noncoherent distinguished states are controlled by the anchor bound and all off-minimizer row states, over coherent and noncoherent anchors alike, are controlled once by weighted row compression;
+- the weaker `-log q` multiplicity theorem clause has been removed in favour of the stronger `H(alpha)` lower bound already implied by the typical-cardinality window;
+- the abstract and introduction now say that the **Bernoulli-weighted exact coefficients** have a local Gaussian profile, avoiding an unweighted-cardinality reading;
+- engineering terminology has been reduced where ordinary mathematical language is clearer;
+- Lean provenance is one non-load-bearing sentence in the introduction;
+- the secondary MSC code `11L07` has been replaced by `60F05`.
+
+## Equation-reference maintenance
+
+The reviewed source contained explicit numeric `\tag{section.number}` keys and numeric `\eqref` calls. The current `main.tex` retains those strings only as stable internal label keys. Visible equation numbers now come from LaTeX's sectioned equation counter, and numeric `\eqref` calls resolve through genuine labels and hyperlinks. The mathematical sections therefore no longer require hand-synchronizing displayed numbers after insertions or deletions.
+
+This mechanism is part of the new authorial candidate and must be included in the clean compile and independent source review. No build PASS is claimed here.
 
 ## Article architecture
 
-The active manuscript has ten sections:
+The article retains the clean ten-section architecture:
 
 1. Introduction and main theorems.
 2. The direct semiprime family.
 3. Fourier inversion and exactness.
 4. One-anchor rigidity.
-5. Row observability and decoded-skeleton compression.
+5. Row observability and weighted compression.
 6. Local Gaussian analysis.
 7. Multiplicity and typical cardinality.
 8. Moving-target local saturation.
@@ -68,104 +127,56 @@ The active manuscript has ten sections:
 Narrative spine:
 
 ```text
-arithmetic family
+proper target / arithmetic family
  -> anchor rigidity
- -> row observability / decoding
- -> weighted fibre compression
+ -> row observability
+ -> weighted row compression
  -> Gaussian localization
- -> exact representation fibres.
+ -> local exact coefficients
+ -> prime-dilution characterization.
 ```
 
-## External-review presentation
+## Presentation profile
 
-The controlling presentation profile is `MANUSCRIPT_STYLE_PROFILE.md`.
+The bounded theorem-scope rewrite does not reopen the selected visual design. Unless a new review finds a concrete presentation defect, retain:
 
-The external-review design is:
-
-- British English with Oxford spelling and philological attention to Greek/Latin-derived terminology;
+- British English with Oxford spelling;
 - `amsart`, A4, 11 pt, right equation numbers;
-- **ETbb OpenType** for the public text;
-- **NewTX** mathematics;
-- URLs/DOIs inherit the surrounding roman face rather than introducing a separate T1 typewriter encoding;
-- XeLaTeX for semantic Unicode text;
-- dedication in literal Unicode, two centred lines, uppercase and without diacritics, set **upright in GFS Artemisia**:
+- ETbb OpenType text and NewTX mathematics;
+- XeLaTeX;
+- numeric `biblatex`/Biber citations sorted `nyt`;
+- no affiliation or email;
+- compact linked ORCID in the `amsart` author footnote;
+- the two-line upright GFS Artemisia inscriptional dedication;
+- the existing concise generative-AI disclosure.
 
-  ```text
-  ΤΟΙΣ ΕΜΕ ΦΙΛΟΥΣΙΝ
-  ΚΑΙ ΟΙΣ ΦΙΛΩ
-  ```
-
-- no institutional affiliation or email;
-- linked compact ORCID in the conventional `amsart` author footnote;
-- concise generative-AI disclosure, with no Lean-development claim in this article;
-- `biblatex` + Biber, **numeric citations**, bibliography sorted `nyt`;
-- no forced bibliography page break;
-- quiet hyperlinks and no decorative manuscript devices.
-
-The Garamond build and the later Pagella/NewPX candidate are historical comparison/presentation evidence only. Neither is the selected external-review design.
-
-## Exact external-review checkpoint
-
-The exact manuscript-source checkpoint for external review is
-
-```text
-bb94f26fa9a33cf7df8ceda7beaeae9f4f129a14
-```
-
-with presentation/build workflow at that checkpoint given by `verify-e306-manuscript` run **#181**, run id `31240197085`.
-
-At that exact manuscript checkpoint:
-
-- frozen mathematical source check against `dba5400f...`: PASS;
-- Oxford-spelling guard: PASS;
-- clean XeLaTeX + Biber build: PASS;
-- citations, references, labels, and Biber diagnostics: PASS;
-- final-pass missing-glyph gate: PASS;
-- all PDF fonts embedded, no Type 3: PASS;
-- ETbb text is CID/OpenType and preserves literal `Erdős`: PASS;
-- dedication extracts as literal Unicode: PASS;
-- ORCID compact iD extracts correctly: PASS;
-- no internal LaTeX label names leak into PDF text: PASS;
-- same-head Lean workflow `verify-erdos-306` run **#915**, run id `31240197087`: PASS;
-- page size: A4;
-- length: **33 pages**;
-- PDF artifact id: `9016794980`;
-- diagnostics artifact id: `9016794816`;
-- final PDF SHA-256:
-
-  ```text
-  187f5c7b30311b486ac463f0fa9e609f1708cb8d0905383909dd9857caeb5a13
-  ```
-
-The immediately preceding Unicode-safe presentation differed only in the dedication's inherited italic shape. A render diff against the corrected checkpoint reports **exactly one changed page (page 1)**, with the changed bounding box confined to the two dedication lines; pages 2–33 are pixel-identical. Page 1 of the corrected checkpoint was inspected directly and the PDF embeds `GFSArtemisia-Regular`, not Italic.
-
-The 33-page ETbb/NewTX presentation was also compared visually with the preceding 34-page Pagella/NewPX candidate. ETbb/NewTX is retained because the text is denser without crowding, the math/text weight is more coherent across Fourier/CRT pages, numeric citations are quieter in the small bibliography, and the inscriptional dedication plus ORCID footnote produce a less intrusive title block.
-
-## Superseded publication packet
-
-The arXiv source packet previously generated from `dba5400f...` belongs to the superseded Pagella/NewPX presentation candidate. It is archival only and must not be submitted. A fresh arXiv packet will be generated only after external review and closure of any bounded review repairs.
+The old external-review PDF and all earlier arXiv source packets are superseded as review/submission objects. A fresh PDF and source packet are produced only after the new mathematical review loop closes.
 
 ## Formal Lean axis
 
-The archived Lean release remains orthogonal evidence for existence/priority. The analytic manuscript contains no Lean argument; the AI acknowledgement does not imply otherwise, and no manuscript theorem depends on the formal artifact.
+The archived Lean release remains orthogonal historical/formal evidence for the headline existence statement. The article is self-contained, its analytic proof does not depend on the formal artifact, and the present rewrite makes no claim that the new local-limit theorem has been formalized.
 
-## Product rules from this checkpoint
+## Next gate
 
-- Mathematical Sections 1–10 and `references.bib` remain closed unless external review identifies a concrete mathematical/source issue requiring a new bounded disposition.
-- Presentation changes are also closed for the external-review copy unless the review itself identifies a reason to reopen them.
-- The Owner may distribute the fixed PDF for external review.
-- Do not mark PR #9 ready, merge, release, upload to arXiv, submit to a journal, or make DOI/publication changes without a new contemporaneous Owner disposition.
+The next permissible product action is a **one-off independent mathematical/source review of the exact manuscript checkpoint `f6a3d388...`**, including a clean compile. That review should especially check the `gamma>2` transport, target-coordinate decoder ratio, tail normalization, prime-dilution closure, `H(alpha)` multiplicity statement, `h_m^*` bookkeeping, and the new equation-label mechanism.
+
+Until that review returns:
+
+- do not treat the new theorem scope as independently certified by this exact manuscript;
+- do not declare a new external-review PDF checkpoint;
+- do not create an arXiv source packet;
+- do not mark PR #9 ready;
+- do not merge, tag, release, alter DOI metadata, upload to arXiv, or submit to a journal.
 
 ## Current state
 
 ```text
-[CLEAN AUGUST MATHEMATICS — INDEPENDENT PASS]
-[BOUNDED SOURCE RE-CHECK PASS]
-[EXTERNAL-REVIEW PRESENTATION FIXED]
-[ETbb / NewTX / NUMERIC / UNICODE INSCRIPTION]
-[33-PAGE PDF ENGINEERING PASS]
-[EXTERNAL REVIEW AUTHORIZED]
-[OLD ARXIV PACKET SUPERSEDED]
+[PROPER-TARGET SCOPE ELEVATION — AUTHORIAL CANDIDATE]
+[MANUSCRIPT SOURCE f6a3d388c358679c93b25f3900f0783bcb6299f2]
+[ONE-ANCHOR RIGIDITY CORE UNCHANGED]
+[INDEPENDENT REVIEW REQUIRED]
+[REMOTE CI MANUAL-ONLY / NOT DISPATCHED]
+[OLD 33-PAGE REVIEW PDF SUPERSEDED]
 [PR #9 OPEN / DRAFT / UNMERGED]
-[NO PUBLICATION SUBMISSION YET]
+[NO PUBLICATION SUBMISSION AUTHORIZED]
 ```
