@@ -55,9 +55,9 @@
 \newcommand{\Z}{\mathbb Z}
 \newcommand{\N}{\mathbb N}
 
-% Display equations carry explicit section-equation tags such as 6.28.
-% Numeric equation references reproduce those tags directly; symbolic equation
-% labels continue to use LaTeX's ordinary \eqref mechanism and warning checks.
+% The present source still retains the frozen explicit equation tags from the
+% independently reviewed version.  A separate mechanical pass will restore
+% ordinary symbolic labels after the mathematical scope rewrite is frozen.
 \ExplSyntaxOn
 \cs_new_eq:NN \e_three_zero_six_original_eqref:n \eqref
 \RenewDocumentCommand{\eqref}{m}
@@ -83,7 +83,7 @@ A Characterization and a Local Limit Theorem}
   \vspace{12pt}%
 }
 
-\subjclass[2020]{Primary 11D68; Secondary 11B34, 11L07}
+\subjclass[2020]{Primary 11D68; Secondary 11B34, 60F05}
 \keywords{Egyptian fractions, squarefree semiprimes, representation functions, local limit theorem, finite Fourier analysis, Erdős Problem 306}
 \hypersetup{
   pdftitle={Squarefree Semiprime Unit Fractions: A Characterization and a Local Limit Theorem},
@@ -97,14 +97,18 @@ A Characterization and a Local Limit Theorem}
 \begin{abstract}
 We characterize the positive rationals that are finite sums of reciprocals of distinct squarefree semiprimes. A reduced rational $a/b>0$ admits such a representation if and only if $b$ is squarefree; moreover, the representation may be chosen to avoid any prescribed finite set of denominators. This resolves Erd\H{o}s Problem 306.
 
-For a fixed squarefree $b\ge3$ we construct a finite family $\mathcal E_X$ of squarefree semiprimes and place an independent Bernoulli law on its subsets, centred so that the expected reciprocal sum is $1/b$. Finite Fourier inversion, one-anchor rigidity, quantitative row observability, and retained damping show that the exact representation fibre has a local Gaussian profile. If $L_X$ is the natural common denominator, $\sigma_X^2$ is the reciprocal-sum variance, and $W_X(t)$ is the Bernoulli mass of exact representations of $t$ by the same family, then for every fixed $U>0$, uniformly for $|j|\le U L_X\sigma_X$,
+The analytic result is stronger. Fix a reduced proper rational $t=a/b\in(0,1)$ with squarefree $b$, and choose a fixed $\gamma>2$ such that
 \[
-L_X\sigma_X W_X\!\left(\frac1b+\frac{j}{L_X}\right)
+t<\lambda_\gamma:=\frac{(\log\gamma)^2}{2}<1.
+\]
+With $Z=X^\gamma$, we use all prime pairs from $[X,Z)$ together with target rows indexed by the prime divisors of $b$, and place an independent Bernoulli law on the resulting family, centred exactly at $t$. If $L_X$ is the natural common denominator, $\sigma_X^2$ is the reciprocal-sum variance, and $W_X(s)$ denotes the Bernoulli mass of exact representations of $s$ by this fixed family, then for every fixed $U>0$, uniformly for $|j|\le U L_X\sigma_X$,
+\[
+L_X\sigma_X W_X\!\left(t+\frac{j}{L_X}\right)
 =
 \frac{1}{\sqrt{2\pi}}
 \exp\!\left(-\frac{j^2}{2L_X^2\sigma_X^2}\right)+o_U(1).
 \]
-In particular, the target $1/b$ has the expected local-limit mass. This yields exponentially many exact representations, with the ambient entropy exponent in a mesoscopic typical-cardinality window, and shows that one fixed family realizes a growing consecutive block of nearby lattice targets.
+Thus the Bernoulli-weighted exact coefficients have a local Gaussian profile. The central coefficient yields exact representations, the same family realizes a growing consecutive block of nearby lattice targets, and the exact fibre contains exponentially many representations at the ambient entropy rate in a mesoscopic typical-cardinality window.
 \end{abstract}
 
 \maketitle
