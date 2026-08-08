@@ -28,7 +28,7 @@ The former PDF and all earlier arXiv source packets are historical only and must
 The delta-audited theorem-scope source is frozen at
 
 ```text
-03f073b2c1a21f88883598796f8e01d6ee5f8d34
+eec3e6798ed86845ec42fd599aab6748bb08979a
 ```
 
 relative to the former branch head
@@ -37,16 +37,17 @@ relative to the former branch head
 751fb07f120c6892fedbfc2b736fbba12282f284.
 ```
 
-The structural proper-target rewrite was first provisionally checkpointed at `f6a3d388c358679c93b25f3900f0783bcb6299f2`. Before review freeze, that provisional checkpoint was superseded by the following bounded source repairs:
+The structural proper-target rewrite was first provisionally checkpointed at `f6a3d388c358679c93b25f3900f0783bcb6299f2`. Before final review freeze, that provisional checkpoint was superseded by the following bounded source repairs:
 
 1. `e4a7b08925762a9f2855bb08e4e7188d9bb5d48a` generalized the no-wrap lemma from the centre target to every lattice target in `[0,Lambda]`, so the moving-target exactness step is actually covered by the stated lemma;
 2. `ec6df1face83653b77b6c1ef4f9cb39fc4017059` added the Erdős Problems record and Zenodo formal-proof provenance citations;
 3. `8cf83598e9cb282d7fb84b02ccced318d3dfb997` reduced the formal-proof sentence to a non-load-bearing provenance statement;
-4. successor-Director delta audit then found one stale interface symbol in the otherwise unchanged anchor section: Section 3 now defines a Bernoulli damping constant `kappa` depending on the fixed proper-target parameters, while Section 4 still referred to the old unit-target name `kappa_b`. Commit `03f073b2c1a21f88883598796f8e01d6ee5f8d34` changes only those three occurrences `kappa_b -> kappa`; no rigidity, fingerprint, energy, or range statement is altered.
+4. `03f073b2c1a21f88883598796f8e01d6ee5f8d34` repaired the stale Section 3--4 Bernoulli damping interface name `kappa_b -> kappa`; no rigidity, fingerprint, energy, or range statement changed;
+5. `eec3e6798ed86845ec42fd599aab6748bb08979a` removed the purely expository `max T` edge case when the prescribed finite forbidden set is empty, replacing it by the direct statement that all denominators eventually lie outside fixed finite `T`. No theorem, estimate, construction, or quantifier changed.
 
-The substantive proper-target rewrite changes `main.tex` and Sections 1, 2, 3, 5, 6, 7, 8, 9, and 10. Section 4's independently audited rigidity mathematics remains byte-identical to the clean manuscript except for the three-symbol interface repair just described. Any commit after `03f073b2...` must leave `manuscript/main.tex`, `manuscript/references.bib`, and `manuscript/sections/` byte-identical unless a new mathematical/source disposition explicitly reopens the freeze.
+The substantive proper-target rewrite changes `main.tex` and Sections 1, 2, 3, 5, 6, 7, 8, 9, and 10. Section 4's independently audited rigidity mathematics remains byte-identical to the clean manuscript except for the three-symbol damping-interface repair. Any commit after `eec3e679...` must leave `manuscript/main.tex`, `manuscript/references.bib`, and `manuscript/sections/` byte-identical unless a new mathematical/source disposition explicitly reopens the freeze.
 
-No independent audit or clean-build PASS is claimed for this exact new source. Remote workflows remain manual-only. The manuscript workflow guards the complete frozen source surface (`main.tex`, `references.bib`, and `sections/`) against `03f073b2...`.
+No independent audit or clean-build PASS is claimed for this exact new source. Remote workflows remain manual-only. The manuscript workflow guards the complete frozen source surface (`main.tex`, `references.bib`, and `sections/`) against `eec3e679...`.
 
 ## Current theorem package
 
@@ -81,7 +82,8 @@ Article 1 does not restore the older `1<gamma<=2` target-row-dominant variance r
 - Lean provenance is one non-load-bearing sentence; the article remains self-contained.
 - Secondary MSC `11L07` is replaced by `60F05`.
 - The no-wrap lemma is stated at the exact moving-target scope actually used in Section 8.
-- The anchor damping constant now uses the proper-target interface name `kappa` consistently across Sections 3 and 4.
+- The anchor damping constant uses the proper-target interface name `kappa` consistently across Sections 3 and 4.
+- Finite avoidance no longer invokes `max T`, so the empty forbidden set is covered without an unstated convention.
 
 ## Equation-reference maintenance
 
@@ -107,7 +109,7 @@ The archived Lean release is orthogonal evidence for the headline existence stat
 
 ## Next gate
 
-The next permissible product action is one independent mathematical/source review of exact manuscript checkpoint `03f073b2c1a21f88883598796f8e01d6ee5f8d34`, including a clean compile. The review should especially check:
+The next permissible product action is one independent mathematical/source review of exact manuscript checkpoint `eec3e6798ed86845ec42fd599aab6748bb08979a`, including a clean compile. The review should especially check:
 
 - the `gamma>2` transport and variance dominance;
 - target-coordinate decoder ratio `X^{4-2gamma}`;
@@ -117,6 +119,7 @@ The next permissible product action is one independent mathematical/source revie
 - `h_m^*` and the complete Section 6 bookkeeping;
 - the generalized no-wrap lemma for moving targets;
 - the Section 3--4 Bernoulli damping-constant interface;
+- finite-avoidance quantifiers, including `T = emptyset`;
 - the equation-label mechanism and generated cross-references;
 - source/provenance citations and absence of accidental import from the older `gamma<=2` architecture.
 
@@ -126,7 +129,7 @@ Until that review returns, do not declare a new external-review PDF, create an a
 
 ```text
 [PROPER-TARGET SCOPE ELEVATION — DELTA-AUDITED FROZEN AUTHORIAL CANDIDATE]
-[MANUSCRIPT SOURCE 03f073b2c1a21f88883598796f8e01d6ee5f8d34]
+[MANUSCRIPT SOURCE eec3e6798ed86845ec42fd599aab6748bb08979a]
 [ONE-ANCHOR RIGIDITY CORE UNCHANGED EXCEPT KAPPA INTERFACE NAME]
 [INDEPENDENT REVIEW REQUIRED]
 [REMOTE CI MANUAL-ONLY / CLEAN BUILD NOT YET CLAIMED]
