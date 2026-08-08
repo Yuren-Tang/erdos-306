@@ -20,10 +20,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Verify frozen manuscript source
+      - name: Verify frozen mathematical source
         run: |
           git diff --exit-code dba5400f67acc2a8c05dedc1a1861700e17ee33d -- \
-            main.tex references.bib sections
+            references.bib sections
 
       - name: Guard Oxford manuscript spelling
         run: |
@@ -68,10 +68,6 @@ jobs:
             latexmk \
             biber \
             poppler-utils \
-            tex-gyre \
-            fonts-texgyre \
-            fonts-gfs-porson \
-            fonts-inconsolata \
             texlive-bibtex-extra \
             texlive-fonts-extra \
             texlive-fonts-recommended \
@@ -79,14 +75,15 @@ jobs:
             texlive-plain-generic \
             texlive-xetex
 
-      - name: Verify required font families
+      - name: Verify required typography files
         run: |
-          fc-match "TeX Gyre Pagella" | tee /tmp/pagella-match.txt
-          fc-match "GFS Porson" | tee /tmp/porson-match.txt
-          fc-match "Inconsolata" | tee /tmp/inconsolata-match.txt
-          grep -qi "pagella" /tmp/pagella-match.txt
-          grep -qi "porson" /tmp/porson-match.txt
-          grep -qi "inconsolata" /tmp/inconsolata-match.txt
+          kpsewhich ETbb-Regular.otf
+          kpsewhich ETbb-Bold.otf
+          kpsewhich ETbb-Italic.otf
+          kpsewhich ETbb-BoldItalic.otf
+          kpsewhich GFSArtemisia.otf
+          kpsewhich newtxmath.sty
+          kpsewhich newtxtt.sty
 
       - name: Clean XeLaTeX and Biber build
         shell: bash
@@ -132,7 +129,7 @@ jobs:
             exit 1
           fi
 
-      - name: Verify embedded fonts, Unicode, and extracted identity text
+      - name: Verify embedded fonts, Unicode dedication, and ORCID
         run: |
           pdffonts main.pdf | tee main-fonts.txt
           if grep -q "Type 3" main-fonts.txt; then
@@ -146,67 +143,31 @@ jobs:
           from pathlib import Path
           text = unicodedata.normalize("NFC", Path("main.txt").read_text(encoding="utf-8"))
           required = [
-              "τοῖς ἐμὲ φιλοῦσιν",
-              "καὶ οἷς φιλῶ",
-              "https://orcid.org/0009-0006-0847-3330",
+              "ΤΟΙΣ ΕΜΕ ΦΙΛΟΥΣΙΝ",
+              "ΚΑΙ ΟΙΣ ΦΙΛΩ",
+              "0009-0006-0847-3330",
           ]
           missing = [s for s in required if s not in text]
           if missing:
-              raise SystemExit("Required Unicode/identity extraction failed: " + repr(missing))
+              raise SystemExit("Required dedication/identity extraction failed: " + repr(missing))
           leaked = sorted(set(re.findall(r"\b(?:eq|thm|sec|lem|prop):[A-Za-z0-9_.:-]+", text)))
           if leaked:
               raise SystemExit("Internal LaTeX label names leaked into PDF text: " + repr(leaked))
           PY
 
-      - name: Create minimal arXiv source archive
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
-
-          frozen = "dba5400f67acc2a8c05dedc1a1861700e17ee33d"
-          files = [Path("main.tex"), Path("references.bib"), *sorted(Path("sections").glob("*.tex"))]
-          expected = 12
-          if len(files) != expected:
-              raise SystemExit(f"expected {expected} arXiv source files, found {len(files)}")
-          out = Path(f"e306-arxiv-v1-source-{frozen[:12]}.zip")
-          with ZipFile(out, "w", compression=ZIP_DEFLATED, compresslevel=9) as zf:
-              for path in files:
-                  data = path.read_bytes()
-                  info = ZipInfo(path.as_posix(), date_time=(2026, 8, 7, 0, 0, 0))
-                  info.compress_type = ZIP_DEFLATED
-                  info.external_attr = 0o100644 << 16
-                  zf.writestr(info, data)
-          print(out)
-          with ZipFile(out) as zf:
-              names = zf.namelist()
-          if names != [p.as_posix() for p in files]:
-              raise SystemExit("archive manifest mismatch")
-          forbidden_suffixes = {".pdf", ".bbl", ".aux", ".log", ".blg", ".otf", ".ttf"}
-          if any(Path(name).suffix.lower() in forbidden_suffixes for name in names):
-              raise SystemExit("forbidden generated/font file entered arXiv archive")
-          PY
-
-      - name: Upload minimal arXiv source archive
-        uses: actions/upload-artifact@v4
-        with:
-          name: e306-arxiv-v1-source-${{ github.sha }}
-          path: paper/e306-anchor-fibre-v1/manuscript/e306-arxiv-v1-source-dba5400f67ac.zip
-          if-no-files-found: error
-          retention-days: 90
-
       - name: Build summary
         run: |
           {
-            echo "## E306 manuscript build"
+            echo "## E306 external-review presentation build"
             echo
             echo "- Commit: $GITHUB_SHA"
-            echo "- Frozen manuscript source: \`dba5400f67acc2a8c05dedc1a1861700e17ee33d\`"
+            echo "- Mathematical source baseline: \`dba5400f67acc2a8c05dedc1a1861700e17ee33d\` (references + sections frozen)"
             echo "- Entry point: \`paper/e306-anchor-fibre-v1/manuscript/main.tex\`"
             echo "- Command: \`make clean && make pdf\`"
             echo "- Engine: XeLaTeX"
-            echo "- Bibliography backend: Biber"
-            echo "- Result: frozen-source check, Oxford-spelling guard, clean PDF build, bibliography/reference/label gate, font-embedding gate, Unicode/ORCID extraction gate, leaked-label gate, and minimal arXiv source packaging passed"
+            echo "- Text/math typography: ETbb / NewTX"
+            echo "- Bibliography backend/style: Biber / numeric"
+            echo "- Result: frozen-mathematics check, Oxford-spelling guard, clean PDF build, bibliography/reference/label gate, font-embedding gate, Unicode dedication/ORCID extraction gate, and leaked-label gate passed"
             echo "- PDF size: $(stat -c%s main.pdf) bytes"
             echo "- Pages: $(pdfinfo main.pdf | awk '/^Pages:/ {print $2}')"
           } >> "$GITHUB_STEP_SUMMARY"
@@ -214,7 +175,7 @@ jobs:
       - name: Upload manuscript PDF
         uses: actions/upload-artifact@v4
         with:
-          name: e306-manuscript-${{ github.sha }}
+          name: e306-external-review-pdf-${{ github.sha }}
           path: paper/e306-anchor-fibre-v1/manuscript/main.pdf
           if-no-files-found: error
           retention-days: 30
