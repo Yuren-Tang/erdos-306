@@ -55,21 +55,13 @@
 \newcommand{\Z}{\mathbb Z}
 \newcommand{\N}{\mathbb N}
 
-% The reviewed source uses explicit numeric \tag keys.  Keep those visible
-% numbers stable.  Legacy numeric \eqref calls are therefore rendered directly
-% from their keys, while genuinely named labels continue to use amsmath/hyperref.
-% This avoids pretending that amsmath's locally managed \tag command created
-% hyperlink labels for the historical numeric keys.
+% The reviewed source uses explicit numeric \tag keys throughout.  Keep those
+% visible numbers and their matching in-text references fixed.  Equation
+% references are therefore rendered directly from the same numeric keys rather
+% than through a synthetic label layer; theorem/section references remain normal
+% LaTeX/hyperref references.
 \numberwithin{equation}{section}
-\let\EThreeZeroSixOriginalEqref\eqref
-\ExplSyntaxOn
-\RenewDocumentCommand{\eqref}{m}
-  {
-    \regex_match:nnTF { \A [0-9]+ \. [0-9]+ \Z } { #1 }
-      { \textup{(#1)} }
-      { \EThreeZeroSixOriginalEqref{#1} }
-  }
-\ExplSyntaxOff
+\RenewDocumentCommand{\eqref}{m}{\textup{(#1)}}
 
 \title[Squarefree Semiprime Unit Fractions]{Squarefree Semiprime Unit Fractions:\\
 A Characterization and a Local Limit Theorem}
