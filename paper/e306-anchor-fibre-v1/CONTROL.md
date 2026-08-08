@@ -25,10 +25,10 @@ The former PDF and all earlier arXiv source packets are historical only and must
 
 ## Exact manuscript-source checkpoint
 
-The reconciled theorem-scope source is frozen at
+The delta-audited theorem-scope source is frozen at
 
 ```text
-8cf83598e9cb282d7fb84b02ccced318d3dfb997
+03f073b2c1a21f88883598796f8e01d6ee5f8d34
 ```
 
 relative to the former branch head
@@ -37,15 +37,16 @@ relative to the former branch head
 751fb07f120c6892fedbfc2b736fbba12282f284.
 ```
 
-The structural proper-target rewrite was first provisionally checkpointed at `f6a3d388c358679c93b25f3900f0783bcb6299f2`. Before review freeze, that provisional checkpoint was intentionally superseded by three bounded source changes:
+The structural proper-target rewrite was first provisionally checkpointed at `f6a3d388c358679c93b25f3900f0783bcb6299f2`. Before review freeze, that provisional checkpoint was superseded by the following bounded source repairs:
 
 1. `e4a7b08925762a9f2855bb08e4e7188d9bb5d48a` generalized the no-wrap lemma from the centre target to every lattice target in `[0,Lambda]`, so the moving-target exactness step is actually covered by the stated lemma;
 2. `ec6df1face83653b77b6c1ef4f9cb39fc4017059` added the Erdős Problems record and Zenodo formal-proof provenance citations;
-3. `8cf83598e9cb282d7fb84b02ccced318d3dfb997` reduced the formal-proof sentence to a non-load-bearing provenance statement.
+3. `8cf83598e9cb282d7fb84b02ccced318d3dfb997` reduced the formal-proof sentence to a non-load-bearing provenance statement;
+4. successor-Director delta audit then found one stale interface symbol in the otherwise unchanged anchor section: Section 3 now defines a Bernoulli damping constant `kappa` depending on the fixed proper-target parameters, while Section 4 still referred to the old unit-target name `kappa_b`. Commit `03f073b2c1a21f88883598796f8e01d6ee5f8d34` changes only those three occurrences `kappa_b -> kappa`; no rigidity, fingerprint, energy, or range statement is altered.
 
-The mathematical rewrite changes `main.tex` and Sections 1, 2, 3, 5, 6, 7, 8, 9, and 10. Section 4, the one-anchor rigidity proof, is unchanged from the independently audited clean manuscript. Any commit after `8cf83598...` must leave `manuscript/main.tex`, `manuscript/references.bib`, and `manuscript/sections/` byte-identical unless a new mathematical/source disposition explicitly reopens the freeze.
+The substantive proper-target rewrite changes `main.tex` and Sections 1, 2, 3, 5, 6, 7, 8, 9, and 10. Section 4's independently audited rigidity mathematics remains byte-identical to the clean manuscript except for the three-symbol interface repair just described. Any commit after `03f073b2...` must leave `manuscript/main.tex`, `manuscript/references.bib`, and `manuscript/sections/` byte-identical unless a new mathematical/source disposition explicitly reopens the freeze.
 
-No independent audit or clean-build PASS is claimed for this exact new source. Remote workflows remain manual-only. The manuscript workflow now guards the complete frozen source surface (`main.tex`, `references.bib`, and `sections/`) against `8cf83598...`.
+No independent audit or clean-build PASS is claimed for this exact new source. Remote workflows remain manual-only. The manuscript workflow guards the complete frozen source surface (`main.tex`, `references.bib`, and `sections/`) against `03f073b2...`.
 
 ## Current theorem package
 
@@ -80,6 +81,7 @@ Article 1 does not restore the older `1<gamma<=2` target-row-dominant variance r
 - Lean provenance is one non-load-bearing sentence; the article remains self-contained.
 - Secondary MSC `11L07` is replaced by `60F05`.
 - The no-wrap lemma is stated at the exact moving-target scope actually used in Section 8.
+- The anchor damping constant now uses the proper-target interface name `kappa` consistently across Sections 3 and 4.
 
 ## Equation-reference maintenance
 
@@ -105,7 +107,7 @@ The archived Lean release is orthogonal evidence for the headline existence stat
 
 ## Next gate
 
-The next permissible product action is one independent mathematical/source review of exact manuscript checkpoint `8cf83598e9cb282d7fb84b02ccced318d3dfb997`, including a clean compile. The review should especially check:
+The next permissible product action is one independent mathematical/source review of exact manuscript checkpoint `03f073b2c1a21f88883598796f8e01d6ee5f8d34`, including a clean compile. The review should especially check:
 
 - the `gamma>2` transport and variance dominance;
 - target-coordinate decoder ratio `X^{4-2gamma}`;
@@ -114,6 +116,7 @@ The next permissible product action is one independent mathematical/source revie
 - the `H(alpha)` multiplicity statement;
 - `h_m^*` and the complete Section 6 bookkeeping;
 - the generalized no-wrap lemma for moving targets;
+- the Section 3--4 Bernoulli damping-constant interface;
 - the equation-label mechanism and generated cross-references;
 - source/provenance citations and absence of accidental import from the older `gamma<=2` architecture.
 
@@ -122,9 +125,9 @@ Until that review returns, do not declare a new external-review PDF, create an a
 ## Current state
 
 ```text
-[PROPER-TARGET SCOPE ELEVATION — FROZEN AUTHORIAL CANDIDATE]
-[MANUSCRIPT SOURCE 8cf83598e9cb282d7fb84b02ccced318d3dfb997]
-[ONE-ANCHOR RIGIDITY CORE UNCHANGED]
+[PROPER-TARGET SCOPE ELEVATION — DELTA-AUDITED FROZEN AUTHORIAL CANDIDATE]
+[MANUSCRIPT SOURCE 03f073b2c1a21f88883598796f8e01d6ee5f8d34]
+[ONE-ANCHOR RIGIDITY CORE UNCHANGED EXCEPT KAPPA INTERFACE NAME]
 [INDEPENDENT REVIEW REQUIRED]
 [REMOTE CI MANUAL-ONLY / CLEAN BUILD NOT YET CLAIMED]
 [OLD 33-PAGE REVIEW PDF SUPERSEDED]
