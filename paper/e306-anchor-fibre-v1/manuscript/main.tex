@@ -55,25 +55,19 @@
 \newcommand{\Z}{\mathbb Z}
 \newcommand{\N}{\mathbb N}
 
-% The reviewed source used explicit numeric \tag keys.  They are retained only
-% as stable internal label keys: visible equation numbers now come from LaTeX's
-% sectioned equation counter, and numeric \eqref calls resolve through genuine
-% hyperlink labels.  Inserting or deleting a numbered display therefore no
-% longer requires synchronising visible numbers or references by hand.
+% The reviewed source uses explicit numeric \tag keys.  Keep those visible
+% numbers stable.  Legacy numeric \eqref calls are therefore rendered directly
+% from their keys, while genuinely named labels continue to use amsmath/hyperref.
+% This avoids pretending that amsmath's locally managed \tag command created
+% hyperlink labels for the historical numeric keys.
 \numberwithin{equation}{section}
-\let\EThreeZeroSixOriginalTag\tag
-\RenewDocumentCommand{\tag}{m}{%
-  \refstepcounter{equation}%
-  \EThreeZeroSixOriginalTag{\theequation}%
-  \label{e306eq:#1}%
-}
+\let\EThreeZeroSixOriginalEqref\eqref
 \ExplSyntaxOn
-\cs_new_eq:NN \e_three_zero_six_original_eqref:n \eqref
 \RenewDocumentCommand{\eqref}{m}
   {
     \regex_match:nnTF { \A [0-9]+ \. [0-9]+ \Z } { #1 }
-      { \e_three_zero_six_original_eqref:n {e306eq:#1} }
-      { \e_three_zero_six_original_eqref:n {#1} }
+      { \textup{(#1)} }
+      { \EThreeZeroSixOriginalEqref{#1} }
   }
 \ExplSyntaxOff
 
