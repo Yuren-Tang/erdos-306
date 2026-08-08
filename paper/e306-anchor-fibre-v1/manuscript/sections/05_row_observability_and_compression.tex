@@ -33,9 +33,9 @@ c\frac{M^3}{\mu^2r^2}.
 \begin{proof}
 Multiplication by $d$ permutes the nonzero residue classes. Put
 \[
-t=\left\lfloor\frac{M}{4\mu}\right\rfloor.
+s=\left\lfloor\frac{M}{4\mu}\right\rfloor.
 \]
-For large $M/\mu$, $t\ge M/(8\mu)\ge1$. Fewer than $2\mu t\le M/2$ entries can lie among the $2t$ nonzero classes nearest zero. Hence at least $M/2$ terms have circle distance at least $M/(8\mu r)$, proving \eqref{5.3}.
+For large $M/\mu$, $s\ge M/(8\mu)\ge1$. Fewer than $2\mu s\le M/2$ entries can lie among the $2s$ nonzero classes nearest zero. Hence at least $M/2$ terms have circle distance at least $M/(8\mu r)$, proving \eqref{5.3}.
 \end{proof}
 
 Let $M_{\mathcal B}=|\mathcal B|$. Then
@@ -120,12 +120,12 @@ A_r(x)=|B_r(x)|
 Choose a minimizer $x_r^*$ of $E_r$.
 
 \begin{lemma}[Row tail]\label{lem:row-tail}
-There is $c_b>0$ such that
+There is $c>0$, depending only on the fixed data, such that
 \[
 \delta_r:=
 \sum_{x\ne x_r^*}A_r(x)
 \le
-r\exp(-c_bD_r).
+r\exp(-cD_r).
 \tag{5.9}
 \]
 \end{lemma}
@@ -133,9 +133,9 @@ r\exp(-c_bD_r).
 \begin{proof}
 Lemma \ref{lem:bernoulli-modulus} gives
 \[
-A_r(x)\le e^{-\kappa_bE_r(x)}.
+A_r(x)\le e^{-\kappa E_r(x)}.
 \]
-For $x\ne x_r^*$, the squared distance between the two phase vectors is at least $D_r$. The circle triangle inequality and $(a+b)^2\le2a^2+2b^2$ give
+For $x\ne x_r^*$, the squared distance between the two phase vectors is at least $D_r$. The circle triangle inequality and $(u+v)^2\le2u^2+2v^2$ give
 \[
 D_r
 \le2E_r(x)+2E_r(x_r^*)
@@ -153,7 +153,7 @@ Z^2\exp\!\left(-c\frac{Z}{\log^3Z}\right)
 \tag{5.10}
 \]
 
-\subsection{Weighted decoded-skeleton compression}
+\subsection{Weighted row compression}
 
 Fix an anchor assignment. Let $C_{\mathcal B}$ be the complex product of all anchor--anchor Bernoulli factors, so $|C_{\mathcal B}|=T_{\mathcal B}$. Let $G_{\mathrm{ret}}(x_{\mathcal R})$ be the complex product of all retained lower--lower factors. For every row state set
 \[
@@ -167,7 +167,7 @@ Then $B_r(x)=A_r(x)\omega_r(x)$ and $|\omega_r(x)|\le1$. Absorb the row phases, 
 \[
 G(x_{\mathcal R})
 =
-e(-h/b)\,G_{\mathrm{ret}}(x_{\mathcal R})
+e(-th)\,G_{\mathrm{ret}}(x_{\mathcal R})
 \prod_{r\in\mathcal R}\omega_r(x_r).
 \]
 Thus
@@ -183,7 +183,7 @@ C_{\mathcal B}
 \]
 No denominator is omitted or counted twice, and no complex row phase has been discarded.
 
-\begin{lemma}[Weighted decoded skeleton]\label{lem:weighted-skeleton}
+\begin{lemma}[Weighted row compression]\label{lem:weighted-skeleton}
 Suppose finitely many nonnegative row kernels have distinguished states $x_r^*$ and satisfy
 \[
 \sum_{x_r\ne x_r^*}A_r(x_r)\le\delta_r,
@@ -213,7 +213,7 @@ The same statement holds for an empty or singleton row set under the usual empty
 \end{lemma}
 
 \begin{proof}
-Separate the decoder point $x^*=(x_r^*)_r$. Off that point, discard $G$ in absolute value. The pure product sum factors:
+Separate the distinguished point $x^*=(x_r^*)_r$. Off that point, discard $G$ in absolute value. The pure product sum factors:
 \[
 \sum_{x_{\mathcal R}}\prod_rA_r(x_r)
 =
@@ -221,7 +221,7 @@ Separate the decoder point $x^*=(x_r^*)_r$. Off that point, discard $G$ in absol
 \le
 \prod_r\bigl(A_r(x_r^*)+\delta_r\bigr).
 \]
-Subtract the decoder-point pure product and add back its actual value with $G(x^*)$. This gives the first inequality in \eqref{5.13}.
+Subtract the distinguished-point pure product and add back its actual value with $G(x^*)$. This gives the first inequality in \eqref{5.13}.
 
 Writing $a_r=A_r(x_r^*)\in[0,1]$, the function
 \[
@@ -237,7 +237,7 @@ H((a_r))\le H((1))=
 and $1+u\le e^u$ gives the final bound.
 \end{proof}
 
-Multiplying the error in \eqref{5.13} by $|C_{\mathcal B}|=T_{\mathcal B}$ and summing over anchor assignments, the total nondecoder contribution is
+Multiplying the error in \eqref{5.13} by $|C_{\mathcal B}|=T_{\mathcal B}$ and summing over anchor assignments, the total off-minimizer contribution is
 \[
 \le
 P_{\mathrm{top}}(e^\Delta-1)
@@ -316,15 +316,13 @@ By \eqref{5.15},
 \[
 E_r(m)
 \ll_b
-\frac{X^4}{Z\log Z}
-=O_b\!\left(\frac{X}{\log X}\right),
+\frac{X^4}{Z\log Z},
 \]
 whereas Proposition \ref{prop:target-row-distance} gives
 \[
-D_r\gg_b\frac{Z}{\log Z}
-\asymp_b\frac{X^3}{\log X}.
+D_r\gg_b\frac{Z}{\log Z}.
 \]
-Again the ratio tends to zero.
+The ratio is $O_b(X^4/Z^2)=O_b(X^{4-2\gamma})$, which tends to zero because $\gamma>2$. Apply \eqref{5.16}.
 \end{proof}
 
 Since $b$ is squarefree, agreement modulo every prime divisor of $b$ is agreement modulo $b$. Thus every coherent label with
@@ -369,11 +367,9 @@ Write $y=\sqrt{|m|}$. From $|m|>X^2/4$ we have $2y>X$. From $|m|\le M_{\mathrm{d
 3y
 \le
 \frac{3\sqrt{XZ}}{\log Z}
-=
-\frac{3X^2}{\log Z}
-<\frac Z2
+=o(Z),
 \]
-for large $X$. Thus $I_m\subset\mathcal P\setminus\mathcal B$. The prime number theorem in fixed-ratio intervals gives \eqref{5.23}.
+because $Z=X^\gamma$ with $\gamma>1$. Hence $3y<Z/2$ for large $X$, and $I_m\subset\mathcal P\setminus\mathcal B$. The prime number theorem in fixed-ratio intervals gives \eqref{5.23}.
 
 For distinct primes $p,q\in I_m$,
 \[
@@ -393,4 +389,4 @@ By Lemma \ref{lem:bernoulli-modulus}, if $h_m$ denotes the decoded skeleton asso
 \exp\!\left(-c\frac{|m|}{(\log|m|)^2}\right).
 \tag{5.25}
 \]
-This defines the notation $h_m$ used below. The anchor has converted low internal energy into one exact label, the row sensors force the relevant coordinates onto that label, Lemma \ref{lem:weighted-skeleton} compresses the off-decoder states without a cardinality loss, and the unused complete-pair factors suppress coherent labels after the target-coordinate decoder ceases to be needed.
+This notation is used only in the range \eqref{5.21}, where the prime-coordinate decoder has been proved. Beyond $M_{\mathrm{dec}}$ we refer instead to the distinguished row-minimizer state above the coherent anchor label. The anchor has converted low internal energy into one exact label, the row sensors identify the relevant coordinates, Lemma \ref{lem:weighted-skeleton} compresses the off-minimizer states without a cardinality loss, and the unused complete-pair factors suppress coherent labels after the target-coordinate decoder ceases to be needed.
