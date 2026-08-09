@@ -10,11 +10,7 @@
   BoldItalicFont=ETbb-BoldItalic.otf,
   Ligatures=TeX
 ]
-\IfFileExists{EBGaramond-Regular.otf}{%
-  \newfontfamily\greekdedicationfont{EBGaramond-Regular.otf}%
-}{%
-  \PackageError{e306}{EBGaramond-Regular.otf not found}{The Owner-authorized dedication test requires the TeX Live EB Garamond OpenType file.}%
-}
+\newfontfamily\greekdedicationfont{EBGaramond-Regular.otf}
 \usepackage{microtype}
 \setlength{\emergencystretch}{2em}
 \usepackage{enumitem}
