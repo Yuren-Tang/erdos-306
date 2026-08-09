@@ -28,7 +28,7 @@ jobs:
 
       - name: Verify frozen mathematical source
         run: |
-          git diff --exit-code 3899f40fb493c2e2f2894f432cada64437a0964c -- \
+          git diff --exit-code fe009a1bcd8eff3c0ef1eafaf487563fedf3ae0a -- \
             main.tex references.bib sections
 
       - name: Guard Oxford manuscript spelling
@@ -89,8 +89,9 @@ jobs:
           kpsewhich ETbb-Italic.otf
           kpsewhich ETbb-BoldItalic.otf
           kpsewhich newtxmath.sty
-          fc-match "GFS Artemisia" | tee /tmp/artemisia-match.txt
-          grep -qi "artemisia" /tmp/artemisia-match.txt
+          kpsewhich EBGaramond-Regular.otf
+          fc-match "EB Garamond" | tee /tmp/eb-garamond-match.txt
+          grep -Eqi "EB.?Garamond|Garamond" /tmp/eb-garamond-match.txt
 
       - name: Clean XeLaTeX and Biber build
         shell: bash
@@ -154,6 +155,7 @@ jobs:
             exit 1
           fi
           awk 'NR > 2 && $(NF-4) != "yes" { bad=1 } END { exit bad }' main-fonts.txt
+          grep -Eqi "EB.?Garamond|Garamond" main-fonts.txt
           python3 - <<'PY'
           import re
           import unicodedata
@@ -176,16 +178,15 @@ jobs:
       - name: Build summary
         run: |
           {
-            echo "## E306 proper-target review build"
+            echo "## E306 EB Garamond dedication test build"
             echo
             echo "- Commit: $GITHUB_SHA"
-            echo "- Frozen manuscript source: \`3899f40fb493c2e2f2894f432cada64437a0964c\` (main.tex + references + sections)"
+            echo "- Frozen manuscript source: \`fe009a1bcd8eff3c0ef1eafaf487563fedf3ae0a\` (main.tex + references + sections)"
             echo "- Entry point: \`paper/e306-anchor-fibre-v1/manuscript/main.tex\`"
-            echo "- Command: \`make clean && make pdf\`"
             echo "- Engine: XeLaTeX"
-            echo "- Text/math typography: ETbb OpenType / NewTX"
+            echo "- Body text/math typography: ETbb OpenType / NewTX"
+            echo "- Dedication typography: EB Garamond OpenType"
             echo "- Bibliography backend/style: Biber / numeric"
-            echo "- Result: frozen-source check, Oxford-spelling guard, clean PDF build, bibliography/reference/label/missing-glyph/overfull-box gate, font-embedding gate, Unicode dedication/ORCID/Erdős extraction gate, and leaked-label gate passed"
             echo "- PDF size: $(stat -c%s main.pdf) bytes"
             echo "- Pages: $(pdfinfo main.pdf | awk '/^Pages:/ {print $2}')"
           } >> "$GITHUB_STEP_SUMMARY"
@@ -193,7 +194,7 @@ jobs:
       - name: Upload manuscript PDF
         uses: actions/upload-artifact@v4
         with:
-          name: e306-proper-target-review-pdf-${{ github.sha }}
+          name: e306-eb-garamond-dedication-test-pdf-${{ github.sha }}
           path: paper/e306-anchor-fibre-v1/manuscript/main.pdf
           if-no-files-found: error
           retention-days: 30
