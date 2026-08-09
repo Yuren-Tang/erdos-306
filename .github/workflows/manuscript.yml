@@ -24,7 +24,7 @@ jobs:
 
       - name: Verify frozen manuscript source
         run: |
-          git diff --exit-code af9e2d4ce307f75843c9720fa77c9e797fd1cbbf -- \
+          git diff --exit-code 2484a277abfd34619a05c2099cf043ad811ebbd5 -- \
             main.tex references.bib sections
 
       - name: Guard Oxford manuscript spelling
@@ -145,7 +145,7 @@ jobs:
           kpsewhich ETbb-Italic.otf
           kpsewhich ETbb-BoldItalic.otf
           kpsewhich newtxmath.sty
-          kpsewhich EBGaramond-Regular.otf
+          kpsewhich STIXTwoText-Medium.otf
 
       - name: Clean XeLaTeX and Biber build
         shell: bash
@@ -209,7 +209,7 @@ jobs:
             exit 1
           fi
           awk 'NR > 2 && $(NF-4) != "yes" { bad=1 } END { exit bad }' main-fonts.txt
-          grep -Eqi "EB.?Garamond|Garamond" main-fonts.txt
+          grep -Eqi "STIXTwoText|STIX2Text|STIXTwo" main-fonts.txt
           python3 - <<'PY'
           import re
           import unicodedata
@@ -232,14 +232,14 @@ jobs:
       - name: Build summary
         run: |
           {
-            echo "## E306 sparse-target gamma>1 candidate build"
+            echo "## E306 sparse-target gamma>1 condensed candidate build"
             echo
             echo "- Commit: $GITHUB_SHA"
-            echo "- Frozen manuscript source: \`af9e2d4ce307f75843c9720fa77c9e797fd1cbbf\` (main.tex + references + sections)"
+            echo "- Frozen manuscript source: \`2484a277abfd34619a05c2099cf043ad811ebbd5\` (main.tex + references + sections)"
             echo "- Entry point: \`paper/e306-anchor-fibre-v1/manuscript/main.tex\`"
             echo "- Engine: XeLaTeX"
             echo "- Body text/math typography: ETbb OpenType / NewTX"
-            echo "- Current dedication typography under comparison: EB Garamond OpenType"
+            echo "- Dedication typography: STIX Two Text Medium, 10.5/16 pt, LetterSpace 9"
             echo "- Equation references: ordinary LaTeX/hyperref labels with stable explicit visible tags"
             echo "- Bibliography backend/style: Biber / numeric"
             echo "- PDF size: $(stat -c%s main.pdf) bytes"
@@ -249,7 +249,7 @@ jobs:
       - name: Upload manuscript PDF
         uses: actions/upload-artifact@v4
         with:
-          name: e306-sparse-target-gamma1-candidate-pdf-${{ github.sha }}
+          name: e306-sparse-target-gamma1-condensed-pdf-${{ github.sha }}
           path: paper/e306-anchor-fibre-v1/manuscript/main.pdf
           if-no-files-found: error
           retention-days: 30
