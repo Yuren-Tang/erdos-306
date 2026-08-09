@@ -6,6 +6,7 @@ on:
       - paper/e306-anchor-fibre-v1
     paths:
       - '.github/workflows/equation-label-migration.yml'
+      - '.github/scripts/e306_equation_migrate.py'
 
 permissions:
   contents: write
@@ -18,14 +19,14 @@ jobs:
         with:
           ref: paper/e306-anchor-fibre-v1
           fetch-depth: 0
-      - name: Migrate source
+      - name: Clean semantic equation labels and dedication font declaration
         run: python3 .github/scripts/e306_equation_migrate.py
       - name: Verify diff
         run: git diff --check
-      - name: Commit migrated source
+      - name: Commit cleaned source
         run: |
           git config user.name 'Yuren-Tang'
           git config user.email '157244108+Yuren-Tang@users.noreply.github.com'
           git add paper/e306-anchor-fibre-v1/manuscript/main.tex paper/e306-anchor-fibre-v1/manuscript/sections
-          git commit -m 'Migrate equation references to semantic labels'
+          git commit -m 'Resolve semantic equation labels and EB dedication face'
           git push origin HEAD:paper/e306-anchor-fibre-v1
