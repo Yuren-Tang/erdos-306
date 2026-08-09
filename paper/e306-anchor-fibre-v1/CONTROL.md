@@ -9,138 +9,102 @@
 - **Sole article branch:** `paper/e306-anchor-fibre-v1`
 - **Base:** `main@5a6207a493067f02c67b1cfa69fa8c5498f2c005`
 - **PR state:** open / draft / unmerged
-- **Publication state:** two independent reviews have been returned on earlier fixed objects; the second review triggered a substantive but simplifying theorem-scope revision. The resulting sparse-target `gamma>1` object is author/Director-complete and clean-built, but still requires a focused independent dependency-cone review before publication disposition.
+- **arXiv-v1 state:** mathematically and editorially ready; exact source frozen and clean-built. The Owner must perform the arXiv submission/endorsement interaction if required.
+- **Journal state:** no journal submission, merge, tag, release, DOI mutation, or external contact is authorized by this file.
 
-No merge, tag, release, DOI mutation, arXiv upload, journal submission, endorsement request, or external contact is authorized by this file.
-
-## Current exact manuscript source
-
-The current fixed manuscript source is exactly
+## Exact arXiv-v1 manuscript source
 
 ```text
-8024ff325f454e1fc52c280ac65bab0c48315e96
+d21c612be5c3534b3b2b40361c4a861f40969565
 ```
 
-The branch may be ahead of this SHA only through workflow/control/review-record commits. `main.tex`, `references.bib`, and `sections/` are frozen against this source by the manuscript workflow.
+The manuscript workflow freezes `main.tex`, `references.bib`, and `sections/` against this exact source. Later branch commits may change only workflow/control/review/submission records unless a new Owner disposition explicitly reopens the manuscript.
 
-The immediately preceding blind-review object was
+The fixed object that received the latest independent no-background mathematical review was
 
 ```text
-20fd8c774397faf14208fcdce550b344a6e9b77b.
+8024ff325f454e1fc52c280ac65bab0c48315e96.
 ```
 
-That blind reader found no fatal objection in the full manuscript, specifically read the load-bearing Sections 4--8, and recommended substantive but non-foundational revision. The reader also proposed sparsifying only the target rows and observed that this might remove the apparent `gamma>2` threshold. The Director independently rechecked that suggestion against the current proof spine and the existing sparse-sensor mathematics before admitting it to the manuscript.
+The reviewer cross-read TeX/PDF/bibliography, independently rebuilt the paper, and adversarially checked the load-bearing Sections 4--6 cone. No fatal mathematical objection was found. The review is recorded and disposed in `CURRENT_OBJECT_INDEPENDENT_REVIEW_DISPOSITION_2026-08-09.md`.
 
-## Current theorem package
+The arXiv-v1 source differs from that reviewed object only by bounded editorial changes:
 
-1. **Squarefree-denominator characterization with arbitrary finite avoidance.** A reduced positive rational is a finite sum of reciprocals of pairwise distinct squarefree semiprimes if and only if its denominator is squarefree.
-2. **Direct proper-target theorem.** Fix reduced `t=a/b in (0,1)` with squarefree `b` and fixed `gamma>1` satisfying
-   ```text
-   t < (log gamma)^2/2 < 1.
-   ```
-   Put `Z=X^gamma`, use the complete prime-pair family from `[X,Z)`, and for each prime `r|b` retain only
-   ```text
-   K_* = ceil((log Z)^2)
-   ```
-   target sensors `rq` with `q` in a fixed subset `B_*` of the top block. Then the target is represented for all sufficiently large `X`.
-3. **Compact-uniform local Gaussian profile.** The Bernoulli-weighted exact coefficients of that same sparse-target family have the stated Gaussian profile on every fixed standardized target window.
-4. **Multiplicity and entropy.** With `alpha=2t/(log gamma)^2`, the mesoscopic typical-cardinality window contains at least `exp([H(alpha)-o(1)]M_X)` exact representations; the whole exact fibre and some exact cardinality inherit that lower bound. For `0<t<1/2`, the choice `gamma=exp(2 sqrt(t))` gives the full binary entropy rate `log 2` per denominator. No matching global upper bound is asserted.
+1. a short logic roadmap at the start of Section 4;
+2. explicit original-support avoidance in the common-proper-refinement remark;
+3. addition/citation of the Bloom--Elsholtz broad Egyptian-fractions survey;
+4. a tightened abstract.
+
+No theorem, quantifier, mathematical construction, displayed formula, estimate, proof range, or visible equation number was changed in these v1 microrepairs.
+
+## Theorem package
+
+1. **Squarefree-denominator characterization with arbitrary finite avoidance.** A reduced positive rational is a finite sum of reciprocals of pairwise distinct squarefree semiprimes iff its denominator is squarefree.
+2. **Direct proper-target theorem.** For reduced `t=a/b in (0,1)` with squarefree `b` and fixed `gamma>1` satisfying `t < (log gamma)^2/2 < 1`, the target-adapted sparse-sensor family represents `t` for all sufficiently large `X`.
+3. **Compact-uniform local Gaussian profile.** The Bernoulli-weighted exact coefficients of the same family have the stated Gaussian profile on every fixed standardized target window.
+4. **Multiplicity and entropy.** With `alpha=2t/(log gamma)^2`, the mesoscopic typical-cardinality window contains at least `exp([H(alpha)-o(1)]M_X)` exact representations; the total exact fibre and some exact cardinality inherit the same lower bound. For `0<t<1/2`, a distinguished `gamma` gives full binary entropy rate `log 2` per available denominator.
 5. **Prime-dilution closure.** Arbitrary positive squarefree-denominator rationals follow from finitely many pairwise disjoint proper-target representations obtained by finite avoidance.
 
-Every fixed `0<t<1` admits an exponent because
+The paper does not claim growing standardized windows, a bivariate/prescribed-cardinality local limit, a matching global exact-fibre upper bound, deletion resilience, or a full abstract AFT theorem.
 
-```text
-exp(sqrt(2t)) < gamma < exp(sqrt(2)).
-```
+## Latest independent review disposition
 
-## Why the `gamma>2` boundary disappeared
+The latest reader's central mathematical assessment is accepted: the current sparse-target `gamma>1` architecture has no identified fatal gap and is mature for arXiv v1. In particular the reader independently concentrated on the intended risk order `Section 4 > Section 5 > Section 6`.
 
-The old Article-1 family attached every top prime to every fixed coordinate `r|b`. Those full target rows had square mass `O_b(1/(Z log Z))`, which was lower order than the pair variance only for `gamma>2` in the clean five-sector proof.
+Three substantive suggestions are deferred rather than inserted immediately before v1:
 
-The current family retains only `K_*=ceil((log Z)^2)` target sensors per fixed coordinate. Then
+- `K_* = C log Z` sensors are plausible with sufficiently large fixed `C`, but the review's phrase “superpolynomially small” is literally incorrect at that scale: `exp(-c C log Z)=Z^{-cC}`. A fixed sufficiently large power should plausibly beat the finitely many polynomial losses, but that bookkeeping is a new theorem-strengthening and remains for later verification.
+- the full entropy-rate supremum for `t >= 1/2` is mathematically natural but not needed for v1;
+- joint local laws, growing windows, universal sensors, structured-prime variants, and a stronger abstract finite-Fourier theorem remain later research directions.
 
-```text
-target reciprocal load = O_b(K_*/Z) = o(1),
-target square load     = O_b(K_*/Z^2),
-```
+Manual visible equation tags are retained for v1; semantic LaTeX labels/hyperlinks are already real and machine-checked. Removing the stable visible tags is journal-stage source maintenance, not a v1 gate.
 
-which is lower order than the pair square mass for every fixed `gamma>1`.
-
-For `r|b`, every retained sensor contributes at least `1/r^2` to the row-code distance, so
-
-```text
-D_r >= K_*/r^2 >>_b (log Z)^2.
-```
-
-The corresponding off-minimizer row mass is `exp(-c_b (log Z)^2)`, still superpolynomially small after multiplication by the complete weighted anchor partition.
-
-For a coherent label `m`, target-candidate energy divided by target-row distance is `O_b(m^2/Z^2)`. Exact target-coordinate decoding is therefore required and obtained only on the Gaussian range `|m|=O(X log X)=o(Z)`. The first coherent tail uses the complete pair factors in modulus and does not require fixed-coordinate decoding; the intermediate tail uses the unchanged lower-prime decoder and retained complete-pair damping. If `M_dec` exceeds the maximal low-energy anchor-label scale, the nominal large coherent range is empty; otherwise the previous anchor damping closes it. The major-arc cubic remainder is split between pair and sparse-target factors and tends to zero for every fixed `gamma>1`.
-
-This is a simpler family, not a resurrection of the historical multi-regime `gamma<=2` architecture.
-
-## Bounded review repairs applied at the same time
-
-The second blind review also led to four local exposition repairs without changing their mathematical statements:
-
-- the fingerprint-rigidity contradiction is written quantitatively, including the explicit comparison with `4g<c_D`;
-- label classes are defined at first use;
-- Section 5 states explicitly that a fixed anchor assignment plus row tuple determines a unique CRT frequency `h mod L`, so the source character may be absorbed into the bounded row factor;
-- Section 7 now says “uniform upper bound for an atom in the window”, and the temporary lcm variable in Section 9 no longer collides with the global family-size notation.
-
-The peripheral common-proper-refinement proposition was condensed to a remark in order to keep the strengthened article at 35 pages; its mathematical observation and transportation-matrix proof idea remain visible.
-
-## Current presentation profile
-
-Retain, absent a concrete defect:
+## Presentation profile
 
 - British English with Oxford spelling;
-- `amsart`, A4, 11 pt, right equation numbers;
-- ETbb OpenType body with NewTX mathematics;
+- `amsart`, A4, 11 pt, `reqno`;
+- ETbb OpenType body, NewTX mathematics;
 - XeLaTeX;
 - numeric `biblatex`/Biber citations sorted `nyt`;
 - bibliography in `\small`;
 - no affiliation or email;
 - compact linked ORCID;
-- exact dedication text
+- exact dedication:
   ```text
   ΤΟΙΣ ΕΜΕ ΦΙΛΟΥΣΙΝ
   ΚΑΙ ΟΙΣ ΦΙΛΩ
   ```
-- dedication-only **STIX Two Text Medium**, upright, 10.5 pt on 16 pt, `LetterSpace=9`, 8 pt above and 12 pt below;
+- dedication-only STIX Two Text Medium, upright, 10.5/16 pt, `LetterSpace=9`, 8 pt above and 12 pt below;
 - concise generative-AI disclosure.
 
-The dedication typography was selected after equal-context comparison of EB Garamond Medium, GFS Didot Classic, GFS Bodoni, Old Standard, Libertinus Serif Display, STIX Two Text, and other available TeX Live candidates. The point of the final setting is not boldness: a true medium weight plus open tracking gives the uppercase Greek a restrained inscriptional presence while remaining compatible with the ETbb title page. Bold/fake-bold and manual pair kerning are not used.
+`ΟΙΣ` is deliberate under classical relative attraction. The current STIX Medium setting is retained for v1. A future Gentium Book Medium comparison is a permissible typography-only experiment, not a publication blocker.
 
-The Greek `ΟΙΣ` remains deliberate. Classical relative attraction permits the relative to be attracted into the case of an omitted dative antecedent; the intended reading is `ΚΑΙ [ΤΟΙΣ] ΟΙΣ ΦΙΛΩ`. Do not alter the wording without a new philological disposition.
+## Equation-reference surface
 
-## Equation-reference policy
-
-The visible equation numbers remain the stable explicit `\tag{section.number}` values. Source references use ordinary LaTeX/hyperref navigation:
-
-- 190 tagged displays;
+- 190 explicit visible equation tags;
 - 190 unique equation labels, one per tagged display;
 - 94 equation references;
-- descriptive labels `eq:unit-character` and `eq:moving-profile` retained;
-- `eq:section.number` fallback labels elsewhere;
-- no global `\eqref` override and no bare numeric `\eqref{n.m}` calls.
+- ordinary LaTeX/hyperref navigation;
+- no global `\eqref` override;
+- no bare numeric `\eqref{n.m}` calls.
 
-The workflow hard-fails on duplicate tags/labels, missing targets, multiple labels on one tagged display, legacy numeric references, or leaked internal labels.
+The workflow rejects duplicate tags/labels, missing targets, multiple labels on one tagged display, legacy numeric references, and leaked internal labels.
 
-## Clean-build checkpoint
+## Clean arXiv-v1 build
 
 GitHub Actions run
 
 ```text
-31320182037
+31326307200
 ```
 
-(run number 204) on execution head
+(run number 213) on execution head
 
 ```text
-f0fc3c441b6d614f26270e4fedcc2ae2b10cbd19
+802df0a52461948bf6613156ca7cd899f27a0d8d
 ```
 
-clean-built exact manuscript source `8024ff32...` and passed all configured gates:
+clean-built exact manuscript source `d21c612...` and passed all configured gates:
 
 - exact source freeze;
 - Oxford-spelling guard;
@@ -152,50 +116,40 @@ clean-built exact manuscript source `8024ff32...` and passed all configured gate
 - no overfull hbox;
 - Biber warning/error gate;
 - all fonts embedded and no Type 3;
-- STIX Two Text Medium present and embedded for the dedication;
+- STIX Two Text Medium present and embedded;
 - exact Unicode extraction of both Greek dedication lines, ORCID, and `Erdős`;
 - internal-label leak gate;
-- **35-page A4 PDF** artifact `9039950866`.
+- PDF artifact `9041654586`.
 
 Artifact digest:
 
 ```text
-sha256:a4bef64c3d9a8ace29a11191f9d843308ab55cce165713f0fee4f92489936b15
+sha256:1e6061a01b4e25eba8a5f7fe57c7e7cf6279a768a0eea5d586e5e8f59bed35b6
 ```
 
-Build correctness and typography are execution evidence, not theorem assurance.
+The rendered PDF is **36 A4 pages**. Page 36 contains only the final three bibliography entries. We deliberately do not compress mathematical prose or bibliography typography merely to restore the former 35-page profile; any venue-specific one-page compression is deferred to a journal version if needed.
 
-## Review history and current assurance boundary
+## arXiv-v1 submission profile
 
-- The first independent reader reviewed `654189fe...`, found no fatal defect, and advised bounded revision.
-- A later blind reader reviewed `20fd8c77...`, again found no fatal objection and recommended substantive but non-foundational revision; that review generated the sparse-target idea.
-- The current source `8024ff32...` has **not** been independently passed. The `gamma>1` theorem is currently author/Director-complete plus clean-build verified.
+- **Primary category:** `math.NT`.
+- Upload TeX source, not only the locally generated PDF.
+- Preserve the `sections/` directory because the manuscript uses relative `\input{sections/...}` paths.
+- Include `main.tex`, `references.bib`, and the required `sections/*.tex` files; do not include build products or project-control files.
+- Do **not** upload font binaries: all required ETbb and STIX Two files are available in arXiv's TeX Live environment and are referenced by filename.
+- Use XeLaTeX with Biber/biblatex processing.
+- Inspect the PDF generated by arXiv before completing submission.
+- If arXiv requests endorsement for this account/category, follow the endorsement workflow; endorsement is a category/community gate, not peer review.
 
-The correct assurance state is therefore
+## Current assurance state
 
 ```text
-[TWO INDEPENDENT REVIEWS OF EARLIER FIXED OBJECTS: NO FATAL OBJECTION]
-[SPARSE-TARGET GAMMA>1 REVISION: AUTHOR/DIRECTOR-COMPLETE]
-[CLEAN CURRENT-SOURCE BUILD PASS — ACTION 31320182037]
-[35-PAGE CURRENT PDF]
-[FOCUSED INDEPENDENT DEPENDENCY-CONE REVIEW REQUIRED]
+[CURRENT SPARSE-TARGET OBJECT INDEPENDENTLY HOSTILE-REVIEWED: NO FATAL OBJECTION]
+[FOCUSED GAMMA>1 DEPENDENCY-CONE REVIEW CLOSED]
+[ARXIV-V1 SOURCE d21c612be5c3534b3b2b40361c4a861f40969565]
+[CLEAN BUILD PASS — ACTION 31326307200 / RUN 213]
+[36-PAGE A4 ARXIV-V1 CANDIDATE]
+[DEDICATION: STIX TWO TEXT MEDIUM / LETTERSPACE 9]
+[ARXIV V1 READY]
 [PR #9 OPEN / DRAFT / UNMERGED]
-[NO PUBLICATION SUBMISSION AUTHORIZED]
+[NO JOURNAL SUBMISSION OR MERGE AUTHORIZED]
 ```
-
-## Next gate
-
-The next reviewer need not re-audit every unchanged line of the 35-page paper. The focused review should compare the mathematical object reviewed at `20fd8c77...` with current source `8024ff32...` and independently check the reopened dependency cone:
-
-1. sparse target-row reciprocal and square loads;
-2. sparse fixed-coordinate row distance and the weighted off-minimizer sum after the `P_top` factor;
-3. target-coordinate decoder only on the major range and why `gamma>1` is enough there;
-4. the separate sparse-target cubic Taylor remainder;
-5. pair-only damping for the first coherent tail without fixed-coordinate decoding;
-6. unchanged lower-prime decoder and retained damping for `gamma>1`;
-7. the ordering-free treatment of `M_dec` versus the anchor-label ceiling;
-8. moving-target and no-wrap transport;
-9. the entropy-saturation corollary;
-10. statement/proof agreement and absence of a hidden surviving `gamma>2` hypothesis.
-
-The repaired fingerprint/CRT bookkeeping should also be checked for exposition fidelity, but it does not reopen the underlying theorem architecture unless the reviewer finds a substantive error.
