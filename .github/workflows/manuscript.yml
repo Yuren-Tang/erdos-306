@@ -24,7 +24,7 @@ jobs:
 
       - name: Verify frozen manuscript source
         run: |
-          git diff --exit-code 8024ff325f454e1fc52c280ac65bab0c48315e96 -- \
+          git diff --exit-code d86dd9331fb5ebe82820fbb002dd03669b763d47 -- \
             main.tex references.bib sections
 
       - name: Guard Oxford manuscript spelling
@@ -203,10 +203,10 @@ jobs:
       - name: Build summary
         run: |
           {
-            echo "## E306 sparse-target gamma>1 final-candidate build"
+            echo "## E306 arXiv-v1 candidate build"
             echo
             echo "- Commit: $GITHUB_SHA"
-            echo "- Frozen manuscript source: \`8024ff325f454e1fc52c280ac65bab0c48315e96\` (main.tex + references + sections)"
+            echo "- Frozen manuscript source: \`d86dd9331fb5ebe82820fbb002dd03669b763d47\` (main.tex + references + sections)"
             echo "- Entry point: \`paper/e306-anchor-fibre-v1/manuscript/main.tex\`"
             echo "- Engine: XeLaTeX"
             echo "- Body text/math typography: ETbb OpenType / NewTX"
@@ -220,7 +220,7 @@ jobs:
       - name: Upload manuscript PDF
         uses: actions/upload-artifact@v4
         with:
-          name: e306-sparse-target-gamma1-final-candidate-pdf-${{ github.sha }}
+          name: e306-arxiv-v1-candidate-pdf-${{ github.sha }}
           path: paper/e306-anchor-fibre-v1/manuscript/main.pdf
           if-no-files-found: error
           retention-days: 30
