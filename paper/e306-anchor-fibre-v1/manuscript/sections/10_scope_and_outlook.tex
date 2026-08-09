@@ -20,6 +20,26 @@ The threshold in $X$ may depend on $U$. We do not obtain a growing standardized 
 
 Likewise, Theorem \ref{thm:multiplicity} gives the ambient entropy exponent in a mesoscopic cardinality window and at least one exact cardinality. It does not give a prescribed-cardinality asymptotic, a conditional central limit theorem on the natural $\sqrt{M_X}$ scale, or a bivariate local limit for reciprocal sum and cardinality. The global lower bound in that theorem is inherited from the window; no matching upper bound for the total exact fibre is asserted.
 
+There is nevertheless a simple first-order indication that the reciprocal sum and the raw cardinality become asymptotically decorrelated. If
+\[
+K_X=\sum_{e\in\mathcal E_X}\xi_e,
+\]
+then
+\[
+\operatorname{Cov}(S_X,K_X)
+=\theta_X(1-\theta_X)\Lambda_X\asymp1,
+\]
+whereas $\sigma_X\asymp(X\log X)^{-1}$ and
+$\sqrt{\operatorname{Var}K_X}\asymp Z/\log Z$. Hence
+\[
+\operatorname{Corr}(S_X,K_X)
+\asymp
+\frac{X\log X\,\log Z}{Z}
+\asymp X^{1-\gamma}(\log X)^2
+\longrightarrow0.
+\]
+This calculation is only motivation for a possible joint local law or conditional cardinality theorem; it is not a substitute for either one.
+
 \subsection{Finite avoidance is not deletion resilience}
 
 Finite avoidance allows the family to be chosen after a fixed finite forbidden set is named. It does not assert robustness of one already constructed family under a small adversarial deletion.
@@ -48,7 +68,7 @@ The proof separates into four ingredients which are more general than the partic
 \item weighted row compression which sums off-minimizer states without paying the raw fibre cardinality;
 \item retained factors which suppress coherent labels after the decoder has done its work.
 \end{enumerate}
-Together with a positive Gaussian major term and a no-wrap condition, these ingredients form a reusable finite-Fourier pattern. The semiprime construction supplies one concrete arithmetic realization. What varies between applications is not principally the abstract Fourier identity, but the arithmetic provider that makes the target physically observable in the CRT coordinates.
+Together with a positive Gaussian major term and a no-wrap condition, these ingredients form a reusable finite-Fourier pattern. The semiprime construction supplies one concrete arithmetic realization. What varies between applications is not principally the abstract Fourier identity, but the arithmetic provider that makes the target detectable in the CRT coordinates.
 
 Two directions arise directly from the present boundaries. First, one may ask how much of the characterization and local coefficient geometry survives when the allowed prime factors are restricted to structured positive-density sets. Second, one may seek finer statistics inside the exact fibre: growing standardized target windows, local asymptotics at prescribed cardinalities, or joint local laws for reciprocal sum and cardinality. Each requires arithmetic or probabilistic input beyond what is used here.
 

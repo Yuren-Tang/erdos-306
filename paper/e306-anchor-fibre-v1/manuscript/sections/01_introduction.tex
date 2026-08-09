@@ -18,6 +18,8 @@ Let $q=a/b>0$ be in lowest terms. Then $q$ is a finite sum of reciprocals of pai
 
 The necessity is immediate: the least common multiple of finitely many squarefree integers is squarefree, and the reduced denominator of their reciprocal sum divides that least common multiple. The content is the converse, including the finite-avoidance statement.
 
+An earlier machine-checked proof of the headline existence statement is available separately \cite{TangFormal2026}. It is a different proof: the present article is self-contained and develops an analytic route whose additional content is the local coefficient geometry described below.
+
 The analytic theorem behind the converse is stronger than the unit target suggested by the original problem. Fix a reduced proper rational
 \[
 t=\frac ab\in(0,1)
@@ -29,11 +31,11 @@ t<\lambda_\gamma:=\frac{(\log\gamma)^2}{2}<1.
 \]
 Such a $\gamma$ exists for every $0<t<1$. Put
 \[
-Z=X^\gamma,
-\qquad
-\mathcal P_X=\{p\text{ prime}:X\le p<Z\},
-\qquad
-\mathcal B_X=\{q\text{ prime}:Z/2\le q<Z\}.
+\begin{aligned}
+Z&=X^\gamma,\\
+\mathcal P_X&=\{p\text{ prime}:X\le p<Z\},\\
+\mathcal B_X&=\{q\text{ prime}:Z/2\le q<Z\}.
+\end{aligned}
 \tag{1.2}
 \]
 If $S_b$ is the set of prime divisors of $b$, define
@@ -200,6 +202,8 @@ The top block $\mathcal B_X$ acts as an \emph{anchor}. Denominators $qq'$ with $
 
 Once the anchor label $m$ is known, the factors $rq$ with $q\in\mathcal B_X$ observe each remaining CRT coordinate against the common anchor. A multiplicity-sensitive inverse-residue estimate gives a quantitative distance between different row states, so in the local-limit range the unique least-energy state is exactly $m$ modulo the row prime. Factors not used for decoding are retained and later suppress coherent labels outside the Gaussian range.
 
+The target rows illustrate a useful separation of roles. Their reciprocal mass and, for fixed $\gamma>2$, their square mass are asymptotically negligible, so they do not alter the limiting mean or leading variance; nevertheless, because $b$ is fixed, they give strong residue separation at the coordinates dividing $b$. A vanishing-mass correction can therefore restore arithmetic observability without changing the limiting Gaussian law.
+
 The Fourier sum therefore has three conceptual pieces:
 \begin{enumerate}[label=\textup{(\roman*)}]
 \item a Gaussian core of genuine integer frequencies $|m|=O(\sigma_X^{-1})$;
@@ -223,8 +227,6 @@ The analytic argument therefore gives every proper squarefree-denominator target
 \subsection{Related restricted-denominator work}
 
 The present problem belongs to a wider literature on Egyptian fractions with restricted prime support. For explicit short representations of $1$ by semiprime denominators, see Watanabe \cite{Watanabe2020}. Different restrictions, in which all prime factors are drawn from a fixed finite set, are studied by Czenky, McGovern, Plavnik, Rowell and Watkins \cite{CzenkyEtAl2025}. These directions are complementary to the expanding squarefree-semiprime family used here.
-
-An earlier machine-checked proof of the headline existence statement is available separately \cite{TangFormal2026}. It is not a formalization of the present proof; this article is self-contained and does not use it.
 
 \subsection{Organization}
 
