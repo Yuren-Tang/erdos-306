@@ -1,1 +1,0 @@
-Temporary comparison marker for the Owner-authorized EB Garamond dedication test. This file is not part of the manuscript and will be removed before the next independent-review freeze.
