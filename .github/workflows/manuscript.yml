@@ -24,7 +24,7 @@ jobs:
 
       - name: Verify frozen manuscript source
         run: |
-          git diff --exit-code 7f69c3dfe8f7e3a4218434cfc9fada4cd28fffa7 -- \
+          git diff --exit-code 20fd8c774397faf14208fcdce550b344a6e9b77b -- \
             main.tex references.bib sections
 
       - name: Guard Oxford manuscript spelling
@@ -70,23 +70,27 @@ jobs:
           files = [Path("main.tex"), *sorted(Path("sections").glob("*.tex"))]
           corpus = "\n".join(p.read_text(encoding="utf-8") for p in files)
           tags = re.findall(r"\\tag\{(\d+\.\d+)\}", corpus)
-          labels = re.findall(r"\\label\{eq:(\d+\.\d+)\}", corpus)
-          refs = re.findall(r"\\eqref\{eq:(\d+\.\d+)\}", corpus)
+          labels = re.findall(r"\\label\{(eq:[^}]+)\}", corpus)
+          refs = re.findall(r"\\eqref\{(eq:[^}]+)\}", corpus)
           legacy = re.findall(r"\\eqref\{(\d+\.\d+)\}", corpus)
           if legacy:
               raise SystemExit("Legacy numeric eqref keys remain: " + repr(sorted(set(legacy))))
           if len(tags) != len(set(tags)):
               raise SystemExit("Duplicate explicit equation tags")
           if len(labels) != len(set(labels)):
-              raise SystemExit("Duplicate semantic equation labels")
-          if set(tags) != set(labels):
-              raise SystemExit("Equation tag/label sets differ")
+              raise SystemExit("Duplicate equation labels")
+          if len(tags) != len(labels):
+              raise SystemExit(
+                  f"Expected one equation label per tagged display; tags={len(tags)}, labels={len(labels)}"
+              )
           missing = sorted(set(refs) - set(labels))
           if missing:
               raise SystemExit("Equation references without targets: " + repr(missing))
           if "RenewDocumentCommand{\\eqref}" in corpus:
               raise SystemExit("Global eqref override remains")
-          print(f"Equation surface: {len(tags)} tags/labels; {len(refs)} semantic references.")
+          if re.search(r"\\tag\{\d+\.\d+\}(?:\\label\{eq:[^}]+\}){2,}", corpus):
+              raise SystemExit("A tagged display carries multiple equation labels")
+          print(f"Equation surface: {len(tags)} tagged displays; {len(labels)} unique labels; {len(refs)} references.")
           PY
 
       - name: Install TeX toolchain
@@ -147,8 +151,8 @@ jobs:
             echo "::error::unresolved or duplicate references remain"
             exit 1
           fi
-          if grep -E "There were undefined references|undefined citations|multiply-defined labels" main.log; then
-            echo "::error::unresolved or duplicate references remain"
+          if grep -E "There were undefined references|undefined citations|multiply-defined labels|Multiple \\label" main.log; then
+            echo "::error::unresolved, duplicate, or multiple equation labels remain"
             exit 1
           fi
           if grep -q "Missing character:" main.log; then
@@ -200,12 +204,12 @@ jobs:
             echo "## E306 second-review candidate build"
             echo
             echo "- Commit: $GITHUB_SHA"
-            echo "- Frozen manuscript source: \`7f69c3dfe8f7e3a4218434cfc9fada4cd28fffa7\` (main.tex + references + sections)"
+            echo "- Frozen manuscript source: \`20fd8c774397faf14208fcdce550b344a6e9b77b\` (main.tex + references + sections)"
             echo "- Entry point: \`paper/e306-anchor-fibre-v1/manuscript/main.tex\`"
             echo "- Engine: XeLaTeX"
             echo "- Body text/math typography: ETbb OpenType / NewTX"
             echo "- Dedication typography: EB Garamond OpenType"
-            echo "- Equation references: semantic LaTeX labels with stable explicit visible tags"
+            echo "- Equation references: ordinary LaTeX/hyperref labels with stable explicit visible tags"
             echo "- Bibliography backend/style: Biber / numeric"
             echo "- PDF size: $(stat -c%s main.pdf) bytes"
             echo "- Pages: $(pdfinfo main.pdf | awk '/^Pages:/ {print $2}')"
