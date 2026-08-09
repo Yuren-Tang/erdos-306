@@ -7,14 +7,14 @@ M=|\mathcal E|,
 \mathcal R_X(t)=
 \left\{A\subseteq\mathcal E:
 \sum_{e\in A}\frac1e=t\right\}.
-\tag{7.1}
+\tag{7.1}\label{eq:7.1}
 \]
-By Lemma \ref{lem:family-size} and \eqref{2.19},
+By Lemma \ref{lem:family-size} and \eqref{eq:2.19},
 \[
 \log L=o(M),
 \qquad
 |\log\sigma|=o(M).
-\tag{7.2}
+\tag{7.2}\label{eq:7.2}
 \]
 
 \subsection{The typical-cardinality window}
@@ -27,12 +27,12 @@ be the number of selected denominators under the ambient Bernoulli law, and set
 \[
 w=
 \left\lceil2\sqrt{M\log L}\right\rceil.
-\tag{7.3}
+\tag{7.3}\label{eq:7.3}
 \]
 Since $\log L=o(M)$,
 \[
 \sqrt M\ll w=o(M).
-\tag{7.4}
+\tag{7.4}\label{eq:7.4}
 \]
 Hoeffding's inequality \cite{Hoeffding1963} gives
 \[
@@ -41,12 +41,12 @@ Hoeffding's inequality \cite{Hoeffding1963} gives
 2\exp\left(-\frac{2w^2}{M}\right)
 \le
 2L^{-8}.
-\tag{7.5}
+\tag{7.5}\label{eq:7.5}
 \]
-The local limit \eqref{6.28} implies
+The local limit \eqref{eq:6.28} implies
 \[
 2L^{-8}=o(P),
-\tag{7.6}
+\tag{7.6}\label{eq:7.6}
 \]
 where $P=W_X(t)$ is the exact-target Bernoulli mass. Consequently the exact target mass in the window satisfies
 \[
@@ -54,7 +54,7 @@ where $P=W_X(t)$ is the exact-target Bernoulli mass. Consequently the exact targ
 ||A|-\theta M|\le w}}
 \theta^{|A|}(1-\theta)^{M-|A|}
 =(1-o(1))P.
-\tag{7.7}
+\tag{7.7}\label{eq:7.7}
 \]
 
 If $|k-\theta M|\le w$, write $k=\theta M+\delta$. Then
@@ -63,7 +63,7 @@ If $|k-\theta M|\le w$, write $k=\theta M+\delta$. Then
 =
 -MH(\theta)
 +\delta\log\frac{\theta}{1-\theta},
-\tag{7.8}
+\tag{7.8}\label{eq:7.8}
 \]
 where
 \[
@@ -74,9 +74,9 @@ Since $\theta$ remains in a compact subinterval of $(0,1)$,
 \theta^k(1-\theta)^{M-k}
 \le
 \exp\bigl(-MH(\theta)+O(w)\bigr)
-\tag{7.9}
+\tag{7.9}\label{eq:7.9}
 \]
-uniformly in the window. Dividing \eqref{7.7} by this maximum atom and using
+uniformly in the window. Dividing \eqref{eq:7.7} by this maximum atom and using
 \[
 \log P=-\log L-\log\sigma+O(1)=o(M),
 \qquad
@@ -90,45 +90,45 @@ gives
 \bigl||A|-\theta M\bigr|\le w\right\}
 \ge
 \exp\bigl([H(\alpha)-o(1)]M\bigr),
-\tag{7.10}
+\tag{7.10}\label{eq:7.10}
 \]
 where
 \[
 \alpha=\frac{2t}{(\log\gamma)^2}.
-\tag{7.11}
+\tag{7.11}\label{eq:7.11}
 \]
 In particular,
 \[
 \log|\mathcal R_X(t)|
 \ge
 [H(\alpha)-o(1)]M.
-\tag{7.12}
+\tag{7.12}\label{eq:7.12}
 \]
 This is stronger than the preliminary bound obtained by dividing $P$ by the largest Bernoulli atom, so no separate weaker multiplicity estimate is retained.
 
-The exponent in \eqref{7.10} is optimal at the ambient exponential scale inside the same cardinality window: the standard entropy estimate for binomial coefficients gives
+The exponent in \eqref{eq:7.10} is optimal at the ambient exponential scale inside the same cardinality window: the standard entropy estimate for binomial coefficients gives
 \[
 \#\left\{A\subseteq\mathcal E:
 \bigl||A|-\theta M\bigr|\le w\right\}
 \le
 \exp\bigl([H(\alpha)+o(1)]M\bigr).
-\tag{7.13}
+\tag{7.13}\label{eq:7.13}
 \]
 Thus imposing the exact reciprocal-sum constraint costs only a subexponential factor within this mesoscopic window. We do not claim a matching upper bound for the total exact fibre outside the window.
 
 \subsection{One exact cardinality}
 
-The interval $|k-\theta M|\le w$ contains at most $2w+1=\exp(o(M))$ integers. By pigeonhole applied to \eqref{7.10}, there is an integer
+The interval $|k-\theta M|\le w$ contains at most $2w+1=\exp(o(M))$ integers. By pigeonhole applied to \eqref{eq:7.10}, there is an integer
 \[
 k_X=\theta M+O(w)
-\tag{7.14}
+\tag{7.14}\label{eq:7.14}
 \]
 such that
 \[
 \#\{A\in\mathcal R_X(t):|A|=k_X\}
 \ge
 \exp\bigl([H(\alpha)-o(1)]M\bigr).
-\tag{7.15}
+\tag{7.15}\label{eq:7.15}
 \]
 This completes Theorem \ref{thm:multiplicity}.
 

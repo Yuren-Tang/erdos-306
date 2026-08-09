@@ -1,21 +1,21 @@
 \section{Local Gaussian analysis}\label{sec:gaussian}
 
-Recall from \eqref{3.3} that
+Recall from \eqref{eq:3.3} that
 \[
 L P^{\mathrm{quot}}=\sum_{h\bmod L}F(h).
-\tag{6.1}
+\tag{6.1}\label{eq:6.1}
 \]
 We now evaluate this coefficient on its natural scale $1/\sigma$.
 
 Fix $C\ge1$. The limit $X\to\infty$ will be taken with $C$ fixed, and only afterwards will $C\to\infty$. Put
 \[
 N=\left\lfloor\frac{C}{\sigma}\right\rfloor.
-\tag{6.2}
+\tag{6.2}\label{eq:6.2}
 \]
 Since $\sigma^{-1}\asymp_{t,\gamma}X\log X$, for fixed $C$ and large $X$,
 \[
 N<X^2/4<M_{\mathrm{dec}}.
-\tag{6.3}
+\tag{6.3}\label{eq:6.3}
 \]
 For orientation, the scales that separate the regimes below satisfy
 \[
@@ -25,7 +25,7 @@ For orientation, the scales that separate the regimes below satisfy
 \ll \frac{Z^{3/2}}{\sqrt{\log Z}}
 \ll Z^2,
 \]
-where the penultimate scale is the maximal size supplied by low-energy anchor rigidity in \eqref{4.40}.
+where the penultimate scale is the maximal size supplied by low-energy anchor rigidity in \eqref{eq:4.40}.
 
 By Section \ref{sec:anchor}, every top assignment is either noncoherent, with anchor energy at least $F_{\mathcal B}$, or coherent with a unique exact integer label $m$. For a coherent assignment, exactly one of the ranges
 \[
@@ -35,7 +35,7 @@ By Section \ref{sec:anchor}, every top assignment is either noncoherent, with an
 \mathrm{III}.& X^2/4<|m|\le M_{\mathrm{dec}},\\
 \mathrm{IV}.& |m|>M_{\mathrm{dec}}
 \end{array}
-\tag{6.4}
+\tag{6.4}\label{eq:6.4}
 \]
 holds. Lemma \ref{lem:weighted-skeleton} separates, within every anchor fibre, the distinguished row-minimizer state from all other row states. This partitions the full Fourier sum into a Gaussian core, three coherent tails, and the noncoherent/off-minimizer remainder.
 
@@ -48,19 +48,19 @@ For $|m|\le N$, Propositions \ref{prop:lower-decoder} and \ref{prop:target-decod
 2\pi i\theta z
 -2\pi^2\theta(1-\theta)z^2
 +R_\theta(z),
-\tag{6.5}
+\tag{6.5}\label{eq:6.5}
 \]
 with
 \[
 |R_\theta(z)|\le M_0|z|^3.
-\tag{6.6}
+\tag{6.6}\label{eq:6.6}
 \]
 Because $\gamma>2$, every denominator in $\mathcal E$ is at least $X^2$ for large $X$. Uniformly for $|m|\le C/\sigma$,
 \[
 \max_{e\in\mathcal E}\frac{|m|}{e}
 \ll_C\frac{\log X}{X}
 \longrightarrow0.
-\tag{6.7}
+\tag{6.7}\label{eq:6.7}
 \]
 Moreover
 \[
@@ -73,15 +73,15 @@ Moreover
 \ll
 C^3\frac{\log X}{X}
 \longrightarrow0.
-\tag{6.8}
+\tag{6.8}\label{eq:6.8}
 \]
-Thus the aggregate cubic remainder in \eqref{6.5} is $o_C(1)$ uniformly throughout the major range.
+Thus the aggregate cubic remainder in \eqref{eq:6.5} is $o_C(1)$ uniformly throughout the major range.
 
-The linear term cancels exactly by \eqref{2.12}:
+The linear term cancels exactly by \eqref{eq:2.12}:
 \[
 2\pi i m\theta\sum_{e\in\mathcal E}\frac1e
 -2\pi i mt=0.
-\tag{6.9}
+\tag{6.9}\label{eq:6.9}
 \]
 The quadratic term is $-2\pi^2m^2\sigma^2$. Therefore
 \[
@@ -91,7 +91,7 @@ F(m)
 \qquad
 \max_{|m|\le N}|\varepsilon_{X,m}|
 \longrightarrow0
-\tag{6.10}
+\tag{6.10}\label{eq:6.10}
 \]
 for every fixed $C$.
 
@@ -102,12 +102,12 @@ For every fixed $C>0$,
 \sum_{|m|\le C/\sigma}F(m)
 \longrightarrow
 \int_{-C}^{C}e^{-2\pi^2u^2}\,du.
-\tag{6.11}
+\tag{6.11}\label{eq:6.11}
 \]
 \end{proposition}
 
 \begin{proof}
-Put $u_m=m\sigma$. The mesh is $\sigma\to0$, and \eqref{6.10} is uniform on $[-C,C]$. Thus the left side is a Riemann sum for the integral in \eqref{6.11}.
+Put $u_m=m\sigma$. The mesh is $\sigma\to0$, and \eqref{eq:6.10} is uniform on $[-C,C]$. Thus the left side is a Riemann sum for the integral in \eqref{eq:6.11}.
 \end{proof}
 
 The Gaussian core is therefore of order $1/\sigma$. We compare every remaining contribution with this same scale.
@@ -117,7 +117,7 @@ The Gaussian core is therefore of order $1/\sigma$. We compare every remaining c
 For
 \[
 N<|m|\le X^2/4,
-\tag{6.12}
+\tag{6.12}\label{eq:6.12}
 \]
 the distinguished state is still the genuine integer frequency $m$. Since every denominator is at least $X^2$,
 \[
@@ -126,14 +126,14 @@ the distinguished state is still the genuine integer frequency $m$. Since every 
 so $\|m/e\|=|m|/e$. Lemma \ref{lem:bernoulli-modulus} gives
 \[
 |F(m)|\le e^{-cm^2\sigma^2}.
-\tag{6.13}
+\tag{6.13}\label{eq:6.13}
 \]
 A Gaussian integral comparison yields
 \[
 \sum_{|m|>C/\sigma}e^{-cm^2\sigma^2}
 \le
 K\sigma^{-1}e^{-cC^2/2}.
-\tag{6.14}
+\tag{6.14}\label{eq:6.14}
 \]
 Hence
 \[
@@ -142,7 +142,7 @@ Hence
 \sum_{N<|m|\le X^2/4}|F(m)|
 \le
 Ke^{-cC^2/2}.
-\tag{6.15}
+\tag{6.15}\label{eq:6.15}
 \]
 This is the only complementary range whose normalized bound need not tend to zero at fixed $C$; it disappears when $C\to\infty$.
 
@@ -151,22 +151,22 @@ This is the only complementary range whose normalized bound need not tend to zer
 Suppose
 \[
 X^2/4<|m|\le M_{\mathrm{dec}}.
-\tag{6.16}
+\tag{6.16}\label{eq:6.16}
 \]
-All prime coordinates still decode to $m$. By \eqref{5.25},
+All prime coordinates still decode to $m$. By \eqref{eq:5.25},
 \[
 |F(h_m)|
 \le
 \exp\!\left(-c\frac{|m|}{(\log|m|)^2}\right).
-\tag{6.17}
+\tag{6.17}\label{eq:6.17}
 \]
-Throughout \eqref{6.16}, $\log|m|\asymp\log X$. There are at most $2M_{\mathrm{dec}}+1=O(XZ)$ labels, so
+Throughout \eqref{eq:6.16}, $\log|m|\asymp\log X$. There are at most $2M_{\mathrm{dec}}+1=O(XZ)$ labels, so
 \[
 \sum_{X^2/4<|m|\le M_{\mathrm{dec}}}|F(h_m)|
 \ll
 XZ\exp\!\left(-c\frac{X^2}{\log^2X}\right)
 =o(\sigma^{-1}).
-\tag{6.18}
+\tag{6.18}\label{eq:6.18}
 \]
 Here and below fixed powers of $X$ are harmless because $\gamma$ is fixed.
 
@@ -184,48 +184,48 @@ while every row and residual factor has modulus at most one. Therefore
 \ll
 \sigma_{\mathcal B,0}^{-1}
 \exp\!\left(-cM_{\mathrm{dec}}^2\sigma_{\mathcal B,0}^2\right).
-\tag{6.19}
+\tag{6.19}\label{eq:6.19}
 \]
-From \eqref{4.38} and \eqref{5.17},
+From \eqref{eq:4.38} and \eqref{eq:5.17},
 \[
 M_{\mathrm{dec}}^2\sigma_{\mathcal B,0}^2
 \gg
 \frac{X^2}{\log^6Z},
-\tag{6.20}
+\tag{6.20}\label{eq:6.20}
 \]
 while $\sigma_{\mathcal B,0}^{-1}=O(Z\log Z)$. Hence
 \[
 \sum_{|m|>M_{\mathrm{dec}}}|F(h_m^*)|
 =o(\sigma^{-1}).
-\tag{6.21}
+\tag{6.21}\label{eq:6.21}
 \]
 
 \subsection{Incoherent anchors and off-minimizer row states}
 
-By \eqref{4.44}, the total anchor modulus of noncoherent assignments is
+By \eqref{eq:4.44}, the total anchor modulus of noncoherent assignments is
 \[
 O(e^{-cF_{\mathcal B}}).
-\tag{6.22}
+\tag{6.22}\label{eq:6.22}
 \]
-This controls the distinguished row-minimizer contribution above every noncoherent anchor assignment, since all remaining factors have modulus at most one. Independently, \eqref{5.14} controls the sum of all off-minimizer row states over \emph{every} anchor assignment, coherent or not:
+This controls the distinguished row-minimizer contribution above every noncoherent anchor assignment, since all remaining factors have modulus at most one. Independently, \eqref{eq:5.14} controls the sum of all off-minimizer row states over \emph{every} anchor assignment, coherent or not:
 \[
 O\!\left(
 Z\log Z\cdot
 Z^2e^{-cZ/\log^3Z}
 \right).
-\tag{6.23}
+\tag{6.23}\label{eq:6.23}
 \]
-Thus no row fibre is omitted from the assembly: noncoherent distinguished states are covered by \eqref{6.22}, and all off-minimizer states are covered once and for all by \eqref{6.23}. Both quantities are $o(\sigma^{-1})$, because $\sigma^{-1}\asymp X\log X$ while $Z=X^\gamma$ with fixed $\gamma>2$.
+Thus no row fibre is omitted from the assembly: noncoherent distinguished states are covered by \eqref{eq:6.22}, and all off-minimizer states are covered once and for all by \eqref{eq:6.23}. Both quantities are $o(\sigma^{-1})$, because $\sigma^{-1}\asymp X\log X$ while $Z=X^\gamma$ with fixed $\gamma>2$.
 
 \subsection{Assembly and the local limit}
 
-Let $\mathfrak R_{X,C}$ be the full Fourier contribution outside the genuine integer range $|m|\le C/\sigma$. Equations \eqref{6.15}, \eqref{6.18}, \eqref{6.21}, \eqref{6.22}, and \eqref{6.23} give
+Let $\mathfrak R_{X,C}$ be the full Fourier contribution outside the genuine integer range $|m|\le C/\sigma$. Equations \eqref{eq:6.15}, \eqref{eq:6.18}, \eqref{eq:6.21}, \eqref{eq:6.22}, and \eqref{eq:6.23} give
 \[
 \limsup_{X\to\infty}
 \sigma|\mathfrak R_{X,C}|
 \le
 Ke^{-cC^2/2}.
-\tag{6.24}
+\tag{6.24}\label{eq:6.24}
 \]
 Combining this with Proposition \ref{prop:normalized-major},
 \[
@@ -237,28 +237,28 @@ Combining this with Proposition \ref{prop:normalized-major},
 \right|
 \le
 Ke^{-cC^2/2}.
-\tag{6.25}
+\tag{6.25}\label{eq:6.25}
 \]
 Now let $C\to\infty$. Since
 \[
 \int_{\R}e^{-2\pi^2u^2}\,du
 =
 \frac1{\sqrt{2\pi}},
-\tag{6.26}
+\tag{6.26}\label{eq:6.26}
 \]
 we obtain
 \[
 \sigma L P^{\mathrm{quot}}
 \longrightarrow
 \frac1{\sqrt{2\pi}}.
-\tag{6.27}
+\tag{6.27}\label{eq:6.27}
 \]
 By Lemma \ref{lem:no-wrap}, $P^{\mathrm{quot}}=P$. Therefore
 \[
 L P
 \sim
 \frac1{\sqrt{2\pi}\,\sigma}.
-\tag{6.28}
+\tag{6.28}\label{eq:6.28}
 \]
 This is the central value of Theorem \ref{thm:local-profile}.
 
@@ -267,7 +267,7 @@ The order of limits is part of the argument:
 X\to\infty\quad\text{at fixed }C,
 \qquad\text{then}\qquad
 C\to\infty.
-\tag{6.29}
+\tag{6.29}\label{eq:6.29}
 \]
 No diagonal choice $C=C(X)\to\infty$ is asserted.
 
@@ -275,9 +275,9 @@ No diagonal choice $C=C(X)\to\infty$ is asserted.
 There is $c>0$ such that, for all sufficiently large $X$,
 \[
 LP\ge\frac{c}{\sigma}.
-\tag{6.30}
+\tag{6.30}\label{eq:6.30}
 \]
 In particular $P>0$.
 \end{corollary}
 
-The asymptotic \eqref{6.28}, rather than mere positivity, drives the entropy-scale conclusions of Section \ref{sec:multiplicity}. The full moving-target form of Theorem \ref{thm:local-profile} is proved in Section \ref{sec:moving-target} by inserting one unit character into the same analysis.
+The asymptotic \eqref{eq:6.28}, rather than mere positivity, drives the entropy-scale conclusions of Section \ref{sec:multiplicity}. The full moving-target form of Theorem \ref{thm:local-profile} is proved in Section \ref{sec:moving-target} by inserting one unit character into the same analysis.

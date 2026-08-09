@@ -12,19 +12,19 @@ t<\frac{(\log\gamma)^2}{2}<1.
 Then, for all sufficiently large $X$, there is a finite set $A\subseteq\mathcal E_X$ of pairwise distinct squarefree semiprimes, disjoint from $T$, such that
 \[
 \sum_{e\in A}\frac1e=t.
-\tag{9.1}
+\tag{9.1}\label{eq:9.1}
 \]
 \end{theorem}
 
 \begin{proof}
-By Lemma \ref{lem:arithmetic-shape}, for sufficiently large $X$ the direct family consists of pairwise distinct squarefree semiprimes outside $T$. The central local limit \eqref{6.28} gives $P=W_X(t)>0$ for all sufficiently large $X$, so some subset represents $t$ exactly.
+By Lemma \ref{lem:arithmetic-shape}, for sufficiently large $X$ the direct family consists of pairwise distinct squarefree semiprimes outside $T$. The central local limit \eqref{eq:6.28} gives $P=W_X(t)>0$ for all sufficiently large $X$, so some subset represents $t$ exactly.
 \end{proof}
 
 Every proper rational target is covered by some exponent in this pair-dominant regime. Indeed, for $0<t<1$ the interval
 \[
 \max\!\left(2,e^{\sqrt{2t}}\right)
 <\gamma<e^{\sqrt2}
-\tag{9.2}
+\tag{9.2}\label{eq:9.2}
 \]
 is nonempty.
 
@@ -50,11 +50,11 @@ q=\frac ab>0
 be reduced with squarefree $b$, and let $T$ be a prescribed finite forbidden set. Choose a prime $p>a$ with $p\nmid b$ and set
 \[
 t=\frac{a}{bp}.
-\tag{9.3}
+\tag{9.3}\label{eq:9.3}
 \]
-Then $0<t<1$. Since $p>a$, one has $p\nmid a$; together with $(a,b)=1$ and $p\nmid b$, this shows that \eqref{9.3} is reduced and has squarefree denominator $bp$.
+Then $0<t<1$. Since $p>a$, one has $p\nmid a$; together with $(a,b)=1$ and $p\nmid b$, this shows that \eqref{eq:9.3} is reduced and has squarefree denominator $bp$.
 
-Choose once and for all a $\gamma$ satisfying \eqref{9.2} for this $t$. Construct supports $A_1,\ldots,A_p$ successively. At stage $j$, apply Theorem \ref{thm:avoiding-target} to $t$, forbidding
+Choose once and for all a $\gamma$ satisfying \eqref{eq:9.2} for this $t$. Construct supports $A_1,\ldots,A_p$ successively. At stage $j$, apply Theorem \ref{thm:avoiding-target} to $t$, forbidding
 \[
 T\cup A_1\cup\cdots\cup A_{j-1}.
 \]
@@ -86,13 +86,13 @@ For (i), forbid $\{1,\ldots,N\}$. For (ii), construct representations recursivel
 Let $q>0$ have squarefree reduced denominator. Let $S$ be a finite set of distinct squarefree semiprimes such that
 \[
 \sum_{e\in S}\frac1e\le q,
-\tag{9.4}
+\tag{9.4}\label{eq:9.4}
 \]
 and let $T$ be a finite set disjoint from $S$. Then $S$ extends to a representation of $q$ by distinct squarefree semiprimes which avoids $T$.
 \end{proposition}
 
 \begin{proof}
-If equality holds in \eqref{9.4}, there is nothing to add. Otherwise set
+If equality holds in \eqref{eq:9.4}, there is nothing to add. Otherwise set
 \[
 r=q-\sum_{e\in S}\frac1e>0.
 \]

@@ -3,7 +3,7 @@
 Let
 \[
 \mathcal R=(\mathcal P\setminus\mathcal B)\cup S_b.
-\tag{5.1}
+\tag{5.1}\label{eq:5.1}
 \]
 Fix an anchor assignment on $\mathcal B$. For $r\in\mathcal R$, a row residue $x\in\Z/r\Z$, and $q\in\mathcal B$, let
 \[
@@ -13,7 +13,7 @@ be the phase $h/(rq)$ determined by $x\pmod r$ and the fixed anchor residue modu
 \[
 u_{rq}(x+d)-u_{rq}(x)
 \equiv\frac{dq^{-1}}r\pmod1.
-\tag{5.2}
+\tag{5.2}\label{eq:5.2}
 \]
 Thus row observability is controlled by inverse residues on the circle.
 
@@ -26,7 +26,7 @@ Let $r$ be prime and let $c_1,\ldots,c_M$ be nonzero residues modulo $r$, each o
 \left\|\frac{dc_j}{r}\right\|^2
 \ge
 c\frac{M^3}{\mu^2r^2}.
-\tag{5.3}
+\tag{5.3}\label{eq:5.3}
 \]
 \end{lemma}
 
@@ -35,13 +35,13 @@ Multiplication by $d$ permutes the nonzero residue classes. Put
 \[
 s=\left\lfloor\frac{M}{4\mu}\right\rfloor.
 \]
-For large $M/\mu$, $s\ge M/(8\mu)\ge1$. Fewer than $2\mu s\le M/2$ entries can lie among the $2s$ nonzero classes nearest zero. Hence at least $M/2$ terms have circle distance at least $M/(8\mu r)$, proving \eqref{5.3}.
+For large $M/\mu$, $s\ge M/(8\mu)\ge1$. Fewer than $2\mu s\le M/2$ entries can lie among the $2s$ nonzero classes nearest zero. Hence at least $M/2$ terms have circle distance at least $M/(8\mu r)$, proving \eqref{eq:5.3}.
 \end{proof}
 
 Let $M_{\mathcal B}=|\mathcal B|$. Then
 \[
 M_{\mathcal B}\asymp\frac{Z}{\log Z}.
-\tag{5.4}
+\tag{5.4}\label{eq:5.4}
 \]
 
 \begin{proposition}[Lower-prime row distance]\label{prop:lower-row-distance}
@@ -52,7 +52,7 @@ D_r:=
 \sum_{q\in\mathcal B}
 \left\|\frac{dq^{-1}}r\right\|^2
 \gg\frac{Z}{\log^3Z},
-\tag{5.5}
+\tag{5.5}\label{eq:5.5}
 \]
 uniformly in $r$.
 \end{proposition}
@@ -62,7 +62,7 @@ Inversion permutes the nonzero residue classes modulo $r$. Since $\mathcal B\sub
 \[
 \mu_r\le\frac{Z}{2r}+1\le\frac{2Z}{r}
 \]
-times. Lemma \ref{lem:cyclic-energy} and \eqref{5.4} give
+times. Lemma \ref{lem:cyclic-energy} and \eqref{eq:5.4} give
 \[
 D_r
 \gg
@@ -80,7 +80,7 @@ For every prime $r\mid b$,
 \[
 D_r\ge\frac{M_{\mathcal B}}{r^2}
 \gg_b\frac{Z}{\log Z}.
-\tag{5.6}
+\tag{5.6}\label{eq:5.6}
 \]
 \end{proposition}
 
@@ -107,7 +107,7 @@ the row energy
 \[
 E_r(x)=
 \sum_{q\in\mathcal B}\|u_{rq}(x)\|^2,
-\tag{5.7}
+\tag{5.7}\label{eq:5.7}
 \]
 and the row modulus
 \[
@@ -115,7 +115,7 @@ A_r(x)=|B_r(x)|
 =
 \prod_{q\in\mathcal B}
 \left|(1-\theta)+\theta e(u_{rq}(x))\right|.
-\tag{5.8}
+\tag{5.8}\label{eq:5.8}
 \]
 Choose a minimizer $x_r^*$ of $E_r$.
 
@@ -126,7 +126,7 @@ There is $c>0$, depending only on the fixed data, such that
 \sum_{x\ne x_r^*}A_r(x)
 \le
 r\exp(-cD_r).
-\tag{5.9}
+\tag{5.9}\label{eq:5.9}
 \]
 \end{lemma}
 
@@ -141,7 +141,7 @@ D_r
 \le2E_r(x)+2E_r(x_r^*)
 \le4E_r(x),
 \]
-since $x_r^*$ minimizes the energy. Thus $E_r(x)\ge D_r/4$, and summing over at most $r$ nonminimal states proves \eqref{5.9}.
+since $x_r^*$ minimizes the energy. Thus $E_r(x)\ge D_r/4$, and summing over at most $r$ nonminimal states proves \eqref{eq:5.9}.
 \end{proof}
 
 Propositions \ref{prop:lower-row-distance} and \ref{prop:target-row-distance} imply
@@ -150,7 +150,7 @@ Propositions \ref{prop:lower-row-distance} and \ref{prop:target-row-distance} im
 \le
 Z^2\exp\!\left(-c\frac{Z}{\log^3Z}\right)
 =o(1).
-\tag{5.10}
+\tag{5.10}\label{eq:5.10}
 \]
 
 \subsection{Weighted row compression}
@@ -173,7 +173,7 @@ e(-th)\,G_{\mathrm{ret}}(x_{\mathcal R})
 Thus
 \[
 |G(x_{\mathcal R})|\le1.
-\tag{5.11}
+\tag{5.11}\label{eq:5.11}
 \]
 By the exact factor partition of Section \ref{sec:fourier}, the full complex Fourier contribution of the lower coordinates above this fixed anchor assignment is exactly
 \[
@@ -195,7 +195,7 @@ Then
 \prod_rA_r(x_r)G(x_{\mathcal R})
 =
 \prod_rA_r(x_r^*)G(x^*)+E_{\mathrm{fib}},
-\tag{5.12}
+\tag{5.12}\label{eq:5.12}
 \]
 where
 \[
@@ -207,7 +207,7 @@ where
 \le
 \prod_r(1+\delta_r)-1
 \le e^\Delta-1.
-\tag{5.13}
+\tag{5.13}\label{eq:5.13}
 \]
 The same statement holds for an empty or singleton row set under the usual empty-product convention.
 \end{lemma}
@@ -221,7 +221,7 @@ Separate the distinguished point $x^*=(x_r^*)_r$. Off that point, discard $G$ in
 \le
 \prod_r\bigl(A_r(x_r^*)+\delta_r\bigr).
 \]
-Subtract the distinguished-point pure product and add back its actual value with $G(x^*)$. This gives the first inequality in \eqref{5.13}.
+Subtract the distinguished-point pure product and add back its actual value with $G(x^*)$. This gives the first inequality in \eqref{eq:5.13}.
 
 Writing $a_r=A_r(x_r^*)\in[0,1]$, the function
 \[
@@ -237,14 +237,14 @@ H((a_r))\le H((1))=
 and $1+u\le e^u$ gives the final bound.
 \end{proof}
 
-Multiplying the error in \eqref{5.13} by $|C_{\mathcal B}|=T_{\mathcal B}$ and summing over anchor assignments, the total off-minimizer contribution is
+Multiplying the error in \eqref{eq:5.13} by $|C_{\mathcal B}|=T_{\mathcal B}$ and summing over anchor assignments, the total off-minimizer contribution is
 \[
 \le
 P_{\mathrm{top}}(e^\Delta-1)
 \ll
 Z\log Z\,(e^\Delta-1)
 =o(1).
-\tag{5.14}
+\tag{5.14}\label{eq:5.14}
 \]
 The raw number of anchor assignments never enters the estimate.
 
@@ -258,7 +258,7 @@ E_r(m\bmod r)
 \sum_{q\in\mathcal B}\frac1{q^2}
 \ll
 \frac{m^2/r^2}{Z\log Z}.
-\tag{5.15}
+\tag{5.15}\label{eq:5.15}
 \]
 If this is less than $D_r/8$, then it is the unique minimizer: for any other residue $x$,
 \[
@@ -272,7 +272,7 @@ E_r(x)
 \frac{3D_r}{8}
 >
 E_r(m).
-\tag{5.16}
+\tag{5.16}\label{eq:5.16}
 \]
 
 Put
@@ -280,19 +280,19 @@ Put
 M_{\mathrm{dec}}
 =
 \frac{XZ}{(\log Z)^2}.
-\tag{5.17}
+\tag{5.17}\label{eq:5.17}
 \]
 
 \begin{proposition}[Lower-prime decoder]\label{prop:lower-decoder}
 For every $r\in\mathcal P\setminus\mathcal B$ and every coherent anchor label with $|m|\le M_{\mathrm{dec}}$,
 \[
 x_r^*=m\pmod r.
-\tag{5.18}
+\tag{5.18}\label{eq:5.18}
 \]
 \end{proposition}
 
 \begin{proof}
-The candidate energy in \eqref{5.15} is largest at $r=X$. At $|m|=M_{\mathrm{dec}}$,
+The candidate energy in \eqref{eq:5.15} is largest at $r=X$. At $|m|=M_{\mathrm{dec}}$,
 \[
 E_r(m)
 \ll
@@ -300,19 +300,19 @@ E_r(m)
 =
 \frac{Z}{\log^5Z}.
 \]
-By Proposition \ref{prop:lower-row-distance}, $D_r\gg Z/\log^3Z$, so the ratio tends uniformly to zero. Apply \eqref{5.16}.
+By Proposition \ref{prop:lower-row-distance}, $D_r\gg Z/\log^3Z$, so the ratio tends uniformly to zero. Apply \eqref{eq:5.16}.
 \end{proof}
 
 \begin{proposition}[Target-coordinate decoder]\label{prop:target-decoder}
 For every prime $r\mid b$ and every coherent anchor label with $|m|\le X^2/4$,
 \[
 x_r^*=m\pmod r.
-\tag{5.19}
+\tag{5.19}\label{eq:5.19}
 \]
 \end{proposition}
 
 \begin{proof}
-By \eqref{5.15},
+By \eqref{eq:5.15},
 \[
 E_r(m)
 \ll_b
@@ -322,42 +322,42 @@ whereas Proposition \ref{prop:target-row-distance} gives
 \[
 D_r\gg_b\frac{Z}{\log Z}.
 \]
-The ratio is $O_b(X^4/Z^2)=O_b(X^{4-2\gamma})$, which tends to zero because $\gamma>2$. Apply \eqref{5.16}.
+The ratio is $O_b(X^4/Z^2)=O_b(X^{4-2\gamma})$, which tends to zero because $\gamma>2$. Apply \eqref{eq:5.16}.
 \end{proof}
 
 Since $b$ is squarefree, agreement modulo every prime divisor of $b$ is agreement modulo $b$. Thus every coherent label with
 \[
 |m|\le X^2/4
-\tag{5.20}
+\tag{5.20}\label{eq:5.20}
 \]
 produces exactly the genuine integer frequency $h=m\pmod L$ on the decoded skeleton.
 
 For
 \[
 X^2/4<|m|\le M_{\mathrm{dec}},
-\tag{5.21}
+\tag{5.21}\label{eq:5.21}
 \]
 all prime coordinates in $\mathcal P$ still decode to $m$, although the fixed coordinates of $b$ need not. This weaker conclusion is enough for the retained damping below.
 
 \subsection{Retained lower--lower damping}
 
 \begin{proposition}[Adaptive retained damping]\label{prop:adaptive-damping}
-For every integer $m$ satisfying \eqref{5.21}, the interval
+For every integer $m$ satisfying \eqref{eq:5.21}, the interval
 \[
 I_m=[2\sqrt{|m|},3\sqrt{|m|}]
-\tag{5.22}
+\tag{5.22}\label{eq:5.22}
 \]
 lies in $[X,Z/2)$, contains
 \[
 K_m\gg\frac{\sqrt{|m|}}{\log|m|}
-\tag{5.23}
+\tag{5.23}\label{eq:5.23}
 \]
 primes, and the retained lower--lower factors on the decoded skeleton contribute energy
 \[
 Q_{\mathrm{ret}}(m)
 \gg
 \frac{|m|}{(\log|m|)^2}.
-\tag{5.24}
+\tag{5.24}\label{eq:5.24}
 \]
 \end{proposition}
 
@@ -369,7 +369,7 @@ Write $y=\sqrt{|m|}$. From $|m|>X^2/4$ we have $2y>X$. From $|m|\le M_{\mathrm{d
 \frac{3\sqrt{XZ}}{\log Z}
 =o(Z),
 \]
-because $Z=X^\gamma$ with $\gamma>1$. Hence $3y<Z/2$ for large $X$, and $I_m\subset\mathcal P\setminus\mathcal B$. The prime number theorem in fixed-ratio intervals gives \eqref{5.23}.
+because $Z=X^\gamma$ with $\gamma>1$. Hence $3y<Z/2$ for large $X$, and $I_m\subset\mathcal P\setminus\mathcal B$. The prime number theorem in fixed-ratio intervals gives \eqref{eq:5.23}.
 
 For distinct primes $p,q\in I_m$,
 \[
@@ -379,14 +379,14 @@ so
 \[
 \frac19\le\frac{|m|}{pq}\le\frac14.
 \]
-Hence the circle distance of $m/(pq)$ is at least $1/9$. There are $\gg K_m^2$ retained pairs, all with prime coordinates decoded to $m$. Summing their squared distances proves \eqref{5.24}.
+Hence the circle distance of $m/(pq)$ is at least $1/9$. There are $\gg K_m^2$ retained pairs, all with prime coordinates decoded to $m$. Summing their squared distances proves \eqref{eq:5.24}.
 \end{proof}
 
-By Lemma \ref{lem:bernoulli-modulus}, if $h_m$ denotes the decoded skeleton associated with a coherent label $m$ in the range \eqref{5.21}, then
+By Lemma \ref{lem:bernoulli-modulus}, if $h_m$ denotes the decoded skeleton associated with a coherent label $m$ in the range \eqref{eq:5.21}, then
 \[
 |F(h_m)|
 \le
 \exp\!\left(-c\frac{|m|}{(\log|m|)^2}\right).
-\tag{5.25}
+\tag{5.25}\label{eq:5.25}
 \]
-This notation is used only in the range \eqref{5.21}, where the prime-coordinate decoder has been proved. Beyond $M_{\mathrm{dec}}$ we refer instead to the distinguished row-minimizer state above the coherent anchor label. The anchor has converted low internal energy into one exact label, the row sensors identify the relevant coordinates, Lemma \ref{lem:weighted-skeleton} compresses the off-minimizer states without a cardinality loss, and the unused complete-pair factors suppress coherent labels after the target-coordinate decoder ceases to be needed.
+This notation is used only in the range \eqref{eq:5.21}, where the prime-coordinate decoder has been proved. Beyond $M_{\mathrm{dec}}$ we refer instead to the distinguished row-minimizer state above the coherent anchor label. The anchor has converted low internal energy into one exact label, the row sensors identify the relevant coordinates, Lemma \ref{lem:weighted-skeleton} compresses the off-minimizer states without a cardinality loss, and the unused complete-pair factors suppress coherent labels after the target-coordinate decoder ceases to be needed.

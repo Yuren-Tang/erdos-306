@@ -27,7 +27,7 @@ t=\frac ab\in(0,1)
 with squarefree denominator $b$, and fix $\gamma>2$ such that
 \[
 t<\lambda_\gamma:=\frac{(\log\gamma)^2}{2}<1.
-\tag{1.1}
+\tag{1.1}\label{eq:1.1}
 \]
 Such a $\gamma$ exists for every $0<t<1$. Put
 \[
@@ -36,7 +36,7 @@ Z&=X^\gamma,\\
 \mathcal P_X&=\{p\text{ prime}:X\le p<Z\},\\
 \mathcal B_X&=\{q\text{ prime}:Z/2\le q<Z\}.
 \end{aligned}
-\tag{1.2}
+\tag{1.2}\label{eq:1.2}
 \]
 If $S_b$ is the set of prime divisors of $b$, define
 \[
@@ -45,7 +45,7 @@ If $S_b$ is the set of prime divisors of $b$, define
 \{pq:p,q\in\mathcal P_X,\ p<q\}
 \sqcup
 \{rq:r\in S_b,\ q\in\mathcal B_X\}.
-\tag{1.3}
+\tag{1.3}\label{eq:1.3}
 \]
 For large $X$, every element of $\mathcal E_X$ is a distinct squarefree semiprime and any fixed finite forbidden set is automatically avoided. Write
 \[
@@ -54,7 +54,7 @@ For large $X$, every element of $\mathcal E_X$ is a distinct squarefree semiprim
 L_X=b\prod_{p\in\mathcal P_X}p,
 \qquad
 \theta_X=\frac{t}{\Lambda_X}.
-\tag{1.4}
+\tag{1.4}\label{eq:1.4}
 \]
 Then
 \[
@@ -62,21 +62,21 @@ Then
 \qquad
 \theta_X\longrightarrow
 \alpha:=\frac{2t}{(\log\gamma)^2}\in(0,1).
-\tag{1.5}
+\tag{1.5}\label{eq:1.5}
 \]
 Select each $e\in\mathcal E_X$ independently with probability $\theta_X$ and set
 \[
 S_X=\sum_{e\in\mathcal E_X}\frac{\xi_e}{e},
 \qquad
 \sigma_X^2=\operatorname{Var}(S_X).
-\tag{1.6}
+\tag{1.6}\label{eq:1.6}
 \]
 Then $\mathbb E S_X=t$ and, because $\gamma>2$ makes the target-row square mass lower order,
 \[
 \sigma_X^2
 \sim
 \frac{\alpha(1-\alpha)}{2X^2\log^2X}.
-\tag{1.7}
+\tag{1.7}\label{eq:1.7}
 \]
 
 For lattice targets $s\in L_X^{-1}\Z$, let
@@ -86,7 +86,7 @@ W_X(s)=\Pr(S_X=s).
 The Bernoulli-weighted exact coefficients have a local Gaussian profile.
 
 \begin{theorem}[Local Gaussian profile]\label{thm:local-profile}
-Fix a reduced $t=a/b\in(0,1)$ with squarefree $b$, and fix $\gamma>2$ satisfying \eqref{1.1}. For every fixed $U>0$, uniformly for integers
+Fix a reduced $t=a/b\in(0,1)$ with squarefree $b$, and fix $\gamma>2$ satisfying \eqref{eq:1.1}. For every fixed $U>0$, uniformly for integers
 \[
 |j|\le U L_X\sigma_X,
 \]
@@ -96,7 +96,7 @@ L_X\sigma_X
 W_X\!\left(t+\frac{j}{L_X}\right)
 =
 \Phi\!\left(\frac{j}{L_X\sigma_X}\right)+o_U(1),
-\tag{1.8}
+\tag{1.8}\label{eq:1.8}
 \]
 where
 \[
@@ -107,7 +107,7 @@ In particular,
 L_XW_X(t)
 \sim
 \frac1{\sqrt{2\pi}\,\sigma_X}.
-\tag{1.9}
+\tag{1.9}\label{eq:1.9}
 \]
 \end{theorem}
 
@@ -123,12 +123,12 @@ M_X=|\mathcal E_X|,
 =
 \left\{A\subseteq\mathcal E_X:
 \sum_{e\in A}\frac1e=t\right\},
-\tag{1.10}
+\tag{1.10}\label{eq:1.10}
 \]
 and let $H(u)=-u\log u-(1-u)\log(1-u)$. Set
 \[
 w_X=\left\lceil2\sqrt{M_X\log L_X}\right\rceil.
-\tag{1.11}
+\tag{1.11}\label{eq:1.11}
 \]
 
 \begin{theorem}[Multiplicity and typical cardinality]\label{thm:multiplicity}
@@ -138,14 +138,14 @@ With $t,\gamma$ fixed as above,
 \bigl||A|-\theta_XM_X\bigr|\le w_X\right\}
 \ge
 \exp\bigl([H(\alpha)-o(1)]M_X\bigr).
-\tag{1.12}
+\tag{1.12}\label{eq:1.12}
 \]
 Consequently
 \[
 \log|\mathcal R_X(t)|
 \ge
 [H(\alpha)-o(1)]M_X.
-\tag{1.13}
+\tag{1.13}\label{eq:1.13}
 \]
 Moreover, for some integer
 \[
@@ -156,7 +156,7 @@ one has
 \#\{A\in\mathcal R_X(t):|A|=k_X\}
 \ge
 \exp\bigl([H(\alpha)-o(1)]M_X\bigr).
-\tag{1.14}
+\tag{1.14}\label{eq:1.14}
 \]
 \end{theorem}
 
@@ -175,7 +175,7 @@ Character orthogonality gives
 L_XW_X(t)
 =
 \sum_{h\bmod L_X}F_X(h),
-\tag{1.15}
+\tag{1.15}\label{eq:1.15}
 \]
 where
 \[
@@ -186,7 +186,7 @@ e(-th)
 \bigl((1-\theta_X)+\theta_Xe(h/e)\bigr),
 \qquad
 e(u)=e^{2\pi iu}.
-\tag{1.16}
+\tag{1.16}\label{eq:1.16}
 \]
 For a genuine integer frequency $h=m$, Taylor expansion gives
 \[
@@ -212,7 +212,7 @@ The Fourier sum therefore has three conceptual pieces:
 \end{enumerate}
 The technical proof subdivides the coherent tails at two transition scales, but these are subordinate to the three-part structure above.
 
-The moving-target statement requires no new minor-frequency analysis. Replacing $t$ by $t+j/L_X$ simply multiplies \eqref{1.16} by the unit character
+The moving-target statement requires no new minor-frequency analysis. Replacing $t$ by $t+j/L_X$ simply multiplies \eqref{eq:1.16} by the unit character
 \[
 e(-hj/L_X).
 \]

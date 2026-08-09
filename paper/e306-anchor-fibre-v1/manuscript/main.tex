@@ -10,10 +10,10 @@
   BoldItalicFont=ETbb-BoldItalic.otf,
   Ligatures=TeX
 ]
-\IfFontExistsTF{EB Garamond}{%
-  \newfontfamily\greekdedicationfont{EB Garamond}%
+\IfFileExists{EBGaramond-Regular.otf}{%
+  \newfontfamily\greekdedicationfont{EBGaramond-Regular.otf}%
 }{%
-  \PackageError{e306}{EB Garamond not found}{The Owner-authorized dedication test requires EB Garamond.}%
+  \PackageError{e306}{EBGaramond-Regular.otf not found}{The Owner-authorized dedication test requires the TeX Live EB Garamond OpenType file.}%
 }
 \usepackage{microtype}
 \setlength{\emergencystretch}{2em}
@@ -55,13 +55,10 @@
 \newcommand{\Z}{\mathbb Z}
 \newcommand{\N}{\mathbb N}
 
-% The reviewed source uses explicit numeric \tag keys throughout.  Keep those
-% visible numbers and their matching in-text references fixed.  Equation
-% references are therefore rendered directly from the same numeric keys rather
-% than through a synthetic label layer; theorem/section references remain normal
-% LaTeX/hyperref references.
+% Stable explicit equation numbers are retained for review continuity, while
+% each tagged display carries a real semantic label of the form eq:section.number.
+% Equation references therefore use ordinary LaTeX/hyperref navigation.
 \numberwithin{equation}{section}
-\RenewDocumentCommand{\eqref}{m}{\textup{(#1)}}
 
 \title[Squarefree Semiprime Unit Fractions]{Squarefree Semiprime Unit Fractions:\\
 A Characterization and a Local Limit Theorem}

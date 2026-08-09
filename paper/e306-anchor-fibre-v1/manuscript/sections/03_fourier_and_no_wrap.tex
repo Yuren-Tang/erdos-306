@@ -3,7 +3,7 @@
 For a subset $A\subseteq\mathcal E$, give $A$ the Bernoulli weight
 \[
 w(A)=\theta^{|A|}(1-\theta)^{M-|A|}.
-\tag{3.1}
+\tag{3.1}\label{eq:3.1}
 \]
 Let $P$ be the total weight of exact representations of the fixed target $t=a/b$. We first work in the finite group $\Z/L\Z$.
 
@@ -13,14 +13,14 @@ Let $P^{\mathrm{quot}}$ be the probability of the congruence
 \[
 \sum_{e\in\mathcal E}\xi_e\frac{L}{e}
 \equiv Lt=\frac{aL}{b}\pmod L.
-\tag{3.2}
+\tag{3.2}\label{eq:3.2}
 \]
 Character orthogonality gives
 \[
 L P^{\mathrm{quot}}
 =
 \sum_{h\bmod L}F(h),
-\tag{3.3}
+\tag{3.3}\label{eq:3.3}
 \]
 where
 \[
@@ -31,7 +31,7 @@ e(-th)
 \bigl((1-\theta)+\theta e(h/e)\bigr),
 \qquad
 e(u)=e^{2\pi iu}.
-\tag{3.4}
+\tag{3.4}\label{eq:3.4}
 \]
 
 We will use the following modulus estimate repeatedly.
@@ -42,7 +42,7 @@ There is $\kappa>0$, depending only on the fixed parameters $t$ and $\gamma$, su
 \left|(1-\theta)+\theta e(u)\right|
 \le
 \exp(-\kappa\|u\|^2),
-\tag{3.5}
+\tag{3.5}\label{eq:3.5}
 \]
 where $\|u\|$ denotes the distance from $u$ to the nearest integer.
 \end{lemma}
@@ -59,7 +59,7 @@ By Section \ref{sec:direct-family}, $\theta$ lies in a fixed compact subinterval
 4\theta(1-\theta)\sin^2(\pi u)
 \ge c\|u\|^2.
 \]
-Using $1-v\le e^{-v}$ and adjusting the constant after taking square roots proves \eqref{3.5}.
+Using $1-v\le e^{-v}$ and adjusting the constant after taking square roots proves \eqref{eq:3.5}.
 \end{proof}
 
 In particular,
@@ -68,7 +68,7 @@ In particular,
 \le
 \exp\!\left(-\kappa
 \sum_{e\in\mathcal E}\|h/e\|^2\right).
-\tag{3.6}
+\tag{3.6}\label{eq:3.6}
 \]
 The target character has modulus one. Hence the geometry of large Fourier coefficients is independent of the numerator $a$: we must understand which CRT configurations make a large collection of phases $h/e$ simultaneously close to integers.
 
@@ -96,12 +96,12 @@ This exact partition is load-bearing in Section \ref{sec:rows}: classes (i)--(ii
 Every integer $m$ determines the CRT assignment obtained by reducing $m$ modulo each prime dividing $L$. When $|m|<e/2$ for every $e\in\mathcal E$,
 \[
 \left\|\frac{m}{e}\right\|=\frac{|m|}{e}.
-\tag{3.7}
+\tag{3.7}\label{eq:3.7}
 \]
-Moreover the linear phase in the logarithm of \eqref{3.4} cancels exactly because
+Moreover the linear phase in the logarithm of \eqref{eq:3.4} cancels exactly because
 \[
 \theta\sum_{e\in\mathcal E}\frac1e=t.
-\tag{3.8}
+\tag{3.8}\label{eq:3.8}
 \]
 This produces the Gaussian main term in Section \ref{sec:gaussian}. Before the Taylor expansion can control the full Fourier sum, however, we must show that every sufficiently low-energy CRT configuration is not merely close to an integer assignment but is exactly one. Section \ref{sec:anchor} proves this for the anchor block and Section \ref{sec:rows} for the remaining rows.
 
@@ -114,12 +114,12 @@ For all sufficiently large $X$, so that $\Lambda<1$, let $s\in L^{-1}\Z\cap[0,\L
 \[
 \sum_{e\in A}\frac{L}{e}
 \equiv Ls\pmod L,
-\tag{3.9}
+\tag{3.9}\label{eq:3.9}
 \]
 then
 \[
 \sum_{e\in A}\frac1e=s.
-\tag{3.10}
+\tag{3.10}\label{eq:3.10}
 \]
 \end{lemma}
 
@@ -135,7 +135,7 @@ is an integer. Both terms lie in $[0,\Lambda]$, and $\Lambda<1$, so $-1<D<1$. He
 Taking $s=t$ gives
 \[
 P^{\mathrm{quot}}=P.
-\tag{3.11}
+\tag{3.11}\label{eq:3.11}
 \]
 We nevertheless retain the quotient notation during the Fourier estimates to emphasize that positivity in the finite group and exactness in the fundamental interval are different inputs.
 
