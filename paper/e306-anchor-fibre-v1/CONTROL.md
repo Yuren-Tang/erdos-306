@@ -9,143 +9,193 @@
 - **Sole article branch:** `paper/e306-anchor-fibre-v1`
 - **Base:** `main@5a6207a493067f02c67b1cfa69fa8c5498f2c005`
 - **PR state:** open / draft / unmerged
-- **Publication state:** first independent full-review return received on an earlier fixed object; bounded revision and source-maintenance pass completed; a clean second independent full review of the new fixed object is the next assurance gate. No publication action is authorized by this file.
+- **Publication state:** two independent reviews have been returned on earlier fixed objects; the second review triggered a substantive but simplifying theorem-scope revision. The resulting sparse-target `gamma>1` object is author/Director-complete and clean-built, but still requires a focused independent dependency-cone review before publication disposition.
+
+No merge, tag, release, DOI mutation, arXiv upload, journal submission, endorsement request, or external contact is authorized by this file.
 
 ## Current exact manuscript source
 
-The manuscript source for the second independent review is exactly
+The current fixed manuscript source is exactly
 
 ```text
-20fd8c774397faf14208fcdce550b344a6e9b77b
+8024ff325f454e1fc52c280ac65bab0c48315e96
 ```
 
-The branch may be ahead of this SHA only through workflow/control/profile/review-record commits. `main.tex`, `references.bib`, and `sections/` are frozen against this source by the manuscript workflow.
+The branch may be ahead of this SHA only through workflow/control/review-record commits. `main.tex`, `references.bib`, and `sections/` are frozen against this source by the manuscript workflow.
 
-The preceding independently reviewed object was
+The immediately preceding blind-review object was
 
 ```text
-654189fe67b575bd539092f1700754835ee7ebda.
+20fd8c774397faf14208fcdce550b344a6e9b77b.
 ```
 
-The first independent reader found no fatal mathematical defect, stress-tested the main Sections 4--6 dependency cones, and recommended bounded revision. The disposition is preserved in `INDEPENDENT_REVIEW_DISPOSITION_2026-08-09.md`; it is evidence for that earlier object and is not silently promoted to the current fixed object.
-
-The post-review mathematical/expository revision first produced clean source
-
-```text
-3899f40fb493c2e2f2894f432cada64437a0964c.
-```
-
-After Owner review, a separate source-maintenance pass then made two deliberately non-mathematical changes before the second independent review:
-
-1. **Equation-reference migration.** All 190 existing visible `\tag{section.number}` values are retained. Each tagged display now has exactly one real equation label, and all 94 equation references use ordinary LaTeX `\eqref`/hyperref navigation. Pre-existing descriptive labels `eq:unit-character` for (8.4) and `eq:moving-profile` for (8.15) are retained; the other displays use `eq:section.number` fallback labels. The global synthetic `\eqref` override is gone.
-2. **Dedication face.** The two-line Greek dedication now uses EB Garamond OpenType only for the dedication. Body text remains ETbb and mathematics remains NewTX. The wording, 10 pt size, 15 pt baseline, 8 pt space above, 12 pt below, upright setting, and absence of added tracking are unchanged.
-
-No theorem, proof range, mathematical construction, estimate, displayed formula, visible equation number, or quantifier was intentionally changed in this maintenance pass.
+That blind reader found no fatal objection in the full manuscript, specifically read the load-bearing Sections 4--8, and recommended substantive but non-foundational revision. The reader also proposed sparsifying only the target rows and observed that this might remove the apparent `gamma>2` threshold. The Director independently rechecked that suggestion against the current proof spine and the existing sparse-sensor mathematics before admitting it to the manuscript.
 
 ## Current theorem package
 
-1. **Characterization with finite avoidance.** A positive reduced rational `a/b` is a finite sum of reciprocals of distinct squarefree semiprimes iff `b` is squarefree, with arbitrary finite avoidance.
-2. **Direct proper-target theorem.** Fix reduced `t=a/b in (0,1)` with squarefree `b`, and fixed `gamma>2` satisfying `t < (log gamma)^2/2 < 1`. With `Z=X^gamma`, the direct pair family plus target rows represents `t` for all sufficiently large `X`.
-3. **Local Gaussian profile.** The Bernoulli-weighted exact coefficients of the same target-adapted family satisfy the compact-uniform Gaussian profile on every fixed standardized target window.
-4. **Multiplicity and entropy.** With `alpha=2t/(log gamma)^2`, the typical-cardinality window contains at least `exp([H(alpha)-o(1)]M_X)` exact representations; the total fibre and at least one exact cardinality inherit the same lower bound. No matching total-fibre upper bound is asserted.
-5. **Prime-dilution closure.** Arbitrary positive squarefree-denominator rationals follow from finitely many pairwise disjoint proper-target representations obtained by successive finite avoidance.
+1. **Squarefree-denominator characterization with arbitrary finite avoidance.** A reduced positive rational is a finite sum of reciprocals of pairwise distinct squarefree semiprimes if and only if its denominator is squarefree.
+2. **Direct proper-target theorem.** Fix reduced `t=a/b in (0,1)` with squarefree `b` and fixed `gamma>1` satisfying
+   ```text
+   t < (log gamma)^2/2 < 1.
+   ```
+   Put `Z=X^gamma`, use the complete prime-pair family from `[X,Z)`, and for each prime `r|b` retain only
+   ```text
+   K_* = ceil((log Z)^2)
+   ```
+   target sensors `rq` with `q` in a fixed subset `B_*` of the top block. Then the target is represented for all sufficiently large `X`.
+3. **Compact-uniform local Gaussian profile.** The Bernoulli-weighted exact coefficients of that same sparse-target family have the stated Gaussian profile on every fixed standardized target window.
+4. **Multiplicity and entropy.** With `alpha=2t/(log gamma)^2`, the mesoscopic typical-cardinality window contains at least `exp([H(alpha)-o(1)]M_X)` exact representations; the whole exact fibre and some exact cardinality inherit that lower bound. For `0<t<1/2`, the choice `gamma=exp(2 sqrt(t))` gives the full binary entropy rate `log 2` per denominator. No matching global upper bound is asserted.
+5. **Prime-dilution closure.** Arbitrary positive squarefree-denominator rationals follow from finitely many pairwise disjoint proper-target representations obtained by finite avoidance.
 
-Every fixed `0<t<1` admits a pair-dominant exponent because
-
-```text
-max(2, exp(sqrt(2t))) < gamma < exp(sqrt(2)).
-```
-
-## Deliberate exclusions
-
-Article 1 does not restore the `1<gamma<=2` target-row-dominant regimes, arbitrary/varying anchors, entropy optimization, full AFT, multiblock/sparse alternative routes, restricted-prime programmes, finite-prefix CRT, growing standardized windows, bivariate/prescribed-cardinality local limits, or deletion resilience.
-
-## Clean-build checkpoint for the second-review object
-
-GitHub Actions run
+Every fixed `0<t<1` admits an exponent because
 
 ```text
-31303386599
+exp(sqrt(2t)) < gamma < exp(sqrt(2)).
 ```
 
-(run number 196) on execution head
+## Why the `gamma>2` boundary disappeared
+
+The old Article-1 family attached every top prime to every fixed coordinate `r|b`. Those full target rows had square mass `O_b(1/(Z log Z))`, which was lower order than the pair variance only for `gamma>2` in the clean five-sector proof.
+
+The current family retains only `K_*=ceil((log Z)^2)` target sensors per fixed coordinate. Then
 
 ```text
-4bafe3eca68a8a823167e77ba9aeda744a2c9830
+target reciprocal load = O_b(K_*/Z) = o(1),
+target square load     = O_b(K_*/Z^2),
 ```
 
-clean-built exact manuscript source `20fd8c77...` and passed all configured gates:
+which is lower order than the pair square mass for every fixed `gamma>1`.
 
-- exact source freeze and Oxford spelling;
-- semantic equation-reference surface: 190 tagged displays, 190 unique equation labels, 94 equation references, no legacy numeric `\eqref`, no global `\eqref` override, no multiple equation labels;
-- XeLaTeX/Biber clean build;
-- no unresolved or multiply defined references/citations/labels;
-- no missing glyphs;
-- no overfull hbox;
-- Biber warning/error gate;
-- all fonts embedded and no Type 3;
-- EB Garamond present and embedded for the dedication;
-- Unicode extraction of both Greek dedication lines, ORCID, and `Erdős`;
-- internal-label leak gate;
-- 35-page A4 PDF artifact upload (`artifact 9035208730`).
+For `r|b`, every retained sensor contributes at least `1/r^2` to the row-code distance, so
 
-The resulting PDF is 35 A4 pages. The EB Garamond and preceding Artemisia first pages were rendered at equal scale and visually compared; EB Garamond is retained because it is quieter, narrower, and more consonant with the ETbb title-page texture while leaving the dedication visually distinct.
+```text
+D_r >= K_*/r^2 >>_b (log Z)^2.
+```
 
-## Presentation profile
+The corresponding off-minimizer row mass is `exp(-c_b (log Z)^2)`, still superpolynomially small after multiplication by the complete weighted anchor partition.
 
-Retain, absent a concrete review defect:
+For a coherent label `m`, target-candidate energy divided by target-row distance is `O_b(m^2/Z^2)`. Exact target-coordinate decoding is therefore required and obtained only on the Gaussian range `|m|=O(X log X)=o(Z)`. The first coherent tail uses the complete pair factors in modulus and does not require fixed-coordinate decoding; the intermediate tail uses the unchanged lower-prime decoder and retained complete-pair damping. If `M_dec` exceeds the maximal low-energy anchor-label scale, the nominal large coherent range is empty; otherwise the previous anchor damping closes it. The major-arc cubic remainder is split between pair and sparse-target factors and tends to zero for every fixed `gamma>1`.
+
+This is a simpler family, not a resurrection of the historical multi-regime `gamma<=2` architecture.
+
+## Bounded review repairs applied at the same time
+
+The second blind review also led to four local exposition repairs without changing their mathematical statements:
+
+- the fingerprint-rigidity contradiction is written quantitatively, including the explicit comparison with `4g<c_D`;
+- label classes are defined at first use;
+- Section 5 states explicitly that a fixed anchor assignment plus row tuple determines a unique CRT frequency `h mod L`, so the source character may be absorbed into the bounded row factor;
+- Section 7 now says “uniform upper bound for an atom in the window”, and the temporary lcm variable in Section 9 no longer collides with the global family-size notation.
+
+The peripheral common-proper-refinement proposition was condensed to a remark in order to keep the strengthened article at 35 pages; its mathematical observation and transportation-matrix proof idea remain visible.
+
+## Current presentation profile
+
+Retain, absent a concrete defect:
 
 - British English with Oxford spelling;
 - `amsart`, A4, 11 pt, right equation numbers;
-- ETbb OpenType text with NewTX mathematics;
+- ETbb OpenType body with NewTX mathematics;
 - XeLaTeX;
 - numeric `biblatex`/Biber citations sorted `nyt`;
 - bibliography in `\small`;
 - no affiliation or email;
 - compact linked ORCID;
-- two-line upright **EB Garamond** dedication, dedication-only;
-- exact dedication text `ΤΟΙΣ ΕΜΕ ΦΙΛΟΥΣΙΝ / ΚΑΙ ΟΙΣ ΦΙΛΩ`;
+- exact dedication text
+  ```text
+  ΤΟΙΣ ΕΜΕ ΦΙΛΟΥΣΙΝ
+  ΚΑΙ ΟΙΣ ΦΙΛΩ
+  ```
+- dedication-only **STIX Two Text Medium**, upright, 10.5 pt on 16 pt, `LetterSpace=9`, 8 pt above and 12 pt below;
 - concise generative-AI disclosure.
 
-The earlier Owner supplement had already specified dedication-only EB Garamond conditionally on clean compilation, embedding, and extraction. That condition is now satisfied by the current XeLaTeX/OpenType build. The later GFS Didot -> GFS Artemisia choice was a valid comparison among the then-landed Greek faces, but it does not override the now-completed EB Garamond test requested by the Owner. Artemisia remains the immediately preceding historical face, not the controlling face.
+The dedication typography was selected after equal-context comparison of EB Garamond Medium, GFS Didot Classic, GFS Bodoni, Old Standard, Libertinus Serif Display, STIX Two Text, and other available TeX Live candidates. The point of the final setting is not boldness: a true medium weight plus open tracking gives the uppercase Greek a restrained inscriptional presence while remaining compatible with the ETbb title page. Bold/fake-bold and manual pair kerning are not used.
 
-The proposed Greek `ΟΙΣ -> ΟΥΣ` change from the first independent review remains not adopted: classical relative attraction supports the dative relative with an omitted dative antecedent. See the first-review disposition record for the philological rationale.
+The Greek `ΟΙΣ` remains deliberate. Classical relative attraction permits the relative to be attracted into the case of an omitted dative antecedent; the intended reading is `ΚΑΙ [ΤΟΙΣ] ΟΙΣ ΦΙΛΩ`. Do not alter the wording without a new philological disposition.
 
 ## Equation-reference policy
 
-Equation references are now ordinary LaTeX/hyperref references. Stable visible numbering is deliberately decoupled from source identity:
+The visible equation numbers remain the stable explicit `\tag{section.number}` values. Source references use ordinary LaTeX/hyperref navigation:
 
-- visible equation numbers remain the explicit reviewed `\tag{section.number}` values;
-- each tagged display carries exactly one `eq:` label;
-- descriptive equation labels are preferred when already present;
-- `eq:section.number` is the fallback source label;
-- the workflow hard-fails on duplicate tags, duplicate equation labels, missing reference targets, legacy bare numeric `\eqref`, multiple labels on one tagged display, or reintroduction of the global `\eqref` override.
+- 190 tagged displays;
+- 190 unique equation labels, one per tagged display;
+- 94 equation references;
+- descriptive labels `eq:unit-character` and `eq:moving-profile` retained;
+- `eq:section.number` fallback labels elsewhere;
+- no global `\eqref` override and no bare numeric `\eqref{n.m}` calls.
 
-This maintenance pass therefore gains source navigation and hyperlink correctness without renumbering the reviewed mathematical surface.
+The workflow hard-fails on duplicate tags/labels, missing targets, multiple labels on one tagged display, legacy numeric references, or leaked internal labels.
 
-## Formal Lean axis
+## Clean-build checkpoint
 
-The archived Lean release is orthogonal evidence for the headline characterization only. The article does not depend on it and the local-limit theorem is not claimed formalized.
-
-## Next gate: clean second independent full review
-
-The Owner has elected not to close the assurance state by a narrow delta recheck. The next reviewer should instead read the **entire current fixed object** `20fd8c77...` cleanly, with the first review available only as historical context if desired.
-
-The reviewer should independently assess theorem statements, quantifiers, all load-bearing Sections 4--6 estimates and exhaustion, moving-target transfer, multiplicity/entropy consequences, no-wrap and prime-dilution closure, citation/provenance claims, and the integrity of the maintained reference surface. The dedicated reviewer brief is `SECOND_INDEPENDENT_REVIEW_PACKET_2026-08-09.md`.
-
-Until that second independent review is returned and the Owner gives explicit publication authorization, do **not** mark PR #9 ready, merge, tag, release, alter DOI metadata, upload to arXiv, submit to a journal, or contact an external party on the Owner's behalf.
-
-## Current state
+GitHub Actions run
 
 ```text
-[SECOND-REVIEW MANUSCRIPT SOURCE 20fd8c774397faf14208fcdce550b344a6e9b77b]
-[FIRST INDEPENDENT REVIEW: EARLIER OBJECT, NO FATAL DEFECT / REVISION ADVISED]
-[BOUNDED REVISION + SOURCE-MAINTENANCE PASS COMPLETE]
-[SEMANTIC EQUATION REFERENCES: 190 DISPLAYS / 190 LABELS / 94 REFS]
-[DEDICATION: EB GARAMOND, CLEANLY EMBEDDED AND EXTRACTED]
-[CLEAN XELATEX/BIBER BUILD PASS — ACTION 31303386599]
-[35-PAGE A4 SECOND-REVIEW PDF AVAILABLE]
-[CLEAN SECOND INDEPENDENT FULL REVIEW NEXT]
+31320182037
+```
+
+(run number 204) on execution head
+
+```text
+f0fc3c441b6d614f26270e4fedcc2ae2b10cbd19
+```
+
+clean-built exact manuscript source `8024ff32...` and passed all configured gates:
+
+- exact source freeze;
+- Oxford-spelling guard;
+- sparse-target / `gamma>1` theorem-surface guard;
+- semantic equation-reference guard;
+- clean XeLaTeX/Biber build;
+- no unresolved or multiply defined references/citations/labels;
+- no missing glyphs;
+- no overfull hbox;
+- Biber warning/error gate;
+- all fonts embedded and no Type 3;
+- STIX Two Text Medium present and embedded for the dedication;
+- exact Unicode extraction of both Greek dedication lines, ORCID, and `Erdős`;
+- internal-label leak gate;
+- **35-page A4 PDF** artifact `9039950866`.
+
+Artifact digest:
+
+```text
+sha256:a4bef64c3d9a8ace29a11191f9d843308ab55cce165713f0fee4f92489936b15
+```
+
+Build correctness and typography are execution evidence, not theorem assurance.
+
+## Review history and current assurance boundary
+
+- The first independent reader reviewed `654189fe...`, found no fatal defect, and advised bounded revision.
+- A later blind reader reviewed `20fd8c77...`, again found no fatal objection and recommended substantive but non-foundational revision; that review generated the sparse-target idea.
+- The current source `8024ff32...` has **not** been independently passed. The `gamma>1` theorem is currently author/Director-complete plus clean-build verified.
+
+The correct assurance state is therefore
+
+```text
+[TWO INDEPENDENT REVIEWS OF EARLIER FIXED OBJECTS: NO FATAL OBJECTION]
+[SPARSE-TARGET GAMMA>1 REVISION: AUTHOR/DIRECTOR-COMPLETE]
+[CLEAN CURRENT-SOURCE BUILD PASS — ACTION 31320182037]
+[35-PAGE CURRENT PDF]
+[FOCUSED INDEPENDENT DEPENDENCY-CONE REVIEW REQUIRED]
 [PR #9 OPEN / DRAFT / UNMERGED]
 [NO PUBLICATION SUBMISSION AUTHORIZED]
 ```
+
+## Next gate
+
+The next reviewer need not re-audit every unchanged line of the 35-page paper. The focused review should compare the mathematical object reviewed at `20fd8c77...` with current source `8024ff32...` and independently check the reopened dependency cone:
+
+1. sparse target-row reciprocal and square loads;
+2. sparse fixed-coordinate row distance and the weighted off-minimizer sum after the `P_top` factor;
+3. target-coordinate decoder only on the major range and why `gamma>1` is enough there;
+4. the separate sparse-target cubic Taylor remainder;
+5. pair-only damping for the first coherent tail without fixed-coordinate decoding;
+6. unchanged lower-prime decoder and retained damping for `gamma>1`;
+7. the ordering-free treatment of `M_dec` versus the anchor-label ceiling;
+8. moving-target and no-wrap transport;
+9. the entropy-saturation corollary;
+10. statement/proof agreement and absence of a hidden surviving `gamma>2` hypothesis.
+
+The repaired fingerprint/CRT bookkeeping should also be checked for exposition fidelity, but it does not reopen the underlying theorem architecture unless the reviewer finds a substantive error.
