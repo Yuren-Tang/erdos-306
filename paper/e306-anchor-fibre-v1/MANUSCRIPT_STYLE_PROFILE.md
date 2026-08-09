@@ -2,43 +2,54 @@
 
 Status: controlling project profile for the current E306 article branch.
 
-## Authority
-
-This profile specializes the authorial portfolio manuscript standard at `Yuren-Tang/research-workbench@3b34de193647335c1c8ddfb3974554b76c21bbe5`. E306-specific Owner decisions and accepted publication-style checkpoints take precedence where more specific.
-
 ## Language and prose
 
 - British English with Oxford spelling.
 - Prefer etymologically appropriate `-ize` / `-ization` forms while retaining British forms such as `analyse`, `centred`, and `fibre`.
-- Treat Greek/Latin terminology philologically; do not substitute faux-Latin forms merely because common.
+- Treat Greek/Latin terminology philologically.
 - Prefer mathematical mechanism to project-management prose.
-- Retain the proof-bearing vocabulary `anchor`, `row observability`, and `decoder`, but avoid gratuitous engineering metaphors where plain arithmetic language is more exact.
+- Retain the proof-bearing vocabulary `anchor`, `row observability`, and `decoder`, but avoid gratuitous engineering metaphors.
 
 ## Page and typography
 
 - `amsart`, 11 pt, A4, `reqno`.
-- ETbb OpenType text; NewTX mathematics.
+- ETbb OpenType body text; NewTX mathematics.
 - `microtype`; `hidelinks`; URL/DOI material inherits surrounding roman face.
 - Bibliography in `\small`.
 - No decorative boxes, colour coding, drop capitals, ornaments, or pseudo-antique devices in the mathematical body.
+- Current validated paper length: **35 A4 pages**. Do not manipulate margins or body font size merely to preserve a page count.
 
 ## Dedication
 
-The controlling E306 dedication typography is **EB Garamond Regular**, used for the dedication only.
+The controlling dedication is exactly
 
-The current exact visible dedication is
+```text
+ΤΟΙΣ ΕΜΕ ΦΙΛΟΥΣΙΝ
+ΚΑΙ ΟΙΣ ΦΙΛΩ
+```
 
-`ΤΟΙΣ ΕΜΕ ΦΙΛΟΥΣΙΝ`
+in two centred uppercase lines without diacritics.
 
-`ΚΑΙ ΟΙΣ ΦΙΛΩ`
+Current typography:
 
-in two centred uppercase lines without diacritics, upright, 10 pt on a 15 pt baseline, with 8 pt space above and 12 pt below and no added tracking.
+```text
+face:        STIX Two Text Medium
+use:         dedication only
+setting:     upright
+size:        10.5 pt
+baseline:    16 pt
+tracking:    fontspec LetterSpace=9
+space above: 8 pt
+space below: 12 pt
+```
 
-This completes an earlier Owner condition that dedication-only EB Garamond should be used if it compiles, embeds, and extracts cleanly in the retained toolchain. The previous landed comparison had moved GFS Didot to the calmer GFS Artemisia; after the Owner explicitly recalled the EB Garamond condition, the current XeLaTeX/OpenType path was tested directly. GitHub Actions run `31303386599` confirms the EB Garamond OpenType file is available, embedded, and compatible with exact Unicode Greek extraction. Equal-scale first-page renders of the Artemisia and EB Garamond builds were inspected; EB Garamond is retained as the quieter and more texturally consonant title-page face.
+The choice followed equal-context tests of EB Garamond, GFS Didot Classic, GFS Bodoni, Old Standard, Junicode, Libertinus Serif Display, STIX Two Text, and other available TeX Live candidates. The Owner found the preceding GFS Artemisia and EB Garamond settings unsatisfactory. The successful change was not simply another regular face: a true medium weight plus open tracking gives the uppercase Greek a clearer inscriptional silhouette while remaining compatible with the ETbb title-page texture.
 
-The first independent review suggested changing `ΟΙΣ` to `ΟΥΣ`; that suggestion remains not adopted because classical relative attraction supports the dative relative when the dative antecedent is omitted. Do not alter the Greek text without a new explicit philological disposition.
+Do **not** apply fake bold. Bold was deliberately not selected because it competes with the title and turns the dedication into a heavy display element. Do not manually kern individual pairs without a concrete visual defect; native kerning remains in force and the inscriptional openness is supplied by global tracking. If the Owner later wants a small visual adjustment, change tracking within a narrow range before reopening the font-family choice.
 
-Final validation must check both visual glyphs and Unicode extraction; no `Missing character:` diagnostic is allowed.
+The proposed `ΟΙΣ -> ΟΥΣ` change remains not adopted. Classical relative attraction supports the dative relative with an omitted dative antecedent; the intended reading is `ΚΑΙ [ΤΟΙΣ] ΟΙΣ ΦΙΛΩ`. Do not alter the Greek text without a new explicit philological disposition.
+
+Final validation must check both rendered glyphs and Unicode extraction; no `Missing character:` diagnostic is allowed.
 
 ## Front matter
 
@@ -64,44 +75,27 @@ Do not invent personal acknowledgements or misdescribe the role of AI assistance
 - References follow continuously; no forced bibliography page break.
 - Butler--Erdős--Graham A51 uses DOI `10.5281/zenodo.10456673`.
 
-## Current exact review source and equation references
+## Equation references
 
-The second-independent-review manuscript source is
-
-`20fd8c774397faf14208fcdce550b344a6e9b77b`.
-
-Visible equation numbering remains the reviewed explicit `\tag{section.number}` scheme. Source references are now ordinary LaTeX/hyperref references:
+The visible explicit equation numbers are stable, while source references use ordinary LaTeX/hyperref infrastructure:
 
 - 190 tagged displays;
 - 190 unique equation labels, exactly one per tagged display;
 - 94 equation references;
-- descriptive labels `eq:unit-character` and `eq:moving-profile` retained where they pre-existed;
+- descriptive labels `eq:unit-character` and `eq:moving-profile` retained;
 - `eq:section.number` fallback labels elsewhere;
 - no global `\eqref` override and no bare numeric `\eqref{n.m}` calls.
 
-This is a maintenance-only navigation refactor: the visible equation numbers are unchanged. The workflow rejects duplicate tags/labels, missing reference targets, multiple equation labels on a tagged display, legacy numeric references, and leaked internal labels in extracted PDF text.
+The workflow rejects duplicate tags/labels, missing targets, multiple labels on one tagged display, legacy numeric references, and leaked internal labels in extracted PDF text.
 
-## Validated second-review PDF
+## Current exact review source
 
-GitHub Actions run `31303386599` / run number 196 clean-built exact source `20fd8c77...` into a **35-page A4 PDF** and passed:
+The current fixed manuscript source is
 
-1. frozen-source identity;
-2. Oxford-spelling guard;
-3. semantic equation-reference surface gate;
-4. clean XeLaTeX/Biber build;
-5. no unresolved or multiply defined references/citations/labels;
-6. no missing glyphs;
-7. no overfull hbox;
-8. Biber warning/error gate;
-9. all fonts embedded, no Type 3;
-10. EB Garamond dedication face present and embedded;
-11. Unicode extraction of both dedication lines;
-12. ORCID and `Erdős` extraction;
-13. internal-label leak gate;
-14. PDF artifact upload (`artifact 9035208730`).
+```text
+8024ff325f454e1fc52c280ac65bab0c48315e96
+```
 
-This build is presentation/execution evidence, not a substitute for the second independent mathematical review.
+GitHub Actions run `31320182037` / run number 204 clean-built it into a 35-page A4 PDF and passed the full source, sparse-target theorem-surface, equation-reference, XeLaTeX/Biber, glyph, no-overfull, embedded-font/no-Type-3, Unicode dedication, ORCID, and extraction gates. PDF artifact: `9039950866`.
 
-## Review state
-
-The first independent full reader reviewed preceding source `654189fe...`, found no fatal mathematical defect, and advised bounded revision. Those revisions were applied before the present maintenance pass. The Owner has chosen a **clean second independent full review** of current source `20fd8c77...`, rather than relying on a narrow delta recheck. The visual design and equation-reference infrastructure are now frozen absent a concrete defect found by that reviewer or the Owner.
+This build validates presentation/execution only. The sparse-target `gamma>1` theorem strengthening still requires a focused independent mathematical recheck before publication disposition.
