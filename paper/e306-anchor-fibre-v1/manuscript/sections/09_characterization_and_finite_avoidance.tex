@@ -100,7 +100,7 @@ Write $q$ and all $1/e$, $e\in S$, over one common denominator $D$. Since the re
 \end{proof}
 
 \begin{remark}[Common proper refinements]\label{rem:common-refinement}
-Finite avoidance also gives common proper refinements. For two representations of the same $q$, take the squarefree least common multiple $D$ of all their denominators, write the resulting integer weights as row and column sums of a nonnegative integral transportation matrix, and represent each positive cell value $x_{ij}/D$ successively while forbidding every denominator already used. The resulting pairwise disjoint cell supports refine both representations; iteration handles any finite family and any additional finite forbidden set.
+Finite avoidance also gives common proper refinements. For two representations of the same $q$, take the squarefree least common multiple $D$ of all their denominators, write the resulting integer weights as row and column sums of a nonnegative integral transportation matrix, and represent each positive cell value $x_{ij}/D$ successively while forbidding all denominators from the two original representations, any externally prescribed finite set, and every denominator introduced in earlier cells. The resulting pairwise disjoint cell supports therefore form a proper refinement of both representations; iteration handles any finite family.
 \end{remark}
 
 These structural consequences are not used elsewhere; they show that finite avoidance is substantially stronger than bare existence.
