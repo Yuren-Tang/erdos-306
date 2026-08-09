@@ -10,10 +10,10 @@
   BoldItalicFont=ETbb-BoldItalic.otf,
   Ligatures=TeX
 ]
-\IfFontExistsTF{GFS Artemisia}{%
-  \newfontfamily\greekdedicationfont{GFS Artemisia}%
+\IfFontExistsTF{EB Garamond}{%
+  \newfontfamily\greekdedicationfont{EB Garamond}%
 }{%
-  \newfontfamily\greekdedicationfont{GFSArtemisia.otf}%
+  \PackageError{e306}{EB Garamond not found}{The Owner-authorized dedication test requires EB Garamond.}%
 }
 \usepackage{microtype}
 \setlength{\emergencystretch}{2em}
