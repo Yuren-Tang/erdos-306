@@ -24,7 +24,7 @@ jobs:
 
       - name: Verify frozen manuscript source
         run: |
-          git diff --exit-code 20fd8c774397faf14208fcdce550b344a6e9b77b -- \
+          git diff --exit-code af9e2d4ce307f75843c9720fa77c9e797fd1cbbf -- \
             main.tex references.bib sections
 
       - name: Guard Oxford manuscript spelling
@@ -60,6 +60,37 @@ jobs:
                       bad.append(f"{path}:{line}: {match.group(0)!r} -> prefer {preferred}")
           if bad:
               raise SystemExit("Oxford-spelling guard failed:\n" + "\n".join(bad))
+          PY
+
+      - name: Verify sparse-target theorem surface
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          intro = Path("sections/01_introduction.tex").read_text(encoding="utf-8")
+          direct = Path("sections/02_direct_family.tex").read_text(encoding="utf-8")
+          rows = Path("sections/05_row_observability_and_compression.tex").read_text(encoding="utf-8")
+          gaussian = Path("sections/06_local_gaussian_analysis.tex").read_text(encoding="utf-8")
+          char = Path("sections/09_characterization_and_finite_avoidance.tex").read_text(encoding="utf-8")
+          corpus = "\n".join(p.read_text(encoding="utf-8") for p in [Path("main.tex"), *sorted(Path("sections").glob("*.tex"))])
+          required = [
+              ("introduction gamma>1", "\\gamma>1", intro),
+              ("direct gamma>1", "\\gamma>1", direct),
+              ("sparse target set", "\\mathcal B_*", direct),
+              ("sparse target row distance", "Sparse target-row distance", rows),
+              ("target decoder scale", "M_{\\mathrm{tar}}", rows),
+              ("pair-only first tail", "Discarding the sparse target factors in modulus", gaussian),
+              ("proper-target gamma>1", "\\gamma>1", char),
+          ]
+          missing = [name for name, needle, text in required if needle not in text]
+          if missing:
+              raise SystemExit("Sparse-target surface incomplete: " + repr(missing))
+          if "\\gamma>2" in corpus:
+              raise SystemExit("Legacy gamma>2 theorem restriction remains in manuscript source")
+          if "q\\in\\mathcal B\\},\n\\tag{2.3}" in direct:
+              raise SystemExit("Full target rows appear to have returned in the direct family")
+          if "every denominator in \\mathcal E is at least $X^2$" in gaussian:
+              raise SystemExit("Legacy all-denominators >= X^2 major-arc shortcut remains")
+          print("Sparse-target gamma>1 theorem surface is internally selected.")
           PY
 
       - name: Verify semantic equation-reference surface
@@ -201,14 +232,14 @@ jobs:
       - name: Build summary
         run: |
           {
-            echo "## E306 second-review candidate build"
+            echo "## E306 sparse-target gamma>1 candidate build"
             echo
             echo "- Commit: $GITHUB_SHA"
-            echo "- Frozen manuscript source: \`20fd8c774397faf14208fcdce550b344a6e9b77b\` (main.tex + references + sections)"
+            echo "- Frozen manuscript source: \`af9e2d4ce307f75843c9720fa77c9e797fd1cbbf\` (main.tex + references + sections)"
             echo "- Entry point: \`paper/e306-anchor-fibre-v1/manuscript/main.tex\`"
             echo "- Engine: XeLaTeX"
             echo "- Body text/math typography: ETbb OpenType / NewTX"
-            echo "- Dedication typography: EB Garamond OpenType"
+            echo "- Current dedication typography under comparison: EB Garamond OpenType"
             echo "- Equation references: ordinary LaTeX/hyperref labels with stable explicit visible tags"
             echo "- Bibliography backend/style: Biber / numeric"
             echo "- PDF size: $(stat -c%s main.pdf) bytes"
@@ -218,7 +249,7 @@ jobs:
       - name: Upload manuscript PDF
         uses: actions/upload-artifact@v4
         with:
-          name: e306-second-review-candidate-pdf-${{ github.sha }}
+          name: e306-sparse-target-gamma1-candidate-pdf-${{ github.sha }}
           path: paper/e306-anchor-fibre-v1/manuscript/main.pdf
           if-no-files-found: error
           retention-days: 30
