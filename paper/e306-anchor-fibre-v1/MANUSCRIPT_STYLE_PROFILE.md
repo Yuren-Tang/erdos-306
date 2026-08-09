@@ -24,9 +24,7 @@ This profile specializes the authorial portfolio manuscript standard at `Yuren-T
 
 ## Dedication
 
-The controlling E306 dedication typography is **GFS Artemisia Regular**, not EB Garamond.
-
-The durable front-matter record is issue #8 comment `5109693351`: the dedication-only face was deliberately changed from GFS Didot to GFS Artemisia, with 10 pt type on a 15 pt baseline, 8 pt space above and 12 pt below, upright and without added tracking.
+The controlling E306 dedication typography is **EB Garamond Regular**, used for the dedication only.
 
 The current exact visible dedication is
 
@@ -34,7 +32,11 @@ The current exact visible dedication is
 
 `ΚΑΙ ΟΙΣ ΦΙΛΩ`
 
-in two centred uppercase lines without diacritics. The independent review suggested changing `ΟΙΣ` to `ΟΥΣ`; that suggestion is not adopted because classical relative attraction supports the dative relative when the dative antecedent is omitted. Do not alter the Greek text without a new explicit philological disposition.
+in two centred uppercase lines without diacritics, upright, 10 pt on a 15 pt baseline, with 8 pt space above and 12 pt below and no added tracking.
+
+This completes an earlier Owner condition that dedication-only EB Garamond should be used if it compiles, embeds, and extracts cleanly in the retained toolchain. The previous landed comparison had moved GFS Didot to the calmer GFS Artemisia; after the Owner explicitly recalled the EB Garamond condition, the current XeLaTeX/OpenType path was tested directly. GitHub Actions run `31303386599` confirms the EB Garamond OpenType file is available, embedded, and compatible with exact Unicode Greek extraction. Equal-scale first-page renders of the Artemisia and EB Garamond builds were inspected; EB Garamond is retained as the quieter and more texturally consonant title-page face.
+
+The first independent review suggested changing `ΟΙΣ` to `ΟΥΣ`; that suggestion remains not adopted because classical relative attraction supports the dative relative when the dative antecedent is omitted. Do not alter the Greek text without a new explicit philological disposition.
 
 Final validation must check both visual glyphs and Unicode extraction; no `Missing character:` diagnostic is allowed.
 
@@ -64,35 +66,42 @@ Do not invent personal acknowledgements or misdescribe the role of AI assistance
 
 ## Current exact review source and equation references
 
-The revised exact manuscript source is
+The second-independent-review manuscript source is
 
-`3899f40fb493c2e2f2894f432cada64437a0964c`.
+`20fd8c774397faf14208fcdce550b344a6e9b77b`.
 
-The source retains explicit numeric `\tag{section.number}` equation numbers and matching numeric equation references. The first clean-review build of the preceding object exposed that an attempted synthetic label bridge did not create the intended labels under `amsmath` and leaked internal names into PDF text. The bounded repair removed that broken mechanism.
+Visible equation numbering remains the reviewed explicit `\tag{section.number}` scheme. Source references are now ordinary LaTeX/hyperref references:
 
-A full migration to semantic `\label`/`\eqref` is desirable source hygiene but is **not** authorized as an opportunistic pre-arXiv refactor: it would reopen a large formula-reference surface for no mathematical gain. Reconsider it in a separately audited maintenance pass, naturally before or during journal-source preparation.
+- 190 tagged displays;
+- 190 unique equation labels, exactly one per tagged display;
+- 94 equation references;
+- descriptive labels `eq:unit-character` and `eq:moving-profile` retained where they pre-existed;
+- `eq:section.number` fallback labels elsewhere;
+- no global `\eqref` override and no bare numeric `\eqref{n.m}` calls.
 
-## Validated revised PDF
+This is a maintenance-only navigation refactor: the visible equation numbers are unchanged. The workflow rejects duplicate tags/labels, missing reference targets, multiple equation labels on a tagged display, legacy numeric references, and leaked internal labels in extracted PDF text.
 
-GitHub Actions run `31292599279` / run number 191 clean-built exact source `3899f40...` into a **35-page A4 PDF** and passed:
+## Validated second-review PDF
+
+GitHub Actions run `31303386599` / run number 196 clean-built exact source `20fd8c77...` into a **35-page A4 PDF** and passed:
 
 1. frozen-source identity;
 2. Oxford-spelling guard;
-3. clean XeLaTeX/Biber build;
-4. no unresolved or multiply defined references/citations/labels;
-5. no Biber warning/error requiring repair;
+3. semantic equation-reference surface gate;
+4. clean XeLaTeX/Biber build;
+5. no unresolved or multiply defined references/citations/labels;
 6. no missing glyphs;
-7. **no overfull hbox**;
-8. all fonts embedded, no Type 3;
-9. Unicode extraction of both dedication lines;
-10. ORCID and `Erdős` extraction;
-11. internal-label leak gate;
-12. PDF artifact upload.
+7. no overfull hbox;
+8. Biber warning/error gate;
+9. all fonts embedded, no Type 3;
+10. EB Garamond dedication face present and embedded;
+11. Unicode extraction of both dedication lines;
+12. ORCID and `Erdős` extraction;
+13. internal-label leak gate;
+14. PDF artifact upload (`artifact 9035208730`).
 
-One mild underfull box remains in the log. It is not treated as a publication defect absent a visible layout problem.
-
-This build is presentation/execution evidence, not a replacement for the independent delta recheck.
+This build is presentation/execution evidence, not a substitute for the second independent mathematical review.
 
 ## Review state
 
-The independent full reader reviewed preceding source `654189fe...`, found no fatal mathematical defect, and advised bounded revision. Those revisions produced `3899f40...`. The next assurance action is an independent delta recheck of that change set. The selected visual design remains frozen absent a concrete defect.
+The first independent full reader reviewed preceding source `654189fe...`, found no fatal mathematical defect, and advised bounded revision. Those revisions were applied before the present maintenance pass. The Owner has chosen a **clean second independent full review** of current source `20fd8c77...`, rather than relying on a narrow delta recheck. The visual design and equation-reference infrastructure are now frozen absent a concrete defect found by that reviewer or the Owner.
