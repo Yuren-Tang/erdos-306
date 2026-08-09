@@ -1,14 +1,14 @@
 # E306 Owner review packet
 
-**Current manuscript source:** `Yuren-Tang/erdos-306:paper/e306-anchor-fibre-v1@3899f40fb493c2e2f2894f432cada64437a0964c`  
+**Current manuscript source:** `Yuren-Tang/erdos-306:paper/e306-anchor-fibre-v1@20fd8c774397faf14208fcdce550b344a6e9b77b`  
 **Title:** *Squarefree Semiprime Unit Fractions: A Characterization and a Local Limit Theorem*  
-**Status:** independent full-review return received on preceding source `654189fe...`; bounded revision applied; exact revised-source clean build PASS; independent delta recheck remains before fixed-object review closure.  
-**Clean-build run:** GitHub Actions run `31292599279` (PASS, 35-page PDF).  
+**Status:** first independent full-review return received on earlier source `654189fe...`; bounded revision completed; source-maintenance pass completed; exact current-source clean build PASS; clean second independent full review is next.  
+**Clean-build run:** GitHub Actions run `31303386599` (PASS, 35-page A4 PDF).  
 **Publication action:** none authorized by this packet.
 
 ## 1. Current theorem package
 
-The theorem package is unchanged by the post-review revision:
+The theorem package is unchanged by the post-review source-maintenance pass:
 
 1. squarefree-denominator characterization with arbitrary finite avoidance;
 2. direct proper-target theorem for fixed reduced `t=a/b in (0,1)`, squarefree `b`, fixed `gamma>2` and `t < (log gamma)^2/2 < 1`;
@@ -18,85 +18,66 @@ The theorem package is unchanged by the post-review revision:
 
 The article still excludes the `gamma<=2` transition regimes, growing standardized windows, bivariate/prescribed-cardinality local limits, full AFT, sparse/multiblock routes, restricted-prime programmes, and deletion resilience.
 
-## 2. Independent review received
+## 2. First independent review and bounded revision
 
-The Owner supplied an independent review of the complete TeX/PDF at `654189fe67b575bd539092f1700754835ee7ebda`. The reader:
+The Owner supplied an independent review of complete source/PDF object `654189fe67b575bd539092f1700754835ee7ebda`. The reader found no fatal mathematical defect, stress-tested the Sections 4--6 core, and advised bounded revision. The Director disposition is preserved in `INDEPENDENT_REVIEW_DISPOSITION_2026-08-09.md`.
 
-- found no fatal mathematical defect;
-- specifically stress-tested the zero-exception anchor-rigidity and weighted row-compression mechanisms in Sections 4--5;
-- found the decoder-range discipline and Section 6 assembly credible and closed;
-- judged the paper mature for arXiv and formal journal review after bounded revision;
-- identified one genuine local statement-hygiene defect in the no-wrap lemma and several useful expository/typographic improvements.
+The bounded mathematical/expository revision produced source `3899f40fb493c2e2f2894f432cada64437a0964c`, which clean-built successfully. The first review remains genuine assurance for its reviewed object; it is historical evidence, not an automatic PASS on the current fixed object.
 
-The Director disposition is recorded in `INDEPENDENT_REVIEW_DISPOSITION_2026-08-09.md`.
+## 3. Final Owner-requested maintenance before second review
 
-This review is genuine assurance for `654189fe...`; it is not silently promoted to a fixed-object PASS on the revised source.
+The Owner then requested two source-maintenance decisions before arranging a fresh independent review.
 
-## 3. Bounded revision applied
+### A. Equation references
 
-Exact revised manuscript source:
+The earlier explicit equation numbers are preserved exactly, but formula references now use ordinary LaTeX/hyperref infrastructure.
 
-`3899f40fb493c2e2f2894f432cada64437a0964c`.
+- **190** explicit visible `\tag{section.number}` displays remain.
+- Each has exactly one equation label.
+- There are **190 unique equation labels** and **94 equation references**.
+- Existing descriptive labels `eq:unit-character` for (8.4) and `eq:moving-profile` for (8.15) were retained instead of stacking generated numeric aliases.
+- Other displays use `eq:section.number` fallback labels.
+- The former global synthetic `\eqref` override is removed.
+- The workflow rejects missing targets, duplicate/multiple labels, legacy bare numeric `\eqref`, and internal-label leakage into extracted PDF text.
 
-Applied changes:
+The visible equation numbers and mathematical formulas are unchanged.
 
-- made the eventual `Lambda<1` hypothesis explicit in No-wrap;
-- renamed Section 2 prime-harmonic `S_X` notation to avoid collision with the random reciprocal sum;
-- added the Section 6 scale hierarchy;
-- moved the Lean-vs-analytic distinction immediately after the headline theorem and described the paper as a self-contained analytic resolution;
-- foregrounded the target rows as a negligible-mass/high-observability arithmetic correction;
-- added only the elementary `Corr(S_X,K_X)->0` calculation as motivation for later joint statistics, explicitly not as a theorem;
-- enlarged the short bibliography to `\small`;
-- reflowed the long Introduction display that caused the independent reader's reported overflow;
-- replaced one especially engineering-heavy phrase by `detectable`.
+### B. Greek dedication face
 
-No theorem, proof range, construction, estimate, or quantifier was intentionally altered.
+The Owner correctly recalled an earlier E306 instruction that the dedication should use **EB Garamond only**, provided it compiled, embedded, and extracted cleanly without disturbing the body typography. That conditional choice had not previously been completed; the landed path had instead gone through GFS Didot and then GFS Artemisia.
 
-## 4. Suggestions not adopted
+The current XeLaTeX/OpenType test succeeded. The final dedication therefore uses EB Garamond Regular, while body text remains ETbb and mathematics remains NewTX. The Greek wording and all dedication spacing/size decisions are unchanged:
 
-- **Greek `ΟΙΣ -> ΟΥΣ`: not adopted.** The proposed correction overlooks classical relative attraction: with an omitted dative antecedent, the relative pronoun may be attracted from the accusative required inside its clause into the dative of that antecedent. `ΚΑΙ ΟΙΣ ΦΙΛΩ` is therefore retained.
-- **Dedication font: unchanged.** The controlling E306 choice is GFS Artemisia Regular, not EB Garamond. The dedicated microtypography record is issue #8 comment `5109693351`.
-- **New Anchor/Row package propositions: not added.** Sections 4 and 5 already collect those interfaces in prose; formal duplication would enlarge the theorem surface without strengthening the argument.
-- **Full formula-label refactor: deferred.** The current explicit numeric scheme is clean-built and protected by a leaked-label gate. A complete semantic-label migration is a later, separately audited source-maintenance task.
-- **Sparse sensors / critical `gamma` window / growing `U_X` / abstract sensing graph: deferred to later research.** None is allowed to delay Article 1.
+`ΤΟΙΣ ΕΜΕ ΦΙΛΟΥΣΙΝ`
 
-## 5. Revised clean-build status — PASS
+`ΚΑΙ ΟΙΣ ΦΙΛΩ`
 
-GitHub Actions run `31292599279` clean-built the exact source above. It passed:
+Equal-scale first-page renders of the Artemisia and EB Garamond builds were visually compared. EB Garamond is retained: it is narrower and quieter and integrates more naturally with the ETbb title page while remaining distinct from the author line and body.
 
-- frozen-source identity and Oxford spelling;
-- XeLaTeX/Biber;
-- bibliography/reference/label and missing-glyph checks;
-- a new hard **overfull-hbox** gate;
-- embedded fonts / no Type 3;
-- Unicode extraction of both Greek dedication lines, ORCID, and `Erdős`;
-- internal-label leak gate;
-- PDF artifact upload.
+## 4. Current exact source and clean build
 
-The revised PDF is 35 A4 pages. One mild underfull box remains and is not treated as a visual/correctness defect.
+The exact second-review manuscript source is
+
+`20fd8c774397faf14208fcdce550b344a6e9b77b`.
+
+GitHub Actions run `31303386599` (run 196; execution head `4bafe3eca68a8a823167e77ba9aeda744a2c9830`) clean-built that source and passed the full source/reference/build/font/extraction gate. The resulting PDF is **35 A4 pages**; EB Garamond is embedded as a subsetted CID OpenType font, with no Type 3 fonts and exact Greek Unicode extraction. PDF artifact: `9035208730`.
+
+No theorem, proof range, construction, estimate, displayed mathematical formula, visible equation number, or quantifier was intentionally changed by the equation-reference/font maintenance pass.
+
+## 5. Greek wording remains fixed
+
+The first independent review suggested `ΟΙΣ -> ΟΥΣ`; this remains not adopted. Classical relative attraction supports the dative relative when the omitted antecedent is dative. The current wording is therefore deliberate, not an unresolved typo.
 
 ## 6. Exact next review request
 
-The next independent task should be a **delta recheck**, not another open-ended full review:
+The Owner has chosen a **clean second independent full review**, not a delta-only recheck. The reviewer should assess current source `20fd8c77...` as a fresh fixed object and should not be asked to inherit the first review's conclusions.
 
-```text
-base: 654189fe67b575bd539092f1700754835ee7ebda
-head: 3899f40fb493c2e2f2894f432cada64437a0964c
-```
+The dedicated handoff is:
 
-Ask the checker to verify that:
+`SECOND_INDEPENDENT_REVIEW_PACKET_2026-08-09.md`.
 
-1. the explicit No-wrap hypothesis now matches the proof context;
-2. notation renaming is complete and semantic-preserving;
-3. the scale hierarchy is correct for every fixed `gamma>2`;
-4. the early Lean/analytic clarification makes no stronger provenance claim;
-5. the target-row paragraph accurately distinguishes asymptotically negligible mass from arithmetic observability;
-6. the `Corr(S_X,K_X)->0` calculation is correct and clearly labelled motivational only;
-7. no mathematical statement, estimate, range, construction, or quantifier changed accidentally;
-8. the revised PDF/source remains clean and publication-readable.
+The review should cover the full mathematical dependency cone, statement/proof agreement, all Section 4--6 estimates and exhaustion, moving-target transfer, entropy consequences, characterization/finite avoidance closure, citations/provenance, and the integrity of the equation-reference surface. Typography/build correctness should be checked as a secondary fixed-object property.
 
-A delta PASS may then close the current independent-review gate. If the checker finds a substantive new issue, reopen only its dependency cone.
+## 7. Publication gate
 
-## 7. Owner disposition after delta PASS
-
-After the delta recheck, the remaining Owner decision is publication routing, not another round of scope expansion. No merge, tag, release, DOI metadata change, arXiv upload, journal submission, endorsement request, or external contact follows automatically.
+A successful second independent review may close the present mathematical review gate, subject to Owner disposition. It does **not** itself authorize merge, tag, release, DOI changes, arXiv upload, journal submission, endorsement requests, or external contact.
