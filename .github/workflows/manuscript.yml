@@ -24,7 +24,7 @@ jobs:
 
       - name: Verify frozen manuscript source
         run: |
-          git diff --exit-code 2484a277abfd34619a05c2099cf043ad811ebbd5 -- \
+          git diff --exit-code 643124b429514581cdf1124e3414449487d13fbe -- \
             main.tex references.bib sections
 
       - name: Guard Oxford manuscript spelling
@@ -111,9 +111,7 @@ jobs:
           if len(labels) != len(set(labels)):
               raise SystemExit("Duplicate equation labels")
           if len(tags) != len(labels):
-              raise SystemExit(
-                  f"Expected one equation label per tagged display; tags={len(tags)}, labels={len(labels)}"
-              )
+              raise SystemExit(f"Expected one equation label per tagged display; tags={len(tags)}, labels={len(labels)}")
           missing = sorted(set(refs) - set(labels))
           if missing:
               raise SystemExit("Equation references without targets: " + repr(missing))
@@ -128,15 +126,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
-            latexmk \
-            biber \
-            poppler-utils \
-            texlive-bibtex-extra \
-            texlive-fonts-extra \
-            texlive-fonts-recommended \
-            texlive-latex-extra \
-            texlive-plain-generic \
-            texlive-xetex
+            latexmk biber poppler-utils texlive-bibtex-extra texlive-fonts-extra \
+            texlive-fonts-recommended texlive-latex-extra texlive-plain-generic texlive-xetex
 
       - name: Verify required typography files
         run: |
@@ -157,9 +148,7 @@ jobs:
       - name: Extract PDF text
         if: always()
         run: |
-          if test -s main.pdf; then
-            pdftotext -enc UTF-8 main.pdf main.txt
-          fi
+          if test -s main.pdf; then pdftotext -enc UTF-8 main.pdf main.txt; fi
 
       - name: Upload build diagnostics
         if: always()
@@ -179,63 +168,45 @@ jobs:
           test -s main.pdf
           test -s main.bbl
           if grep -E "LaTeX Warning: (There were undefined references|Citation .* undefined|Reference .* undefined|Label .* multiply defined)" main.log; then
-            echo "::error::unresolved or duplicate references remain"
-            exit 1
+            echo "::error::unresolved or duplicate references remain"; exit 1
           fi
           if grep -E "There were undefined references|undefined citations|multiply-defined labels|Multiple \\label" main.log; then
-            echo "::error::unresolved, duplicate, or multiple equation labels remain"
-            exit 1
+            echo "::error::unresolved, duplicate, or multiple equation labels remain"; exit 1
           fi
           if grep -q "Missing character:" main.log; then
-            echo "::error::the final TeX pass contains missing glyphs"
-            grep "Missing character:" main.log
-            exit 1
+            echo "::error::the final TeX pass contains missing glyphs"; grep "Missing character:" main.log; exit 1
           fi
           if grep -Fq 'Overfull \hbox' main.log; then
-            echo "::error::the final TeX pass contains an overfull hbox"
-            grep -F 'Overfull \hbox' main.log
-            exit 1
+            echo "::error::the final TeX pass contains an overfull hbox"; grep -F 'Overfull \hbox' main.log; exit 1
           fi
           if grep -E "(^|[[:space:]])(WARN|ERROR) -" main.blg; then
-            echo "::error::Biber reported a warning or error"
-            exit 1
+            echo "::error::Biber reported a warning or error"; exit 1
           fi
 
       - name: Verify embedded fonts, Unicode dedication, and ORCID
         run: |
           pdffonts main.pdf | tee main-fonts.txt
-          if grep -q "Type 3" main-fonts.txt; then
-            echo "::error::Type 3 fonts are not permitted"
-            exit 1
-          fi
+          if grep -q "Type 3" main-fonts.txt; then echo "::error::Type 3 fonts are not permitted"; exit 1; fi
           awk 'NR > 2 && $(NF-4) != "yes" { bad=1 } END { exit bad }' main-fonts.txt
           grep -Eqi "STIXTwoText|STIX2Text|STIXTwo" main-fonts.txt
           python3 - <<'PY'
-          import re
-          import unicodedata
+          import re, unicodedata
           from pathlib import Path
           text = unicodedata.normalize("NFC", Path("main.txt").read_text(encoding="utf-8"))
-          required = [
-              "ΤΟΙΣ ΕΜΕ ΦΙΛΟΥΣΙΝ",
-              "ΚΑΙ ΟΙΣ ΦΙΛΩ",
-              "0009-0006-0847-3330",
-              "Erdős",
-          ]
+          required = ["ΤΟΙΣ ΕΜΕ ΦΙΛΟΥΣΙΝ", "ΚΑΙ ΟΙΣ ΦΙΛΩ", "0009-0006-0847-3330", "Erdős"]
           missing = [s for s in required if s not in text]
-          if missing:
-              raise SystemExit("Required dedication/identity/text extraction failed: " + repr(missing))
+          if missing: raise SystemExit("Required dedication/identity/text extraction failed: " + repr(missing))
           leaked = sorted(set(re.findall(r"\b(?:eq|thm|sec|lem|prop):[A-Za-z0-9_.:-]+", text)))
-          if leaked:
-              raise SystemExit("Internal LaTeX label names leaked into PDF text: " + repr(leaked))
+          if leaked: raise SystemExit("Internal LaTeX label names leaked into PDF text: " + repr(leaked))
           PY
 
       - name: Build summary
         run: |
           {
-            echo "## E306 sparse-target gamma>1 condensed candidate build"
+            echo "## E306 sparse-target gamma>1 final-candidate build"
             echo
             echo "- Commit: $GITHUB_SHA"
-            echo "- Frozen manuscript source: \`2484a277abfd34619a05c2099cf043ad811ebbd5\` (main.tex + references + sections)"
+            echo "- Frozen manuscript source: \`643124b429514581cdf1124e3414449487d13fbe\` (main.tex + references + sections)"
             echo "- Entry point: \`paper/e306-anchor-fibre-v1/manuscript/main.tex\`"
             echo "- Engine: XeLaTeX"
             echo "- Body text/math typography: ETbb OpenType / NewTX"
@@ -249,7 +220,7 @@ jobs:
       - name: Upload manuscript PDF
         uses: actions/upload-artifact@v4
         with:
-          name: e306-sparse-target-gamma1-condensed-pdf-${{ github.sha }}
+          name: e306-sparse-target-gamma1-final-candidate-pdf-${{ github.sha }}
           path: paper/e306-anchor-fibre-v1/manuscript/main.pdf
           if-no-files-found: error
           retention-days: 30
