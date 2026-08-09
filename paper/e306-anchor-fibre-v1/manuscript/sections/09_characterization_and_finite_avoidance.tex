@@ -99,39 +99,8 @@ r=q-\sum_{e\in S}\frac1e>0.
 Write $q$ and all $1/e$, $e\in S$, over one common denominator $D$. Since the reduced denominator of $q$ and every $e\in S$ is squarefree, $D$ is squarefree. Thus $r=N/D$ for some positive integer $N$, and the reduced denominator of $r$ divides $D$. Theorem \ref{thm:characterization} therefore represents $r$ using denominators outside $S\cup T$. Adjoining that support to $S$ gives the result.
 \end{proof}
 
-\subsection{Common proper refinements}
+\begin{remark}[Common proper refinements]\label{rem:common-refinement}
+Finite avoidance also gives common proper refinements. For two representations of the same $q$, take the squarefree least common multiple $D$ of all their denominators, write the resulting integer weights as row and column sums of a nonnegative integral transportation matrix, and represent each positive cell value $x_{ij}/D$ successively while forbidding every denominator already used. The resulting pairwise disjoint cell supports refine both representations; iteration handles any finite family and any additional finite forbidden set.
+\end{remark}
 
-\begin{proposition}[Common proper refinement]\label{prop:common-refinement}
-Any finite family of squarefree-semiprime representations of the same positive rational $q$ with squarefree reduced denominator admits a common proper refinement. The refining denominators may also be required to avoid any prescribed finite set.
-\end{proposition}
-
-\begin{proof}
-It is enough to treat two representations and then iterate. Write
-\[
-q=\sum_{i=1}^r\frac1{e_i}
-=\sum_{j=1}^s\frac1{f_j}.
-\]
-Let $D$ be the least common multiple of all $e_i$ and $f_j$. It is squarefree. Put
-\[
-a_i=\frac{D}{e_i},
-\qquad
-b_j=\frac{D}{f_j}.
-\]
-Then
-\[
-\sum_i a_i=\sum_j b_j=qD.
-\]
-Choose a nonnegative integral matrix $(x_{ij})$ with row sums $a_i$ and column sums $b_j$; the usual northwest-corner construction gives one.
-
-For every positive entry $x_{ij}$, the rational $x_{ij}/D$ has squarefree reduced denominator. Apply Theorem \ref{thm:characterization} successively to realize each positive $x_{ij}/D$, forbidding all original denominators, the externally prescribed finite set, and every denominator already used in an earlier cell. The cell supports are then pairwise disjoint.
-
-For fixed $i$, the union of the row-$i$ supports has reciprocal sum
-\[
-\sum_j\frac{x_{ij}}D
-=\frac{a_i}{D}
-=\frac1{e_i};
-\]
-for fixed $j$, the column union similarly sums to $1/f_j$. The same new family therefore refines both original representations. Since no original denominator is reused, the refinement is proper. Iterating gives a common refinement of any finite family.
-\end{proof}
-
-Repeated application produces infinite chains of proper refinements with pairwise disjoint new levels. These structural consequences are not used elsewhere; they are included to show that finite avoidance is substantially stronger than bare existence.
+These structural consequences are not used elsewhere; they show that finite avoidance is substantially stronger than bare existence.
