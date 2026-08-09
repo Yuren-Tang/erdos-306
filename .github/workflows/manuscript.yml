@@ -24,7 +24,7 @@ jobs:
 
       - name: Verify frozen manuscript source
         run: |
-          git diff --exit-code cb59192c4ec289afbf377d99c100d8291153153f -- \
+          git diff --exit-code 7f69c3dfe8f7e3a4218434cfc9fada4cd28fffa7 -- \
             main.tex references.bib sections
 
       - name: Guard Oxford manuscript spelling
@@ -32,7 +32,6 @@ jobs:
           python3 - <<'PY'
           import re
           from pathlib import Path
-
           files = [Path("main.tex"), *sorted(Path("sections").glob("*.tex"))]
           forbidden = {
               r"\bcentered\b": "centred",
@@ -201,7 +200,7 @@ jobs:
             echo "## E306 second-review candidate build"
             echo
             echo "- Commit: $GITHUB_SHA"
-            echo "- Frozen manuscript source: \`cb59192c4ec289afbf377d99c100d8291153153f\` (main.tex + references + sections)"
+            echo "- Frozen manuscript source: \`7f69c3dfe8f7e3a4218434cfc9fada4cd28fffa7\` (main.tex + references + sections)"
             echo "- Entry point: \`paper/e306-anchor-fibre-v1/manuscript/main.tex\`"
             echo "- Engine: XeLaTeX"
             echo "- Body text/math typography: ETbb OpenType / NewTX"
