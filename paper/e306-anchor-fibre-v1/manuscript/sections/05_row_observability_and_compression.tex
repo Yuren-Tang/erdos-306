@@ -5,7 +5,15 @@ Let
 \mathcal R=(\mathcal P\setminus\mathcal B)\cup S_b.
 \tag{5.1}\label{eq:5.1}
 \]
-Fix an anchor assignment on $\mathcal B$. For $r\in\mathcal R$, a row residue $x\in\Z/r\Z$, and $q\in\mathcal B$, let
+For each row prime put
+\[
+\mathcal B_r=
+\begin{cases}
+\mathcal B,&r\in\mathcal P\setminus\mathcal B,\\
+\mathcal B_*,&r\in S_b.
+\end{cases}
+\]
+Thus the lower prime rows retain the complete anchor block, whereas the finitely many target coordinates use only the sparse sensor set. Fix an anchor assignment on $\mathcal B$. For $r\in\mathcal R$, a row residue $x\in\Z/r\Z$, and $q\in\mathcal B_r$, let
 \[
 u_{rq}(x)\in\R/\Z
 \]
@@ -75,24 +83,28 @@ D_r
 Moreover $M_{\mathcal B}/\mu_r\gg r/\log Z\ge X/\log Z\to\infty$, so the largeness condition is uniform.
 \end{proof}
 
-\begin{proposition}[Target-row distance]\label{prop:target-row-distance}
+\begin{proposition}[Sparse target-row distance]\label{prop:target-row-distance}
 For every prime $r\mid b$,
 \[
-D_r\ge\frac{M_{\mathcal B}}{r^2}
-\gg_b\frac{Z}{\log Z}.
+D_r:=
+\min_{d\ne0\bmod r}
+\sum_{q\in\mathcal B_*}
+\left\|\frac{dq^{-1}}r\right\|^2
+\ge\frac{K_*}{r^2}
+\gg_b(\log Z)^2.
 \tag{5.6}\label{eq:5.6}
 \]
 \end{proposition}
 
 \begin{proof}
-Every $q\in\mathcal B$ is coprime to $r$. If $d\not\equiv0\pmod r$, then $dq^{-1}\not\equiv0\pmod r$, so
+Every $q\in\mathcal B_*$ is coprime to $r$. If $d\not\equiv0\pmod r$, then $dq^{-1}\not\equiv0\pmod r$, so
 \[
 \left\|\frac{dq^{-1}}r\right\|\ge\frac1r.
 \]
-Summing over $q\in\mathcal B$ gives the result. No distribution of primes in arithmetic progressions is used.
+Summing over the $K_*$ retained sensors gives the result. No distribution of the primes in $\mathcal B_*$ is used.
 \end{proof}
 
-The target rows have negligible reciprocal mass but, because $b$ is fixed, are particularly strong sensors of the residue modulo each prime dividing $b$.
+The target rows are therefore sparse in mass but strong in observability. Their only required population property is $K_*\to\infty$ fast enough that the row-tail loss remains superpolynomially small.
 
 \subsection{Row concentration}
 
@@ -100,20 +112,20 @@ For $r\in\mathcal R$, define the complex row product
 \[
 B_r(x)
 =
-\prod_{q\in\mathcal B}
+\prod_{q\in\mathcal B_r}
 \bigl((1-\theta)+\theta e(u_{rq}(x))\bigr),
 \]
 the row energy
 \[
 E_r(x)=
-\sum_{q\in\mathcal B}\|u_{rq}(x)\|^2,
+\sum_{q\in\mathcal B_r}\|u_{rq}(x)\|^2,
 \tag{5.7}\label{eq:5.7}
 \]
 and the row modulus
 \[
 A_r(x)=|B_r(x)|
 =
-\prod_{q\in\mathcal B}
+\prod_{q\in\mathcal B_r}
 \left|(1-\theta)+\theta e(u_{rq}(x))\right|.
 \tag{5.8}\label{eq:5.8}
 \]
@@ -149,9 +161,11 @@ Propositions \ref{prop:lower-row-distance} and \ref{prop:target-row-distance} im
 \Delta:=\sum_{r\in\mathcal R}\delta_r
 \le
 Z^2\exp\!\left(-c\frac{Z}{\log^3Z}\right)
++O_b\!\left(e^{-c_b(\log Z)^2}\right)
 =o(1).
 \tag{5.10}\label{eq:5.10}
 \]
+In particular $Z^A\Delta\to0$ for every fixed $A>0$.
 
 \subsection{Weighted row compression}
 
@@ -163,7 +177,7 @@ B_r(x)/A_r(x),&A_r(x)>0,\\
 0,&A_r(x)=0.
 \end{cases}
 \]
-Then $B_r(x)=A_r(x)\omega_r(x)$ and $|\omega_r(x)|\le1$. Absorb the row phases, retained product, and source character into
+Then $B_r(x)=A_r(x)\omega_r(x)$ and $|\omega_r(x)|\le1$. For the fixed anchor assignment and a fixed row tuple $x_{\mathcal R}$, CRT determines a unique frequency $h\pmod L$. Hence the source character $e(-th)$ is a function of this tuple and may be absorbed, together with the row phases and retained product, into
 \[
 G(x_{\mathcal R})
 =
@@ -255,9 +269,7 @@ Suppose the anchor assignment is coherent with the exact integer label $m$ suppl
 E_r(m\bmod r)
 \le
 \frac{m^2}{r^2}
-\sum_{q\in\mathcal B}\frac1{q^2}
-\ll
-\frac{m^2/r^2}{Z\log Z}.
+\sum_{q\in\mathcal B_r}\frac1{q^2}.
 \tag{5.15}\label{eq:5.15}
 \]
 If this is less than $D_r/8$, then it is the unique minimizer: for any other residue $x$,
@@ -292,7 +304,11 @@ x_r^*=m\pmod r.
 \end{proposition}
 
 \begin{proof}
-The candidate energy in \eqref{eq:5.15} is largest at $r=X$. At $|m|=M_{\mathrm{dec}}$,
+For a lower prime row, \eqref{eq:5.15} gives
+\[
+E_r(m)\ll\frac{m^2/r^2}{Z\log Z}.
+\]
+This is largest at $r=X$. At $|m|=M_{\mathrm{dec}}$,
 \[
 E_r(m)
 \ll
@@ -303,8 +319,10 @@ E_r(m)
 By Proposition \ref{prop:lower-row-distance}, $D_r\gg Z/\log^3Z$, so the ratio tends uniformly to zero. Apply \eqref{eq:5.16}.
 \end{proof}
 
+Put $M_{\mathrm{tar}}=Z/\log Z$.
+
 \begin{proposition}[Target-coordinate decoder]\label{prop:target-decoder}
-For every prime $r\mid b$ and every coherent anchor label with $|m|\le X^2/4$,
+For every prime $r\mid b$ and every coherent anchor label with $|m|\le M_{\mathrm{tar}}$,
 \[
 x_r^*=m\pmod r.
 \tag{5.19}\label{eq:5.19}
@@ -312,32 +330,35 @@ x_r^*=m\pmod r.
 \end{proposition}
 
 \begin{proof}
-By \eqref{eq:5.15},
+For a target coordinate, \eqref{eq:5.15} and $q\asymp Z$ on $\mathcal B_*$ give
 \[
 E_r(m)
 \ll_b
-\frac{X^4}{Z\log Z},
+\frac{m^2K_*}{Z^2}.
 \]
-whereas Proposition \ref{prop:target-row-distance} gives
+Proposition \ref{prop:target-row-distance} gives $D_r\ge K_*/r^2\gg_bK_*$. Hence
 \[
-D_r\gg_b\frac{Z}{\log Z}.
+\frac{E_r(m)}{D_r}
+\ll_b\frac{m^2}{Z^2}
+\le\frac1{\log^2Z}
+\longrightarrow0.
 \]
-The ratio is $O_b(X^4/Z^2)=O_b(X^{4-2\gamma})$, which tends to zero because $\gamma>2$. Apply \eqref{eq:5.16}.
+Apply \eqref{eq:5.16}.
 \end{proof}
 
-Since $b$ is squarefree, agreement modulo every prime divisor of $b$ is agreement modulo $b$. Thus every coherent label with
+Since $\gamma>1$, \eqref{eq:2.19} implies
 \[
-|m|\le X^2/4
+\sigma^{-1}\asymp X\log X=o(M_{\mathrm{tar}}).
 \tag{5.20}\label{eq:5.20}
 \]
-produces exactly the genuine integer frequency $h=m\pmod L$ on the decoded skeleton.
+Since $b$ is squarefree, agreement modulo every prime divisor of $b$ is agreement modulo $b$. Thus every coherent label in any fixed standardized Gaussian range $|m|\le C/\sigma$ produces the genuine integer frequency $h=m\pmod L$ on the decoded skeleton for all sufficiently large $X$.
 
-For
+For target coordinates no decoder identification is asserted beyond $M_{\mathrm{tar}}$. By contrast, Proposition \ref{prop:lower-decoder} still identifies every prime coordinate in $\mathcal P$ throughout
 \[
-X^2/4<|m|\le M_{\mathrm{dec}},
+X^2/4<|m|\le M_{\mathrm{dec}}.
 \tag{5.21}\label{eq:5.21}
 \]
-all prime coordinates in $\mathcal P$ still decode to $m$, although the fixed coordinates of $b$ need not. This weaker conclusion is enough for the retained damping below.
+This weaker conclusion is enough for the retained damping below.
 
 \subsection{Retained lower--lower damping}
 
@@ -352,7 +373,7 @@ lies in $[X,Z/2)$, contains
 K_m\gg\frac{\sqrt{|m|}}{\log|m|}
 \tag{5.23}\label{eq:5.23}
 \]
-primes, and the retained lower--lower factors on the decoded skeleton contribute energy
+primes, and the retained lower--lower factors on the distinguished skeleton contribute energy
 \[
 Q_{\mathrm{ret}}(m)
 \gg
@@ -382,11 +403,11 @@ so
 Hence the circle distance of $m/(pq)$ is at least $1/9$. There are $\gg K_m^2$ retained pairs, all with prime coordinates decoded to $m$. Summing their squared distances proves \eqref{eq:5.24}.
 \end{proof}
 
-By Lemma \ref{lem:bernoulli-modulus}, if $h_m$ denotes the decoded skeleton associated with a coherent label $m$ in the range \eqref{eq:5.21}, then
+By Lemma \ref{lem:bernoulli-modulus}, if $h_m^*$ denotes the distinguished row-minimizer state above a coherent label $m$ in the range \eqref{eq:5.21}, then
 \[
-|F(h_m)|
+|F(h_m^*)|
 \le
 \exp\!\left(-c\frac{|m|}{(\log|m|)^2}\right).
 \tag{5.25}\label{eq:5.25}
 \]
-This notation is used only in the range \eqref{eq:5.21}, where the prime-coordinate decoder has been proved. Beyond $M_{\mathrm{dec}}$ we refer instead to the distinguished row-minimizer state above the coherent anchor label. The anchor has converted low internal energy into one exact label, the row sensors identify the relevant coordinates, Lemma \ref{lem:weighted-skeleton} compresses the off-minimizer states without a cardinality loss, and the unused complete-pair factors suppress coherent labels after the target-coordinate decoder ceases to be needed.
+Only the prime-coordinate decoder is used here; the fixed coordinates of $b$ may already have ceased to decode. Beyond $M_{\mathrm{dec}}$ no decoder identification is asserted. The anchor has converted low internal energy into one exact label, the row sensors identify the coordinates on the ranges where they are needed, Lemma \ref{lem:weighted-skeleton} compresses the off-minimizer states without a cardinality loss, and the unused complete-pair factors suppress coherent labels after full target decoding has ceased.

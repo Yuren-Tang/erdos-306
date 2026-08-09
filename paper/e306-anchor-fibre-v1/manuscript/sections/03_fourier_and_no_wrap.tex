@@ -18,8 +18,7 @@ Let $P^{\mathrm{quot}}$ be the probability of the congruence
 Character orthogonality gives
 \[
 L P^{\mathrm{quot}}
-=
-\sum_{h\bmod L}F(h),
+=\sum_{h\bmod L}F(h),
 \tag{3.3}\label{eq:3.3}
 \]
 where
@@ -76,20 +75,16 @@ The target character has modulus one. Hence the geometry of large Fourier coeffi
 
 Since $L$ is squarefree, CRT identifies a frequency $h\bmod L$ with one residue coordinate modulo every prime dividing $L$. The denominator family naturally separates these coordinates.
 
-The primes in $\mathcal B$ are the \emph{anchor coordinates}. Denominators $qq'$ with $q,q'\in\mathcal B$ measure their internal coherence. Once the anchor is coherent, denominators $rq$ with $q\in\mathcal B$ and
-\[
-r\in(\mathcal P\setminus\mathcal B)\cup S_b
-\]
-observe one remaining row against the common anchor. Denominators involving no anchor prime are deliberately left unused by the decoder and will later provide extra damping.
+The primes in $\mathcal B$ are the \emph{anchor coordinates}. Denominators $qq'$ with $q,q'\in\mathcal B$ measure their internal coherence. Once the anchor is coherent, denominators $rq$ with $q\in\mathcal B$ and $r\in\mathcal P\setminus\mathcal B$ observe the remaining prime rows against the common anchor, while the sparse denominators $rq$ with $q\in\mathcal B_*$ and $r\in S_b$ observe the fixed target coordinates. Denominators involving no anchor prime are deliberately left unused by the decoder and will later provide extra damping.
 
 Every denominator in $\mathcal E$ belongs to exactly one of the classes
 \begin{enumerate}[label=\textup{(\roman*)}]
 \item $qq'$ with $q,q'\in\mathcal B$: anchor--anchor factors;
 \item $rq$ with $q\in\mathcal B$, $r\in\mathcal P\setminus\mathcal B$: lower rows;
-\item $rq$ with $q\in\mathcal B$, $r\in S_b$: target rows;
+\item $rq$ with $q\in\mathcal B_*$, $r\in S_b$: sparse target rows;
 \item $pp'$ with $p,p'\in\mathcal P\setminus\mathcal B$: retained lower--lower factors.
 \end{enumerate}
-This exact partition is load-bearing in Section \ref{sec:rows}: classes (i)--(iii) recover the coherent CRT state, while class (iv) suppresses coherent labels outside the Gaussian range.
+This exact partition is used in Section \ref{sec:rows}: classes (i)--(iii) recover the coherent CRT state where exact identification is needed, while class (iv) suppresses coherent labels after the decoder has done its work.
 
 \subsection{Genuine integer frequencies}
 
@@ -103,7 +98,7 @@ Moreover the linear phase in the logarithm of \eqref{eq:3.4} cancels exactly bec
 \theta\sum_{e\in\mathcal E}\frac1e=t.
 \tag{3.8}\label{eq:3.8}
 \]
-This produces the Gaussian main term in Section \ref{sec:gaussian}. Before the Taylor expansion can control the full Fourier sum, however, we must show that every sufficiently low-energy CRT configuration is not merely close to an integer assignment but is exactly one. Section \ref{sec:anchor} proves this for the anchor block and Section \ref{sec:rows} for the remaining rows.
+This produces the Gaussian main term in Section \ref{sec:gaussian}. Before the Taylor expansion can control the full Fourier sum, however, we must show that every sufficiently low-energy CRT configuration is not merely close to an integer assignment but is exactly one on the coordinates required by the major arc. Section \ref{sec:anchor} proves exact coherence for the anchor block and Section \ref{sec:rows} identifies the remaining coordinates on their respective decoder ranges.
 
 \subsection{No-wrap as a separate exactness step}
 

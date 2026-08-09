@@ -178,7 +178,11 @@ For every nonbad neighbour $q$ of $p_0$, set
 \[
 \ell(q)=H_{p_0q}.
 \]
-Then $|\ell(q)|\le B_0$, $\ell(q)\equiv a_q\pmod q$, and all $\ell(q)$ lie in one residue class modulo $p_0$. Hence the number $M_0$ of possible integer labels satisfies
+Then $|\ell(q)|\le B_0$, $\ell(q)\equiv a_q\pmod q$, and all $\ell(q)$ lie in one residue class modulo $p_0$. For every integer label $m$ that occurs, define its label class by
+\[
+C_m=\{q:\{p_0,q\}\text{ is nonbad and }\ell(q)=m\}.
+\]
+These classes partition the nonbad neighbours of $p_0$, and every $q\in C_m$ satisfies $a_q\equiv m\pmod q$. The number $M_0$ of possible integer labels therefore satisfies
 \[
 M_0\le\frac{2B_0}{Y}+2.
 \tag{4.14}\label{eq:4.14}
@@ -368,7 +372,18 @@ If $w\ne w'$, the difference of the corresponding CRT lifts is divisible by $p$ 
 +
 \frac{|H_{pq}(a_p,w')|}{pq}.
 \]
-After squaring and summing over $p\in F$, Lemma \ref{lem:reciprocal-dispersion} prevents both energies from satisfying \eqref{eq:4.29} when $g$ is sufficiently small.
+Squaring, using $(u+v)^2\le2u^2+2v^2$, and summing over $p\in F$ gives
+\[
+\sum_{p\in F}
+\left\|\frac{(w-w')p^{-1}}q\right\|^2
+\le 2t_q(w)+2t_q(w').
+\]
+On the other hand, Lemma \ref{lem:reciprocal-dispersion} gives the lower bound $c_Ds^3/Y^2$. If both residues satisfied \eqref{eq:4.29}, we would obtain
+\[
+c_D\frac{s^3}{Y^2}
+<4g\frac{s^3}{Y^2},
+\]
+which is impossible once $4g<c_D$. Thus at most one such residue exists.
 \end{proof}
 
 \begin{proposition}[Fingerprint entropy]\label{prop:fingerprint-entropy}

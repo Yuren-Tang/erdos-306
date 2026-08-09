@@ -76,7 +76,7 @@ Since $\theta$ remains in a compact subinterval of $(0,1)$,
 \exp\bigl(-MH(\theta)+O(w)\bigr)
 \tag{7.9}\label{eq:7.9}
 \]
-uniformly in the window. Dividing \eqref{eq:7.7} by this maximum atom and using
+uniformly in the window. Dividing \eqref{eq:7.7} by this uniform upper bound for an atom in the window and using
 \[
 \log P=-\log L-\log\sigma+O(1)=o(M),
 \qquad
@@ -131,5 +131,25 @@ such that
 \tag{7.15}\label{eq:7.15}
 \]
 This completes Theorem \ref{thm:multiplicity}.
+
+\begin{corollary}[Entropy saturation for small proper targets]\label{cor:entropy-saturation}
+Fix a reduced target $0<t<1/2$ with squarefree denominator and choose
+\[
+\gamma=e^{2\sqrt t}.
+\]
+Then the direct family is admissible, $\alpha=1/2$, and
+\[
+\#\left\{A\in\mathcal R_X(t):
+\bigl||A|-\theta M\bigr|\le w\right\}
+\ge 2^{(1-o(1))M}.
+\]
+Moreover some exact cardinality $k_X=\theta M+O(w)$ supports at least $2^{(1-o(1))M}$ exact representations.
+\end{corollary}
+
+\begin{proof}
+Here $(\log\gamma)^2=4t$, so $\lambda_\gamma=2t\in(t,1)$ and $\gamma>1$. Hence $\alpha=t/\lambda_\gamma=1/2$ and $H(\alpha)=\log2$. Apply \eqref{eq:7.10} and \eqref{eq:7.15}.
+\end{proof}
+
+The corollary optimizes the entropy rate per available denominator within this construction. It is not an absolute optimization of the number of representations across different values of $\gamma$, because the ambient family size $M$ itself depends strongly on $\gamma$.
 
 The conclusion is deliberately mesoscopic. We do not prove a prescribed-cardinality asymptotic, a conditional central limit theorem for $|A|$ on the natural $\sqrt M$ scale, or a bivariate local limit for reciprocal sum and cardinality.

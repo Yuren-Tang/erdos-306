@@ -12,20 +12,24 @@ Fix $C\ge1$. The limit $X\to\infty$ will be taken with $C$ fixed, and only after
 N=\left\lfloor\frac{C}{\sigma}\right\rfloor.
 \tag{6.2}\label{eq:6.2}
 \]
-Since $\sigma^{-1}\asymp_{t,\gamma}X\log X$, for fixed $C$ and large $X$,
+Since $\sigma^{-1}\asymp_{t,\gamma}X\log X$ and $\gamma>1$, for fixed $C$ and large $X$,
 \[
-N<X^2/4<M_{\mathrm{dec}}.
+N<\min\left(M_{\mathrm{tar}},\frac{X^2}{4}\right),
+\qquad
+\frac{X^2}{4}<M_{\mathrm{dec}}.
 \tag{6.3}\label{eq:6.3}
 \]
-For orientation, the scales that separate the regimes below satisfy
+For orientation, the invariant scale relations used below are
 \[
-\sigma^{-1}\asymp X\log X
-\ll X^2
-\ll M_{\mathrm{dec}}
-\ll \frac{Z^{3/2}}{\sqrt{\log Z}}
-\ll Z^2,
+\sigma^{-1}\ll X^2,
+\qquad
+\sigma^{-1}\ll M_{\mathrm{tar}},
+\qquad
+X^2\ll M_{\mathrm{dec}},
+\qquad
+\frac{Z^{3/2}}{\sqrt{\log Z}}=o(Z^2).
 \]
-where the penultimate scale is the maximal size supplied by low-energy anchor rigidity in \eqref{eq:4.40}.
+No fixed ordering between $M_{\mathrm{dec}}$ and the low-energy anchor-label ceiling $Z^{3/2}/\sqrt{\log Z}$ is needed. If the former exceeds the latter, the large coherent-label range below is simply empty.
 
 By Section \ref{sec:anchor}, every top assignment is either noncoherent, with anchor energy at least $F_{\mathcal B}$, or coherent with a unique exact integer label $m$. For a coherent assignment, exactly one of the ranges
 \[
@@ -55,27 +59,31 @@ with
 |R_\theta(z)|\le M_0|z|^3.
 \tag{6.6}\label{eq:6.6}
 \]
-Because $\gamma>2$, every denominator in $\mathcal E$ is at least $X^2$ for large $X$. Uniformly for $|m|\le C/\sigma$,
+The pair denominators are at least $X^2$, while the sparse target denominators are comparable with $Z$ up to constants depending on $b$. Uniformly for $|m|\le C/\sigma$,
 \[
-\max_{e\in\mathcal E}\frac{|m|}{e}
-\ll_C\frac{\log X}{X}
-\longrightarrow0.
+\max_{e\in\mathcal E_{\mathrm{pair}}}\frac{|m|}{e}
+\ll_C\frac{\log X}{X}\to0,
+\qquad
+\max_{e\in\mathcal E_b}\frac{|m|}{e}
+\ll_{C,b}\frac{X\log X}{Z}\to0.
 \tag{6.7}\label{eq:6.7}
 \]
-Moreover
+For the aggregate cubic remainder, the pair family gives
 \[
-\sum_{e\in\mathcal E}\left|\frac{m}{e}\right|^3
-\le
-\frac{|m|^3}{X^2}
-\sum_{e\in\mathcal E}\frac1{e^2}
-\ll
-\frac{C^3}{\sigma X^2}
-\ll
-C^3\frac{\log X}{X}
-\longrightarrow0.
+\sum_{e\in\mathcal E_{\mathrm{pair}}}
+\left|\frac{m}{e}\right|^3
+\ll_C\frac{\log X}{X},
+\]
+while the sparse target family gives
+\[
+\sum_{e\in\mathcal E_b}
+\left|\frac{m}{e}\right|^3
+\ll_{C,b}
+K_*\frac{X^3\log^3X}{Z^3}
+=o(1).
 \tag{6.8}\label{eq:6.8}
 \]
-Thus the aggregate cubic remainder in \eqref{eq:6.5} is $o_C(1)$ uniformly throughout the major range.
+The last limit uses $K_*=O((\log Z)^2)$ and fixed $\gamma>1$. Thus the aggregate remainder in \eqref{eq:6.5} is $o_C(1)$ uniformly throughout the major range.
 
 The linear term cancels exactly by \eqref{eq:2.12}:
 \[
@@ -119,13 +127,13 @@ For
 N<|m|\le X^2/4,
 \tag{6.12}\label{eq:6.12}
 \]
-the distinguished state is still the genuine integer frequency $m$. Since every denominator is at least $X^2$,
+Proposition \ref{prop:lower-decoder} identifies every prime coordinate in $\mathcal P$ with $m$; the fixed coordinates of $b$ need not decode in this whole range. Let $h_m^*$ be the distinguished row-minimizer state above the coherent anchor label $m$. On every complete-pair factor its phase is $m/(pq)$, and since $pq\ge X^2$,
 \[
-|m|/e\le1/4,
+\left\|\frac{m}{pq}\right\|=\frac{|m|}{pq}\le\frac14.
 \]
-so $\|m/e\|=|m|/e$. Lemma \ref{lem:bernoulli-modulus} gives
+Discarding the sparse target factors in modulus and using that the pair square mass is asymptotic to the full square mass, Lemma \ref{lem:bernoulli-modulus} gives
 \[
-|F(m)|\le e^{-cm^2\sigma^2}.
+|F(h_m^*)|\le e^{-cm^2\sigma^2}.
 \tag{6.13}\label{eq:6.13}
 \]
 A Gaussian integral comparison yields
@@ -139,12 +147,12 @@ Hence
 \[
 \limsup_{X\to\infty}
 \sigma
-\sum_{N<|m|\le X^2/4}|F(m)|
+\sum_{N<|m|\le X^2/4}|F(h_m^*)|
 \le
 Ke^{-cC^2/2}.
 \tag{6.15}\label{eq:6.15}
 \]
-This is the only complementary range whose normalized bound need not tend to zero at fixed $C$; it disappears when $C\to\infty$.
+This is the only complementary range whose normalized bound need not tend to zero at fixed $C$; it disappears when $C\to\infty$. Full target-coordinate decoding is not used in this modulus-only tail.
 
 \subsection{The intermediate coherent tail}
 
@@ -155,14 +163,14 @@ X^2/4<|m|\le M_{\mathrm{dec}}.
 \]
 All prime coordinates still decode to $m$. By \eqref{eq:5.25},
 \[
-|F(h_m)|
+|F(h_m^*)|
 \le
 \exp\!\left(-c\frac{|m|}{(\log|m|)^2}\right).
 \tag{6.17}\label{eq:6.17}
 \]
 Throughout \eqref{eq:6.16}, $\log|m|\asymp\log X$. There are at most $2M_{\mathrm{dec}}+1=O(XZ)$ labels, so
 \[
-\sum_{X^2/4<|m|\le M_{\mathrm{dec}}}|F(h_m)|
+\sum_{X^2/4<|m|\le M_{\mathrm{dec}}}|F(h_m^*)|
 \ll
 XZ\exp\!\left(-c\frac{X^2}{\log^2X}\right)
 =o(\sigma^{-1}).
@@ -186,7 +194,7 @@ while every row and residual factor has modulus at most one. Therefore
 \exp\!\left(-cM_{\mathrm{dec}}^2\sigma_{\mathcal B,0}^2\right).
 \tag{6.19}\label{eq:6.19}
 \]
-From \eqref{eq:4.38} and \eqref{eq:5.17},
+If no coherent anchor label reaches this range, the sum is empty and the same bound is trivial. Otherwise, from \eqref{eq:4.38} and \eqref{eq:5.17},
 \[
 M_{\mathrm{dec}}^2\sigma_{\mathcal B,0}^2
 \gg
@@ -210,12 +218,14 @@ O(e^{-cF_{\mathcal B}}).
 This controls the distinguished row-minimizer contribution above every noncoherent anchor assignment, since all remaining factors have modulus at most one. Independently, \eqref{eq:5.14} controls the sum of all off-minimizer row states over \emph{every} anchor assignment, coherent or not:
 \[
 O\!\left(
-Z\log Z\cdot
+Z\log Z\left[
 Z^2e^{-cZ/\log^3Z}
++e^{-c_b(\log Z)^2}
+\right]
 \right).
 \tag{6.23}\label{eq:6.23}
 \]
-Thus no row fibre is omitted from the assembly: noncoherent distinguished states are covered by \eqref{eq:6.22}, and all off-minimizer states are covered once and for all by \eqref{eq:6.23}. Both quantities are $o(\sigma^{-1})$, because $\sigma^{-1}\asymp X\log X$ while $Z=X^\gamma$ with fixed $\gamma>2$.
+Thus no row fibre is omitted from the assembly: noncoherent distinguished states are covered by \eqref{eq:6.22}, and all off-minimizer states are covered once and for all by \eqref{eq:6.23}. Both quantities are $o(\sigma^{-1})$, because $\sigma^{-1}\asymp X\log X$ and the displayed errors decay faster than every fixed power of $Z$.
 
 \subsection{Assembly and the local limit}
 
@@ -242,8 +252,7 @@ Ke^{-cC^2/2}.
 Now let $C\to\infty$. Since
 \[
 \int_{\R}e^{-2\pi^2u^2}\,du
-=
-\frac1{\sqrt{2\pi}},
+=\frac1{\sqrt{2\pi}},
 \tag{6.26}\label{eq:6.26}
 \]
 we obtain

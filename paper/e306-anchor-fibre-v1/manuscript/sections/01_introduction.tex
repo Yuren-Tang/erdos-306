@@ -24,7 +24,7 @@ The analytic theorem behind the converse is stronger than the unit target sugges
 \[
 t=\frac ab\in(0,1)
 \]
-with squarefree denominator $b$, and fix $\gamma>2$ such that
+with squarefree denominator $b$, and fix $\gamma>1$ such that
 \[
 t<\lambda_\gamma:=\frac{(\log\gamma)^2}{2}<1.
 \tag{1.1}\label{eq:1.1}
@@ -38,13 +38,17 @@ Z&=X^\gamma,\\
 \end{aligned}
 \tag{1.2}\label{eq:1.2}
 \]
-If $S_b$ is the set of prime divisors of $b$, define
+Let
+\[
+K_X^*=\left\lceil(\log Z)^2\right\rceil
+\]
+and choose any $\mathcal B_X^*\subset\mathcal B_X$ with $|\mathcal B_X^*|=K_X^*$ once $X$ is large. If $S_b$ is the set of prime divisors of $b$, define
 \[
 \mathcal E_X
 =
 \{pq:p,q\in\mathcal P_X,\ p<q\}
 \sqcup
-\{rq:r\in S_b,\ q\in\mathcal B_X\}.
+\{rq:r\in S_b,\ q\in\mathcal B_X^*\}.
 \tag{1.3}\label{eq:1.3}
 \]
 For large $X$, every element of $\mathcal E_X$ is a distinct squarefree semiprime and any fixed finite forbidden set is automatically avoided. Write
@@ -71,7 +75,7 @@ S_X=\sum_{e\in\mathcal E_X}\frac{\xi_e}{e},
 \sigma_X^2=\operatorname{Var}(S_X).
 \tag{1.6}\label{eq:1.6}
 \]
-Then $\mathbb E S_X=t$ and, because $\gamma>2$ makes the target-row square mass lower order,
+Then $\mathbb E S_X=t$. The sparse target rows contribute only $O_b((\log Z)^2/Z^2)$ to the reciprocal square mass, so for every fixed $\gamma>1$ the complete prime-pair block supplies the leading variance:
 \[
 \sigma_X^2
 \sim
@@ -86,7 +90,7 @@ W_X(s)=\Pr(S_X=s).
 The Bernoulli-weighted exact coefficients have a local Gaussian profile.
 
 \begin{theorem}[Local Gaussian profile]\label{thm:local-profile}
-Fix a reduced $t=a/b\in(0,1)$ with squarefree $b$, and fix $\gamma>2$ satisfying \eqref{eq:1.1}. For every fixed $U>0$, uniformly for integers
+Fix a reduced $t=a/b\in(0,1)$ with squarefree $b$, and fix $\gamma>1$ satisfying \eqref{eq:1.1}. For every fixed $U>0$, uniformly for integers
 \[
 |j|\le U L_X\sigma_X,
 \]
@@ -160,7 +164,7 @@ one has
 \]
 \end{theorem}
 
-The exponent $H(\alpha)$ is the ambient binomial entropy exponent near the typical Bernoulli cardinality. At exponential scale, the exact reciprocal-sum constraint therefore costs only the subexponential lattice factor already visible in the local limit, within this mesoscopic cardinality window.
+The exponent $H(\alpha)$ is the ambient binomial entropy exponent near the typical Bernoulli cardinality. At exponential scale, the exact reciprocal-sum constraint therefore costs only the subexponential lattice factor already visible in the local limit, within this mesoscopic cardinality window. For $0<t<1/2$, one may choose $\gamma=e^{2\sqrt t}$ so that $\alpha=1/2$ and the rate is the full binary entropy $\log2$; Section \ref{sec:multiplicity} records this as a short corollary.
 
 The moving part of Theorem \ref{thm:local-profile} gives a second form of abundance. Since $L_X\sigma_X\to\infty$ while $\sigma_X\to0$, one fixed family $\mathcal E_X$ realizes a consecutive block of
 \[
@@ -200,14 +204,14 @@ The difficulty is that $L_X$ contains every prime in $\mathcal P_X$. A general f
 
 The top block $\mathcal B_X$ acts as an \emph{anchor}. Denominators $qq'$ with $q,q'\in\mathcal B_X$ measure an internal quadratic energy. We prove that sufficiently low anchor energy forces every anchor coordinate to be the reduction of one and the same integer $m$, with no exceptional coordinates. Above the forcing threshold, a fingerprint argument controls the complete weighted population of anchor assignments.
 
-Once the anchor label $m$ is known, the factors $rq$ with $q\in\mathcal B_X$ observe each remaining CRT coordinate against the common anchor. A multiplicity-sensitive inverse-residue estimate gives a quantitative distance between different row states, so in the local-limit range the unique least-energy state is exactly $m$ modulo the row prime. Factors not used for decoding are retained and later suppress coherent labels outside the Gaussian range.
+Once the anchor label $m$ is known, the complete cross factors $rq$ with $q\in\mathcal B_X$ and $r\in\mathcal P_X\setminus\mathcal B_X$ observe every remaining prime coordinate against the common anchor. The fixed coordinates $r\mid b$ need much less: any $K_X^*$ top primes already separate their residue states, so only the sparse rows $rq$ with $q\in\mathcal B_X^*$ are retained. Factors not used for decoding are kept and later suppress coherent labels outside the Gaussian range.
 
-The target rows illustrate a useful separation of roles. Their reciprocal mass and, for fixed $\gamma>2$, their square mass are asymptotically negligible, so they do not alter the limiting mean or leading variance; nevertheless, because $b$ is fixed, they give strong residue separation at the coordinates dividing $b$. A vanishing-mass correction can therefore restore arithmetic observability without changing the limiting Gaussian law.
+The sparse target rows illustrate a useful separation of roles. Their reciprocal mass, square mass, and cardinality are all negligible compared with the complete pair family, yet because $b$ is fixed they give exponentially strong row concentration and exact residue identification on the major arc. A vanishing-mass correction can therefore restore arithmetic observability without changing the limiting Gaussian law.
 
 The Fourier sum therefore has three conceptual pieces:
 \begin{enumerate}[label=\textup{(\roman*)}]
 \item a Gaussian core of genuine integer frequencies $|m|=O(\sigma_X^{-1})$;
-\item coherent tails, suppressed either by the full variance or by retained complete-pair damping;
+\item coherent tails, suppressed either by the complete-pair variance or by retained complete-pair damping;
 \item an incoherent remainder consisting of energetic anchor assignments and off-minimizer row states, whose total weighted mass is exponentially small.
 \end{enumerate}
 The technical proof subdivides the coherent tails at two transition scales, but these are subordinate to the three-part structure above.

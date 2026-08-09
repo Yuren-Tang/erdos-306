@@ -5,7 +5,7 @@ The analytic work is complete. We now pass from a direct proper target to arbitr
 \subsection{The direct proper-target theorem}
 
 \begin{theorem}[Avoiding representation of a proper target]\label{thm:avoiding-target}
-Let $t=a/b\in(0,1)$ be reduced with squarefree $b$, let $T\subset\N$ be finite, and fix $\gamma>2$ with
+Let $t=a/b\in(0,1)$ be reduced with squarefree $b$, let $T\subset\N$ be finite, and fix $\gamma>1$ with
 \[
 t<\frac{(\log\gamma)^2}{2}<1.
 \]
@@ -20,9 +20,9 @@ Then, for all sufficiently large $X$, there is a finite set $A\subseteq\mathcal 
 By Lemma \ref{lem:arithmetic-shape}, for sufficiently large $X$ the direct family consists of pairwise distinct squarefree semiprimes outside $T$. The central local limit \eqref{eq:6.28} gives $P=W_X(t)>0$ for all sufficiently large $X$, so some subset represents $t$ exactly.
 \end{proof}
 
-Every proper rational target is covered by some exponent in this pair-dominant regime. Indeed, for $0<t<1$ the interval
+Every proper rational target is covered by some exponent in this regime. Indeed, for $0<t<1$ the interval
 \[
-\max\!\left(2,e^{\sqrt{2t}}\right)
+e^{\sqrt{2t}}
 <\gamma<e^{\sqrt2}
 \tag{9.2}\label{eq:9.2}
 \]
@@ -37,11 +37,11 @@ For necessity, suppose
 \[
 q=\sum_{e\in A}\frac1e
 \]
-with every $e$ squarefree, and put $M=\operatorname{lcm}(A)$. Then
+with every $e$ squarefree, and put $D=\operatorname{lcm}(A)$. Then
 \[
-q=\frac{\sum_{e\in A}M/e}{M}.
+q=\frac{\sum_{e\in A}D/e}{D}.
 \]
-The reduced denominator of $q$ divides the squarefree integer $M$, and is therefore squarefree.
+The reduced denominator of $q$ divides the squarefree integer $D$, and is therefore squarefree.
 
 Conversely, let
 \[
@@ -128,10 +128,8 @@ For every positive entry $x_{ij}$, the rational $x_{ij}/D$ has squarefree reduce
 For fixed $i$, the union of the row-$i$ supports has reciprocal sum
 \[
 \sum_j\frac{x_{ij}}D
-=
-\frac{a_i}{D}
-=
-\frac1{e_i};
+=\frac{a_i}{D}
+=\frac1{e_i};
 \]
 for fixed $j$, the column union similarly sums to $1/f_j$. The same new family therefore refines both original representations. Since no original denominator is reused, the refinement is proper. Iterating gives a common refinement of any finite family.
 \end{proof}

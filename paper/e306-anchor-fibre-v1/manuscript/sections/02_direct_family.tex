@@ -6,7 +6,7 @@ t=\frac ab\in(0,1),
 \]
 with squarefree denominator $b$, a finite set $T\subset\N$, and a real number $\gamma$ satisfying
 \[
-\gamma>2,
+\gamma>1,
 \qquad
 t<\lambda_\gamma:=\frac{(\log\gamma)^2}{2}<1.
 \tag{2.1}\label{eq:2.1}
@@ -19,10 +19,19 @@ Z=X^\gamma,
 \qquad
 \mathcal P=\{p\text{ prime}:X\le p<Z\},
 \qquad
-\mathcal B=\{q\text{ prime}:Z/2\le q<Z\},
+\mathcal B=\{q\text{ prime}:Z/2\le q<Z\}.
 \tag{2.2}\label{eq:2.2}
 \]
-and let $S_b$ denote the set of prime divisors of $b$. Define
+Let $S_b$ denote the set of prime divisors of $b$. Put
+\[
+K_*=\left\lceil(\log Z)^2\right\rceil,
+\]
+and, for all sufficiently large $X$, choose any subset
+\[
+\mathcal B_*\subset\mathcal B,
+\qquad |\mathcal B_*|=K_*.
+\]
+No distributional property of $\mathcal B_*$ will be used beyond its cardinality. Define
 \[
 \mathcal E_{\mathrm{pair}}
 =
@@ -30,7 +39,7 @@ and let $S_b$ denote the set of prime divisors of $b$. Define
 \qquad
 \mathcal E_b
 =
-\{rq:r\in S_b,\ q\in\mathcal B\},
+\{rq:r\in S_b,\ q\in\mathcal B_*\},
 \tag{2.3}\label{eq:2.3}
 \]
 \[
@@ -54,7 +63,7 @@ For all sufficiently large $X$:
 \end{lemma}
 
 \begin{proof}
-The two factors of every denominator in \eqref{eq:2.3} are distinct once $X$ exceeds the prime divisors of $b$. Unique factorization separates products of two primes from $\mathcal P$ from products $rq$ with $r\mid b$ and $q\in\mathcal B$, and also proves distinctness inside each family. The choice of $X$ gives avoidance of $T$. Since $b$ is squarefree and disjoint in prime support from $\mathcal P$, the integer $L$ is squarefree and every denominator in \eqref{eq:2.3} divides it.
+The two factors of every denominator in \eqref{eq:2.3} are distinct once $X$ exceeds the prime divisors of $b$. Unique factorization separates products of two primes from $\mathcal P$ from products $rq$ with $r\mid b$ and $q\in\mathcal B_*$, and also proves distinctness inside each family. The choice of $X$ gives avoidance of $T$. Since $b$ is squarefree and disjoint in prime support from $\mathcal P$, the integer $L$ is squarefree and every denominator in \eqref{eq:2.3} divides it.
 \end{proof}
 
 \subsection{Reciprocal load and variance}
@@ -75,19 +84,16 @@ U_{\mathcal P}\sim\frac1{X\log X}.
 Consequently
 \[
 \sum_{e\in\mathcal E_{\mathrm{pair}}}\frac1e
-=
-\frac12(H_{\mathcal P}^2-U_{\mathcal P})
+=\frac12(H_{\mathcal P}^2-U_{\mathcal P})
 \longrightarrow
 \lambda_\gamma=\frac{(\log\gamma)^2}{2}.
 \tag{2.6}\label{eq:2.6}
 \]
-For the target rows,
+Since every $q\in\mathcal B_*$ is comparable with $Z$, the sparse target rows satisfy
 \[
 \sum_{e\in\mathcal E_b}\frac1e
-=
-\left(\sum_{r\in S_b}\frac1r\right)
-\left(\sum_{q\in\mathcal B}\frac1q\right)
-=O_b\!\left(\frac1{\log Z}\right).
+=O_b\!\left(\frac{K_*}{Z}\right)
+=o(1).
 \tag{2.7}\label{eq:2.7}
 \]
 Thus, with
@@ -119,22 +125,24 @@ Then $\theta$ remains in a fixed compact subinterval of $(0,1)$ and
 The complete-pair identity gives
 \[
 \sum_{e\in\mathcal E_{\mathrm{pair}}}\frac1{e^2}
-=
-\frac12\left(U_{\mathcal P}^2-\sum_{p\in\mathcal P}\frac1{p^4}\right)
+=\frac12\left(U_{\mathcal P}^2-\sum_{p\in\mathcal P}\frac1{p^4}\right)
 \sim
 \frac1{2X^2\log^2X}.
 \tag{2.13}\label{eq:2.13}
 \]
-The target-row square mass is
+The sparse target-row square mass is
 \[
 \sum_{e\in\mathcal E_b}\frac1{e^2}
-=
-\left(\sum_{r\in S_b}\frac1{r^2}\right)
-\left(\sum_{q\in\mathcal B}\frac1{q^2}\right)
-=O_b\!\left(\frac1{Z\log Z}\right).
+=O_b\!\left(\frac{K_*}{Z^2}\right).
 \tag{2.14}\label{eq:2.14}
 \]
-Because $Z=X^\gamma$ and $\gamma>2$, the quantity in \eqref{eq:2.14} is $o(X^{-2}\log^{-2}X)$.
+Because $Z=X^\gamma$, $K_*=O((\log Z)^2)$, and $\gamma>1$, the ratio of \eqref{eq:2.14} to the pair square mass is
+\[
+O_b\!\left(K_*\frac{X^2\log^2X}{Z^2}\right)
+=X^{2-2\gamma}\operatorname{polylog}X
+\longrightarrow0.
+\]
+Thus the complete prime-pair block supplies the leading variance throughout the present regime.
 
 Let $(\xi_e)_{e\in\mathcal E}$ be independent Bernoulli variables with parameter $\theta$, and set
 \[
@@ -149,8 +157,7 @@ Then, by \eqref{eq:2.12},
 and
 \[
 \sigma^2:=\operatorname{Var}(S)
-=
-\theta(1-\theta)
+=\theta(1-\theta)
 \sum_{e\in\mathcal E}\frac1{e^2}.
 \tag{2.17}\label{eq:2.17}
 \]
@@ -203,13 +210,12 @@ so
 =\binom{|\mathcal P|}{2}
 =(1+o(1))\frac{Z^2}{2\log^2Z}.
 \]
-The target rows have only $O_b(Z/\log Z)$ elements, which is negligible at this scale. This proves \eqref{eq:2.20}.
+The sparse target rows have only $O_b(K_*)=O_b((\log Z)^2)$ elements, which is negligible at this scale. This proves \eqref{eq:2.20}.
 
 By Chebyshev's form of the prime number theorem,
 \[
 \log L
-=
-O_b(1)+\sum_{X\le p<Z}\log p
+=O_b(1)+\sum_{X\le p<Z}\log p
 =(1+o(1))Z,
 \]
 which gives \eqref{eq:2.21}. Finally \eqref{eq:2.19} and the exponential size of $L$ imply \eqref{eq:2.22}.

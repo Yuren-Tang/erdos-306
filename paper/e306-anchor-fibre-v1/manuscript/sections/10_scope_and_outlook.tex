@@ -1,16 +1,16 @@
 \section{Further questions and perspective}\label{sec:scope}
 
-The characterization in Theorem \ref{thm:characterization} applies to every positive rational with squarefree reduced denominator. The quantitative theorems concern a different and more local object: one target-adapted family attached to a fixed reduced proper target $t=a/b\in(0,1)$ and a fixed exponent $\gamma>2$ satisfying
+The characterization in Theorem \ref{thm:characterization} applies to every positive rational with squarefree reduced denominator. The quantitative theorems concern a different and more local object: one target-adapted family attached to a fixed reduced proper target $t=a/b\in(0,1)$ and a fixed exponent $\gamma>1$ satisfying
 \[
 t<\frac{(\log\gamma)^2}{2}<1.
 \]
-For every proper target such a $\gamma$ exists. The restriction $\gamma>2$ is not a restriction on which proper rationals are covered; it selects the clean regime in which the complete prime-pair block supplies the leading variance and the proof has one architecture.
+For every proper target such a $\gamma$ exists. The complete prime-pair block supplies the leading variance throughout this regime; the fixed coordinates dividing $b$ are observed by only $K_*=\lceil(\log Z)^2\rceil$ target sensors each.
 
 \subsection{Quantitative boundaries}
 
 The direct local-limit theorem is intrinsically a proper-target statement. It assumes $0<t<1$ so that the Bernoulli mean lies strictly inside the no-wrap interval. The qualitative characterization reaches arbitrary positive rationals, including integers, by the prime-dilution argument of Section \ref{sec:characterization}; we make no claim that a single direct family centred at $t=1$ has the same local-limit theorem.
 
-The larger parameterized construction permits fixed exponents at or below $2$, where the target rows become a leading variance source. Those regimes require an additional transition analysis and are unnecessary for representing any fixed proper rational, so they are not part of the present theorem. Likewise, the top block is fixed here as $[Z/2,Z)$. Allowing an arbitrary fixed terminal ratio changes constants but not the phenomenon; allowing a terminal ratio to vary with $X$ is a genuinely different problem.
+The condition $\gamma>1$ is used at two genuine interfaces: the Gaussian scale $X\log X$ must be $o(Z)$ for the sparse target coordinates to decode on the major arc, and the adaptive retained interval of Section \ref{sec:rows} must remain below the top block. The additional constraint $t<(\log\gamma)^2/2<1$ keeps the Bernoulli parameter in $(0,1)$ and the total reciprocal load inside one no-wrap interval. Earlier full-target-row variants have a separate variance transition near $\gamma=2$ because they attach every top prime to each fixed coordinate. That transition is not a boundary of the present sparse-target family: the sparse rows have lower-order square mass for every fixed $\gamma>1$.
 
 The moving-target theorem is uniform on every fixed standardized compact interval
 \[
@@ -18,7 +18,7 @@ The moving-target theorem is uniform on every fixed standardized compact interva
 \]
 The threshold in $X$ may depend on $U$. We do not obtain a growing standardized radius $U=U_X\to\infty$, nor a gap-free theorem on a fixed target-independent primorial family. The real target window has radius $U\sigma_X\to0$; what grows is the number of lattice points inside that shrinking interval.
 
-Likewise, Theorem \ref{thm:multiplicity} gives the ambient entropy exponent in a mesoscopic cardinality window and at least one exact cardinality. It does not give a prescribed-cardinality asymptotic, a conditional central limit theorem on the natural $\sqrt{M_X}$ scale, or a bivariate local limit for reciprocal sum and cardinality. The global lower bound in that theorem is inherited from the window; no matching upper bound for the total exact fibre is asserted.
+Likewise, Theorem \ref{thm:multiplicity} gives the ambient entropy exponent in a mesoscopic cardinality window and at least one exact cardinality. Corollary \ref{cor:entropy-saturation} shows that for $0<t<1/2$ one may choose the family so that this normalized entropy rate is the full binary value $\log2$. This is an entropy-rate statement per available denominator, not an absolute optimization over $\gamma$, since the ambient family size itself changes with $\gamma$. We do not obtain a prescribed-cardinality asymptotic, a conditional central limit theorem on the natural $\sqrt{M_X}$ scale, or a bivariate local limit for reciprocal sum and cardinality. The global lower bound in Theorem \ref{thm:multiplicity} is inherited from the window; no matching upper bound for the total exact fibre is asserted.
 
 There is nevertheless a simple first-order indication that the reciprocal sum and the raw cardinality become asymptotically decorrelated. If
 \[
@@ -44,31 +44,31 @@ This calculation is only motivation for a possible joint local law or conditiona
 
 Finite avoidance allows the family to be chosen after a fixed finite forbidden set is named. It does not assert robustness of one already constructed family under a small adversarial deletion.
 
-Fix a prime $r\mid b$ and delete the entire target row
+Fix a prime $r\mid b$ and delete the entire sparse target row
 \[
 \mathcal D_{r,X}
 =
-\{rq:q\in\mathcal B_X\}.
+\{rq:q\in\mathcal B_*\}.
 \tag{10.1}\label{eq:10.1}
 \]
-Its size is $|\mathcal B_X|=o(M_X)$. After this deletion, every remaining integer weight $L_X/e$ is divisible by $r$, whereas
+Its size is only $K_*=O((\log Z)^2)=o(M_X)$. After this deletion, every remaining integer weight $L_X/e$ is divisible by $r$, whereas
 \[
 L_Xt=\frac{aL_X}{b}
 \]
 is nonzero modulo $r$, because $(a,b)=1$. Thus no remaining subset can represent $t$, even modulo $r$.
 
-The example clarifies the role of the target rows. They are negligible in reciprocal mass and, in the present $\gamma>2$ regime, negligible in the leading variance, but they are load-bearing in observability. Any genuine resilience theorem would have to preserve these sensors together with enough anchor rigidity, variance, retained damping, lattice span, and no-wrap structure.
+The example makes the separation of roles especially sharp. The target sensors are negligible in reciprocal mass, negligible in the leading variance, and negligible even in cardinality relative to the complete pair family, yet they are indispensable for observability of the fixed coordinates. Any genuine resilience theorem would have to preserve enough sensing at every target coordinate together with anchor rigidity, variance, retained damping, lattice span, and no-wrap structure.
 
 \subsection{A reusable finite-Fourier pattern}
 
 The proof separates into four ingredients which are more general than the particular statement proved here:
 \begin{enumerate}[label=\textup{(\roman*)}]
 \item a weighted anchor partition which turns low internal energy into a small family of coherent labels;
-\item quantitative row observability which identifies the remaining CRT coordinates;
+\item quantitative row observability which identifies the remaining CRT coordinates on the ranges where exact identification is needed;
 \item weighted row compression which sums off-minimizer states without paying the raw fibre cardinality;
 \item retained factors which suppress coherent labels after the decoder has done its work.
 \end{enumerate}
-Together with a positive Gaussian major term and a no-wrap condition, these ingredients form a reusable finite-Fourier pattern. The semiprime construction supplies one concrete arithmetic realization. What varies between applications is not principally the abstract Fourier identity, but the arithmetic provider that makes the target detectable in the CRT coordinates.
+Together with a positive Gaussian major term and a no-wrap condition, these ingredients form a reusable finite-Fourier pattern. The semiprime construction supplies one concrete arithmetic realization. The sparse target rows show that observability need not track probabilistic mass: a vanishingly small family of arithmetic sensors can recover a coordinate while remaining invisible in the leading Gaussian law.
 
 Two directions arise directly from the present boundaries. First, one may ask how much of the characterization and local coefficient geometry survives when the allowed prime factors are restricted to structured positive-density sets. Second, one may seek finer statistics inside the exact fibre: growing standardized target windows, local asymptotics at prescribed cardinalities, or joint local laws for reciprocal sum and cardinality. Each requires arithmetic or probabilistic input beyond what is used here.
 
@@ -76,4 +76,4 @@ Two directions arise directly from the present boundaries. First, one may ask ho
 
 The squarefree denominator is both the elementary obstruction and the exact one. The converse is not proved by recursively splitting unit fractions. Instead we first solve every proper squarefree-denominator target directly inside a large arithmetic family, then use prime dilution only to pass from proper targets to arbitrary positive rationals.
 
-For each fixed proper target the same family has much more structure than existence alone predicts: its Bernoulli-weighted exact coefficients have a local Gaussian profile, it contains exponentially many exact representations at the ambient entropy rate in a mesoscopic cardinality window, and it realizes a growing consecutive block of nearby exact lattice targets. This local coefficient geometry is the main reason to regard the Fourier construction as more than an existence argument.
+For each fixed proper target the same family has much more structure than existence alone predicts: its Bernoulli-weighted exact coefficients have a local Gaussian profile, it contains exponentially many exact representations at the ambient entropy rate in a mesoscopic cardinality window, and it realizes a growing consecutive block of nearby exact lattice targets. The proof also isolates a sharper structural principle: the complete pair family carries the mass and variance, while only polylogarithmically many target sensors are needed to restore the missing CRT coordinates. This local coefficient geometry and separation of roles are the main reasons to regard the Fourier construction as more than an existence argument.
