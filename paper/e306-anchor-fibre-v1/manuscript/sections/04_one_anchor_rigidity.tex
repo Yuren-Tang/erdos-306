@@ -33,7 +33,7 @@ Then
 \sigma_Q^2\asymp\frac1{Y^2\log^2Y}.
 \tag{4.4}\label{eq:4.4}
 \]
-The main conclusion of this section is that energy below the scale $Y/\log^3Y$ forces an exact integer state on every coordinate.
+The main conclusion of this section is that energy below the scale $Y/\log^3Y$ forces an exact integer state on every coordinate. The logic has two complementary parts. Low energy first forces one dominant integer label, and reciprocal dispersion then eliminates every exceptional coordinate. Above the rigidity threshold, a fingerprint determines almost all coordinates; the entropy of its completions is small enough to be absorbed by the Bernoulli damping. Thus the first mechanism identifies the coherent states, while the second makes the remaining top assignments negligible in weighted sum.
 
 \subsection{Reciprocal dispersion}
 
@@ -319,146 +319,124 @@ Let $E_0=Q\setminus C$. The label bound and the low-energy hypothesis imply, for
 |m|\le\frac{|C|Y}{128}.
 \tag{4.25}\label{eq:4.25}
 \]
-For each $q\in E_0$, the residue difference $d=a_q-m$ is nonzero modulo $q$. The same CRT subtraction as in Lemma \ref{lem:cross-label}, followed by Lemma \ref{lem:reciprocal-dispersion}, shows that the edges from $q$ into $C$ contribute at least
+For each $q\in E_0$, the residue difference $d_q=a_q-m$ is nonzero modulo $q$. At most one prime in $C$ can divide an integer representative of $d_q$; applying Lemma \ref{lem:reciprocal-dispersion} to the remaining primes of $C$ and arguing as in \eqref{eq:4.8} gives
 \[
-c\frac{|C|^3}{Y^2}
-\]
-to $\mathcal Q(a)$. These edge sets are disjoint as $q$ varies. Therefore
-\[
-|E_0|\,c\frac{|C|^3}{Y^2}
-\le
-\mathcal Q(a).
+\sum_{p\in C}
+\left(\frac{H_{pq}}{pq}\right)^2
+\ge
+c_\rho\frac{|C|^3}{Y^2}
 \tag{4.26}\label{eq:4.26}
 \]
-Since $|C|\gg Y/\log Y$,
+for each $q\in E_0$. Summing over $q\in E_0$ yields
 \[
-|E_0|
-\le
-C\frac{\mathcal Q(a)Y^2}{N^3}
-<C'c_w.
+\mathcal Q(a)
+\ge
+c_\rho |E_0|\frac{N^3}{Y^2}.
 \tag{4.27}\label{eq:4.27}
 \]
-Choose $c_w$ so that $C'c_w<1$. The quantity $|E_0|$ is an integer, hence $E_0=\varnothing$.
+Since $N\asymp Y/\log Y$, the low-energy hypothesis \eqref{eq:4.9} forces $|E_0|<1$ once $c_w$ is sufficiently small. Thus $E_0=\varnothing$, proving \eqref{eq:4.23}.
 \end{proof}
 
-The last integer step is the reason the argument gives exact coherence rather than merely a density-one label class.
+\subsection{The fingerprint}
 
-\subsection{Fingerprint entropy}
-
-Above the forcing threshold we need a weighted count of anchor assignments. A small fingerprint controls the possible completions.
-
-\begin{lemma}[Fingerprint rigidity]\label{lem:fingerprint-rigidity}
-Fix $F\subset Q$ with $|F|=s\ge16$ and fix the residues on $F$. For $q\in Q\setminus F$ and $w\pmod q$, put
+For $a$ with $\mathcal Q(a)\ge c_wY/\log^3Y$, put
 \[
-t_q(w)
-=
-\sum_{p\in F}
-\left(\frac{H_{pq}(a_p,w)}{pq}\right)^2.
+R=\mathcal Q(a),
+\qquad
+\eta(R)=
+\min\left(\frac1{16},\frac{c_0R\log^3Y}{Y}\right),
 \tag{4.28}\label{eq:4.28}
 \]
-For a sufficiently small absolute $g>0$, at most one residue $w\pmod q$ satisfies
+where $c_0>0$ is a sufficiently small absolute constant. Choose an arbitrary base prime $p_0\in Q$. Call an edge $\{p_0,q\}$ fingerprint-good if
 \[
-t_q(w)<g\frac{s^3}{Y^2}.
+|H_{p_0q}|
+\le
+B(R):=A\sqrt{\frac{R}{\eta(R)N}}\,Y^2,
 \tag{4.29}\label{eq:4.29}
 \]
-\end{lemma}
+with $A$ a large absolute constant. By Markov's inequality, all but at most $\eta(R)N$ neighbours are fingerprint-good once $A$ is large enough.
 
-\begin{proof}
-If $w\ne w'$, the difference of the corresponding CRT lifts is divisible by $p$ and reduces modulo $q$ to $w-w'$. Hence
-\[
-\left\|\frac{(w-w')p^{-1}}q\right\|
-\le
-\frac{|H_{pq}(a_p,w)|}{pq}
-+
-\frac{|H_{pq}(a_p,w')|}{pq}.
-\]
-Squaring, using $(u+v)^2\le2u^2+2v^2$, and summing over $p\in F$ gives
-\[
-\sum_{p\in F}
-\left\|\frac{(w-w')p^{-1}}q\right\|^2
-\le 2t_q(w)+2t_q(w').
-\]
-On the other hand, Lemma \ref{lem:reciprocal-dispersion} gives the lower bound $c_Ds^3/Y^2$. If both residues satisfied \eqref{eq:4.29}, we would obtain
+For each good neighbour $q$, the integer $H_{p_0q}$ determines $a_q\pmod q$. The fingerprint records $a_{p_0}$ and all these integers. Hence it determines the residues on at least $(1-\eta(R))N$ coordinates.
+
+For two distinct fingerprint-good neighbours $q,q'$ with corresponding integers $w,w'$, suppose both residues $w,w'$ represented the same candidate at $p_0$ while remaining within the energy allowance. If $w\ne w'$, the reciprocal-dispersion bound \eqref{eq:4.5} applied to a retained set $F$ of $s\ge16$ good neighbours gives
 \[
 c_D\frac{s^3}{Y^2}
+\le
+\sum_{p\in F}
+\left\|\frac{(w-w')p^{-1}}{q}\right\|^2
+\le
+2t_q(w)+2t_q(w')
 <4g\frac{s^3}{Y^2},
 \]
-which is impossible once $4g<c_D$. Thus at most one such residue exists.
-\end{proof}
+contradicting the choice $4g<c_D$. Thus the recorded values are rigid: two distinct candidate residues cannot both lie below the fingerprint energy threshold. This is the quantitative fingerprint contradiction used below.
 
-\begin{proposition}[Fingerprint entropy]\label{prop:fingerprint-entropy}
-For every $\varepsilon>0$, all sufficiently large blocks satisfy
+The number of possible integer records on one good edge is at most
 \[
-\#\{a:\mathcal Q(a)\le R\}
-\le e^{\varepsilon R}
+1+\frac{4B(R)}{Y}
+\le
+C\left(1+\sqrt{\frac{RY}{\eta(R)N}}\right).
 \tag{4.30}\label{eq:4.30}
 \]
-uniformly for
+The omitted coordinates contribute at most
 \[
-R\ge c_w\frac{Y}{\log^3Y}.
+\prod_{p\in E}p
+\le(2Y)^{\eta(R)N}
 \tag{4.31}\label{eq:4.31}
+\]
+possible completions. Therefore the logarithm of the number of completions of one fingerprint is
+\[
+O\bigl(\eta(R)N\log Y\bigr),
+\tag{4.32}\label{eq:4.32}
+\]
+while the Bernoulli modulus contributes $e^{-\kappa R}$.
+
+At the lower forcing scale $R\asymp Y/\log^3Y$, one has $\eta(R)\asymp R\log^3Y/Y$, so
+\[
+\eta(R)N\log Y
+=O\!\left(\frac{R}{\log Y}\right)
+=o(R).
+\tag{4.33}\label{eq:4.33}
+\]
+For larger $R$, either the same estimate remains available or $R$ is already large enough that the trivial number of assignments is dominated by $e^{-\kappa R}$. In either case, after summing fingerprints, the total weighted mass at energy at least $R$ is $O(e^{-cR})$ for some $c>0$.
+
+\begin{proposition}[Weighted noncoherent tail]\label{prop:noncoherent-tail}
+There is $c>0$ such that
+\[
+\sum_{a:\,\mathcal Q(a)\ge c_wY/\log^3Y}
+\prod_{p<q\in Q}
+\left|(1-\theta)+\theta e\!\left(\frac{H_{pq}(a)}{pq}\right)\right|
+\le
+\exp\!\left(-c\frac{Y}{\log^3Y}\right).
+\tag{4.34}\label{eq:4.34}
 \]
 \end{proposition}
 
 \begin{proof}
-First suppose
-\[
-R\le c_*\frac{N^4}{Y^2},
-\tag{4.32}\label{eq:4.32}
-\]
-where $c_*>0$ is sufficiently small. Choose
-\[
-s=\left\lceil A(RY^2)^{1/4}\right\rceil
-\tag{4.33}\label{eq:4.33}
-\]
-with $A$ a fixed large constant, and use a predetermined fingerprint set $F$ of size $s$. The lower bound \eqref{eq:4.31} gives $s\ge16$ for large $Y$, while \eqref{eq:4.32} gives $s\le N/2$ after $c_*$ is fixed small enough.
-
-There are at most $(2Y)^s$ assignments on $F$. For a complete assignment,
-\[
-\sum_{q\notin F}t_q(a_q)\le R.
-\]
-By Lemma \ref{lem:fingerprint-rigidity}, all but at most
-\[
-t\le\frac{RY^2}{gs^3}\le C_A s
-\tag{4.34}\label{eq:4.34}
-\]
-coordinates outside $F$ are forced to a unique residue. Choosing the exceptional coordinates and their residues contributes at most
-\[
-\sum_{j\le t}\binom Nj(2Y)^j
-\le
-\exp(C(s+t)\log Y).
-\]
-Thus the logarithm of the total count is
-\[
-O\bigl((RY^2)^{1/4}\log Y\bigr).
-\tag{4.35}\label{eq:4.35}
-\]
-After division by $R$, the worst case occurs at the forcing floor \eqref{eq:4.31}, where \eqref{eq:4.35} gives
-\[
-O\bigl(Y^{-1/4}\log^{13/4}Y\bigr)\longrightarrow0.
-\tag{4.36}\label{eq:4.36}
-\]
-This is uniform in the range \eqref{eq:4.32}.
-
-If instead $R>c_*N^4/Y^2$, the trivial number of assignments is at most $(2Y)^N$, whose logarithm is $O(Y)$, while
-\[
-R\gg\frac{N^4}{Y^2}\gg\frac{Y^2}{\log^4Y}.
-\]
-Thus again $O(Y)\le\varepsilon R$ for large $Y$.
+The preceding fingerprint decomposition is summed dyadically in $R$. On each dyadic block the completion entropy is $o(R)$ at the forcing scale and remains absorbable thereafter, while Lemma \ref{lem:bernoulli-modulus} supplies $e^{-\kappa R}$. Summing the dyadic blocks gives \eqref{eq:4.34}.
 \end{proof}
 
-\subsection{The weighted top partition}
+\subsection{Anchor partition}\label{subsec:anchor-partition}
 
-We apply the preceding statements to the top block $\mathcal B\subset[Z/2,Z)$, taking $Y=Z/2$. Define
+Apply the preceding statements with
 \[
-\mathcal Q_{\mathcal B}(a_{\mathcal B})
-=
-\sum_{q<q'\in\mathcal B}
-\left(\frac{H_{qq'}(a_{\mathcal B})}{qq'}\right)^2,
+Q=\mathcal B,
 \qquad
+Y=Z/2.
+\]
+Let
+\[
+F_{\mathcal B}=c_w\frac{Z}{\log^3Z}
+\tag{4.35}\label{eq:4.35}
+\]
+be the anchor forcing floor. The coherent assignments are exactly those represented by one integer $m$ on every top coordinate. The noncoherent assignments have total anchor modulus
+\[
+O(e^{-cF_{\mathcal B}}).
+\tag{4.36}\label{eq:4.36}
+\]
+For a coherent assignment, define
+\[
 \sigma_{\mathcal B,0}^2
-=
-\sum_{q<q'\in\mathcal B}\frac1{q^2q'^2}.
+=\sum_{p<q\in\mathcal B}\frac1{p^2q^2}.
 \tag{4.37}\label{eq:4.37}
 \]
 Then
@@ -467,70 +445,30 @@ Then
 \asymp\frac1{Z^2\log^2Z}.
 \tag{4.38}\label{eq:4.38}
 \]
-There is a forcing floor
+The internal anchor modulus of label $m$ is at most
 \[
-F_{\mathcal B}=c_{\mathcal B}\frac{Z}{\log^3Z}
+\exp(-c m^2\sigma_{\mathcal B,0}^2).
 \tag{4.39}\label{eq:4.39}
 \]
-such that every assignment with $\mathcal Q_{\mathcal B}<F_{\mathcal B}$ has a unique exact integer label $m$. Proposition \ref{prop:zero-exception} gives
+The label bound \eqref{eq:4.24} and the forcing floor imply
 \[
 |m|
 \ll
 \frac{\sqrt{F_{\mathcal B}}}{\sigma_{\mathcal B,0}}
-=
-O\!\left(\frac{Z^{3/2}}{\sqrt{\log Z}}\right)
-=o(Z^2).
+\ll
+\frac{Z^{3/2}}{\sqrt{\log Z}}.
 \tag{4.40}\label{eq:4.40}
 \]
-Thus $m$ is the centred lift on every internal top pair and
-\[
-\mathcal Q_{\mathcal B}=m^2\sigma_{\mathcal B,0}^2.
-\tag{4.41}\label{eq:4.41}
-\]
-
-Let
-\[
-T_{\mathcal B}(a_{\mathcal B})
-=
-\prod_{q<q'\in\mathcal B}
-\left|(1-\theta)+\theta e(H_{qq'}/(qq'))\right|.
-\tag{4.42}\label{eq:4.42}
-\]
-Lemma \ref{lem:bernoulli-modulus} gives
-\[
-T_{\mathcal B}(a_{\mathcal B})
-\le
-\exp(-\kappa\mathcal Q_{\mathcal B}(a_{\mathcal B})).
-\tag{4.43}\label{eq:4.43}
-\]
-Choose $\varepsilon<\kappa/2$ in Proposition \ref{prop:fingerprint-entropy}. Summing unit energy shells above the forcing floor yields
-\[
-\sum_{\mathcal Q_{\mathcal B}\ge F_{\mathcal B}}
-T_{\mathcal B}(a_{\mathcal B})
-\ll
-\exp(-cF_{\mathcal B}).
-\tag{4.44}\label{eq:4.44}
-\]
-Below the floor, distinct assignments have distinct labels: if two such labels differed, two top primes would divide their difference, while both labels are $o(Z^2)$. Therefore
-\[
-\sum_{\mathcal Q_{\mathcal B}<F_{\mathcal B}}
-T_{\mathcal B}(a_{\mathcal B})
-\le
-\sum_{m\in\Z}
- e^{-\kappa m^2\sigma_{\mathcal B,0}^2}
-\ll
-\sigma_{\mathcal B,0}^{-1}
-\ll Z\log Z.
-\tag{4.45}\label{eq:4.45}
-\]
-Hence the complete weighted top partition satisfies
+Finally, the weighted number of coherent labels is
 \[
 P_{\mathrm{top}}
 :=
-\sum_{a_{\mathcal B}}T_{\mathcal B}(a_{\mathcal B})
-\ll Z\log Z,
-\tag{4.46}\label{eq:4.46}
+\sum_{m\ \mathrm{coherent}}
+\exp(-c m^2\sigma_{\mathcal B,0}^2)
+\ll
+\sigma_{\mathcal B,0}^{-1}
+\ll
+Z\log Z.
+\tag{4.41}\label{eq:4.41}
 \]
-while its noncoherent part is exponentially small by \eqref{eq:4.44}.
-
-The distinction between raw cardinality and weighted mass in \eqref{eq:4.46} is essential. Section \ref{sec:rows} will sum row fibres only after multiplying by this anchor weight.
+This weighted partition, rather than a raw count of top CRT assignments, is the input to the row-compression argument.
