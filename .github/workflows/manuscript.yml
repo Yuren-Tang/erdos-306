@@ -1,9 +1,5 @@
 name: verify-e306-manuscript
 
-# Manuscript verification runs automatically when the review manuscript or this
-# workflow changes on the article branch. Manual dispatch remains available for
-# explicit clean-room rebuilds before publication or external review.
-
 on:
   workflow_dispatch:
   push:
@@ -26,9 +22,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Verify frozen mathematical source
+      - name: Verify frozen manuscript source
         run: |
-          git diff --exit-code fe009a1bcd8eff3c0ef1eafaf487563fedf3ae0a -- \
+          git diff --exit-code cb59192c4ec289afbf377d99c100d8291153153f -- \
             main.tex references.bib sections
 
       - name: Guard Oxford manuscript spelling
@@ -67,6 +63,33 @@ jobs:
               raise SystemExit("Oxford-spelling guard failed:\n" + "\n".join(bad))
           PY
 
+      - name: Verify semantic equation-reference surface
+        run: |
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+          files = [Path("main.tex"), *sorted(Path("sections").glob("*.tex"))]
+          corpus = "\n".join(p.read_text(encoding="utf-8") for p in files)
+          tags = re.findall(r"\\tag\{(\d+\.\d+)\}", corpus)
+          labels = re.findall(r"\\label\{eq:(\d+\.\d+)\}", corpus)
+          refs = re.findall(r"\\eqref\{eq:(\d+\.\d+)\}", corpus)
+          legacy = re.findall(r"\\eqref\{(\d+\.\d+)\}", corpus)
+          if legacy:
+              raise SystemExit("Legacy numeric eqref keys remain: " + repr(sorted(set(legacy))))
+          if len(tags) != len(set(tags)):
+              raise SystemExit("Duplicate explicit equation tags")
+          if len(labels) != len(set(labels)):
+              raise SystemExit("Duplicate semantic equation labels")
+          if set(tags) != set(labels):
+              raise SystemExit("Equation tag/label sets differ")
+          missing = sorted(set(refs) - set(labels))
+          if missing:
+              raise SystemExit("Equation references without targets: " + repr(missing))
+          if "RenewDocumentCommand{\\eqref}" in corpus:
+              raise SystemExit("Global eqref override remains")
+          print(f"Equation surface: {len(tags)} tags/labels; {len(refs)} semantic references.")
+          PY
+
       - name: Install TeX toolchain
         run: |
           sudo apt-get update
@@ -74,7 +97,6 @@ jobs:
             latexmk \
             biber \
             poppler-utils \
-            fonts-gfs-artemisia \
             texlive-bibtex-extra \
             texlive-fonts-extra \
             texlive-fonts-recommended \
@@ -90,8 +112,6 @@ jobs:
           kpsewhich ETbb-BoldItalic.otf
           kpsewhich newtxmath.sty
           kpsewhich EBGaramond-Regular.otf
-          fc-match "EB Garamond" | tee /tmp/eb-garamond-match.txt
-          grep -Eqi "EB.?Garamond|Garamond" /tmp/eb-garamond-match.txt
 
       - name: Clean XeLaTeX and Biber build
         shell: bash
@@ -169,23 +189,24 @@ jobs:
           ]
           missing = [s for s in required if s not in text]
           if missing:
-            raise SystemExit("Required dedication/identity/text extraction failed: " + repr(missing))
+              raise SystemExit("Required dedication/identity/text extraction failed: " + repr(missing))
           leaked = sorted(set(re.findall(r"\b(?:eq|thm|sec|lem|prop):[A-Za-z0-9_.:-]+", text)))
           if leaked:
-            raise SystemExit("Internal LaTeX label names leaked into PDF text: " + repr(leaked))
+              raise SystemExit("Internal LaTeX label names leaked into PDF text: " + repr(leaked))
           PY
 
       - name: Build summary
         run: |
           {
-            echo "## E306 EB Garamond dedication test build"
+            echo "## E306 second-review candidate build"
             echo
             echo "- Commit: $GITHUB_SHA"
-            echo "- Frozen manuscript source: \`fe009a1bcd8eff3c0ef1eafaf487563fedf3ae0a\` (main.tex + references + sections)"
+            echo "- Frozen manuscript source: \`cb59192c4ec289afbf377d99c100d8291153153f\` (main.tex + references + sections)"
             echo "- Entry point: \`paper/e306-anchor-fibre-v1/manuscript/main.tex\`"
             echo "- Engine: XeLaTeX"
             echo "- Body text/math typography: ETbb OpenType / NewTX"
             echo "- Dedication typography: EB Garamond OpenType"
+            echo "- Equation references: semantic LaTeX labels with stable explicit visible tags"
             echo "- Bibliography backend/style: Biber / numeric"
             echo "- PDF size: $(stat -c%s main.pdf) bytes"
             echo "- Pages: $(pdfinfo main.pdf | awk '/^Pages:/ {print $2}')"
@@ -194,7 +215,7 @@ jobs:
       - name: Upload manuscript PDF
         uses: actions/upload-artifact@v4
         with:
-          name: e306-eb-garamond-dedication-test-pdf-${{ github.sha }}
+          name: e306-second-review-candidate-pdf-${{ github.sha }}
           path: paper/e306-anchor-fibre-v1/manuscript/main.pdf
           if-no-files-found: error
           retention-days: 30
