@@ -1,6 +1,6 @@
 \section{Further questions and perspective}\label{sec:scope}
 
-The characterization in Theorem \ref{thm:characterization} applies to every positive rational with squarefree reduced denominator. The quantitative theorems concern one target-adapted family for a fixed reduced proper target $t=a/b\in(0,1)$ and a fixed exponent $\gamma>1$ satisfying
+The characterization in Theorem \ref{thm:characterization} applies to every positive rational with squarefree reduced denominator. The quantitative theorems concern one target-adapted family for a fixed reduced proper target $t=a/b\in(0,1)$ and fixed $\gamma>1$ satisfying
 \[
 t<\frac{(\log\gamma)^2}{2}<1.
 \]
@@ -8,57 +8,36 @@ Every proper target admits such a $\gamma$. The complete prime-pair block suppli
 
 \subsection{Quantitative boundaries}
 
-The direct local-limit theorem is intrinsically a proper-target statement. Arbitrary positive rationals, including integers, are reached by prime dilution in Section \ref{sec:characterization}; no analogous local-limit claim is made for a single family centred at $t=1$.
+The direct local-limit theorem is intrinsically a proper-target statement. Arbitrary positive rationals, including integers, are reached by prime dilution in Section \ref{sec:characterization}; no analogous local-limit claim is made for one family centred at $t=1$.
 
-The condition $\gamma>1$ has two genuine uses: $X\log X=o(Z)$ makes the sparse target decoder valid on the Gaussian range, and the adaptive retained interval remains below the top block. The additional condition $t<(\log\gamma)^2/2<1$ keeps the Bernoulli parameter in $(0,1)$ and the total reciprocal load inside one no-wrap interval. Earlier full-target-row variants have a variance transition near $\gamma=2$; it is not a boundary of the present sparse-target family.
+The condition $\gamma>1$ has two genuine uses: $X\log X=o(Z)$ makes the sparse target decoder valid on the Gaussian range, and the adaptive retained interval stays below the top block. The constraint $t<(\log\gamma)^2/2<1$ keeps the Bernoulli parameter in $(0,1)$ and the reciprocal load inside one no-wrap interval. Earlier full-target-row variants have a variance transition near $\gamma=2$; it is not a boundary of the present sparse family.
 
-The moving-target theorem is uniform on every fixed standardized compact interval
+The moving-target theorem is uniform for every fixed $|j|/(L_X\sigma_X)\le U$, with an $X$-threshold depending on $U$. It gives neither a growing radius $U_X\to\infty$ nor a gap-free theorem on a fixed target-independent primorial family. Theorem \ref{thm:multiplicity} gives the ambient entropy exponent in a mesoscopic cardinality window and at one exact cardinality; Corollary \ref{cor:entropy-saturation} attains the binary rate $\log2$ for $0<t<1/2$. No prescribed-cardinality asymptotic, conditional central limit theorem, bivariate local limit, or matching global upper bound is asserted.
+
+There is nevertheless a first-order indication of asymptotic decorrelation. If $K_X=\sum_{e\in\mathcal E_X}\xi_e$, then
 \[
-\left|\frac{j}{L_X\sigma_X}\right|\le U,
-\]
-with an $X$-threshold that may depend on $U$. We obtain neither a growing radius $U_X\to\infty$ nor a gap-free theorem on a fixed target-independent primorial family.
-
-Theorem \ref{thm:multiplicity} gives the ambient entropy exponent in a mesoscopic cardinality window and at one exact cardinality; Corollary \ref{cor:entropy-saturation} attains the full binary rate $\log2$ for $0<t<1/2$ after a suitable choice of $\gamma$. No prescribed-cardinality asymptotic, conditional central limit theorem, bivariate local limit, or matching upper bound for the total exact fibre is asserted.
-
-A first-order calculation nevertheless suggests asymptotic decorrelation between reciprocal sum and raw cardinality. If $K_X=\sum_{e\in\mathcal E_X}\xi_e$, then
-\[
-\operatorname{Cov}(S_X,K_X)
-=\theta_X(1-\theta_X)\Lambda_X\asymp1,
-\]
-while $\sigma_X\asymp(X\log X)^{-1}$ and $\sqrt{\operatorname{Var}K_X}\asymp Z/\log Z$. Hence
-\[
+\operatorname{Cov}(S_X,K_X)=\theta_X(1-\theta_X)\Lambda_X\asymp1,
+\qquad
 \operatorname{Corr}(S_X,K_X)
-\asymp X^{1-\gamma}(\log X)^2
-\longrightarrow0.
+\asymp X^{1-\gamma}(\log X)^2\longrightarrow0,
 \]
-This is motivation for a possible joint local law, not a substitute for one.
+using $\sigma_X\asymp(X\log X)^{-1}$ and $\sqrt{\operatorname{Var}K_X}\asymp Z/\log Z$. This motivates, but does not prove, a joint local law.
 
 \subsection{Finite avoidance is not deletion resilience}
 
-Finite avoidance does not make one constructed family robust under a small adversarial deletion. Fix a prime $r\mid b$ and delete its entire sparse target row
+Fix a prime $r\mid b$ and delete its sparse target row
 \[
-\mathcal D_{r,X}
-=
-\{rq:q\in\mathcal B_*\}.
+\mathcal D_{r,X}=\{rq:q\in\mathcal B_*\}.
 \tag{10.1}\label{eq:10.1}
 \]
-Although $|\mathcal D_{r,X}|=K_*=O((\log Z)^2)=o(M_X)$, every remaining integer weight $L_X/e$ is divisible by $r$, whereas $L_Xt=aL_X/b$ is nonzero modulo $r$. No remaining subset can represent $t$, even modulo $r$.
-
-Thus the target sensors are negligible in reciprocal mass, variance, and cardinality, but indispensable for observability. Any resilience theorem would have to preserve enough sensing at every target coordinate together with the other structural inputs.
+Although $|\mathcal D_{r,X}|=K_*=O((\log Z)^2)=o(M_X)$, every remaining weight $L_X/e$ is divisible by $r$, whereas $L_Xt=aL_X/b$ is nonzero modulo $r$. Thus finite avoidance does not imply resilience of one constructed family under even this vanishing-cardinality deletion. The sensors are negligible in mass, variance, and cardinality but indispensable for observability.
 
 \subsection{A reusable finite-Fourier pattern}
 
-The proof separates into four ingredients:
-\begin{enumerate}[label=\textup{(\roman*)}]
-\item a weighted anchor partition turning low internal energy into coherent labels;
-\item quantitative row observability on the ranges where exact identification is needed;
-\item weighted row compression without a raw fibre-cardinality loss;
-\item retained factors suppressing coherent labels after decoding has done its work.
-\end{enumerate}
-Together with a positive Gaussian major term and no-wrap, these form a reusable finite-Fourier pattern. The sparse target rows make one feature particularly transparent: observability need not track probabilistic mass.
+The proof isolates four reusable ingredients: (i) a weighted anchor partition turning low internal energy into coherent labels; (ii) row observability on the ranges where exact identification is needed; (iii) weighted row compression without a raw fibre-cardinality loss; and (iv) retained factors suppressing coherent labels after decoding. Together with a positive Gaussian major term and no-wrap, these form a finite-Fourier pattern in which observability need not track probabilistic mass.
 
-Natural next questions include restrictions to structured positive-density prime sets and finer statistics inside the exact fibre, such as growing target windows, prescribed-cardinality local asymptotics, or joint reciprocal-sum/cardinality laws. Each requires new arithmetic or probabilistic input.
+Natural next questions include restrictions to structured positive-density prime sets and finer statistics inside the exact fibre, such as growing target windows, prescribed-cardinality local asymptotics, or joint reciprocal-sum/cardinality laws.
 
 \subsection{Final perspective}
 
-The squarefree denominator is both the elementary obstruction and the exact one. We first solve every proper squarefree-denominator target directly inside a large arithmetic family and then use prime dilution only for the qualitative passage to arbitrary positive rationals. On the same direct family, the exact coefficients have a local Gaussian profile, the typical exact fibre has the ambient entropy rate, and a growing consecutive block of nearby lattice targets is realized. The complete pair family carries the mass and variance while only polylogarithmically many target sensors restore the missing CRT coordinates; this separation of roles is the main structural content behind the characterization.
+The squarefree denominator is both the elementary obstruction and the exact one. Proper targets are solved directly and arbitrary positive rationals then follow by prime dilution. On the same direct family the exact coefficients have a local Gaussian profile, the typical exact fibre has the ambient entropy rate, and a growing consecutive block of nearby lattice targets is realized. The complete pair family carries the mass and variance while only polylogarithmically many target sensors restore the missing CRT coordinates.
