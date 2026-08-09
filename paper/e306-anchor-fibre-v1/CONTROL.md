@@ -9,28 +9,38 @@
 - **Sole article branch:** `paper/e306-anchor-fibre-v1`
 - **Base:** `main@5a6207a493067f02c67b1cfa69fa8c5498f2c005`
 - **PR state:** open / draft / unmerged
-- **Publication state:** frozen Owner-review candidate; exact-source clean build PASS; independent mathematical/source review remains required after Owner disposition.
+- **Publication state:** independent full-review return received on the preceding fixed object; bounded revision applied and clean-built; independent delta recheck and Owner publication disposition remain before publication action.
 
 ## Current exact manuscript source
 
-The manuscript handed to the Owner is exactly
+The revised manuscript source is exactly
 
 ```text
-654189fe67b575bd539092f1700754835ee7ebda
+3899f40fb493c2e2f2894f432cada64437a0964c
 ```
 
-The branch may be ahead of this SHA only through workflow/control/profile/review-packet commits. `main.tex`, `references.bib`, and `sections/` are frozen against this source by the manuscript workflow.
+The branch may be ahead of this SHA only through workflow/control/profile/review-record commits. `main.tex`, `references.bib`, and `sections/` are frozen against this source by the manuscript workflow.
 
-The earlier proper-target checkpoints remain provenance only. The bounded source sequence after the substantive rewrite includes:
+The immediately preceding independent-review object was
 
-1. moving-target no-wrap generalized to every lattice target actually used;
-2. problem/formal-proof provenance repaired and minimized;
-3. the stale Section 3--4 damping interface `kappa_b -> kappa` repaired;
-4. empty-forbidden-set `max T` wording removed;
-5. Butler--Erdős--Graham A51 DOI corrected to `10.5281/zenodo.10456673`;
-6. **review-build equation-reference repair:** Action exposed that the synthetic legacy equation-label shim did not create labels under `amsmath`, so internal names leaked into PDF text. The manuscript now keeps its explicit historical `\tag{section.number}` values and renders the matching numeric equation references directly; the sole named equation reference in Section 8 was changed to its stable numeric key `(8.4)`. No theorem, displayed formula, proof range, estimate, construction, or quantifier changed.
+```text
+654189fe67b575bd539092f1700754835ee7ebda.
+```
 
-The last source-changing commit above is `654189fe67b575bd539092f1700754835ee7ebda`.
+The Owner supplied an independent review of that complete TeX/PDF object. The reader found no fatal mathematical defect, specifically stress-tested the main Sections 4--6 dependency cones, and recommended publication after bounded revision. The resulting disposition is recorded in `INDEPENDENT_REVIEW_DISPOSITION_2026-08-09.md`.
+
+The bounded post-review source delta contains only:
+
+1. an explicit `Lambda<1` hypothesis in the no-wrap lemma;
+2. removal of the Section 2 `S_X` notation collision;
+3. an explicit Section 6 frequency-scale hierarchy;
+4. earlier clarification that the Lean proof and analytic article are distinct proofs;
+5. a concise target-row observability principle in the Introduction;
+6. an explicitly non-theorem cardinality-decorrelation motivation in Section 10;
+7. bibliography enlargement and removal of the Introduction overfull box;
+8. one small reduction of engineering metaphor.
+
+No theorem, displayed mathematical formula already proved, estimate, construction, proof range, or quantifier was intentionally changed.
 
 ## Current theorem package
 
@@ -55,21 +65,22 @@ Article 1 does not restore the `1<gamma<=2` target-row-dominant regimes, arbitra
 GitHub Actions run
 
 ```text
-31256191144
+31292599279
 ```
 
-on branch head `ee6ab5c42f6334f621c650bd304e92a5cf2061ec` clean-built manuscript source `654189fe...` and **passed all configured gates**:
+(run number 191) on execution head `4c48940b1407142b990fda8fe4cd3fa41f856ce0` clean-built exact manuscript source `3899f40...` and passed all configured gates:
 
 - source freeze and Oxford spelling;
 - XeLaTeX/Biber build;
 - bibliography/reference/label/missing-glyph checks;
+- **no overfull hbox**;
 - Biber warning/error gate;
 - embedded fonts and no Type 3;
 - Unicode Greek dedication, ORCID, and `Erdős` extraction;
 - internal-label leak gate;
-- 34-page PDF artifact upload.
+- 35-page PDF artifact upload.
 
-This is presentation/execution evidence only. It is not independent mathematical review.
+One mild underfull box remains in the final log; it is not a clipping or correctness defect.
 
 ## Presentation profile
 
@@ -80,10 +91,20 @@ Retain, absent a concrete review defect:
 - ETbb OpenType text with NewTX mathematics;
 - XeLaTeX;
 - numeric `biblatex`/Biber citations sorted `nyt`;
+- bibliography in `\small`;
 - no affiliation or email;
 - compact linked ORCID;
-- two-line upright GFS Artemisia inscriptional dedication;
+- two-line upright **GFS Artemisia** inscriptional dedication;
+- exact dedication text `ΤΟΙΣ ΕΜΕ ΦΙΛΟΥΣΙΝ / ΚΑΙ ΟΙΣ ΦΙΛΩ`;
 - concise generative-AI disclosure.
+
+The durable front-matter record `#8#issuecomment-5109693351` explicitly chose GFS Artemisia Regular (10 pt on 15 pt, 8 pt above, 12 pt below). Garamond is not the controlling E306 dedication face.
+
+The proposed Greek `ΟΙΣ -> ΟΥΣ` change from the independent review is not adopted: classical relative attraction supports the dative relative with an omitted dative antecedent. See the disposition record for the philological rationale.
+
+## Equation-reference policy
+
+The review source retains its explicit numeric `\tag{section.number}` / numeric-reference convention. The earlier synthetic label bridge was removed after it leaked internal labels into PDF text; the current clean-build gate prevents recurrence. A full migration to semantic `\label`/`\eqref` is deferred as a separately audited journal-source maintenance task rather than reopening the whole formula-reference surface immediately before public release.
 
 ## Formal Lean axis
 
@@ -91,23 +112,28 @@ The archived Lean release is orthogonal evidence for the headline characterizati
 
 ## Next gate
 
-**Owner read is now the active gate.** The Owner-review brief is `paper/e306-anchor-fibre-v1/OWNER_REVIEW_PACKET.md` and the review PDF is the artifact of Action run `31256191144`.
+The independent reader reviewed source `654189fe...`, not the revised source `3899f40...`. Therefore the correct assurance state is:
 
-After Owner disposition, commission one independent mathematical/source review of exact source `654189fe67b575bd539092f1700754835ee7ebda`. Special attention should go to `gamma>2` transport, target-row decoder ratio, normalized tails/order of limits, moving-target no-wrap, `H(alpha)` multiplicity, `h_m^*` bookkeeping, prime dilution, and source/provenance scope.
+```text
+[INDEPENDENT FULL-REVIEW RETURN: NO FATAL DEFECT / REVISION ADVISED]
+[BOUNDED REVISION APPLIED]
+[CLEAN REVISED-SOURCE BUILD PASS]
+[INDEPENDENT DELTA RECHECK REQUIRED]
+```
 
-If either the Owner or independent reader finds a concrete defect, reopen only its dependency cone and freeze a new SHA. Otherwise proceed to publication preparation only after explicit Owner authorization.
+Ask the independent checker to compare `654189fe... -> 3899f40...` and verify that the bounded revisions are correct and do not alter theorem/proof scope inadvertently. A full re-review is unnecessary unless the delta check finds a reason to reopen a dependency cone.
 
-Do **not** mark PR #9 ready, merge, tag, release, alter DOI metadata, upload to arXiv, or submit to a journal without that authorization.
+After a delta PASS, the Owner may make the publication-route decision. Until then, and until explicit Owner authorization, do **not** mark PR #9 ready, merge, tag, release, alter DOI metadata, upload to arXiv, submit to a journal, or contact an external party on the Owner's behalf.
 
 ## Current state
 
 ```text
-[PROPER-TARGET SCOPE ELEVATION — WHOLE-PLANE-AUDITED OWNER-REVIEW CANDIDATE]
-[MANUSCRIPT SOURCE 654189fe67b575bd539092f1700754835ee7ebda]
-[CLEAN XELATEX/BIBER REVIEW BUILD PASS — ACTION 31256191144]
-[34-PAGE OWNER-REVIEW PDF AVAILABLE]
-[OWNER READ NEXT]
-[INDEPENDENT REVIEW AFTER OWNER DISPOSITION]
+[REVISED MANUSCRIPT SOURCE 3899f40fb493c2e2f2894f432cada64437a0964c]
+[INDEPENDENT REVIEW OF PRECEDING OBJECT: NO FATAL DEFECT / REVISION ADVISED]
+[CLEAN XELATEX/BIBER BUILD PASS — ACTION 31292599279]
+[35-PAGE REVISED REVIEW PDF AVAILABLE]
+[INDEPENDENT DELTA RECHECK NEXT]
+[OWNER PUBLICATION DISPOSITION AFTER DELTA PASS]
 [PR #9 OPEN / DRAFT / UNMERGED]
 [NO PUBLICATION SUBMISSION AUTHORIZED]
 ```
