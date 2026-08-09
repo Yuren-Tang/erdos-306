@@ -17,7 +17,7 @@ Status: controlling project profile for the current E306 article branch.
 - `microtype`; `hidelinks`; URL/DOI material inherits surrounding roman face.
 - Bibliography in `\small`.
 - No decorative boxes, colour coding, drop capitals, ornaments, or pseudo-antique devices in the mathematical body.
-- Current validated paper length: **35 A4 pages**. Do not manipulate margins or body font size merely to preserve a page count.
+- Current validated arXiv-v1 length: **36 A4 pages**. Page 36 contains only the last three bibliography entries. Do not manipulate margins, body font size, or bibliography readability merely to preserve a former page count.
 
 ## Dedication
 
@@ -43,9 +43,11 @@ space above: 8 pt
 space below: 12 pt
 ```
 
-The choice followed equal-context tests of EB Garamond, GFS Didot Classic, GFS Bodoni, Old Standard, Junicode, Libertinus Serif Display, STIX Two Text, and other available TeX Live candidates. The Owner found the preceding GFS Artemisia and EB Garamond settings unsatisfactory. The successful change was not simply another regular face: a true medium weight plus open tracking gives the uppercase Greek a clearer inscriptional silhouette while remaining compatible with the ETbb title-page texture.
+The choice followed equal-context tests of EB Garamond, GFS Didot Classic, GFS Bodoni, Old Standard, Junicode, Libertinus Serif Display, STIX Two Text, and other available TeX Live candidates. The successful change was not simply another regular face: a true medium weight plus open tracking gives the uppercase Greek a clearer inscriptional silhouette.
 
-Do **not** apply fake bold. Bold was deliberately not selected because it competes with the title and turns the dedication into a heavy display element. Do not manually kern individual pairs without a concrete visual defect; native kerning remains in force and the inscriptional openness is supplied by global tracking. If the Owner later wants a small visual adjustment, change tracking within a narrow range before reopening the font-family choice.
+Do **not** apply fake bold. Bold was deliberately not selected because it competes with the title. Do not manually kern individual pairs without a concrete visual defect; native kerning remains in force and inscriptional openness is supplied by global tracking.
+
+The remaining slight mismatch with the ETbb title is understood: ETbb supplies the Latin title/body family but does not provide a corresponding Greek inscriptional/display cut in the retained setup. If typography is revisited after v1, the only next comparison worth prioritizing is Gentium Book Medium or Gentium Medium with the same inscriptional treatment (medium weight plus restrained positive tracking). This is optional and must not trigger a whole-body or title-family redesign merely to match the dedication.
 
 The proposed `ΟΙΣ -> ΟΥΣ` change remains not adopted. Classical relative attraction supports the dative relative with an omitted dative antecedent; the intended reading is `ΚΑΙ [ΤΟΙΣ] ΟΙΣ ΦΙΛΩ`. Do not alter the Greek text without a new explicit philological disposition.
 
@@ -73,11 +75,12 @@ Do not invent personal acknowledgements or misdescribe the role of AI assistance
 - `biblatex` + Biber, numeric style, `nyt` sorting.
 - Show DOI and arXiv/eprint metadata where available; suppress redundant bare URLs.
 - References follow continuously; no forced bibliography page break.
+- Include the Bloom--Elsholtz broad Egyptian-fractions survey as the general-entry reference.
 - Butler--Erdős--Graham A51 uses DOI `10.5281/zenodo.10456673`.
 
 ## Equation references
 
-The visible explicit equation numbers are stable, while source references use ordinary LaTeX/hyperref infrastructure:
+The visible explicit equation numbers remain stable for arXiv v1, while source references use ordinary LaTeX/hyperref infrastructure:
 
 - 190 tagged displays;
 - 190 unique equation labels, exactly one per tagged display;
@@ -86,16 +89,14 @@ The visible explicit equation numbers are stable, while source references use or
 - `eq:section.number` fallback labels elsewhere;
 - no global `\eqref` override and no bare numeric `\eqref{n.m}` calls.
 
-The workflow rejects duplicate tags/labels, missing targets, multiple labels on one tagged display, legacy numeric references, and leaked internal labels in extracted PDF text.
+Automatic visible equation numbering may replace the explicit tags during journal revision, after the arXiv-v1 citation surface is frozen.
 
-## Current exact review source
-
-The current fixed manuscript source is
+## Current exact arXiv-v1 source
 
 ```text
-8024ff325f454e1fc52c280ac65bab0c48315e96
+d21c612be5c3534b3b2b40361c4a861f40969565
 ```
 
-GitHub Actions run `31320182037` / run number 204 clean-built it into a 35-page A4 PDF and passed the full source, sparse-target theorem-surface, equation-reference, XeLaTeX/Biber, glyph, no-overfull, embedded-font/no-Type-3, Unicode dedication, ORCID, and extraction gates. PDF artifact: `9039950866`.
+GitHub Actions run `31326307200` / run number 213 clean-built this source into a 36-page A4 PDF and passed the full source-freeze, sparse-target theorem-surface, equation-reference, XeLaTeX/Biber, glyph, no-overfull, embedded-font/no-Type-3, Unicode dedication, ORCID, and extraction gates. PDF artifact: `9041654586`.
 
-This build validates presentation/execution only. The sparse-target `gamma>1` theorem strengthening still requires a focused independent mathematical recheck before publication disposition.
+The sparse-target `gamma>1` object has received an independent hostile review with no fatal objection. The present v1 source differs from that reviewed object only by bounded editorial microrepairs recorded in `CURRENT_OBJECT_INDEPENDENT_REVIEW_DISPOSITION_2026-08-09.md`.
