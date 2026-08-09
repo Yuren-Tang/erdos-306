@@ -24,7 +24,7 @@ jobs:
 
       - name: Verify frozen manuscript source
         run: |
-          git diff --exit-code 643124b429514581cdf1124e3414449487d13fbe -- \
+          git diff --exit-code 8024ff325f454e1fc52c280ac65bab0c48315e96 -- \
             main.tex references.bib sections
 
       - name: Guard Oxford manuscript spelling
@@ -206,7 +206,7 @@ jobs:
             echo "## E306 sparse-target gamma>1 final-candidate build"
             echo
             echo "- Commit: $GITHUB_SHA"
-            echo "- Frozen manuscript source: \`643124b429514581cdf1124e3414449487d13fbe\` (main.tex + references + sections)"
+            echo "- Frozen manuscript source: \`8024ff325f454e1fc52c280ac65bab0c48315e96\` (main.tex + references + sections)"
             echo "- Entry point: \`paper/e306-anchor-fibre-v1/manuscript/main.tex\`"
             echo "- Engine: XeLaTeX"
             echo "- Body text/math typography: ETbb OpenType / NewTX"
