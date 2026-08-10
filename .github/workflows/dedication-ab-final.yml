@@ -16,7 +16,7 @@ jobs:
       - name: Install TeX and helpers
         run: |
           sudo apt-get update
-          sudo apt-get install -y texlive-xetex texlive-latex-extra texlive-fonts-extra poppler-utils curl unzip python3-fonttools
+          sudo apt-get install -y texlive-xetex texlive-latex-extra texlive-fonts-extra texlive-science poppler-utils curl unzip python3-fonttools python3-pil
       - name: Fetch current Gentium Book Medium for comparison only
         run: |
           curl -L --fail --retry 3 -o /tmp/GentiumBook-7.000.zip https://software.sil.org/downloads/r/gentium/GentiumBook-7.000.zip
@@ -44,10 +44,8 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p /tmp/ab
-          ETBB="$(kpsewhich ETbb-Regular.otf)"
-          STIX="$(kpsewhich STIXTwoText-Medium.otf)"
-          GENTIUM="$(cat /tmp/gentium-medium-path)"
-          Porson="$(kpsewhich GFSPorson.otf)"
+          cp "$(kpsewhich STIXTwoText-Medium.otf)" /tmp/ab/STIXTwoText-Medium.otf
+          cp "$(cat /tmp/gentium-medium-path)" /tmp/ab/GentiumBook-Medium.ttf
           cat > /tmp/ab/template.tex <<'TEX'
           \documentclass[11pt,a4paper,reqno]{amsart}
           \usepackage[british]{babel}
@@ -76,20 +74,21 @@ jobs:
           build_one() {
             name="$1"; font="$2"
             sed "s|CANDIDATE|$font|g" /tmp/ab/template.tex > "/tmp/ab/$name.tex"
-            (cd /tmp/ab && xelatex -interaction=nonstopmode -halt-on-error "$name.tex" >/tmp/ab/$name.log)
+            if ! (cd /tmp/ab && xelatex -interaction=nonstopmode -halt-on-error "$name.tex" >"$name.log" 2>&1); then
+              cat "/tmp/ab/$name.log"
+              exit 1
+            fi
             pdftoppm -f 1 -singlefile -png -r 180 "/tmp/ab/$name.pdf" "/tmp/ab/$name"
           }
-          build_one stix "$STIX"
-          build_one gentium "$GENTIUM"
-          build_one porson "$Porson"
+          build_one stix STIXTwoText-Medium.otf
+          build_one gentium GentiumBook-Medium.ttf
           python3 - <<'PY'
-          from PIL import Image,ImageOps,ImageDraw
-          import os
-          files=[('STIX Two Text Medium','/tmp/ab/stix.png'),('Gentium Book Medium 7.000','/tmp/ab/gentium.png'),('GFS Porson','/tmp/ab/porson.png')]
+          from PIL import Image, ImageDraw
+          files=[('STIX Two Text Medium','/tmp/ab/stix.png'),('Gentium Book Medium 7.000','/tmp/ab/gentium.png')]
           ims=[]
           for label,p in files:
               im=Image.open(p).convert('RGB')
-              crop=im.crop((0,0,im.width,int(im.height*0.57)))
+              crop=im.crop((0,0,im.width,int(im.height*0.62)))
               canvas=Image.new('RGB',(crop.width,crop.height+50),'white')
               canvas.paste(crop,(0,50))
               ImageDraw.Draw(canvas).text((20,15),label,fill='black')
@@ -102,11 +101,11 @@ jobs:
           PY
       - name: Upload comparison
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: e306-dedication-ab-final
           path: |
             /tmp/ab/stix.pdf
             /tmp/ab/gentium.pdf
-            /tmp/ab/porson.pdf
             /tmp/ab/dedication-ab.png
             /tmp/ab/*.log
