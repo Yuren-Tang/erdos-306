@@ -24,7 +24,7 @@ jobs:
 
       - name: Verify frozen manuscript source
         run: |
-          git diff --exit-code d21c612be5c3534b3b2b40361c4a861f40969565 -- \
+          git diff --exit-code 96097f164257c92e8af59bf06e5726ac423f3619 -- \
             main.tex references.bib sections
 
       - name: Guard Oxford manuscript spelling
@@ -126,17 +126,33 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
-            latexmk biber poppler-utils texlive-bibtex-extra texlive-fonts-extra \
-            texlive-fonts-recommended texlive-latex-extra texlive-plain-generic texlive-xetex
+            latexmk biber poppler-utils zip curl unzip \
+            texlive-bibtex-extra texlive-fonts-extra texlive-fonts-recommended \
+            texlive-latex-extra texlive-plain-generic texlive-xetex
 
-      - name: Verify required typography files
+      - name: Prepare required typography files
+        shell: bash
         run: |
+          set -euo pipefail
           kpsewhich ETbb-Regular.otf
           kpsewhich ETbb-Bold.otf
           kpsewhich ETbb-Italic.otf
           kpsewhich ETbb-BoldItalic.otf
           kpsewhich newtxmath.sty
-          kpsewhich STIXTwoText-Medium.otf
+          if GENTIUM="$(kpsewhich GentiumBook-Medium.ttf)" && test -n "$GENTIUM"; then
+            echo "Using TeX Live Gentium: $GENTIUM"
+            cp "$GENTIUM" GentiumBook-Medium.ttf
+          else
+            echo "Runner TeX Live lacks Gentium Book Medium; downloading SIL Gentium Book 7.000 for CI only."
+            curl -L --fail --retry 3 -o /tmp/GentiumBook-7.000.zip \
+              https://software.sil.org/downloads/r/gentium/GentiumBook-7.000.zip
+            rm -rf /tmp/gentium
+            unzip -q /tmp/GentiumBook-7.000.zip -d /tmp/gentium
+            GENTIUM="$(find /tmp/gentium -name 'GentiumBook-Medium.ttf' -print -quit)"
+            test -n "$GENTIUM"
+            cp "$GENTIUM" GentiumBook-Medium.ttf
+          fi
+          test -s GentiumBook-Medium.ttf
 
       - name: Clean XeLaTeX and Biber build
         shell: bash
@@ -179,6 +195,9 @@ jobs:
           if grep -Fq 'Overfull \hbox' main.log; then
             echo "::error::the final TeX pass contains an overfull hbox"; grep -F 'Overfull \hbox' main.log; exit 1
           fi
+          if grep -Fq 'GentiumBook-Medium.ttf(0)/m/it' main.log; then
+            echo "::error::dedication is relying on an undefined Gentium italic fallback"; exit 1
+          fi
           if grep -E "(^|[[:space:]])(WARN|ERROR) -" main.blg; then
             echo "::error::Biber reported a warning or error"; exit 1
           fi
@@ -188,7 +207,7 @@ jobs:
           pdffonts main.pdf | tee main-fonts.txt
           if grep -q "Type 3" main-fonts.txt; then echo "::error::Type 3 fonts are not permitted"; exit 1; fi
           awk 'NR > 2 && $(NF-4) != "yes" { bad=1 } END { exit bad }' main-fonts.txt
-          grep -Eqi "STIXTwoText|STIX2Text|STIXTwo" main-fonts.txt
+          grep -Eqi "GentiumBook|Gentium Book" main-fonts.txt
           python3 - <<'PY'
           import re, unicodedata
           from pathlib import Path
@@ -200,27 +219,105 @@ jobs:
           if leaked: raise SystemExit("Internal LaTeX label names leaked into PDF text: " + repr(leaked))
           PY
 
+      - name: Stage minimal arXiv submission source
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/e306-arxiv-source /tmp/e306-arxiv-build
+          mkdir -p /tmp/e306-arxiv-source/sections /tmp/e306-arxiv-build/sections
+          cp main.tex references.bib /tmp/e306-arxiv-source/
+          cp sections/*.tex /tmp/e306-arxiv-source/sections/
+          cp -a /tmp/e306-arxiv-source/. /tmp/e306-arxiv-build/
+          cp GentiumBook-Medium.ttf /tmp/e306-arxiv-build/GentiumBook-Medium.ttf
+          find /tmp/e306-arxiv-source -type f -printf '%P\n' | sort | tee /tmp/e306-arxiv-source-files.txt
+          test "$(find /tmp/e306-arxiv-source -type f | wc -l)" -eq 12
+          ! find /tmp/e306-arxiv-source -type f \( -name '*.otf' -o -name '*.ttf' -o -name '*.pdf' -o -name '*.aux' -o -name '*.log' -o -name '*.bbl' \) | grep .
+
+      - name: Rebuild from exact submission root
+        working-directory: /tmp/e306-arxiv-build
+        shell: bash
+        run: |
+          set -euo pipefail
+          xelatex -interaction=nonstopmode -halt-on-error main.tex > pass1.log
+          biber main > biber-output.log
+          xelatex -interaction=nonstopmode -halt-on-error main.tex > pass2.log
+          xelatex -interaction=nonstopmode -halt-on-error main.tex > pass3.log
+          pdftotext -enc UTF-8 main.pdf main.txt
+          pdffonts main.pdf > main-fonts.txt
+          test "$(pdfinfo main.pdf | awk '/^Pages:/ {print $2}')" = 36
+          if grep -E 'LaTeX Warning: (There were undefined references|Citation .* undefined|Reference .* undefined|Label .* multiply defined)' main.log; then exit 1; fi
+          if grep -q 'Missing character:' main.log; then exit 1; fi
+          if grep -Fq 'Overfull \hbox' main.log; then exit 1; fi
+          if grep -Fq 'GentiumBook-Medium.ttf(0)/m/it' main.log; then exit 1; fi
+          if grep -E '(^|[[:space:]])(WARN|ERROR) -' main.blg; then exit 1; fi
+          if grep -q 'Type 3' main-fonts.txt; then exit 1; fi
+          awk 'NR > 2 && $(NF-4) != "yes" { bad=1 } END { exit bad }' main-fonts.txt
+          grep -Eqi 'GentiumBook|Gentium Book' main-fonts.txt
+          python3 - <<'PY'
+          import re, unicodedata
+          from pathlib import Path
+          text=unicodedata.normalize('NFC',Path('main.txt').read_text(encoding='utf-8'))
+          required=['ΤΟΙΣ ΕΜΕ ΦΙΛΟΥΣΙΝ','ΚΑΙ ΟΙΣ ΦΙΛΩ','0009-0006-0847-3330','Erdős']
+          missing=[x for x in required if x not in text]
+          if missing: raise SystemExit('Required extracted text missing: '+repr(missing))
+          leaked=sorted(set(re.findall(r'\b(?:eq|thm|sec|lem|prop):[A-Za-z0-9_.:-]+',text)))
+          if leaked: raise SystemExit('Internal labels leaked: '+repr(leaked))
+          PY
+
+      - name: Create deterministic arXiv source ZIP and checksums
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile, ZipInfo, ZIP_DEFLATED
+          root=Path('/tmp/e306-arxiv-source')
+          out=Path('/tmp/Erdos-306-arXiv-v1-source.zip')
+          files=[Path('main.tex'),Path('references.bib'),*sorted(Path('sections').glob('*.tex'))]
+          with ZipFile(out,'w') as z:
+              for rel in files:
+                  data=(root/rel).read_bytes()
+                  zi=ZipInfo(rel.as_posix(),date_time=(1980,1,1,0,0,0))
+                  zi.compress_type=ZIP_DEFLATED
+                  zi.create_system=3
+                  zi.external_attr=(0o100644 & 0xFFFF) << 16
+                  z.writestr(zi,data)
+          PY
+          cp /tmp/e306-arxiv-build/main.pdf /tmp/Erdos-306-arXiv-v1.pdf
+          sha256sum /tmp/Erdos-306-arXiv-v1-source.zip /tmp/Erdos-306-arXiv-v1.pdf | tee /tmp/Erdos-306-arXiv-v1-SHA256.txt
+          unzip -l /tmp/Erdos-306-arXiv-v1-source.zip | tee /tmp/Erdos-306-arXiv-v1-ZIP-CONTENTS.txt
+          test "$(unzip -Z1 /tmp/Erdos-306-arXiv-v1-source.zip | wc -l)" -eq 12
+          ! unzip -Z1 /tmp/Erdos-306-arXiv-v1-source.zip | grep -E '\.(otf|ttf|pdf|aux|log|bbl)$'
+
       - name: Build summary
         run: |
           {
-            echo "## E306 arXiv-v1 candidate build"
+            echo "## E306 final arXiv-v1 publication build"
             echo
-            echo "- Commit: $GITHUB_SHA"
-            echo "- Frozen manuscript source: \`d21c612be5c3534b3b2b40361c4a861f40969565\` (main.tex + references + sections)"
+            echo "- Execution head: $GITHUB_SHA"
+            echo "- Frozen manuscript source: \`96097f164257c92e8af59bf06e5726ac423f3619\` (main.tex + references + sections)"
             echo "- Entry point: \`paper/e306-anchor-fibre-v1/manuscript/main.tex\`"
             echo "- Engine: XeLaTeX"
             echo "- Body text/math typography: ETbb OpenType / NewTX"
-            echo "- Dedication typography: STIX Two Text Medium, 10.5/16 pt, LetterSpace 9"
+            echo "- Dedication typography: Gentium Book Medium, upright 10.5/16 pt, LetterSpace 9"
             echo "- Equation references: ordinary LaTeX/hyperref labels with stable explicit visible tags"
             echo "- Bibliography backend/style: Biber / numeric"
-            echo "- PDF size: $(stat -c%s main.pdf) bytes"
-            echo "- Pages: $(pdfinfo main.pdf | awk '/^Pages:/ {print $2}')"
+            echo "- Submission package actual files: 12; no font binaries or build products"
+            echo "- PDF size: $(stat -c%s /tmp/Erdos-306-arXiv-v1.pdf) bytes"
+            echo "- Pages: $(pdfinfo /tmp/Erdos-306-arXiv-v1.pdf | awk '/^Pages:/ {print $2}')"
+            echo "- SHA-256:"
+            sed 's/^/  - /' /tmp/Erdos-306-arXiv-v1-SHA256.txt
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Upload manuscript PDF
+      - name: Upload final arXiv-v1 submission package
         uses: actions/upload-artifact@v4
         with:
-          name: e306-arxiv-v1-candidate-pdf-${{ github.sha }}
-          path: paper/e306-anchor-fibre-v1/manuscript/main.pdf
+          name: e306-arxiv-v1-submission-package-${{ github.sha }}
+          path: |
+            /tmp/Erdos-306-arXiv-v1-source.zip
+            /tmp/Erdos-306-arXiv-v1.pdf
+            /tmp/Erdos-306-arXiv-v1-SHA256.txt
+            /tmp/Erdos-306-arXiv-v1-ZIP-CONTENTS.txt
+            /tmp/e306-arxiv-source-files.txt
           if-no-files-found: error
           retention-days: 30
