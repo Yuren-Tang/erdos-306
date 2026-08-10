@@ -1,0 +1,132 @@
+name: gentium-v1-finalization
+
+on:
+  push:
+    branches:
+      - finalization/e306-gentium-v1
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify bounded manuscript delta from reviewed final text
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=d21c612be5c3534b3b2b40361c4a861f40969565
+          ROOT=paper/e306-anchor-fibre-v1/manuscript
+          git diff --exit-code "$BASE" -- "$ROOT/references.bib" "$ROOT/sections"
+          changed="$(git diff --name-only "$BASE" -- "$ROOT")"
+          test "$changed" = "$ROOT/main.tex"
+          python3 - <<'PY'
+          import subprocess
+          base='d21c612be5c3534b3b2b40361c4a861f40969565'
+          path='paper/e306-anchor-fibre-v1/manuscript/main.tex'
+          old=subprocess.check_output(['git','show',f'{base}:{path}'],text=True)
+          new=open(path,encoding='utf-8').read()
+          expected=old.replace('\\newfontfamily\\greekdedicationfont{STIXTwoText-Medium.otf}[\n  ItalicFont=STIXTwoText-Medium.otf,\n  LetterSpace=9\n]',
+                               '\\newfontfamily\\greekdedicationfont{GentiumBook-Medium.ttf}[\n  LetterSpace=9\n]')
+          if new != expected:
+              raise SystemExit('Candidate main.tex contains changes beyond the exact dedication-font substitution')
+          print('Bounded delta verified: dedication font only.')
+          PY
+
+      - name: Install TeX toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            latexmk biber poppler-utils zip curl unzip \
+            texlive-bibtex-extra texlive-fonts-extra texlive-fonts-recommended \
+            texlive-latex-extra texlive-plain-generic texlive-xetex
+
+      - name: Obtain Gentium Book Medium 7.000 for TL2023 runner only
+        run: |
+          curl -L --fail --retry 3 -o /tmp/GentiumBook-7.000.zip https://software.sil.org/downloads/r/gentium/GentiumBook-7.000.zip
+          unzip -q /tmp/GentiumBook-7.000.zip -d /tmp/gentium
+          find /tmp/gentium -name 'GentiumBook-Medium.ttf' -print -quit | tee /tmp/gentium-medium-path
+          test -s /tmp/gentium-medium-path
+
+      - name: Stage minimal arXiv source and clean build tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          SRC="$GITHUB_WORKSPACE/paper/e306-anchor-fibre-v1/manuscript"
+          mkdir -p /tmp/arxiv-source/sections /tmp/arxiv-build/sections
+          cp "$SRC/main.tex" "$SRC/references.bib" /tmp/arxiv-source/
+          cp "$SRC"/sections/*.tex /tmp/arxiv-source/sections/
+          cp -a /tmp/arxiv-source/. /tmp/arxiv-build/
+          cp "$(cat /tmp/gentium-medium-path)" /tmp/arxiv-build/GentiumBook-Medium.ttf
+          printf '%s\n' 'Submission-source files:'
+          find /tmp/arxiv-source -type f -printf '%P\n' | sort | tee /tmp/source-file-list.txt
+          test "$(find /tmp/arxiv-source -type f | wc -l)" -eq 12
+          ! find /tmp/arxiv-source -type f \( -name '*.otf' -o -name '*.ttf' -o -name '*.pdf' -o -name '*.aux' -o -name '*.log' \) | grep .
+
+      - name: Root-level XeLaTeX Biber build from staged package
+        working-directory: /tmp/arxiv-build
+        shell: bash
+        run: |
+          set -euo pipefail
+          xelatex -interaction=nonstopmode -halt-on-error main.tex | tee pass1.log
+          biber main | tee biber-output.log
+          xelatex -interaction=nonstopmode -halt-on-error main.tex | tee pass2.log
+          xelatex -interaction=nonstopmode -halt-on-error main.tex | tee pass3.log
+          pdftotext -enc UTF-8 main.pdf main.txt
+          pdffonts main.pdf | tee main-fonts.txt
+          pdfinfo main.pdf | tee main-info.txt
+
+      - name: Gate final package build
+        working-directory: /tmp/arxiv-build
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s main.pdf
+          test -s main.bbl
+          test "$(pdfinfo main.pdf | awk '/^Pages:/ {print $2}')" = 36
+          if grep -E 'LaTeX Warning: (There were undefined references|Citation .* undefined|Reference .* undefined|Label .* multiply defined)' main.log; then exit 1; fi
+          if grep -q 'Missing character:' main.log; then grep 'Missing character:' main.log; exit 1; fi
+          if grep -Fq 'Overfull \hbox' main.log; then grep -F 'Overfull \hbox' main.log; exit 1; fi
+          if grep -E '(^|[[:space:]])(WARN|ERROR) -' main.blg; then exit 1; fi
+          if grep -q 'Type 3' main-fonts.txt; then exit 1; fi
+          awk 'NR > 2 && $(NF-4) != "yes" { bad=1 } END { exit bad }' main-fonts.txt
+          grep -Eqi 'GentiumBook|Gentium Book' main-fonts.txt
+          python3 - <<'PY'
+          import re, unicodedata
+          text=unicodedata.normalize('NFC',open('main.txt',encoding='utf-8').read())
+          required=['ΤΟΙΣ ΕΜΕ ΦΙΛΟΥΣΙΝ','ΚΑΙ ΟΙΣ ΦΙΛΩ','0009-0006-0847-3330','Erdős']
+          missing=[x for x in required if x not in text]
+          if missing: raise SystemExit('Required extracted text missing: '+repr(missing))
+          leaked=sorted(set(re.findall(r'\b(?:eq|thm|sec|lem|prop):[A-Za-z0-9_.:-]+',text)))
+          if leaked: raise SystemExit('Internal labels leaked: '+repr(leaked))
+          PY
+
+      - name: Create deterministic minimal source ZIP and checksums
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd /tmp/arxiv-source && zip -X -q -r /tmp/Erdos-306-arXiv-v1-source.zip main.tex references.bib sections)
+          cp /tmp/arxiv-build/main.pdf /tmp/Erdos-306-arXiv-v1.pdf
+          sha256sum /tmp/Erdos-306-arXiv-v1-source.zip /tmp/Erdos-306-arXiv-v1.pdf | tee /tmp/Erdos-306-arXiv-v1-SHA256.txt
+          unzip -l /tmp/Erdos-306-arXiv-v1-source.zip | tee /tmp/Erdos-306-arXiv-v1-ZIP-CONTENTS.txt
+
+      - name: Upload finalization artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: e306-gentium-v1-finalization
+          path: |
+            /tmp/Erdos-306-arXiv-v1-source.zip
+            /tmp/Erdos-306-arXiv-v1.pdf
+            /tmp/Erdos-306-arXiv-v1-SHA256.txt
+            /tmp/Erdos-306-arXiv-v1-ZIP-CONTENTS.txt
+            /tmp/source-file-list.txt
+            /tmp/arxiv-build/main.log
+            /tmp/arxiv-build/main.blg
+            /tmp/arxiv-build/main.txt
+            /tmp/arxiv-build/main-fonts.txt
+            /tmp/arxiv-build/main-info.txt
+          if-no-files-found: error
+          retention-days: 30
