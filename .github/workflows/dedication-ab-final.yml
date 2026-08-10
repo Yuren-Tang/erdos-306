@@ -1,0 +1,112 @@
+name: dedication-ab-final
+
+on:
+  push:
+    branches:
+      - paper/e306-anchor-fibre-v1
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: d21c612be5c3534b3b2b40361c4a861f40969565
+          fetch-depth: 1
+      - name: Install TeX and helpers
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-xetex texlive-latex-extra texlive-fonts-extra poppler-utils curl unzip python3-fonttools
+      - name: Fetch current Gentium Book Medium for comparison only
+        run: |
+          curl -L --fail --retry 3 -o /tmp/GentiumBook-7.000.zip https://software.sil.org/downloads/r/gentium/GentiumBook-7.000.zip
+          unzip -q /tmp/GentiumBook-7.000.zip -d /tmp/gentium
+          find /tmp/gentium -name 'GentiumBook-Medium.ttf' -print -quit | tee /tmp/gentium-medium-path
+          test -s /tmp/gentium-medium-path
+      - name: Confirm ETbb has no Greek dedication glyphs
+        run: |
+          ETBB="$(kpsewhich ETbb-Regular.otf)"
+          python3 - "$ETBB" <<'PY'
+          from fontTools.ttLib import TTFont
+          import sys
+          path=sys.argv[1]
+          text='ΤΟΙΣΕΜΦΛΥΝΚΑΩ'
+          f=TTFont(path)
+          cmap={cp for t in f['cmap'].tables for cp in t.cmap}
+          missing=[ch for ch in text if ord(ch) not in cmap]
+          print('ETbb path:', path)
+          print('Greek dedication glyphs missing:', ''.join(sorted(set(missing))))
+          if not missing:
+              raise SystemExit('unexpected: ETbb contains all tested Greek glyphs')
+          PY
+      - name: Build identical first-page specimens
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/ab
+          ETBB="$(kpsewhich ETbb-Regular.otf)"
+          STIX="$(kpsewhich STIXTwoText-Medium.otf)"
+          GENTIUM="$(cat /tmp/gentium-medium-path)"
+          Porson="$(kpsewhich GFSPorson.otf)"
+          cat > /tmp/ab/template.tex <<'TEX'
+          \documentclass[11pt,a4paper,reqno]{amsart}
+          \usepackage[british]{babel}
+          \usepackage{amsmath,amssymb,mathtools}
+          \usepackage{newtxmath}
+          \usepackage[no-math]{fontspec}
+          \setmainfont{ETbb-Regular.otf}[BoldFont=ETbb-Bold.otf,ItalicFont=ETbb-Italic.otf,BoldItalicFont=ETbb-BoldItalic.otf,Ligatures=TeX]
+          \newfontfamily\greekdedicationfont{CANDIDATE}[LetterSpace=9]
+          \usepackage{microtype}
+          \usepackage[hidelinks]{hyperref}
+          \title[Squarefree Semiprime Unit Fractions]{Squarefree Semiprime Unit Fractions:\\A Characterization and a Local Limit Theorem}
+          \author{Yuren Tang}
+          \date{}
+          \dedicatory{\vspace{8pt}{\greekdedicationfont\upshape\fontsize{10.5}{16}\selectfont ΤΟΙΣ ΕΜΕ ΦΙΛΟΥΣΙΝ\\ΚΑΙ ΟΙΣ ΦΙΛΩ}\vspace{12pt}}
+          \subjclass[2020]{Primary 11D68; Secondary 11B34, 60F05}
+          \keywords{Egyptian fractions, squarefree semiprimes, representation functions, local limit theorem, finite Fourier analysis, Erdős Problem 306}
+          \begin{document}
+          \begin{abstract}
+          We characterize the positive rationals that are finite sums of reciprocals of distinct squarefree semiprimes. A reduced rational $a/b>0$ admits such a representation if and only if $b$ is squarefree; moreover, the representation may avoid any prescribed finite set of denominators. This gives a self-contained analytic resolution of Erd\H{o}s Problem 306.
+
+          More quantitatively, fix a reduced $t=a/b\in(0,1)$ with squarefree $b$ and a fixed $\gamma>1$ satisfying $t<(\log\gamma)^2/2<1$. For a target-adapted semiprime family with natural common denominator $L_X$, reciprocal-sum variance $\sigma_X^2$, and exact Bernoulli mass $W_X$, we prove a compact-uniform local Gaussian profile for the exact coefficients. The central coefficient gives the representation theorem, the same family realizes a growing consecutive block of nearby lattice targets, and the exact fibre contains exponentially many representations at the ambient entropy rate in a mesoscopic typical-cardinality window.
+          \end{abstract}
+          \maketitle
+          \end{document}
+          TEX
+          build_one() {
+            name="$1"; font="$2"
+            sed "s|CANDIDATE|$font|g" /tmp/ab/template.tex > "/tmp/ab/$name.tex"
+            (cd /tmp/ab && xelatex -interaction=nonstopmode -halt-on-error "$name.tex" >/tmp/ab/$name.log)
+            pdftoppm -f 1 -singlefile -png -r 180 "/tmp/ab/$name.pdf" "/tmp/ab/$name"
+          }
+          build_one stix "$STIX"
+          build_one gentium "$GENTIUM"
+          build_one porson "$Porson"
+          python3 - <<'PY'
+          from PIL import Image,ImageOps,ImageDraw
+          import os
+          files=[('STIX Two Text Medium','/tmp/ab/stix.png'),('Gentium Book Medium 7.000','/tmp/ab/gentium.png'),('GFS Porson','/tmp/ab/porson.png')]
+          ims=[]
+          for label,p in files:
+              im=Image.open(p).convert('RGB')
+              crop=im.crop((0,0,im.width,int(im.height*0.57)))
+              canvas=Image.new('RGB',(crop.width,crop.height+50),'white')
+              canvas.paste(crop,(0,50))
+              ImageDraw.Draw(canvas).text((20,15),label,fill='black')
+              ims.append(canvas)
+          out=Image.new('RGB',(max(i.width for i in ims),sum(i.height for i in ims)),'white')
+          y=0
+          for im in ims:
+              out.paste(im,(0,y)); y+=im.height
+          out.save('/tmp/ab/dedication-ab.png')
+          PY
+      - name: Upload comparison
+        uses: actions/upload-artifact@v4
+        with:
+          name: e306-dedication-ab-final
+          path: |
+            /tmp/ab/stix.pdf
+            /tmp/ab/gentium.pdf
+            /tmp/ab/porson.pdf
+            /tmp/ab/dedication-ab.png
+            /tmp/ab/*.log
