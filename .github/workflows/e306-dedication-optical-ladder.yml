@@ -29,7 +29,6 @@ jobs:
             texlive-latex-extra texlive-plain-generic texlive-xetex
           kpsewhich ETbb-Regular.otf
           kpsewhich STIXTwoText-Medium.otf
-          kpsewhich GFSPorson.otf
 
       - name: Download Gentium Book 7.000 upstream
         shell: bash
@@ -61,8 +60,6 @@ jobs:
             elif [ "$face" = gentium-semibold ]; then
               cp "$SEMI" "$dir/GentiumBook-SemiBold.ttf"
               FACEFILE='GentiumBook-SemiBold.ttf'
-            elif [ "$face" = porson ]; then
-              FACEFILE='GFSPorson.otf'
             else
               FACEFILE='STIXTwoText-Medium.otf'
             fi
@@ -87,7 +84,6 @@ jobs:
           build_variant Gentium-M-10.75-LS11 gentium-medium 10.75 11
           build_variant Gentium-M-11-LS12 gentium-medium 11 12
           build_variant Gentium-SB-10.25-LS10 gentium-semibold 10.25 10
-          build_variant Porson-10.5-LS9 porson 10.5 9
 
       - name: Make comparison sheet
         run: |
@@ -98,8 +94,7 @@ jobs:
             /tmp/Gentium-M-10.75-LS11-page1.png \
             /tmp/Gentium-M-11-LS12-page1.png \
             /tmp/Gentium-SB-10.25-LS10-page1.png \
-            /tmp/Porson-10.5-LS9-page1.png \
-            -thumbnail 32% -tile 5x1 -geometry +12+0 -background white \
+            -thumbnail 40% -tile 4x1 -geometry +12+0 -background white \
             /tmp/out/optical-ladder.png
 
       - uses: actions/upload-artifact@v4
