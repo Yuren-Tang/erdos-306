@@ -1,0 +1,193 @@
+\section{Recovery of the remaining CRT coordinates}
+\label{sec:coordinate-recovery}
+
+Fix an anchor assignment. The remaining coordinates are recovered through the factors joining them to the anchor. Before estimating those rows, we record the exact product estimate used to retain one decoded row tuple.
+
+\begin{lemma}[Unnormalised product-fibre compression]
+\label{lem:unnormalised-product-fibre}
+Let $R$ be finite. For each $r\in R$, let $X_r$ be finite, let $a_r:X_r\to[0,\infty)$, and choose $x_r^*\in X_r$. Put
+\[
+ \alpha_r=a_r(x_r^*),\qquad \beta_r=\sum_{x\neq x_r^*}a_r(x).
+\]
+If $W\geq0$ and $H:\prod_rX_r\to\mathbb C$ satisfies $|H|\leq1$, then the contribution of all tuples other than $x^*=(x_r^*)$ has modulus at most
+\[
+ W\left\{\prod_{r\in R}(\alpha_r+\beta_r)-\prod_{r\in R}\alpha_r\right\}.
+\]
+\end{lemma}
+\begin{proof}
+Remove the distinguished tuple and use the triangle inequality. The complete nonnegative product sum factorizes as $\prod_r(\alpha_r+\beta_r)$, while the distinguished tuple has weight $\prod_r\alpha_r$.
+\end{proof}
+
+The statement is deliberately unnormalised: it remains valid when a decoder weight is zero, and every factor not assigned to a row remains inside $H$.
+
+For $r\in R_{\rm rows}:=(P\setminus B)\sqcup S_b$, a residue $x\pmod r$, and $q\in B$, let $H_{rq}(x,a_q)$ be the centred CRT lift of $x\pmod r$ and $a_q\pmod q$, and put
+\[
+ u_{rq}(x)=\frac{H_{rq}(x,a_q)}{rq}\pmod1.
+\]
+If the row residue changes by $d$, then
+\begin{equation}
+\label{eq:row-shift}
+ u_{rq}(x+d)-u_{rq}(x)=dq^{-1}/r\pmod1.
+\end{equation}
+Thus row separation is independent of the anchor shift.
+
+\subsection{Cyclic row distance}
+
+\begin{lemma}[Multiplicity-sensitive cyclic energy]
+\label{lem:cyclic-energy}
+Let $c_1,\ldots,c_M$ be nonzero residues modulo a prime $r$, each occurring at most $\mu$ times. If $M/\mu$ is sufficiently large, then for every $d\not\equiv0\pmod r$,
+\[
+ \sum_{j=1}^M\dist{dc_j/r}^2\geq c\frac{M^3}{\mu^2r^2}
+\]
+for an absolute constant $c>0$.
+\end{lemma}
+\begin{proof}
+Multiplication by $d$ preserves multiplicities. Put $u=\lfloor M/(4\mu)\rfloor$. At most $2\mu u\leq M/2$ entries lie in the $2u$ nonzero residue classes nearest zero. Every other entry has circle distance at least $u/r\geq M/(8\mu r)$, and at least $M/2$ entries contribute.
+\end{proof}
+
+For a row $r$, define
+\[
+ D_r=\min_{d\not\equiv0\,(r)}\sum_{q\in B}\dist{dq^{-1}/r}^2.
+\]
+
+\begin{proposition}[Lower-prime row distance]
+\label{prop:lower-row-distance}
+Uniformly for every prime $r\in P\setminus B$,
+\[
+ D_r\gg_\eta\frac{Z}{\log^3Z}.
+\]
+\end{proposition}
+\begin{proof}
+The interval $[\eta Z,Z)$ contains at most
+\[
+ \mu_r\leq1+\frac{(1-\eta)Z}{r}\leq\frac{Z}{r}
+\]
+integers in one residue class modulo $r$. With $M=|B|\asymp_\eta Z/\log Z$, \cref{lem:cyclic-energy} gives
+\[
+ D_r\gg_\eta\frac{M^3}{\mu_r^2r^2}\gg_\eta\frac{Z}{\log^3Z}.
+\]
+The largeness hypothesis is uniform because $M/\mu_r\gg_\eta r/\log Z\geq X/\log Z$.
+\end{proof}
+
+\begin{proposition}[Target-row observability]
+\label{prop:target-row-distance}
+For every prime $r\mid b$,
+\[
+ D_r\geq\frac{|B|}{r^2}\gg_{b,\eta}\frac{Z}{\log Z}.
+\]
+Consequently, the rows indexed by the prime divisors of the squarefree denominator $b$ detect every nonzero target-coordinate difference.
+\end{proposition}
+\begin{proof}
+Every $q\in B$ is coprime to $r$. If $d\not\equiv0\pmod r$, then $dq^{-1}$ is nonzero modulo $r$, so each circle distance is at least $1/r$. Since $b$ is squarefree, simultaneous agreement in these prime coordinates is agreement modulo $b$.
+\end{proof}
+
+\subsection{Row tails}
+
+For $r\in R_{\rm rows}$ define
+\[
+ E_r(x)=\sum_{q\in B}\dist{u_{rq}(x)}^2,
+ \qquad
+ A_r(x)=\prod_{q\in B}\left|(1-\theta)+\theta\exp(2\pi i u_{rq}(x))\right|,
+\]
+and choose $x_r^*$ minimizing $E_r(x)$.
+
+\begin{lemma}[Shift-uniform row tail]
+\label{lem:row-tail}
+There is $c_{\rm row}=c_{\rm row}(t,\gamma,\eta,b)>0$ such that
+\[
+ \delta_r:=\sum_{x\neq x_r^*}A_r(x)\leq r\exp(-c_{\rm row}D_r).
+\]
+\end{lemma}
+\begin{proof}
+If $x\neq x_r^*$, \cref{eq:row-shift} and the circle triangle inequality give
+\[
+ D_r\leq2E_r(x)+2E_r(x_r^*)\leq4E_r(x).
+\]
+Apply \cref{eq:bernoulli-modulus} and sum over at most $r$ residues.
+\end{proof}
+
+Consequently,
+\begin{equation}
+\label{eq:Delta-row}
+ \Delta:=\sum_{r\in R_{\rm rows}}\delta_r
+ \leq Z^2\exp(-c_{\rm row,\eta}Z/\log^3Z)=o(1).
+\end{equation}
+
+\subsection{Compression and retained factors}
+
+For the fixed anchor assignment, assign every factor involving one anchor prime and one row prime to the corresponding $A_r$. Internal anchor factors occur in $T_B$, while every lower--lower prime-pair factor and every phase remains in a residual factor. Thus
+\begin{equation}
+\label{eq:concrete-fibre-factorization}
+ F(a_B,x_R)=T_B(a_B)\prod_{r\in R_{\rm rows}}A_r(x_r)H_{a_B}(x_R),
+ \qquad |H_{a_B}(x_R)|\leq1.
+\end{equation}
+If the full assigned row modulus $T_B(a_B)\prod_{r\in R_{\rm rows}}A_r(x_r)$ vanishes, define $H_{a_B}(x_R)=0$. This convention requires no division by an assigned modulus or decoder weight.
+
+Put $\alpha_r=A_r(x_r^*)$ and $\beta_r=\sum_{x\neq x_r^*}A_r(x)$. By \cref{lem:unnormalised-product-fibre}, the nondecoder contribution above this anchor assignment is at most
+\[
+ T_B\left\{\prod_r(\alpha_r+\beta_r)-\prod_r\alpha_r\right\}
+ \leq T_B\left(\exp\left(\sum_r\delta_r\right)-1\right).
+\]
+Summing against the actual anchor weights gives:
+
+\begin{proposition}[Global fibre error]
+\label{prop:global-fibre-error}
+The total contribution of all nondecoder row tuples is at most
+\begin{equation}
+\label{eq:global-fibre-error}
+ P_{\rm anc}\bigl(\exp(\Delta)-1\bigr)
+ \ll_\eta Z\log Z\,\Delta=o(1).
+\end{equation}
+\end{proposition}
+
+No decoder weight has been divided out, and the retained lower--lower factors remain available for the later frequency estimates.
+
+\subsection{Identification ranges}
+
+Suppose the anchor assignment is coherent with integer label $m$. The candidate row residue $m\pmod r$ satisfies
+\begin{equation}
+\label{eq:candidate-row-energy}
+ E_r(m\bmod r)\leq\frac{m^2}{r^2}W_B\ll_\eta\frac{m^2/r^2}{Z\log Z}.
+\end{equation}
+If this is less than $D_r/8$, the candidate is the unique minimizer, for otherwise the triangle inequality would give $D_r< D_r/2$.
+
+Put
+\begin{equation}
+\label{eq:M-dec}
+ M_{\rm dec}=\frac{XZ}{(\log Z)^2}.
+\end{equation}
+
+\begin{proposition}[Prime-coordinate identification]
+\label{prop:prime-decoder-identification}
+For every $r\in P\setminus B$ and every coherent label $|m|\leq M_{\rm dec}$,
+\[
+ x_r^*=m\pmod r.
+\]
+\end{proposition}
+\begin{proof}
+At the worst endpoint $r=X$, $|m|=M_{\rm dec}$, the candidate energy is $O_\eta(Z/\log^5Z)$, while \cref{prop:lower-row-distance} gives $D_r\gg_\eta Z/\log^3Z$.
+\end{proof}
+
+Fix a sufficiently small constant $\kappa_0=\kappa_0(t,\gamma,\eta,b)>0$, with $\kappa_0<1/4$, and define
+\begin{equation}
+\label{eq:T-full}
+ T_0=\kappa_0\min(X^2,Z).
+\end{equation}
+
+\begin{proposition}[Target-coordinate identification]
+\label{prop:target-decoder-identification}
+For every $r\mid b$ prime and every coherent label $|m|\leq T_0$,
+\[
+ x_r^*=m\pmod r.
+\]
+\end{proposition}
+\begin{proof}
+By \cref{eq:candidate-row-energy}, the candidate energy is $O_{b,\eta}(m^2/(Z\log Z))$, whereas \cref{prop:target-row-distance} is $\gg_{b,\eta}Z/\log Z$. The choice of $\kappa_0$ makes the comparison strict.
+\end{proof}
+
+For each coherent label $m$, let $h_m\in\mathbb Z/L\mathbb Z$ be the frequency whose anchor coordinates are $m$ and whose row coordinates are the chosen decoders. When $|m|\leq T_0$, every prime and target coordinate agrees with $m$, so
+\begin{equation}
+\label{eq:h-m-full-identification}
+ h_m=m\pmod L.
+\end{equation}
+When $T_0<|m|\leq M_{\rm dec}$, only the coordinates indexed by $P$ are asserted to agree with $m$; the estimates in that range use only prime-pair factors.

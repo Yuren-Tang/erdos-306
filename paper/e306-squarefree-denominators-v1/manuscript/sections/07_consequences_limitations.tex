@@ -1,0 +1,68 @@
+\section{Qualitative consequences and limitations}
+\label{sec:consequences}
+
+The finite-avoidance quantifier gives several useful consequences without further analysis. We state them separately from the direct Fourier construction.
+
+Let
+\[
+ \mathbb Q_{\rm sf}^+=\{q\in\mathbb Q_{\geq0}:\text{the reduced denominator of $q$ is squarefree}\}.
+\]
+This set is closed under finite addition and under subtraction when the result is nonnegative.
+
+\begin{theorem}[Finite prescription and avoidance]
+\label{thm:finite-extension}
+Let $q>0$ belong to $\mathbb Q_{\rm sf}^+$. Let $S$ be a finite set of squarefree semiprimes and let $\mathcal T$ be finite. Suppose $S\cap\mathcal T=\varnothing$ and $\sum_{s\in S}1/s\leq q$. Then $S$ extends to a representation of $q$ by distinct squarefree semiprimes avoiding $\mathcal T$.
+\end{theorem}
+\begin{proof}
+Put $r=q-\sum_{s\in S}1/s\geq0$. If $r=0$, there is nothing to add. If $r>0$, then $r\in\mathbb Q_{\rm sf}^+$; apply \cref{thm:main} to $r$, forbidding $S\cup\mathcal T$, and adjoin the resulting support.
+\end{proof}
+
+\begin{corollary}[Qualitative flexibility]
+\label{cor:qualitative-flexibility}
+Every positive $q\in\mathbb Q_{\rm sf}^+$ has representations above every prescribed denominator threshold, with arbitrarily many terms, and on infinitely many pairwise disjoint finite supports.
+\end{corollary}
+\begin{proof}
+For a threshold, forbid all squarefree semiprimes below it. To force at least $k$ terms, prescribe $k$ sufficiently large semiprimes whose reciprocal sum is below $q$ and apply \cref{thm:finite-extension}. For pairwise disjoint supports, construct recursively, forbidding the union of all earlier supports at each stage.
+\end{proof}
+
+\begin{theorem}[Row--column refinement]
+\label{thm:squarefree-row-column}
+If $x_1+\cdots+x_r=y_1+\cdots+y_s$ with all terms in $\mathbb Q_{\rm sf}^+$, then there are $z_{ij}\in\mathbb Q_{\rm sf}^+$ with row sums $x_i$ and column sums $y_j$.
+\end{theorem}
+\begin{proof}
+Choose one squarefree common denominator $L$. The resulting nonnegative integer row and column sums admit a transportation matrix; divide its entries by $L$.
+\end{proof}
+
+\begin{definition}
+Let $A$ and $C$ be finite squarefree-semiprime representations of the same rational. We say that $C$ \emph{refines} $A$ if
+\[
+ C=\bigsqcup_{a\in A}C_a,
+ \qquad
+ \sum_{c\in C_a}\frac1c=\frac1a.
+\]
+The refinement is \emph{proper} if every block $C_a$ has at least two elements.
+\end{definition}
+
+\begin{theorem}[Common proper refinement]
+\label{thm:common-refinement}
+Any finite family of finite representations of the same admissible positive rational has a common refinement. Given any finite forbidden set, it may be chosen disjoint from that set and from every original support, and proper over every original term.
+\end{theorem}
+\begin{proof}
+For two representations $A=\{a_1,\ldots,a_r\}$ and $B=\{b_1,\ldots,b_s\}$, choose a squarefree common denominator $L$ for all $1/a_i$ and $1/b_j$. The integer row sums $L/a_i$ and column sums $L/b_j$ have equal totals, so choose a nonnegative integral transportation matrix $(c_{ij})$. Every positive $z_{ij}=c_{ij}/L$ lies in $\mathbb Q_{\rm sf}^+$. Realize these positive entries successively on pairwise disjoint squarefree-semiprime supports, avoiding the prescribed set and both original supports. Grouping by rows refines $A$, grouping by columns refines $B$, and avoidance of the original denominators makes every original block proper. Iterate for a finite family.
+\end{proof}
+
+\begin{corollary}[Infinite proper refinement chain]
+\label{cor:infinite-refinement-chain}
+Every finite squarefree-semiprime representation begins a chain
+\[
+ A_0\prec A_1\prec A_2\prec\cdots
+\]
+of proper refinements with pairwise disjoint supports.
+\end{corollary}
+\begin{proof}
+Given $A_n$, represent each $1/a$ for $a\in A_n$ on a support avoiding all earlier levels and all supports already chosen at the next level. The union of these pairwise disjoint supports is a proper refinement of $A_n$.
+\end{proof}
+
+\subsection{Boundaries of the result}
+
+Finite avoidance means that the family may be constructed after a fixed finite forbidden set is prescribed. It does not assert that one already constructed finite family remains viable after arbitrary deletion. The anchor ratio $\eta$ and exponent $\gamma$ are fixed while $X$ tends to infinity; shrinking terminal blocks and varying $\eta$ require different estimates. Finally, this article proves positivity and qualitative existence only. Quantitative refinements of the coefficient and of the family of representations lie outside its scope.

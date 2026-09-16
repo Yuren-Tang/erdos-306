@@ -1,0 +1,52 @@
+\section{Introduction and main theorem}
+\label{sec:introduction}
+
+An integer is a \emph{squarefree semiprime} if it is the product of two distinct primes. We resolve the reciprocal-representation problem posed by Erd\H{o}s and Graham~\cite{erdos-graham-1980} and now recorded as Erd\H{o}s Problem~306~\cite{erdos-problem-306}.
+
+\begin{theorem}[Squarefree-denominator characterization with finite avoidance]
+\label{thm:main}
+Let $q>0$ be rational. The denominator of $q$ in lowest terms is squarefree if and only if, for every finite set $\mathcal T$ of positive integers, there is a finite set $\mathcal N$ of pairwise distinct squarefree semiprimes, disjoint from $\mathcal T$, such that
+\[
+ q=\sum_{n\in\mathcal N}\frac1n.
+\]
+\end{theorem}
+
+The obstruction is exact and elementary: the reduced denominator of a finite sum of reciprocals of squarefree integers divides their squarefree least common multiple. The content is the converse, strengthened by the freedom to avoid an arbitrary finite set.
+
+\subsection{Context}
+
+Egyptian fractions and restrictions on their denominators have a long history; see Bloom and Elsholtz~\cite{bloom-elsholtz-2022}. Barbeau gave the first known representation of $1$ by reciprocals of distinct squarefree semiprimes, using $101$ terms, and Watanabe later found examples with $47$ terms~\cite{barbeau-1977,watanabe-2020}. Butler, Erd\H{o}s and Graham proved the corresponding integer theorem with denominators having three distinct prime factors and conjectured the two-prime case~\cite{butler-erdos-graham-2015}.
+
+Li recently proved the two-prime conjecture for positive integers and obtained representations of $a/b$ with squarefree $b$ above an explicit threshold, leaving the remaining rational range open~\cite{li-2026-semiprime}. The theorem above settles the full rational characterization. The argument here obtains one reduced target directly from a positive finite Fourier coefficient and then uses prime dilution to pass to arbitrary positive rationals.
+
+The headline existence theorem was first obtained in the author's archived Lean~4 development, released as version~0.0.3~\cite{tang-erdos-306-formal}. The present proof belongs to the same Fourier-analytic lineage but has been reorganized into a one-anchor argument for ordinary mathematical reading; the archived code is not a line-by-line formalization of this exposition.
+
+\subsection{The direct construction}
+
+Fix a reduced rational $t=a/b\in(0,1)$ with squarefree $b$, a fixed anchor ratio $\eta\in(0,1)$, and a fixed exponent $\gamma>1$. Put $Z=X^\gamma$, take all primes in $[X,Z)$, and use the upper fixed-ratio block $[\eta Z,Z)$ as an anchor. The denominator family consists of all products of two distinct primes in $[X,Z)$ together with the products $rq$, where $r$ is a prime divisor of $b$ and $q$ lies in the anchor block. Its reciprocal load tends to
+\[
+ \lambda_\gamma=\frac{(\log\gamma)^2}{2}.
+\]
+The centred construction therefore applies precisely when
+\begin{equation}
+\label{eq:intro-admissible-region}
+ t<\lambda_\gamma<1,
+ \qquad\text{equivalently}\qquad
+ \exp(\sqrt{2t})<\gamma<\exp(\sqrt2).
+\end{equation}
+
+\begin{theorem}[Direct fixed-target theorem]
+\label{thm:direct-intro}
+Let $t=a/b\in(0,1)$ be reduced with squarefree $b$, let $\eta\in(0,1)$ be fixed, let $\gamma$ satisfy \cref{eq:intro-admissible-region}, and let $\mathcal T$ be finite. For all sufficiently large $X$, the family described above contains a subset $A$, disjoint from $\mathcal T$, such that
+\[
+ \sum_{e\in A}\frac1e=t.
+\]
+\end{theorem}
+
+The proof has six linked parts. Finite Fourier inversion encodes the target modulo one. Exact centring removes the linear phase. Low internal energy in the anchor forces all anchor coordinates to come from one integer label. Anchor-cross rows then recover the remaining prime coordinates and the coordinates belonging to the denominator $b$. An exact unnormalised product estimate removes all nondecoding row choices while retaining the lower--lower prime-pair factors. Those retained factors control the noncentral frequency ranges, whereas the central range contributes a positive Gaussian main term. Only after positivity is established do we use the inequality that the total reciprocal load is less than one to convert the congruence into exact equality.
+
+The prime number theorem is the sole non-elementary number-theoretic input. It supplies prime counts in fixed-ratio intervals and, by partial summation, the reciprocal and inverse-square masses used below; see Montgomery and Vaughan~\cite[Chapter~1]{montgomery-vaughan-2007}. All synchronization, row-separation, compression, target-observability and frequency estimates are proved in the article.
+
+\subsection{Organization}
+
+\Cref{sec:family-fourier} constructs the family and its Fourier coefficient. \Cref{sec:anchor-synchronization} proves synchronization of the anchor coordinates. \Cref{sec:coordinate-recovery} recovers the remaining coordinates and compresses the row fibres. \Cref{sec:frequency-positivity} estimates the six frequency ranges and proves positivity. \Cref{sec:exact-realization} gives exact realization and prime dilution. \Cref{sec:consequences} records finite prescription, disjoint realization, common refinement, and the precise qualitative limitations of the present article.
