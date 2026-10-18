@@ -79,7 +79,7 @@ lemma exists_r2_massBatch {T : Finset ℕ} {b : ℕ} (hb : 3 ≤ b)
 /-- `G` distinct gadget primes exist in the bottom dyadic block, as long as the
 block-density lower bound `G ≤ 2^k/(2 log 2^k)` holds (from the prime-density axiom).
 The multi-gadget extra-minor lane needs `G ≈ log` of these to damp the siblings. -/
-lemma exists_block_primes (k : ℕ) (hk : 5 ≤ k) (G : ℕ)
+lemma exists_block_primes (k : ℕ) (hk : 56 ≤ k) (G : ℕ)
     (hG : (G : ℝ) ≤ (2 : ℝ) ^ k / (2 * Real.log ((2 : ℝ) ^ k))) :
     ∃ S : Finset ℕ, S ⊆ dyadicBlock k ∧ S.card = G ∧
       (∀ s ∈ S, Nat.Prime s) ∧ (∀ s ∈ S, 2 ^ k ≤ s) := by

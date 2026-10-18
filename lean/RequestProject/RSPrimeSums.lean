@@ -1,26 +1,19 @@
 import RequestProject.DyadicBlockDef
+import RequestProject.NoAxiomMertensBlock
+import RequestProject.NoAxiomDensity
 
 /-!
-# Rosser–Schoenfeld prime estimates — verbatim axioms and dyadic specializations
+# Dyadic prime estimates (axiom-free)
 
-This leaf states the two classical analytic inputs of the construction **in the
-exact form they appear in the literature**, so that each can be checked
-character-for-character against its primary source:
+The two Rosser–Schoenfeld (1962) axioms formerly stated here (Corollary 3 and
+Theorem 5) have been removed.  The dyadic specializations the construction
+consumes are now proved elementarily:
 
-* `rosser_schoenfeld_cor3` — Rosser & Schoenfeld, "Approximate formulas for some
-  functions of prime numbers," Illinois J. Math. **6**(1) (1962), 64–94,
-  **Corollary 3, eq. (3.8), p. 69**: `3x/(5 log x) < π(2x) − π(x)` for `x ≥ 20.5`.
-
-* `rosser_schoenfeld_mertens` — *ibid.*, **Theorem 5, eqs. (3.17)–(3.18), p. 70**:
-  `log log x + B − 1/(2 log²x) < ∑_{p≤x} 1/p < log log x + B + 1/(2 log²x)`
-  (left for `x > 1`, right for `x ≥ 286`), `B = 0.26149721284764…` (eq. (2.10),
-  p. 65).  Historical origin: F. Mertens, "Ein Beitrag zur analytischen
-  Zahlentheorie," J. reine angew. Math. **78** (1874), 46–62, eq. (13), p. 52.
-
-The dyadic-block specializations the construction actually consumes
-(`dyadic_prime_density`, `dyadic_mertens_cumulative`,
-`dyadic_control_recipLoad_eventually_small`) are then **derived as theorems** from
-these verbatim statements — they are no longer axioms.
+* `dyadic_prime_density` (for `k ≥ 56`) — Chebyshev's `30`-combination
+  `log(30m)! − log(15m)! − log(10m)! − log(6m)! + log m!` (`NoAxiomChebyshev`,
+  `NoAxiomDensity`);
+* `dyadic_mertens_cumulative` — elementary Mertens bounds on
+  `∑_{p≤n} log p / p` (`NoAxiomMertens`, `NoAxiomMertensBlock`).
 -/
 
 open Finset BigOperators
@@ -32,38 +25,6 @@ namespace RosserSchoenfeld
 /-- `∑_{p ≤ x} 1 / p`, with the real endpoint represented by `⌊x⌋₊`. -/
 def primeRecipSum (x : ℝ) : ℝ :=
   ∑ p ∈ (Finset.Icc 2 ⌊x⌋₊).filter Nat.Prime, (1 : ℝ) / (p : ℝ)
-
-/-- **Rosser–Schoenfeld (1962), Corollary 3, eq. (3.8), p. 69.**
-"Approximate formulas for some functions of prime numbers," Illinois J. Math.
-6(1), 64–94.  DOI 10.1215/ijm/1255631807.  Verbatim: for `x ≥ 20½`,
-`3x/(5 log x) < π(2x) − π(x)`, where `π` (`Nat.primeCounting`) is the number of
-primes `≤ x` (so `π(2x) − π(x)` here is `Nat.primeCounting ⌊2x⌋ − Nat.primeCounting ⌊x⌋`). -/
-axiom rosser_schoenfeld_cor3 (x : ℝ) (hx : (41 : ℝ) / 2 ≤ x) :
-    3 * x / (5 * Real.log x) <
-      (Nat.primeCounting ⌊2 * x⌋₊ : ℝ) - (Nat.primeCounting ⌊x⌋₊ : ℝ)
-
-/-- **Rosser–Schoenfeld (1962), Theorem 5, eqs. (3.17)–(3.18), p. 70.**
-"Approximate formulas for some functions of prime numbers," Illinois J. Math.
-6(1), 64–94.  DOI 10.1215/ijm/1255631807.  Verbatim: there is a constant `B`
-(the Mertens constant; RS eq. (2.10), p. 65, `B = 0.26149721284764…`) such that,
-where the sum `∑ p ∈ (Finset.Icc 2 ⌊x⌋₊).filter Nat.Prime, 1/p` below is exactly
-`∑_{p ≤ x} 1/p` (reciprocals of the primes `≤ x`),
-* (3.17) `log log x + B − 1/(2 log²x) < ∑_{p≤x} 1/p` for `1 < x`, and
-* (3.18) `∑_{p≤x} 1/p < log log x + B + 1/(2 log²x)` for `286 ≤ x`.
-
-Stating `B` existentially (rather than pinning a rounded decimal) keeps the
-axiom an exact transcription of Theorem 5.  Historical origin of the
-reciprocal-prime asymptotic: F. Mertens, "Ein Beitrag zur analytischen
-Zahlentheorie," J. reine angew. Math. 78 (1874), 46–62, eq. (13), p. 52
-(`∑_{q≤G} 1/q = log log G + 𝔈 − H + δ`, `δ < 4/log(G+1) + 2/(G log G)`). -/
-axiom rosser_schoenfeld_thm5 :
-    ∃ B : ℝ, ∀ x : ℝ,
-      (1 < x →
-          Real.log (Real.log x) + B - 1 / (2 * (Real.log x) ^ 2)
-            < ∑ p ∈ (Finset.Icc 2 ⌊x⌋₊).filter Nat.Prime, (1 : ℝ) / (p : ℝ)) ∧
-      (286 ≤ x →
-          ∑ p ∈ (Finset.Icc 2 ⌊x⌋₊).filter Nat.Prime, (1 : ℝ) / (p : ℝ)
-            < Real.log (Real.log x) + B + 1 / (2 * (Real.log x) ^ 2))
 
 end RosserSchoenfeld
 
@@ -112,49 +73,12 @@ lemma dyadicBlock_card_eq (k : ℕ) :
     exact Finset.card_sdiff_add_card_eq_card hsub
   omega
 
-/-- **Dyadic prime density** (was an axiom; now derived from Rosser–Schoenfeld
-Corollary 3, eq. (3.8)).  For `k ≥ 5`,
+/-- **Dyadic prime density** (axiom-free; proved in `NoAxiomDensity` by
+Chebyshev's elementary method).  For `k ≥ 56`,
 `2ᵏ / (2 log 2ᵏ) ≤ #{p prime : 2ᵏ ≤ p < 2ᵏ⁺¹}`. -/
-theorem dyadic_prime_density (k : ℕ) (hk : 5 ≤ k) :
-    (2 ^ k : ℝ) / (2 * Real.log (2 ^ k)) ≤ ((dyadicBlock k).card : ℝ) := by
-  -- Abbreviations and basic positivity.
-  set x : ℝ := (2 : ℝ) ^ k with hxdef
-  have hx32 : (32 : ℝ) ≤ x := by
-    rw [hxdef]
-    calc (32 : ℝ) = 2 ^ 5 := by norm_num
-      _ ≤ 2 ^ k := pow_le_pow_right₀ (by norm_num) hk
-  have hx1 : (1 : ℝ) < x := by linarith
-  have hxpos : (0 : ℝ) < x := by linarith
-  have hlogpos : (0 : ℝ) < Real.log x := Real.log_pos hx1
-  -- Floor evaluations: ⌊x⌋ = 2ᵏ and ⌊2x⌋ = 2ᵏ⁺¹.
-  have hxnat : x = ((2 ^ k : ℕ) : ℝ) := by rw [hxdef]; push_cast; ring
-  have h2xnat : 2 * x = ((2 ^ (k + 1) : ℕ) : ℝ) := by rw [hxdef]; push_cast; ring
-  have hfloorx : ⌊x⌋₊ = 2 ^ k := by rw [hxnat, Nat.floor_natCast]
-  have hfloor2x : ⌊2 * x⌋₊ = 2 ^ (k + 1) := by rw [h2xnat, Nat.floor_natCast]
-  -- π at the two endpoints equals π' (the powers of 2 are not prime).
-  have hk2 : 2 ≤ k := by omega
-  have hπx : Nat.primeCounting ⌊x⌋₊ = Nat.primeCounting' (2 ^ k) := by
-    rw [hfloorx, primeCounting_eq_primeCounting'_of_not_prime (two_pow_not_prime hk2)]
-  have hπ2x : Nat.primeCounting ⌊2 * x⌋₊ = Nat.primeCounting' (2 ^ (k + 1)) := by
-    rw [hfloor2x, primeCounting_eq_primeCounting'_of_not_prime (two_pow_not_prime (by omega))]
-  -- The RS difference equals the block cardinality (as reals).
-  have hmono : Nat.primeCounting' (2 ^ k) ≤ Nat.primeCounting' (2 ^ (k + 1)) :=
-    Nat.monotone_primeCounting' (Nat.pow_le_pow_right (by norm_num) (Nat.le_succ k))
-  have hcardR :
-      (Nat.primeCounting ⌊2 * x⌋₊ : ℝ) - (Nat.primeCounting ⌊x⌋₊ : ℝ)
-        = ((dyadicBlock k).card : ℝ) := by
-    rw [hπx, hπ2x, dyadicBlock_card_eq, Nat.cast_sub hmono]
-  -- Rosser–Schoenfeld Corollary 3 at this `x`.
-  have hRS := RosserSchoenfeld.rosser_schoenfeld_cor3 x (by linarith)
-  rw [hcardR] at hRS
-  -- Close: 2ᵏ/(2 log 2ᵏ) = x/(2 log x) ≤ 3x/(5 log x) < card.
-  have hlog_eq : Real.log (2 ^ k) = Real.log x := by rw [hxdef]
-  rw [hlog_eq]
-  have hstep : x / (2 * Real.log x) ≤ 3 * x / (5 * Real.log x) := by
-    rw [div_le_div_iff₀ (by positivity) (by positivity)]
-    nlinarith [hxpos, hlogpos]
-  calc x / (2 * Real.log x) ≤ 3 * x / (5 * Real.log x) := hstep
-    _ ≤ _ := le_of_lt hRS
+theorem dyadic_prime_density (k : ℕ) (hk : 56 ≤ k) :
+    (2 ^ k : ℝ) / (2 * Real.log (2 ^ k)) ≤ ((dyadicBlock k).card : ℝ) :=
+  dyadic_prime_density_noAxiom k hk
 
 /-- `exp 1.06 < 3`, hence `1.06 < log 3` (the true value is `≈ 1.0986`); the
 cheap lower bound used to clear the `21/20` threshold. -/
@@ -224,90 +148,17 @@ private lemma biUnion_dyadicBlock_eq_sdiff (k0 : ℕ) :
         le_trans (Nat.pow_le_pow_right (by norm_num) (by omega)) hkle
       omega
 
-/-- **Dyadic Mertens cumulative lower bound** (was an axiom; now derived from
-Rosser–Schoenfeld Theorem 5, `rosser_schoenfeld_thm5`).  For all large `k0`, the
+/-- **Dyadic Mertens cumulative lower bound** (axiom-free).  For all large `k0`, the
 reciprocal sum of the primes in `[2^{k0}, 2^{3k0+1})` is at least `21/20` (the
-true limit is `log 3 ≈ 1.0986`).  Apply (3.17) at `x = 2^{3k0+1}` (lower) and
-(3.18) at `x = 2^{k0}` (upper); `B` cancels, the `log log` difference is
-`log((3k0+1)/k0) ≥ log 3 > 1.06`, and the two error terms `1/(2 log²)` are
-`< 0.003` each for `k0 ≥ 20`. -/
+true limit is `log 3 ≈ 1.0986`).  Proved in `NoAxiomMertensBlock` from the
+elementary Mertens bounds `log n − 3 ≤ ∑_{p≤n} log p/p ≤ log n + log 4`
+(Legendre's formula, Stirling's lower bound, `primorial ≤ 4ⁿ`), applied on
+exponent blocks of width `10⁴` and telescoped through `log`. -/
 theorem dyadic_mertens_cumulative :
     ∃ k1 : ℕ, 5 ≤ k1 ∧ ∀ k0 : ℕ, k1 ≤ k0 →
       (21 : ℝ) / 20 ≤
         ∑ p ∈ (Finset.Icc k0 (3 * k0)).biUnion dyadicBlock, (1 : ℝ) / (p : ℝ) := by
-  obtain ⟨B, hB⟩ := RosserSchoenfeld.rosser_schoenfeld_thm5
-  refine ⟨20, by norm_num, fun k0 hk0 => ?_⟩
-  have hk0_2 : 2 ≤ k0 := by omega
-  have hk0_pos : 0 < k0 := by omega
-  have hbig_m : 2 ≤ 3 * k0 + 1 := by omega
-  -- Block sum = prefix difference of `primeRecipSum`.
-  have hsub : Nat.primesBelow (2 ^ k0) ⊆ Nat.primesBelow (2 ^ (3 * k0 + 1)) := by
-    intro p hp
-    simp only [Nat.primesBelow, Finset.mem_filter, Finset.mem_range] at hp ⊢
-    exact ⟨lt_of_lt_of_le hp.1 (Nat.pow_le_pow_right (by norm_num) (by omega)), hp.2⟩
-  have hsplit :
-      ∑ p ∈ (Finset.Icc k0 (3 * k0)).biUnion dyadicBlock, (1 : ℝ) / (p : ℝ)
-        = RosserSchoenfeld.primeRecipSum ((2 : ℝ) ^ (3 * k0 + 1))
-          - RosserSchoenfeld.primeRecipSum ((2 : ℝ) ^ k0) := by
-    rw [biUnion_dyadicBlock_eq_sdiff, primeRecipSum_two_pow hbig_m,
-      primeRecipSum_two_pow hk0_2, eq_sub_iff_add_eq]
-    exact Finset.sum_sdiff hsub
-  rw [hsplit]
-  -- Theorem 5 at the two endpoints.
-  have hxbig : (1 : ℝ) < (2 : ℝ) ^ (3 * k0 + 1) := by
-    calc (1 : ℝ) < 2 ^ 1 := by norm_num
-      _ ≤ 2 ^ (3 * k0 + 1) := by apply pow_le_pow_right₀ (by norm_num); omega
-  have hxsmall : (286 : ℝ) ≤ (2 : ℝ) ^ k0 := by
-    calc (286 : ℝ) ≤ 2 ^ 20 := by norm_num
-      _ ≤ 2 ^ k0 := pow_le_pow_right₀ (by norm_num) hk0
-  -- `primeRecipSum` is definitionally the inlined sum in the axiom, so these
-  -- ascriptions just re-expose the bounds in terms of the proof's abbreviation.
-  have hlow : Real.log (Real.log ((2 : ℝ) ^ (3 * k0 + 1))) + B
-        - 1 / (2 * (Real.log ((2 : ℝ) ^ (3 * k0 + 1))) ^ 2)
-        < RosserSchoenfeld.primeRecipSum ((2 : ℝ) ^ (3 * k0 + 1)) :=
-    (hB ((2 : ℝ) ^ (3 * k0 + 1))).1 hxbig
-  have hupp : RosserSchoenfeld.primeRecipSum ((2 : ℝ) ^ k0)
-        < Real.log (Real.log ((2 : ℝ) ^ k0)) + B
-          + 1 / (2 * (Real.log ((2 : ℝ) ^ k0)) ^ 2) :=
-    (hB ((2 : ℝ) ^ k0)).2 hxsmall
-  -- `log log` difference ≥ log 3.
-  have hLL : Real.log 3 ≤
-      Real.log (Real.log ((2 : ℝ) ^ (3 * k0 + 1))) - Real.log (Real.log ((2 : ℝ) ^ k0)) := by
-    have hlog2pos : 0 < Real.log 2 := Real.log_pos (by norm_num)
-    have hk0R : (0 : ℝ) < ((k0 : ℕ) : ℝ) := by exact_mod_cast hk0_pos
-    have hbigR : (0 : ℝ) < ((3 * k0 + 1 : ℕ) : ℝ) := by positivity
-    have e1 : Real.log ((2 : ℝ) ^ (3 * k0 + 1)) = ((3 * k0 + 1 : ℕ) : ℝ) * Real.log 2 := by
-      rw [Real.log_pow]
-    have e2 : Real.log ((2 : ℝ) ^ k0) = ((k0 : ℕ) : ℝ) * Real.log 2 := by
-      rw [Real.log_pow]
-    rw [e1, e2, Real.log_mul (ne_of_gt hbigR) (ne_of_gt hlog2pos),
-      Real.log_mul (ne_of_gt hk0R) (ne_of_gt hlog2pos)]
-    have hcollapse :
-        Real.log ((3 * k0 + 1 : ℕ) : ℝ) + Real.log (Real.log 2)
-            - (Real.log ((k0 : ℕ) : ℝ) + Real.log (Real.log 2))
-          = Real.log ((3 * k0 + 1 : ℕ) : ℝ) - Real.log ((k0 : ℕ) : ℝ) := by ring
-    rw [hcollapse, ← Real.log_div (ne_of_gt hbigR) (ne_of_gt hk0R),
-      Real.log_le_log_iff (by norm_num) (div_pos hbigR hk0R), le_div_iff₀ hk0R]
-    push_cast
-    nlinarith [hk0_pos]
-  -- Error terms `< 0.003` for `m ≥ 20`.
-  have herr : ∀ m : ℕ, 20 ≤ m →
-      1 / (2 * (Real.log ((2 : ℝ) ^ m)) ^ 2) < (3 : ℝ) / 1000 := by
-    intro m hm
-    have hlog2 : (0.6931471803 : ℝ) < Real.log 2 := Real.log_two_gt_d9
-    have hl : (0 : ℝ) < Real.log 2 := lt_trans (by norm_num) hlog2
-    have hLm : Real.log ((2 : ℝ) ^ m) = (m : ℝ) * Real.log 2 := by rw [Real.log_pow]
-    have hmR : (20 : ℝ) ≤ (m : ℝ) := by exact_mod_cast hm
-    have hbig13 : (13 : ℝ) < (m : ℝ) * Real.log 2 := by
-      have h20 : (0 : ℝ) ≤ (m : ℝ) - 20 := by linarith
-      nlinarith [hlog2, hmR, mul_nonneg h20 (le_of_lt hl)]
-    have htsq : (169 : ℝ) < ((m : ℝ) * Real.log 2) ^ 2 := by nlinarith [hbig13]
-    rw [hLm, div_lt_iff₀ (by positivity)]
-    nlinarith [htsq]
-  have he1 := herr (3 * k0 + 1) (by omega)
-  have he2 := herr k0 hk0
-  have hlog3 := log_three_gt
-  linarith [hlow, hupp, hLL, he1, he2, hlog3]
+  exact dyadic_mertens_cumulative_noAxiom
 
 end GlobalControl
 

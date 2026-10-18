@@ -12,9 +12,8 @@ namespace GlobalControl
 
 Constructs a `BlockSystem` with arbitrarily large `k₀` and `admissibleGlobalRange`,
 taking the dyadic blocks `Pₖ = {primes in [2ᵏ, 2ᵏ⁺¹)}`.  The only non-elementary
-input is the dyadic prime-density lower bound (`hdensity`), which is the classical
-**Rosser–Schoenfeld (1962)** estimate; it is recorded here as a single named axiom
-pending the upstreaming of PNT-level results to Mathlib.
+input is the dyadic prime-density lower bound (`hdensity`), now proved without
+axioms for `k ≥ 56` by Chebyshev's elementary method (`NoAxiomDensity`).
 -/
 
 /-- **R2 (a): block-system existence.**  For every target `k₀min` there is a
@@ -24,8 +23,8 @@ mass over `[2^{k₀},2^{3k₀}]` reaches the common-θ window for `b ≥ 3`).  A
 are elementary except `hdensity`, supplied by `dyadic_prime_density`. -/
 theorem exists_blockSystem (k0min : ℕ) :
     ∃ BS : BlockSystem, k0min ≤ BS.k0 ∧ admissibleGlobalRange BS := by
-  set k0 : ℕ := max k0min 5 with hk0def
-  have h5 : 5 ≤ k0 := le_max_right _ _
+  set k0 : ℕ := max k0min 56 with hk0def
+  have h5 : 56 ≤ k0 := le_max_right _ _
   refine ⟨{
     k0 := k0
     K := 3 * k0

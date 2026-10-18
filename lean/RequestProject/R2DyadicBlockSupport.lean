@@ -21,8 +21,8 @@ theorem exists_blockSystem_with_blockPrimes_subset (k0min : ℕ) :
     ∃ BS : BlockSystem,
       k0min ≤ BS.k0 ∧ admissibleGlobalRange BS ∧
         blockPrimes BS.k0 ⊆ blockSupport BS := by
-  set k0 : ℕ := max k0min 5 with hk0def
-  have h5 : 5 ≤ k0 := le_max_right _ _
+  set k0 : ℕ := max k0min 56 with hk0def
+  have h5 : 56 ≤ k0 := le_max_right _ _
   refine ⟨{
     k0 := k0
     K := 3 * k0
